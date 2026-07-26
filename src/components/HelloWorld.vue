@@ -1,14 +1,26 @@
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import viteLogo from '../assets/vite.svg'
 import heroImg from '../assets/hero.png'
 import vueLogo from '../assets/vue.svg'
+import { useAuthStore } from '../stores/auth'
 
 const count = ref(0)
+
+const authStore = useAuthStore()
+const router = useRouter()
+
+async function handleLogout() {
+  await authStore.signOut()
+  router.push('/login')
+}
 </script>
 
 <template>
   <section id="center">
+    <button type="button" class="counter" @click="handleLogout">התנתקות</button>
+
     <div class="hero">
       <img :src="heroImg" class="base" width="170" height="179" alt="" />
       <img :src="vueLogo" class="framework" alt="Vue logo" />
