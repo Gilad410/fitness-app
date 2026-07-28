@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HelloWorld from '../components/HelloWorld.vue'
+import DashboardView from '../features/dashboard/views/DashboardView.vue'
 import LoginView from '../features/auth/views/LoginView.vue'
 import SignupView from '../features/auth/views/SignupView.vue'
 import { useAuthStore } from '../stores/auth'
@@ -7,7 +7,7 @@ import { useAuthStore } from '../stores/auth'
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/', name: 'home', component: HelloWorld, meta: { requiresAuth: true } },
+    { path: '/', name: 'home', component: DashboardView, meta: { requiresAuth: true } },
     { path: '/login', name: 'login', component: LoginView },
     { path: '/signup', name: 'signup', component: SignupView },
   ],
