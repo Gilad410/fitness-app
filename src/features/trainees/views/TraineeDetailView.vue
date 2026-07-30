@@ -11,6 +11,7 @@ const traineesStore = useTraineesStore()
 const checking = ref(true)
 const error = ref('')
 const updating = ref(false)
+const showArchiveConfirm = ref(false)
 
 onMounted(async () => {
   await traineesStore.ensureLoaded()
@@ -29,8 +30,6 @@ const goalLabels = {
 const dateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
 
 async function setStatus(status) {
-  if (status === 'archived' && !window.confirm('להעביר את המתאמן לארכיון?')) return
-
   error.value = ''
   updating.value = true
   try {
@@ -40,6 +39,11 @@ async function setStatus(status) {
   } finally {
     updating.value = false
   }
+}
+
+async function confirmArchive() {
+  showArchiveConfirm.value = false
+  await setStatus('archived')
 }
 </script>
 
@@ -99,7 +103,32 @@ async function setStatus(status) {
 
         <p v-if="error" class="mt-4 text-sm text-status-red">{{ error }}</p>
 
-        <div class="mt-6 flex flex-wrap gap-3">
+        <div
+          v-if="showArchiveConfirm"
+          class="mt-6 flex flex-col gap-3 rounded-2xl border border-neutral-300 bg-brand-white p-4 sm:p-5"
+        >
+          <p class="text-sm text-brand-black">להעביר את {{ trainee.full_name }} לארכיון?</p>
+          <div class="flex flex-wrap gap-3">
+            <button
+              type="button"
+              :disabled="updating"
+              class="rounded-lg bg-status-red px-4 py-2 text-sm font-medium text-brand-white hover:bg-status-red/90 disabled:opacity-60"
+              @click="confirmArchive"
+            >
+              {{ updating ? 'מעביר לארכיון...' : 'כן, העבר לארכיון' }}
+            </button>
+            <button
+              type="button"
+              :disabled="updating"
+              class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100 disabled:opacity-60"
+              @click="showArchiveConfirm = false"
+            >
+              ביטול
+            </button>
+          </div>
+        </div>
+
+        <div v-else class="mt-6 flex flex-wrap gap-3">
           <template v-if="trainee.status === 'active'">
             <button
               type="button"
@@ -113,7 +142,7 @@ async function setStatus(status) {
               type="button"
               :disabled="updating"
               class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100 disabled:opacity-60"
-              @click="setStatus('archived')"
+              @click="showArchiveConfirm = true"
             >
               העבר לארכיון
             </button>
@@ -132,7 +161,7 @@ async function setStatus(status) {
               type="button"
               :disabled="updating"
               class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100 disabled:opacity-60"
-              @click="setStatus('archived')"
+              @click="showArchiveConfirm = true"
             >
               העבר לארכיון
             </button>

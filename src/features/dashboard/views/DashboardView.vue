@@ -31,6 +31,7 @@ const cards = computed(() => [
     icon: IconUsers,
     value: traineesStore.loaded ? String(traineesStore.activeCount) : '—',
     comingSoon: false,
+    to: '/trainees',
   },
   {
     title: 'התקדמות',
@@ -77,6 +78,7 @@ const cards = computed(() => [
         :icon="card.icon"
         :value="card.value"
         :coming-soon="card.comingSoon"
+        :to="card.to"
       />
     </section>
   </AppLayout>

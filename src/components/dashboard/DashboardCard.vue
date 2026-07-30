@@ -5,11 +5,14 @@ defineProps({
   description: { type: String, required: true },
   value: { type: String, default: '' },
   comingSoon: { type: Boolean, default: true },
+  to: { type: String, default: null },
 })
 </script>
 
 <template>
-  <article
+  <component
+    :is="to ? 'RouterLink' : 'article'"
+    :to="to"
     class="flex flex-col gap-4 rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm transition-shadow hover:shadow-md sm:p-6"
   >
     <div class="flex items-start justify-between gap-3">
@@ -32,5 +35,5 @@ defineProps({
     </div>
 
     <p v-if="value" class="text-2xl font-bold text-brand-black">{{ value }}</p>
-  </article>
+  </component>
 </template>
