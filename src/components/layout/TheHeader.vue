@@ -20,7 +20,7 @@ async function handleLogout() {
     <div class="flex items-center gap-3">
       <button
         type="button"
-        class="rounded-md p-1.5 text-brand-white hover:bg-white/10 lg:hidden"
+        class="rounded-md p-1.5 text-brand-white hover:bg-white/10"
         aria-label="פתיחת תפריט ניווט"
         @click="$emit('toggle-sidebar')"
       >

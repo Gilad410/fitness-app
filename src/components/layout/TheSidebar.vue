@@ -22,14 +22,14 @@ const navItems = [
 <template>
   <div
     v-if="open"
-    class="fixed inset-0 z-30 bg-brand-black/50 lg:hidden"
+    class="fixed inset-0 z-30 bg-brand-black/50"
     aria-hidden="true"
     @click="$emit('close')"
   />
 
   <aside
-    class="fixed top-0 bottom-0 start-0 z-40 w-64 border-e border-neutral-300 bg-brand-white transition-transform duration-200 lg:static lg:z-auto lg:shrink-0 lg:transition-none"
-    :class="open ? 'max-lg:translate-x-0' : 'max-lg:-translate-x-full max-lg:rtl:translate-x-full'"
+    class="fixed top-0 bottom-0 start-0 z-40 w-64 border-e border-neutral-300 bg-brand-white transition-transform duration-200"
+    :class="open ? 'translate-x-0' : '-translate-x-full rtl:translate-x-full'"
   >
     <nav class="flex h-full flex-col gap-1 overflow-y-auto p-4 pt-6" aria-label="ניווט ראשי">
       <RouterLink
