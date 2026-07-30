@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import AppLayout from '../../../layouts/AppLayout.vue'
 import DashboardCard from '../../../components/dashboard/DashboardCard.vue'
 import IconUsers from '../../../components/icons/IconUsers.vue'
@@ -7,39 +7,53 @@ import IconTrendingUp from '../../../components/icons/IconTrendingUp.vue'
 import IconApple from '../../../components/icons/IconApple.vue'
 import IconBell from '../../../components/icons/IconBell.vue'
 import { useAuthStore } from '../../../stores/auth'
+import { useTraineesStore } from '../../trainees/store/trainees'
 
 const authStore = useAuthStore()
+const traineesStore = useTraineesStore()
+
+onMounted(async () => {
+  try {
+    await traineesStore.ensureLoaded()
+  } catch {
+    // Leave the trainees card at its placeholder value on failure.
+  }
+})
 
 const today = computed(() =>
   new Intl.DateTimeFormat('he-IL', { dateStyle: 'full' }).format(new Date()),
 )
 
-const cards = [
+const cards = computed(() => [
   {
     title: 'לקוחות',
     description: 'נהל את רשימת המתאמנים שלך',
     icon: IconUsers,
-    value: '—',
+    value: traineesStore.loaded ? String(traineesStore.activeCount) : '—',
+    comingSoon: false,
   },
   {
     title: 'התקדמות',
     description: 'עקוב אחר התקדמות והישגי המתאמנים',
     icon: IconTrendingUp,
     value: '—',
+    comingSoon: true,
   },
   {
     title: 'תזונה',
     description: 'נהל תוכניות תזונה למתאמנים',
     icon: IconApple,
     value: '—',
+    comingSoon: true,
   },
   {
     title: 'התראות',
     description: 'עדכונים והתראות אחרונות',
     icon: IconBell,
     value: '—',
+    comingSoon: true,
   },
-]
+])
 </script>
 
 <template>
@@ -62,6 +76,7 @@ const cards = [
         :description="card.description"
         :icon="card.icon"
         :value="card.value"
+        :coming-soon="card.comingSoon"
       />
     </section>
   </AppLayout>

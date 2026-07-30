@@ -4,6 +4,7 @@ defineProps({
   title: { type: String, required: true },
   description: { type: String, required: true },
   value: { type: String, default: '' },
+  comingSoon: { type: Boolean, default: true },
 })
 </script>
 
@@ -17,7 +18,10 @@ defineProps({
       >
         <component :is="icon" class="size-5" />
       </span>
-      <span class="rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-600">
+      <span
+        v-if="comingSoon"
+        class="rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-600"
+      >
         בקרוב
       </span>
     </div>

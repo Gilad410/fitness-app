@@ -12,7 +12,7 @@ defineEmits(['close'])
 
 const navItems = [
   { label: 'לוח בקרה', icon: IconHome, to: '/' },
-  { label: 'לקוחות', icon: IconUsers },
+  { label: 'לקוחות', icon: IconUsers, to: '/trainees' },
   { label: 'התקדמות', icon: IconTrendingUp },
   { label: 'תזונה', icon: IconApple },
   { label: 'התראות', icon: IconBell },
@@ -28,8 +28,8 @@ const navItems = [
   />
 
   <aside
-    class="fixed top-0 bottom-0 start-0 z-40 w-64 border-e border-neutral-300 bg-brand-white transition-transform duration-200 lg:static lg:z-auto lg:w-64 lg:shrink-0 lg:translate-x-0 lg:transition-none"
-    :class="open ? 'translate-x-0' : '-translate-x-full rtl:translate-x-full'"
+    class="fixed top-0 bottom-0 start-0 z-40 w-64 border-e border-neutral-300 bg-brand-white transition-transform duration-200 lg:static lg:z-auto lg:shrink-0 lg:transition-none"
+    :class="open ? 'max-lg:translate-x-0' : 'max-lg:-translate-x-full max-lg:rtl:translate-x-full'"
   >
     <nav class="flex h-full flex-col gap-1 overflow-y-auto p-4 pt-6" aria-label="ניווט ראשי">
       <RouterLink

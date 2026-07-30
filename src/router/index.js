@@ -2,6 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import DashboardView from '../features/dashboard/views/DashboardView.vue'
 import LoginView from '../features/auth/views/LoginView.vue'
 import SignupView from '../features/auth/views/SignupView.vue'
+import TraineesListView from '../features/trainees/views/TraineesListView.vue'
+import TraineeFormView from '../features/trainees/views/TraineeFormView.vue'
+import TraineeDetailView from '../features/trainees/views/TraineeDetailView.vue'
 import { useAuthStore } from '../stores/auth'
 
 const router = createRouter({
@@ -10,6 +13,32 @@ const router = createRouter({
     { path: '/', name: 'home', component: DashboardView, meta: { requiresAuth: true } },
     { path: '/login', name: 'login', component: LoginView },
     { path: '/signup', name: 'signup', component: SignupView },
+    {
+      path: '/trainees',
+      name: 'trainees',
+      component: TraineesListView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/trainees/new',
+      name: 'trainee-new',
+      component: TraineeFormView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/trainees/:id',
+      name: 'trainee-detail',
+      component: TraineeDetailView,
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
+      path: '/trainees/:id/edit',
+      name: 'trainee-edit',
+      component: TraineeFormView,
+      meta: { requiresAuth: true },
+      props: true,
+    },
   ],
 })
 
