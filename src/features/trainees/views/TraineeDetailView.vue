@@ -4,21 +4,45 @@ import { useRoute } from 'vue-router'
 import AppLayout from '../../../layouts/AppLayout.vue'
 import TraineeStatusBadge from '../components/TraineeStatusBadge.vue'
 import { useTraineesStore } from '../store/trainees'
+import { useProgressLogsStore } from '../../progress/store/progressLogs'
 
 const route = useRoute()
 const traineesStore = useTraineesStore()
+const progressLogsStore = useProgressLogsStore()
 
 const checking = ref(true)
 const error = ref('')
 const updating = ref(false)
 const showArchiveConfirm = ref(false)
 
+const logsChecking = ref(true)
+const logsError = ref('')
+const showAddMeasurement = ref(false)
+const addingLog = ref(false)
+const addLogError = ref('')
+const logWeight = ref('')
+const logDate = ref(todayIsoDate())
+const logNote = ref('')
+
 onMounted(async () => {
   await traineesStore.ensureLoaded()
   checking.value = false
+
+  try {
+    await progressLogsStore.ensureLoaded(route.params.id)
+  } catch (err) {
+    logsError.value = err.message
+  } finally {
+    logsChecking.value = false
+  }
 })
 
 const trainee = computed(() => traineesStore.getById(route.params.id))
+const logs = computed(() => progressLogsStore.logsFor(route.params.id))
+
+function todayIsoDate() {
+  return new Date().toISOString().slice(0, 10)
+}
 
 const goalLabels = {
   fat_loss: 'ירידה במשקל',
@@ -44,6 +68,26 @@ async function setStatus(status) {
 async function confirmArchive() {
   showArchiveConfirm.value = false
   await setStatus('archived')
+}
+
+async function handleAddLog() {
+  addLogError.value = ''
+  addingLog.value = true
+  try {
+    await progressLogsStore.addLog(trainee.value.id, {
+      weight: Number(logWeight.value),
+      logged_at: logDate.value,
+      note: logNote.value.trim() === '' ? null : logNote.value.trim(),
+    })
+    logWeight.value = ''
+    logDate.value = todayIsoDate()
+    logNote.value = ''
+    showAddMeasurement.value = false
+  } catch (err) {
+    addLogError.value = err.message
+  } finally {
+    addingLog.value = false
+  }
 }
 </script>
 
@@ -177,6 +221,102 @@ async function confirmArchive() {
               שחזר
             </button>
           </template>
+        </div>
+
+        <div
+          class="mt-8 flex flex-col gap-4 rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm sm:p-6"
+        >
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <h2 class="font-semibold text-brand-black">היסטוריית התקדמות</h2>
+            <button
+              v-if="!showAddMeasurement"
+              type="button"
+              class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark"
+              @click="showAddMeasurement = true"
+            >
+              הוסף מדידה
+            </button>
+          </div>
+
+          <form
+            v-if="showAddMeasurement"
+            class="flex flex-col gap-4 rounded-xl border border-neutral-300 p-4"
+            @submit.prevent="handleAddLog"
+          >
+            <label class="flex flex-col gap-1">
+              <span class="text-sm text-neutral-600">משקל (ק"ג)</span>
+              <input
+                v-model="logWeight"
+                type="number"
+                step="0.1"
+                min="0.1"
+                required
+                dir="ltr"
+                class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+              />
+            </label>
+
+            <label class="flex flex-col gap-1">
+              <span class="text-sm text-neutral-600">תאריך</span>
+              <input
+                v-model="logDate"
+                type="date"
+                required
+                class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
+              />
+            </label>
+
+            <label class="flex flex-col gap-1">
+              <span class="text-sm text-neutral-600">הערה</span>
+              <textarea
+                v-model="logNote"
+                rows="2"
+                class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
+              />
+            </label>
+
+            <p v-if="addLogError" class="text-sm text-status-red">{{ addLogError }}</p>
+
+            <div class="flex flex-wrap gap-3">
+              <button
+                type="submit"
+                :disabled="addingLog"
+                class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+              >
+                {{ addingLog ? 'שומר...' : 'שמור מדידה' }}
+              </button>
+              <button
+                type="button"
+                :disabled="addingLog"
+                class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100 disabled:opacity-60"
+                @click="showAddMeasurement = false"
+              >
+                ביטול
+              </button>
+            </div>
+          </form>
+
+          <p v-if="logsChecking" class="text-sm text-neutral-600">טוען...</p>
+
+          <p v-else-if="logsError" class="text-sm text-status-red">{{ logsError }}</p>
+
+          <p v-else-if="logs.length === 0" class="text-sm text-neutral-600">אין עדיין מדידות.</p>
+
+          <ul v-else class="flex flex-col gap-3">
+            <li
+              v-for="log in logs"
+              :key="log.id"
+              class="flex items-baseline justify-between gap-4 border-t border-neutral-300 pt-3 first:border-t-0 first:pt-0"
+            >
+              <div class="min-w-0">
+                <p class="text-sm text-neutral-600">
+                  {{ dateFormatter.format(new Date(log.logged_at)) }}
+                </p>
+                <p v-if="log.note" class="truncate text-sm text-neutral-600">{{ log.note }}</p>
+              </div>
+              <p class="shrink-0 font-semibold text-brand-black">{{ log.weight }} ק"ג</p>
+            </li>
+          </ul>
         </div>
       </template>
     </section>
