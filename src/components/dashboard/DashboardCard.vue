@@ -4,6 +4,7 @@ defineProps({
   title: { type: String, required: true },
   description: { type: String, required: true },
   value: { type: String, default: '' },
+  caption: { type: String, default: '' },
   comingSoon: { type: Boolean, default: true },
   to: { type: String, default: null },
 })
@@ -34,6 +35,9 @@ defineProps({
       <p class="mt-1 text-sm text-neutral-600">{{ description }}</p>
     </div>
 
-    <p v-if="value" class="text-2xl font-bold text-brand-black">{{ value }}</p>
+    <div v-if="value" class="flex items-baseline gap-2">
+      <p class="text-2xl font-bold text-brand-black">{{ value }}</p>
+      <p v-if="caption" class="text-xs text-neutral-500">{{ caption }}</p>
+    </div>
   </component>
 </template>

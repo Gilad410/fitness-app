@@ -30,6 +30,7 @@ const cards = computed(() => [
     description: 'נהל את רשימת המתאמנים שלך',
     icon: IconUsers,
     value: traineesStore.loaded ? String(traineesStore.activeCount) : '—',
+    caption: traineesStore.loaded ? 'לא כולל ארכיון' : '',
     comingSoon: false,
     to: '/trainees',
   },
@@ -77,6 +78,7 @@ const cards = computed(() => [
         :description="card.description"
         :icon="card.icon"
         :value="card.value"
+        :caption="card.caption"
         :coming-soon="card.comingSoon"
         :to="card.to"
       />
