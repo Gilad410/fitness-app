@@ -3,6 +3,7 @@ import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import AppLayout from '../../../layouts/AppLayout.vue'
 import TraineeStatusBadge from '../components/TraineeStatusBadge.vue'
+import NutritionSection from '../../nutrition/components/NutritionSection.vue'
 import { useTraineesStore } from '../store/trainees'
 import { useProgressLogsStore } from '../../progress/store/progressLogs'
 
@@ -318,6 +319,8 @@ async function handleAddLog() {
             </li>
           </ul>
         </div>
+
+        <NutritionSection :trainee-id="trainee.id" />
       </template>
     </section>
   </AppLayout>
