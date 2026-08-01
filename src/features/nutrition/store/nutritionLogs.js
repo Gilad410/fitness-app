@@ -16,6 +16,18 @@ export const useNutritionLogsStore = defineStore('nutritionLogs', {
       (state.logsByTrainee[traineeId] ?? [])
         .filter((log) => log.logged_at === date)
         .reduce((sum, log) => sum + Number(log.calories), 0),
+
+    // Only sums entries with a known protein value — an entry logged
+    // against a food with unset protein is excluded, not treated as 0.
+    dailyProteinTotalFor: (state) => (traineeId, date) =>
+      (state.logsByTrainee[traineeId] ?? [])
+        .filter((log) => log.logged_at === date && log.protein !== null)
+        .reduce((sum, log) => sum + Number(log.protein), 0),
+
+    dailyHasUnknownProteinFor: (state) => (traineeId, date) =>
+      (state.logsByTrainee[traineeId] ?? []).some(
+        (log) => log.logged_at === date && log.protein === null,
+      ),
   },
 
   actions: {
