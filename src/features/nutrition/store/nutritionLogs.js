@@ -43,7 +43,7 @@ export const useNutritionLogsStore = defineStore('nutritionLogs', {
       this.error[traineeId] = null
       const { data, error } = await supabase
         .from('trainee_nutrition_logs')
-        .select('*, food:foods(name)')
+        .select('*, food:foods(name), restaurant_food_item:restaurant_food_items(item_name, chain_name, serving_description)')
         .eq('trainee_id', traineeId)
         .order('logged_at', { ascending: false })
         .order('created_at', { ascending: false })
@@ -54,12 +54,16 @@ export const useNutritionLogsStore = defineStore('nutritionLogs', {
       this.logsByTrainee[traineeId] = data
     },
 
+    // payload is either { food_id, grams, logged_at } (existing regular-food
+    // flow, grams-based) or { restaurant_food_item_id, servings, logged_at }
+    // (restaurant/chain flow, fixed-serving-based). calories/protein are
+    // always computed server-side by the DB trigger, never sent here.
     async addLog(traineeId, payload) {
       const authStore = useAuthStore()
       const { data, error } = await supabase
         .from('trainee_nutrition_logs')
         .insert({ ...payload, trainee_id: traineeId, coach_id: authStore.user.id })
-        .select('*, food:foods(name)')
+        .select('*, food:foods(name), restaurant_food_item:restaurant_food_items(item_name, chain_name, serving_description)')
         .single()
       if (error) throw error
 
