@@ -140,6 +140,10 @@ async function handleAddLog() {
             <dt class="text-sm text-neutral-600">משקל התחלתי</dt>
             <dd class="text-brand-black">{{ trainee.starting_weight }} ק"ג</dd>
           </div>
+          <div v-if="trainee.target_weight">
+            <dt class="text-sm text-neutral-600">משקל מטרה</dt>
+            <dd class="text-brand-black">{{ trainee.target_weight }} ק"ג</dd>
+          </div>
           <div v-if="trainee.notes">
             <dt class="text-sm text-neutral-600">הערות</dt>
             <dd class="whitespace-pre-wrap text-brand-black">{{ trainee.notes }}</dd>

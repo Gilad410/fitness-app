@@ -18,6 +18,7 @@ const notes = ref('')
 const startDate = ref('')
 const goal = ref('')
 const startingWeight = ref('')
+const targetWeight = ref('')
 
 const loading = ref(false)
 const error = ref('')
@@ -43,6 +44,7 @@ onMounted(async () => {
   startDate.value = trainee.start_date ?? ''
   goal.value = trainee.goal ?? ''
   startingWeight.value = trainee.starting_weight ?? ''
+  targetWeight.value = trainee.target_weight ?? ''
 })
 
 function emptyToNull(value) {
@@ -61,6 +63,7 @@ async function handleSubmit() {
       start_date: emptyToNull(startDate.value),
       goal: emptyToNull(goal.value),
       starting_weight: startingWeight.value === '' ? null : Number(startingWeight.value),
+      target_weight: targetWeight.value === '' ? null : Number(targetWeight.value),
     }
 
     const trainee = isEdit.value
@@ -146,6 +149,18 @@ async function handleSubmit() {
             type="number"
             step="0.1"
             min="0"
+            dir="ltr"
+            class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+          />
+        </label>
+
+        <label class="flex flex-col gap-1">
+          <span class="text-sm text-neutral-600">משקל מטרה (ק"ג)</span>
+          <input
+            v-model="targetWeight"
+            type="number"
+            step="0.1"
+            min="0.1"
             dir="ltr"
             class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
           />

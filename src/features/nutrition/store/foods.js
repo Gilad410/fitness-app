@@ -13,8 +13,15 @@ export const useFoodsStore = defineStore('foods', {
 
   getters: {
     getById: (state) => (id) => state.foods.find((f) => f.id === id),
+    // Includes archived foods too: a coach re-adding a food by the same
+    // name should reuse/unarchive that row (see `create`'s caller in
+    // NutritionSection), not collide with the unique (coach_id, name)
+    // index by trying to insert a duplicate.
     getByName: (state) => (name) =>
       state.foods.find((f) => f.name.toLowerCase() === name.toLowerCase()),
+    // What the "add entry" picker offers going forward -- archived foods
+    // stay in `foods` (and in every historical log) but drop out of here.
+    active: (state) => state.foods.filter((f) => !f.archived_at),
   },
 
   actions: {
@@ -66,6 +73,13 @@ export const useFoodsStore = defineStore('foods', {
       const index = this.foods.findIndex((f) => f.id === id)
       if (index !== -1) this.foods[index] = data
       return data
+    },
+
+    // Soft delete: hides the food from future selection (see `active`)
+    // without touching the row itself, so every past nutrition log that
+    // references it keeps reading correctly.
+    async archive(id) {
+      return this.update(id, { archived_at: new Date().toISOString() })
     },
   },
 })

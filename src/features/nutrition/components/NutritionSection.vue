@@ -37,6 +37,13 @@ const newFoodProtein = ref('')
 const entryGrams = ref('')
 const entryDate = ref(todayIsoDate())
 
+// Inline remove-confirmation state for the food picker: removingFoodId is
+// the row currently showing its "כן, הסר / ביטול" prompt (at most one at
+// a time); archivingFoodId is set only while that removal is in flight.
+const removingFoodId = ref(null)
+const archivingFoodId = ref(null)
+const removeFoodError = ref('')
+
 const selectedChain = ref('')
 const restaurantSearchTerm = ref('')
 const selectedRestaurantItemId = ref('')
@@ -72,6 +79,31 @@ function pickSuggestion(food) {
   newFoodProtein.value = String(food.protein_per_100g)
   nameSuggestions.value = []
   nameSuggestionsSearched.value = false
+}
+
+function requestRemoveFood(food) {
+  removeFoodError.value = ''
+  removingFoodId.value = food.id
+}
+
+function cancelRemoveFood() {
+  removingFoodId.value = null
+}
+
+async function confirmRemoveFood(food) {
+  removeFoodError.value = ''
+  archivingFoodId.value = food.id
+  try {
+    await foodsStore.archive(food.id)
+    if (entryFoodId.value === food.id) {
+      entryFoodId.value = ''
+    }
+  } catch (err) {
+    removeFoodError.value = err.message
+  } finally {
+    archivingFoodId.value = null
+    removingFoodId.value = null
+  }
 }
 
 function setEntrySource(source) {
@@ -151,7 +183,7 @@ onMounted(async () => {
   }
 })
 
-const foods = computed(() => foodsStore.foods)
+const foods = computed(() => foodsStore.active)
 const logs = computed(() => nutritionLogsStore.logsFor(props.traineeId))
 
 const todayTotal = computed(() => nutritionLogsStore.dailyTotalFor(props.traineeId, todayIsoDate()))
@@ -243,6 +275,10 @@ async function handleAddEntry() {
         logged_at: entryDate.value,
       })
     } else {
+      if (!entryFoodId.value) {
+        throw new Error('יש לבחור מאכל')
+      }
+
       let foodId = entryFoodId.value
       if (foodId === NEW_FOOD_VALUE) {
         const name = newFoodName.value.trim()
@@ -254,6 +290,9 @@ async function handleAddEntry() {
           ? await foodsStore.update(existing.id, {
               calories_per_100g: caloriesPer100g,
               protein_per_100g: proteinPer100g,
+              // Recreating a food the coach previously removed brings it
+              // back into the picker instead of leaving it stuck hidden.
+              archived_at: null,
             })
           : await foodsStore.create({
               name,
@@ -331,7 +370,7 @@ async function handleDelete(logId) {
             ]"
             @click="setEntrySource('regular')"
           >
-            מאכלים רגילים
+            מאכלים
           </button>
           <button
             type="button"
@@ -349,20 +388,76 @@ async function handleDelete(logId) {
       </div>
 
       <template v-if="entrySource === 'regular'">
-        <label class="flex flex-col gap-1">
-          <span class="text-sm text-neutral-600">מאכל</span>
-          <select
-            v-model="entryFoodId"
-            required
-            class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
+        <div class="flex flex-col gap-1">
+          <span id="food-picker-label" class="text-sm text-neutral-600">מאכל</span>
+          <div
+            role="listbox"
+            aria-labelledby="food-picker-label"
+            class="flex max-h-64 flex-col gap-1 overflow-y-auto rounded-lg border border-neutral-300 p-2"
           >
-            <option value="" disabled>בחר מאכל</option>
-            <option v-for="food in foods" :key="food.id" :value="food.id">
-              {{ food.name }} ({{ food.calories_per_100g }} קק"ל, {{ proteinLabel(food.protein_per_100g) }})
-            </option>
-            <option :value="NEW_FOOD_VALUE">+ הוסף מאכל חדש</option>
-          </select>
-        </label>
+            <div v-for="food in foods" :key="food.id">
+              <div v-if="removingFoodId !== food.id" class="flex items-center gap-1">
+                <button
+                  type="button"
+                  role="option"
+                  :aria-selected="entryFoodId === food.id"
+                  :class="[
+                    'flex-1 rounded-md px-2 py-1.5 text-start text-sm hover:bg-neutral-100',
+                    entryFoodId === food.id ? 'bg-brand-green/10 font-medium text-brand-black' : '',
+                  ]"
+                  @click="entryFoodId = food.id"
+                >
+                  {{ food.name }} ({{ food.calories_per_100g }} קק"ל, {{ proteinLabel(food.protein_per_100g) }})
+                </button>
+                <button
+                  type="button"
+                  :aria-label="`הסר את ${food.name} מרשימת הבחירה`"
+                  class="shrink-0 rounded-md px-2 py-1.5 text-sm text-neutral-600 hover:bg-status-red/10 hover:text-status-red"
+                  @click="requestRemoveFood(food)"
+                >
+                  ✕
+                </button>
+              </div>
+              <div v-else class="flex flex-wrap items-center gap-2 rounded-md bg-neutral-100 px-2 py-1.5 text-sm">
+                <span class="text-brand-black">להסיר את "{{ food.name }}" מרשימת הבחירה?</span>
+                <button
+                  type="button"
+                  :disabled="archivingFoodId === food.id"
+                  class="rounded-md bg-status-red px-2 py-1 text-xs font-medium text-brand-white hover:bg-status-red/90 disabled:opacity-60"
+                  @click="confirmRemoveFood(food)"
+                >
+                  {{ archivingFoodId === food.id ? 'מסיר...' : 'כן, הסר' }}
+                </button>
+                <button
+                  type="button"
+                  :disabled="archivingFoodId === food.id"
+                  class="rounded-md border border-neutral-300 px-2 py-1 text-xs font-medium text-brand-black hover:bg-neutral-100 disabled:opacity-60"
+                  @click="cancelRemoveFood"
+                >
+                  ביטול
+                </button>
+              </div>
+            </div>
+
+            <p v-if="foods.length === 0" class="px-2 py-1.5 text-sm text-neutral-600">
+              אין עדיין מאכלים שמורים
+            </p>
+
+            <button
+              type="button"
+              role="option"
+              :aria-selected="entryFoodId === NEW_FOOD_VALUE"
+              :class="[
+                'w-full rounded-md px-2 py-1.5 text-start text-sm font-medium hover:bg-neutral-100',
+                entryFoodId === NEW_FOOD_VALUE ? 'bg-brand-green/10 text-brand-black' : 'text-brand-green-dark',
+              ]"
+              @click="entryFoodId = NEW_FOOD_VALUE"
+            >
+              + הוסף מאכל חדש
+            </button>
+          </div>
+          <p v-if="removeFoodError" class="text-sm text-status-red">{{ removeFoodError }}</p>
+        </div>
 
         <template v-if="entryFoodId === NEW_FOOD_VALUE">
           <label class="flex flex-col gap-1">

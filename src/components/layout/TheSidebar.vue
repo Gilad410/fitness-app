@@ -14,7 +14,11 @@ const navItems = [
   { label: 'לוח בקרה', icon: IconHome, to: '/' },
   { label: 'לקוחות', icon: IconUsers, to: '/trainees' },
   { label: 'התקדמות', icon: IconTrendingUp },
-  { label: 'תזונה', icon: IconApple },
+  // No standalone nutrition page exists yet -- nutrition logging lives on
+  // each trainee's own page (NutritionSection at the bottom of
+  // /trainees/:id). Routing here to /trainees lets the coach pick a
+  // trainee and reach it, same entry point as "לקוחות".
+  { label: 'תזונה', icon: IconApple, to: '/trainees' },
   { label: 'התראות', icon: IconBell },
 ]
 </script>
