@@ -46,11 +46,10 @@ const cards = computed(() => [
     description: 'נהל תוכניות תזונה למתאמנים',
     icon: IconApple,
     value: '—',
-    // No standalone nutrition page yet -- nutrition logging lives on each
-    // trainee's own page, so this routes to the trainee list same as
-    // "לקוחות", rather than staying a disabled placeholder.
+    // Separate main area: routes to the nutrition trainee picker
+    // (/nutrition), not the client roster.
     comingSoon: false,
-    to: '/trainees',
+    to: '/nutrition',
   },
   {
     title: 'התראות',

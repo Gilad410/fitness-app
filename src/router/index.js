@@ -5,6 +5,8 @@ import SignupView from '../features/auth/views/SignupView.vue'
 import TraineesListView from '../features/trainees/views/TraineesListView.vue'
 import TraineeFormView from '../features/trainees/views/TraineeFormView.vue'
 import TraineeDetailView from '../features/trainees/views/TraineeDetailView.vue'
+import NutritionTraineesListView from '../features/nutrition/views/NutritionTraineesListView.vue'
+import NutritionWorkspaceView from '../features/nutrition/views/NutritionWorkspaceView.vue'
 import { useAuthStore } from '../stores/auth'
 
 const router = createRouter({
@@ -36,6 +38,19 @@ const router = createRouter({
       path: '/trainees/:id/edit',
       name: 'trainee-edit',
       component: TraineeFormView,
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
+      path: '/nutrition',
+      name: 'nutrition-trainees',
+      component: NutritionTraineesListView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/nutrition/:id',
+      name: 'nutrition-workspace',
+      component: NutritionWorkspaceView,
       meta: { requiresAuth: true },
       props: true,
     },
