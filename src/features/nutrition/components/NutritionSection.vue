@@ -4,6 +4,8 @@ import { useFoodsStore } from '../store/foods'
 import { useNutritionLogsStore } from '../store/nutritionLogs'
 import { useFoodReferenceCatalogStore } from '../store/foodReferenceCatalog'
 import { useRestaurantFoodItemsStore } from '../store/restaurantFoodItems'
+import ExternalChainLink from './ExternalChainLink.vue'
+import { externalChainLinks } from '../config/externalChainLinks'
 
 const props = defineProps({
   traineeId: { type: String, required: true },
@@ -536,6 +538,11 @@ async function handleDelete(logId) {
       </template>
 
       <template v-else>
+        <div class="flex flex-col gap-2 rounded-lg border border-dashed border-neutral-300 bg-neutral-50 p-3">
+          <p class="text-sm font-medium text-brand-black">קישורים רשמיים לתפריטי רשתות</p>
+          <ExternalChainLink v-for="link in externalChainLinks" :key="link.chainName" :link="link" />
+        </div>
+
         <label class="flex flex-col gap-1">
           <span class="text-sm text-neutral-600">רשת</span>
           <select
