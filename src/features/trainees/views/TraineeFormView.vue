@@ -19,6 +19,12 @@ const startDate = ref('')
 const goal = ref('')
 const startingWeight = ref('')
 const targetWeight = ref('')
+const startingAbdomen = ref('')
+const startingNeck = ref('')
+const startingRightArm = ref('')
+const startingLeftArm = ref('')
+const startingRightLeg = ref('')
+const startingLeftLeg = ref('')
 
 const loading = ref(false)
 const error = ref('')
@@ -45,6 +51,12 @@ onMounted(async () => {
   goal.value = trainee.goal ?? ''
   startingWeight.value = trainee.starting_weight ?? ''
   targetWeight.value = trainee.target_weight ?? ''
+  startingAbdomen.value = trainee.starting_abdomen_cm ?? ''
+  startingNeck.value = trainee.starting_neck_cm ?? ''
+  startingRightArm.value = trainee.starting_right_arm_cm ?? ''
+  startingLeftArm.value = trainee.starting_left_arm_cm ?? ''
+  startingRightLeg.value = trainee.starting_right_leg_cm ?? ''
+  startingLeftLeg.value = trainee.starting_left_leg_cm ?? ''
 })
 
 function emptyToNull(value) {
@@ -64,6 +76,12 @@ async function handleSubmit() {
       goal: emptyToNull(goal.value),
       starting_weight: startingWeight.value === '' ? null : Number(startingWeight.value),
       target_weight: targetWeight.value === '' ? null : Number(targetWeight.value),
+      starting_abdomen_cm: startingAbdomen.value === '' ? null : Number(startingAbdomen.value),
+      starting_neck_cm: startingNeck.value === '' ? null : Number(startingNeck.value),
+      starting_right_arm_cm: startingRightArm.value === '' ? null : Number(startingRightArm.value),
+      starting_left_arm_cm: startingLeftArm.value === '' ? null : Number(startingLeftArm.value),
+      starting_right_leg_cm: startingRightLeg.value === '' ? null : Number(startingRightLeg.value),
+      starting_left_leg_cm: startingLeftLeg.value === '' ? null : Number(startingLeftLeg.value),
     }
 
     const trainee = isEdit.value
@@ -165,6 +183,84 @@ async function handleSubmit() {
             class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
           />
         </label>
+
+        <fieldset class="flex flex-col gap-3 rounded-lg border border-neutral-300 p-4">
+          <legend class="px-1 text-sm text-neutral-600">היקפים התחלתיים (ס"מ)</legend>
+
+          <div class="grid grid-cols-2 gap-4">
+            <label class="flex flex-col gap-1">
+              <span class="text-sm text-neutral-600">בטן</span>
+              <input
+                v-model="startingAbdomen"
+                type="number"
+                step="0.1"
+                min="0"
+                dir="ltr"
+                class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+              />
+            </label>
+
+            <label class="flex flex-col gap-1">
+              <span class="text-sm text-neutral-600">צוואר</span>
+              <input
+                v-model="startingNeck"
+                type="number"
+                step="0.1"
+                min="0"
+                dir="ltr"
+                class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+              />
+            </label>
+
+            <label class="flex flex-col gap-1">
+              <span class="text-sm text-neutral-600">יד ימין</span>
+              <input
+                v-model="startingRightArm"
+                type="number"
+                step="0.1"
+                min="0"
+                dir="ltr"
+                class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+              />
+            </label>
+
+            <label class="flex flex-col gap-1">
+              <span class="text-sm text-neutral-600">יד שמאל</span>
+              <input
+                v-model="startingLeftArm"
+                type="number"
+                step="0.1"
+                min="0"
+                dir="ltr"
+                class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+              />
+            </label>
+
+            <label class="flex flex-col gap-1">
+              <span class="text-sm text-neutral-600">רגל ימין</span>
+              <input
+                v-model="startingRightLeg"
+                type="number"
+                step="0.1"
+                min="0"
+                dir="ltr"
+                class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+              />
+            </label>
+
+            <label class="flex flex-col gap-1">
+              <span class="text-sm text-neutral-600">רגל שמאל</span>
+              <input
+                v-model="startingLeftLeg"
+                type="number"
+                step="0.1"
+                min="0"
+                dir="ltr"
+                class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+              />
+            </label>
+          </div>
+        </fieldset>
 
         <label class="flex flex-col gap-1">
           <span class="text-sm text-neutral-600">הערות</span>

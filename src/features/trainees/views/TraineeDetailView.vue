@@ -4,6 +4,8 @@ import { useRoute } from 'vue-router'
 import AppLayout from '../../../layouts/AppLayout.vue'
 import TraineeStatusBadge from '../components/TraineeStatusBadge.vue'
 import TraineeProgressSection from '../../progress/components/TraineeProgressSection.vue'
+import TraineeCircumferenceSection from '../../progress/components/TraineeCircumferenceSection.vue'
+import TraineeProgressPhotosSection from '../../progress/components/TraineeProgressPhotosSection.vue'
 import { useTraineesStore } from '../store/trainees'
 
 const route = useRoute()
@@ -20,6 +22,18 @@ onMounted(async () => {
 })
 
 const trainee = computed(() => traineesStore.getById(route.params.id))
+
+const hasStartingCircumferences = computed(() => {
+  const t = trainee.value
+  return !!(
+    t.starting_abdomen_cm ||
+    t.starting_neck_cm ||
+    t.starting_right_arm_cm ||
+    t.starting_left_arm_cm ||
+    t.starting_right_leg_cm ||
+    t.starting_left_leg_cm
+  )
+})
 
 const goalLabels = {
   fat_loss: 'ירידה במשקל',
@@ -99,6 +113,17 @@ async function confirmArchive() {
           <div v-if="trainee.target_weight">
             <dt class="text-sm text-neutral-600">משקל מטרה</dt>
             <dd class="text-brand-black">{{ trainee.target_weight }} ק"ג</dd>
+          </div>
+          <div v-if="hasStartingCircumferences">
+            <dt class="text-sm text-neutral-600">היקפים התחלתיים</dt>
+            <dd class="flex flex-wrap gap-x-4 gap-y-1 text-brand-black">
+              <span v-if="trainee.starting_abdomen_cm">בטן: {{ trainee.starting_abdomen_cm }} ס"מ</span>
+              <span v-if="trainee.starting_neck_cm">צוואר: {{ trainee.starting_neck_cm }} ס"מ</span>
+              <span v-if="trainee.starting_right_arm_cm">יד ימין: {{ trainee.starting_right_arm_cm }} ס"מ</span>
+              <span v-if="trainee.starting_left_arm_cm">יד שמאל: {{ trainee.starting_left_arm_cm }} ס"מ</span>
+              <span v-if="trainee.starting_right_leg_cm">רגל ימין: {{ trainee.starting_right_leg_cm }} ס"מ</span>
+              <span v-if="trainee.starting_left_leg_cm">רגל שמאל: {{ trainee.starting_left_leg_cm }} ס"מ</span>
+            </dd>
           </div>
           <div v-if="trainee.notes">
             <dt class="text-sm text-neutral-600">הערות</dt>
@@ -185,6 +210,8 @@ async function confirmArchive() {
         </div>
 
         <TraineeProgressSection :trainee="trainee" />
+        <TraineeCircumferenceSection :trainee="trainee" />
+        <TraineeProgressPhotosSection :trainee="trainee" />
       </template>
     </section>
   </AppLayout>
