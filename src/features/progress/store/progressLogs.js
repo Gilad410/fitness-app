@@ -10,7 +10,14 @@ export const useProgressLogsStore = defineStore('progressLogs', {
   }),
 
   getters: {
+    // Newest first (matches the fetch/insert order below).
     logsFor: (state) => (traineeId) => state.logsByTrainee[traineeId] ?? [],
+
+    // Oldest first, for chronological chart plotting.
+    ascendingLogsFor: (state) => (traineeId) =>
+      [...(state.logsByTrainee[traineeId] ?? [])].reverse(),
+
+    latestLogFor: (state) => (traineeId) => (state.logsByTrainee[traineeId] ?? [])[0] ?? null,
   },
 
   actions: {
@@ -50,6 +57,16 @@ export const useProgressLogsStore = defineStore('progressLogs', {
         b.logged_at.localeCompare(a.logged_at),
       )
       return data
+    },
+
+    // Corrections are delete + re-add, not edit-in-place, matching the
+    // trainee_nutrition_logs convention (see 003_nutrition.sql).
+    async deleteLog(traineeId, logId) {
+      const { error } = await supabase.from('trainee_progress_logs').delete().eq('id', logId)
+      if (error) throw error
+
+      const logs = this.logsByTrainee[traineeId] ?? []
+      this.logsByTrainee[traineeId] = logs.filter((log) => log.id !== logId)
     },
   },
 })
