@@ -9,6 +9,9 @@ import NutritionTraineesListView from '../features/nutrition/views/NutritionTrai
 import NutritionWorkspaceView from '../features/nutrition/views/NutritionWorkspaceView.vue'
 import ProgressTraineesListView from '../features/progress/views/ProgressTraineesListView.vue'
 import ProgressWorkspaceView from '../features/progress/views/ProgressWorkspaceView.vue'
+import TrainingTraineesListView from '../features/training/views/TrainingTraineesListView.vue'
+import TrainingProgramsListView from '../features/training/views/TrainingProgramsListView.vue'
+import TrainingProgramDetailView from '../features/training/views/TrainingProgramDetailView.vue'
 import { useAuthStore } from '../stores/auth'
 
 const router = createRouter({
@@ -66,6 +69,26 @@ const router = createRouter({
       path: '/progress/:id',
       name: 'progress-workspace',
       component: ProgressWorkspaceView,
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
+      path: '/training',
+      name: 'training-trainees',
+      component: TrainingTraineesListView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/training/:traineeId',
+      name: 'training-programs',
+      component: TrainingProgramsListView,
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
+      path: '/training/:traineeId/:programId',
+      name: 'training-program-detail',
+      component: TrainingProgramDetailView,
       meta: { requiresAuth: true },
       props: true,
     },

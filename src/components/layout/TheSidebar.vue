@@ -3,6 +3,7 @@ import IconHome from '../icons/IconHome.vue'
 import IconUsers from '../icons/IconUsers.vue'
 import IconTrendingUp from '../icons/IconTrendingUp.vue'
 import IconApple from '../icons/IconApple.vue'
+import IconDumbbell from '../icons/IconDumbbell.vue'
 import IconBell from '../icons/IconBell.vue'
 
 defineProps({
@@ -18,6 +19,7 @@ const navItems = [
   // their nutrition workspace at /nutrition/:id (NutritionSection). Kept
   // fully apart from /trainees/:id, which is client profile/progress only.
   { label: 'תזונה', icon: IconApple, to: '/nutrition' },
+  { label: 'תוכניות אימון', icon: IconDumbbell, to: '/training' },
   { label: 'התראות', icon: IconBell },
 ]
 </script>
