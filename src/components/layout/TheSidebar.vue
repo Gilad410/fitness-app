@@ -13,7 +13,7 @@ defineEmits(['close'])
 const navItems = [
   { label: 'לוח בקרה', icon: IconHome, to: '/' },
   { label: 'לקוחות', icon: IconUsers, to: '/trainees' },
-  { label: 'התקדמות', icon: IconTrendingUp },
+  { label: 'התקדמות', icon: IconTrendingUp, to: '/progress' },
   // Separate main area: /nutrition lists trainees, and picking one opens
   // their nutrition workspace at /nutrition/:id (NutritionSection). Kept
   // fully apart from /trainees/:id, which is client profile/progress only.
