@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, nextTick, onMounted, reactive, ref } from 'vue'
 import { useTrainingWorkoutsStore } from '../store/workouts'
 import ExercisesSection from './ExercisesSection.vue'
 
@@ -16,6 +16,17 @@ const showAddForm = ref(false)
 const addingWorkout = ref(false)
 const addError = ref('')
 const addForm = reactive({ name: '', notes: '' })
+
+// Set right after a workout is created (see handleAdd) so the newly added
+// workout's ExercisesSection knows to auto-open its own "הוסף תרגיל" form
+// and this component can scroll it into view -- without this, a coach who
+// just created their first workout would land back on a page that still
+// only shows a small "+ הוסף תרגיל" link, with no clear next step.
+const lastCreatedWorkoutId = ref(null)
+// Plain (non-reactive) map of workout id -> <li> element, populated via
+// the template :ref callback below; only ever used imperatively for
+// scrollIntoView, so it doesn't need to be reactive state.
+const workoutEls = {}
 
 const editingId = ref(null)
 const editForm = reactive({ name: '', notes: '' })
@@ -45,13 +56,17 @@ async function handleAdd() {
   addError.value = ''
   addingWorkout.value = true
   try {
-    await workoutsStore.create(props.programId, {
+    const created = await workoutsStore.create(props.programId, {
       name: addForm.name.trim(),
       notes: addForm.notes.trim() === '' ? null : addForm.notes.trim(),
     })
     addForm.name = ''
     addForm.notes = ''
     showAddForm.value = false
+    lastCreatedWorkoutId.value = created.id
+    // Wait for the new <li> to actually render before scrolling to it.
+    await nextTick()
+    workoutEls[created.id]?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   } catch (err) {
     addError.value = err.message
   } finally {
@@ -117,7 +132,7 @@ async function move(workoutId, direction) {
     <div class="flex flex-wrap items-center justify-between gap-4">
       <h2 class="font-semibold text-brand-black">אימונים</h2>
       <button
-        v-if="!showAddForm"
+        v-if="!showAddForm && workouts.length > 0"
         type="button"
         class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark"
         @click="showAddForm = true"
@@ -175,12 +190,28 @@ async function move(workoutId, direction) {
     <p v-if="moveError" class="text-sm text-status-red">{{ moveError }}</p>
     <p v-if="deleteError" class="text-sm text-status-red">{{ deleteError }}</p>
 
-    <p v-if="!checking && !loadError && workouts.length === 0" class="text-sm text-neutral-600">
-      עדיין לא נוספו אימונים לתוכנית הזו.
-    </p>
+    <div
+      v-if="!checking && !loadError && workouts.length === 0 && !showAddForm"
+      class="flex flex-col items-center gap-3 rounded-xl border border-dashed border-neutral-300 p-6 text-center"
+    >
+      <p class="text-sm text-neutral-600">כדי להוסיף תרגילים, יש ליצור תחילה אימון</p>
+      <button
+        type="button"
+        class="rounded-lg bg-brand-green px-5 py-2.5 text-sm font-semibold text-brand-white hover:bg-brand-green-dark"
+        @click="showAddForm = true"
+      >
+        הוסף אימון ראשון
+      </button>
+    </div>
 
     <ul v-else-if="!checking && !loadError" class="flex flex-col gap-4">
-      <li v-for="(workout, index) in workouts" :key="workout.id" class="rounded-xl border border-neutral-300 p-4">
+      <li
+        v-for="(workout, index) in workouts"
+        :key="workout.id"
+        :ref="(el) => { if (el) workoutEls[workout.id] = el }"
+        class="rounded-xl border border-neutral-300 p-4"
+        :class="{ 'ring-2 ring-brand-green': workout.id === lastCreatedWorkoutId }"
+      >
         <template v-if="editingId === workout.id">
           <form class="flex flex-col gap-3" @submit.prevent="saveEdit(workout.id)">
             <label class="flex flex-col gap-1">
@@ -288,7 +319,7 @@ async function move(workoutId, direction) {
           </div>
 
           <div class="mt-4 border-t border-neutral-300 pt-4">
-            <ExercisesSection :workout-id="workout.id" />
+            <ExercisesSection :workout-id="workout.id" :auto-open-add="workout.id === lastCreatedWorkoutId" />
           </div>
         </template>
       </li>

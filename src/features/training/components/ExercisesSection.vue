@@ -1,15 +1,37 @@
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { useWorkoutExercisesStore } from '../store/exercises'
+import { useExerciseReferenceCatalogStore } from '../store/exerciseReferenceCatalog'
+import { EXERCISE_CATEGORIES } from '../config/exerciseCategories'
 
 const props = defineProps({
   workoutId: { type: String, required: true },
+  // True for a workout that was just created in this session (set by the
+  // parent WorkoutsSection) -- opens the add-exercise form so a coach who
+  // just created their first workout lands straight on the category/
+  // exercise picker instead of having to spot and click the small
+  // "+ הוסף תרגיל" link themselves.
+  autoOpenAdd: { type: Boolean, default: false },
 })
 
+// Sentinel option value for "תרגיל מותאם אישית" inside the exercise
+// <select> -- never sent to Supabase, only used to flip a form into
+// isCustom mode (see handleExerciseSelect below).
+const CUSTOM_OPTION_VALUE = '__custom__'
+
 const exercisesStore = useWorkoutExercisesStore()
+const catalogStore = useExerciseReferenceCatalogStore()
 
 const checking = ref(true)
 const loadError = ref('')
+
+// Catalog load state is tracked separately from the exercises list above:
+// a slow/failed catalog fetch should degrade the add/edit forms to
+// custom-name-only entry, not block viewing/editing the workout's
+// existing exercises.
+const catalogChecking = ref(true)
+const catalogError = ref('')
+const catalogUnavailable = computed(() => catalogError.value !== '')
 
 const showAddForm = ref(false)
 const addingExercise = ref(false)
@@ -29,8 +51,33 @@ const movingId = ref(null)
 const moveError = ref('')
 
 function emptyForm() {
-  return { name: '', sets: '', reps: '', weight_kg: '', rest_seconds: '', notes: '' }
+  return {
+    category: '',
+    exerciseName: '',
+    isCustom: false,
+    customName: '',
+    sets: '',
+    reps: '',
+    weight_kg: '',
+    rest_seconds: '',
+    notes: '',
+  }
 }
+
+// `immediate: true` + a watch (rather than just reading props.autoOpenAdd
+// once at setup) because the parent sets its "which workout did I just
+// create" ref right after this component's own reactive dependencies
+// already triggered a render -- by the time that ref flips, this
+// component may already be mounted with autoOpenAdd still false. Watching
+// keeps the form opening even when it flips true on a later tick instead
+// of the exact one this component mounted on.
+watch(
+  () => props.autoOpenAdd,
+  (autoOpen) => {
+    if (autoOpen) showAddForm.value = true
+  },
+  { immediate: true },
+)
 
 onMounted(async () => {
   try {
@@ -40,13 +87,50 @@ onMounted(async () => {
   } finally {
     checking.value = false
   }
+
+  try {
+    await catalogStore.ensureLoaded()
+  } catch (err) {
+    catalogError.value = err.message
+  } finally {
+    catalogChecking.value = false
+  }
 })
 
 const exercises = computed(() => exercisesStore.exercisesFor(props.workoutId))
 
+// Picking a category invalidates whatever exercise/custom-name choice was
+// made under the previous category, so the two stay in sync. Wired to the
+// select's native @change (not v-model + watch) so it only fires on real
+// coach interaction -- startEdit below sets form.category directly, and
+// must NOT trigger this reset.
+function handleCategoryChange(form, category) {
+  form.category = category
+  form.exerciseName = ''
+  form.isCustom = false
+  form.customName = ''
+}
+
+function handleExerciseSelect(form, value) {
+  if (value === CUSTOM_OPTION_VALUE) {
+    form.isCustom = true
+    form.exerciseName = ''
+  } else {
+    form.isCustom = false
+    form.exerciseName = value
+    form.customName = ''
+  }
+}
+
+function backToList(form) {
+  form.isCustom = false
+  form.customName = ''
+}
+
 function toPayload(form) {
+  const name = form.isCustom || catalogUnavailable.value ? form.customName.trim() : form.exerciseName
   return {
-    name: form.name.trim(),
+    name,
     sets: Number(form.sets),
     reps: form.reps.trim(),
     weight_kg: form.weight_kg === '' ? null : Number(form.weight_kg),
@@ -59,7 +143,11 @@ async function handleAdd() {
   addError.value = ''
   addingExercise.value = true
   try {
-    await exercisesStore.create(props.workoutId, toPayload(addForm))
+    const payload = toPayload(addForm)
+    if (!payload.name) {
+      throw new Error('יש לבחור תרגיל מהרשימה או להזין שם תרגיל מותאם אישית')
+    }
+    await exercisesStore.create(props.workoutId, payload)
     Object.assign(addForm, emptyForm())
     showAddForm.value = false
   } catch (err) {
@@ -69,10 +157,27 @@ async function handleAdd() {
   }
 }
 
+// If the exercise's current name matches a catalog entry (case/whitespace
+// -insensitive), preselect that category + exercise; otherwise fall back
+// to custom-exercise mode prefilled with the existing name, exactly as
+// required for names that predate this catalog or were always custom.
 function startEdit(exercise) {
   editError.value = ''
   editingId.value = exercise.id
-  editForm.name = exercise.name
+
+  const match = catalogStore.findByName(exercise.name)
+  if (match) {
+    editForm.category = match.category
+    editForm.exerciseName = match.name
+    editForm.isCustom = false
+    editForm.customName = ''
+  } else {
+    editForm.category = ''
+    editForm.exerciseName = ''
+    editForm.isCustom = true
+    editForm.customName = exercise.name
+  }
+
   editForm.sets = String(exercise.sets)
   editForm.reps = exercise.reps
   editForm.weight_kg = exercise.weight_kg ?? ''
@@ -88,7 +193,11 @@ async function saveEdit(exerciseId) {
   editError.value = ''
   savingEdit.value = true
   try {
-    await exercisesStore.update(props.workoutId, exerciseId, toPayload(editForm))
+    const payload = toPayload(editForm)
+    if (!payload.name) {
+      throw new Error('יש לבחור תרגיל מהרשימה או להזין שם תרגיל מותאם אישית')
+    }
+    await exercisesStore.update(props.workoutId, exerciseId, payload)
     editingId.value = null
   } catch (err) {
     editError.value = err.message
@@ -130,7 +239,7 @@ async function move(exerciseId, direction) {
       <button
         v-if="!showAddForm"
         type="button"
-        class="rounded-lg border border-brand-green px-3 py-1.5 text-xs font-medium text-brand-green hover:bg-brand-green/10"
+        class="rounded-lg bg-brand-green px-3 py-1.5 text-xs font-semibold text-brand-white hover:bg-brand-green-dark"
         @click="showAddForm = true"
       >
         + הוסף תרגיל
@@ -142,16 +251,68 @@ async function move(exerciseId, direction) {
       class="flex flex-col gap-3 rounded-lg border border-neutral-300 p-3"
       @submit.prevent="handleAdd"
     >
-      <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
-        <label class="col-span-2 flex flex-col gap-1 sm:col-span-1">
-          <span class="text-xs text-neutral-600">שם התרגיל</span>
-          <input
-            v-model="addForm.name"
-            type="text"
-            required
-            class="rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-brand-green focus:outline-none"
-          />
+      <div class="flex flex-col gap-3">
+        <label class="flex flex-col gap-1">
+          <span class="text-xs text-neutral-600">קטגוריה</span>
+          <select
+            v-if="!catalogUnavailable"
+            :value="addForm.category"
+            :disabled="catalogChecking"
+            class="rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-brand-green focus:outline-none disabled:opacity-60"
+            @change="handleCategoryChange(addForm, $event.target.value)"
+          >
+            <option value="" disabled>{{ catalogChecking ? 'טוען קטגוריות...' : 'בחר קטגוריה' }}</option>
+            <option v-for="cat in EXERCISE_CATEGORIES" :key="cat" :value="cat">{{ cat }}</option>
+          </select>
         </label>
+
+        <p v-if="catalogUnavailable" class="text-xs text-status-red">
+          לא ניתן לטעון את קטלוג התרגילים ({{ catalogError }}) — ניתן להזין שם תרגיל ידנית למטה.
+        </p>
+
+        <template v-if="!catalogUnavailable && addForm.category && !addForm.isCustom">
+          <label class="flex flex-col gap-1">
+            <span class="text-xs text-neutral-600">תרגיל</span>
+            <select
+              :value="addForm.exerciseName"
+              required
+              class="rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-brand-green focus:outline-none"
+              @change="handleExerciseSelect(addForm, $event.target.value)"
+            >
+              <option value="" disabled>בחר תרגיל</option>
+              <option :value="CUSTOM_OPTION_VALUE">תרגיל מותאם אישית</option>
+              <option v-for="ex in catalogStore.exercisesFor(addForm.category)" :key="ex.id" :value="ex.name">
+                {{ ex.name }}
+              </option>
+            </select>
+          </label>
+          <p v-if="catalogStore.exercisesFor(addForm.category).length === 0" class="text-xs text-neutral-600">
+            אין תרגילים שמורים בקטגוריה זו — ניתן לבחור "תרגיל מותאם אישית".
+          </p>
+        </template>
+
+        <div v-if="catalogUnavailable || addForm.isCustom" class="flex flex-col gap-2">
+          <label class="flex flex-col gap-1">
+            <span class="text-xs text-neutral-600">שם תרגיל מותאם אישית</span>
+            <input
+              v-model="addForm.customName"
+              type="text"
+              required
+              class="rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-brand-green focus:outline-none"
+            />
+          </label>
+          <button
+            v-if="!catalogUnavailable && addForm.category"
+            type="button"
+            class="self-start text-xs font-medium text-brand-green hover:underline"
+            @click="backToList(addForm)"
+          >
+            בחר מהרשימה
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <label class="flex flex-col gap-1">
           <span class="text-xs text-neutral-600">סטים</span>
           <input
@@ -240,16 +401,68 @@ async function move(exerciseId, direction) {
       <li v-for="(exercise, index) in exercises" :key="exercise.id" class="rounded-lg border border-neutral-300 p-3">
         <template v-if="editingId === exercise.id">
           <form class="flex flex-col gap-3" @submit.prevent="saveEdit(exercise.id)">
-            <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              <label class="col-span-2 flex flex-col gap-1 sm:col-span-1">
-                <span class="text-xs text-neutral-600">שם התרגיל</span>
-                <input
-                  v-model="editForm.name"
-                  type="text"
-                  required
-                  class="rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-brand-green focus:outline-none"
-                />
+            <div class="flex flex-col gap-3">
+              <label class="flex flex-col gap-1">
+                <span class="text-xs text-neutral-600">קטגוריה</span>
+                <select
+                  v-if="!catalogUnavailable"
+                  :value="editForm.category"
+                  :disabled="catalogChecking"
+                  class="rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-brand-green focus:outline-none disabled:opacity-60"
+                  @change="handleCategoryChange(editForm, $event.target.value)"
+                >
+                  <option value="" disabled>{{ catalogChecking ? 'טוען קטגוריות...' : 'בחר קטגוריה' }}</option>
+                  <option v-for="cat in EXERCISE_CATEGORIES" :key="cat" :value="cat">{{ cat }}</option>
+                </select>
               </label>
+
+              <p v-if="catalogUnavailable" class="text-xs text-status-red">
+                לא ניתן לטעון את קטלוג התרגילים ({{ catalogError }}) — ניתן להזין שם תרגיל ידנית למטה.
+              </p>
+
+              <template v-if="!catalogUnavailable && editForm.category && !editForm.isCustom">
+                <label class="flex flex-col gap-1">
+                  <span class="text-xs text-neutral-600">תרגיל</span>
+                  <select
+                    :value="editForm.exerciseName"
+                    required
+                    class="rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-brand-green focus:outline-none"
+                    @change="handleExerciseSelect(editForm, $event.target.value)"
+                  >
+                    <option value="" disabled>בחר תרגיל</option>
+                    <option :value="CUSTOM_OPTION_VALUE">תרגיל מותאם אישית</option>
+                    <option v-for="ex in catalogStore.exercisesFor(editForm.category)" :key="ex.id" :value="ex.name">
+                      {{ ex.name }}
+                    </option>
+                  </select>
+                </label>
+                <p v-if="catalogStore.exercisesFor(editForm.category).length === 0" class="text-xs text-neutral-600">
+                  אין תרגילים שמורים בקטגוריה זו — ניתן לבחור "תרגיל מותאם אישית".
+                </p>
+              </template>
+
+              <div v-if="catalogUnavailable || editForm.isCustom" class="flex flex-col gap-2">
+                <label class="flex flex-col gap-1">
+                  <span class="text-xs text-neutral-600">שם תרגיל מותאם אישית</span>
+                  <input
+                    v-model="editForm.customName"
+                    type="text"
+                    required
+                    class="rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-brand-green focus:outline-none"
+                  />
+                </label>
+                <button
+                  v-if="!catalogUnavailable && editForm.category"
+                  type="button"
+                  class="self-start text-xs font-medium text-brand-green hover:underline"
+                  @click="backToList(editForm)"
+                >
+                  בחר מהרשימה
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
               <label class="flex flex-col gap-1">
                 <span class="text-xs text-neutral-600">סטים</span>
                 <input
