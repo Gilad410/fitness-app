@@ -12,6 +12,7 @@ import ProgressWorkspaceView from '../features/progress/views/ProgressWorkspaceV
 import TrainingTraineesListView from '../features/training/views/TrainingTraineesListView.vue'
 import TrainingProgramsListView from '../features/training/views/TrainingProgramsListView.vue'
 import TrainingProgramDetailView from '../features/training/views/TrainingProgramDetailView.vue'
+import AlertsView from '../features/alerts/views/AlertsView.vue'
 import { useAuthStore } from '../stores/auth'
 
 const router = createRouter({
@@ -91,6 +92,12 @@ const router = createRouter({
       component: TrainingProgramDetailView,
       meta: { requiresAuth: true },
       props: true,
+    },
+    {
+      path: '/alerts',
+      name: 'alerts',
+      component: AlertsView,
+      meta: { requiresAuth: true },
     },
   ],
 })

@@ -8,15 +8,22 @@ import IconApple from '../../../components/icons/IconApple.vue'
 import IconBell from '../../../components/icons/IconBell.vue'
 import { useAuthStore } from '../../../stores/auth'
 import { useTraineesStore } from '../../trainees/store/trainees'
+import { useAlertsStore } from '../../alerts/store/alerts'
 
 const authStore = useAuthStore()
 const traineesStore = useTraineesStore()
+const alertsStore = useAlertsStore()
 
 onMounted(async () => {
   try {
     await traineesStore.ensureLoaded()
   } catch {
     // Leave the trainees card at its placeholder value on failure.
+  }
+  try {
+    await alertsStore.fetchAll()
+  } catch {
+    // Leave the alerts card at its placeholder value on failure.
   }
 })
 
@@ -55,8 +62,10 @@ const cards = computed(() => [
     title: 'התראות',
     description: 'עדכונים והתראות אחרונות',
     icon: IconBell,
-    value: '—',
-    comingSoon: true,
+    value: alertsStore.loaded ? String(alertsStore.totalCount) : '—',
+    caption: alertsStore.loaded ? 'התראות פעילות' : '',
+    comingSoon: false,
+    to: '/alerts',
   },
 ])
 </script>

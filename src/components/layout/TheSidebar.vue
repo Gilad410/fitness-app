@@ -1,15 +1,27 @@
 <script setup>
+import { onMounted } from 'vue'
 import IconHome from '../icons/IconHome.vue'
 import IconUsers from '../icons/IconUsers.vue'
 import IconTrendingUp from '../icons/IconTrendingUp.vue'
 import IconApple from '../icons/IconApple.vue'
 import IconDumbbell from '../icons/IconDumbbell.vue'
 import IconBell from '../icons/IconBell.vue'
+import { useAlertsStore } from '../../features/alerts/store/alerts'
 
 defineProps({
   open: { type: Boolean, default: false },
 })
 defineEmits(['close'])
+
+const alertsStore = useAlertsStore()
+
+// AppLayout (and this sidebar with it) remounts on every navigation, so
+// this doubles as a "refresh the badge count" hook -- no separate
+// polling/subscription needed for alerts to go stale-then-fresh as the
+// coach moves around the app.
+onMounted(() => {
+  alertsStore.fetchAll()
+})
 
 const navItems = [
   { label: 'לוח בקרה', icon: IconHome, to: '/' },
@@ -20,7 +32,7 @@ const navItems = [
   // fully apart from /trainees/:id, which is client profile/progress only.
   { label: 'תזונה', icon: IconApple, to: '/nutrition' },
   { label: 'תוכניות אימון', icon: IconDumbbell, to: '/training' },
-  { label: 'התראות', icon: IconBell },
+  { label: 'התראות', icon: IconBell, to: '/alerts' },
 ]
 </script>
 
@@ -47,6 +59,12 @@ const navItems = [
       >
         <component :is="item.icon" class="size-6 shrink-0" />
         {{ item.label }}
+        <span
+          v-if="item.to === '/alerts' && alertsStore.totalCount > 0"
+          class="ms-auto flex min-w-5 items-center justify-center rounded-full bg-status-red px-1.5 py-0.5 text-xs font-semibold text-brand-white"
+        >
+          {{ alertsStore.totalCount }}
+        </span>
       </RouterLink>
 
       <span
