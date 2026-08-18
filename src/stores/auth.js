@@ -148,6 +148,39 @@ export const useAuthStore = defineStore('auth', {
       return data
     },
 
+    // Role-gated sign-in used by both login forms (LoginView -> 'coach',
+    // TraineeLoginView -> 'trainee'). Supabase Auth itself can't do this
+    // check -- auth.users has no role, role lives only in
+    // public.user_roles -- so it's layered on top here: sign in, resolve
+    // the role, and if it doesn't match the page the caller used, undo
+    // the sign-in (await signOut(), so this.user/role are already clear
+    // by the time this throws) and throw a clear Hebrew error instead of
+    // returning. The caller never navigates in that case, since the
+    // await rejects before any router.push runs.
+    //
+    // This is a login-flow hygiene fix, not a new security boundary: the
+    // router guard's meta.requiresRole checks and every RLS policy/RPC's
+    // is_coach()/is_trainee() check are unchanged and remain the actual
+    // enforcement. Today a wrong-role account already gets redirected
+    // away with zero data access -- this only stops it from completing a
+    // silent "successful" sign-in on the wrong page first.
+    async signInWithRoleCheck(email, password, requiredRole) {
+      await this.signIn(email, password)
+      await this.loadRole()
+      if (this.role === requiredRole) return
+
+      const wrongRoleMessages = {
+        trainee: 'זהו חשבון מתאמן. יש להתחבר דרך כניסת המתאמנים.',
+        coach: 'זהו חשבון מאמן. יש להתחבר דרך כניסת המאמנים.',
+      }
+      // this.role reflects the account's actual role (or null), so this
+      // picks the right message regardless of which page rejected it.
+      const message = this.role ? wrongRoleMessages[this.role] : 'לחשבון זה אין הרשאת גישה.'
+
+      await this.signOut()
+      throw new Error(message)
+    },
+
     async signOut() {
       const { error } = await supabase.auth.signOut()
       if (error) throw error

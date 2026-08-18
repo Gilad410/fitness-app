@@ -12,23 +12,15 @@ const showPassword = ref(false)
 const authStore = useAuthStore()
 const router = useRouter()
 
-// A Supabase Auth session isn't role-specific -- this is the same
-// signIn() the coach login uses. What differs is what happens after:
-// the role is resolved and the trainee is sent to their own area, never
-// assumed just because they signed in from this page.
+// signInWithRoleCheck() requires the resolved role to be 'trainee' --
+// a coach account (or one with no role at all) is signed back out and
+// rejected with a clear Hebrew error before ever reaching /trainee.
 async function handleSubmit() {
   error.value = ''
   loading.value = true
   try {
-    await authStore.signIn(email.value, password.value)
-    await authStore.loadRole()
-    if (authStore.isTrainee) {
-      router.push('/trainee')
-    } else if (authStore.isCoach) {
-      router.push('/')
-    } else {
-      router.push('/no-access')
-    }
+    await authStore.signInWithRoleCheck(email.value, password.value, 'trainee')
+    router.push('/trainee')
   } catch (err) {
     error.value = err.message
   } finally {

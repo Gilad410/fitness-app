@@ -16,7 +16,7 @@ async function handleSubmit() {
   error.value = ''
   loading.value = true
   try {
-    await authStore.signIn(email.value, password.value)
+    await authStore.signInWithRoleCheck(email.value, password.value, 'coach')
     router.push('/')
   } catch (err) {
     error.value = err.message
