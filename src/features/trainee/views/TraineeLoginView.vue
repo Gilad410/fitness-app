@@ -12,12 +12,23 @@ const showPassword = ref(false)
 const authStore = useAuthStore()
 const router = useRouter()
 
+// A Supabase Auth session isn't role-specific -- this is the same
+// signIn() the coach login uses. What differs is what happens after:
+// the role is resolved and the trainee is sent to their own area, never
+// assumed just because they signed in from this page.
 async function handleSubmit() {
   error.value = ''
   loading.value = true
   try {
     await authStore.signIn(email.value, password.value)
-    router.push('/')
+    await authStore.loadRole()
+    if (authStore.isTrainee) {
+      router.push('/trainee')
+    } else if (authStore.isCoach) {
+      router.push('/')
+    } else {
+      router.push('/no-access')
+    }
   } catch (err) {
     error.value = err.message
   } finally {
@@ -28,7 +39,7 @@ async function handleSubmit() {
 
 <template>
   <section class="mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-6 p-6">
-    <h1 class="text-2xl font-bold text-brand-black">התחברות</h1>
+    <h1 class="text-2xl font-bold text-brand-black">כניסת מתאמנים</h1>
 
     <form class="flex flex-col gap-4" @submit.prevent="handleSubmit">
       <label class="flex flex-col gap-1">
@@ -99,17 +110,16 @@ async function handleSubmit() {
         :disabled="loading"
         class="rounded-lg bg-brand-green px-4 py-2 font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
       >
-        {{ loading ? 'מתחבר...' : 'התחברות' }}
+        {{ loading ? 'מתחבר/ת...' : 'התחברות' }}
       </button>
     </form>
 
-    <!-- Public coach self-signup is intentionally not offered here -- see
-    the note above the removed /signup route in router/index.js: a bare
-    signup now grants no application access under 021_trainee_auth_and_roles.sql,
-    so there is nothing useful to route a stranger into. -->
     <p class="text-sm text-neutral-600">
-      מתאמן/ת שקיבל/ה הזמנה מהמאמן/ת?
-      <RouterLink to="/trainee/login" class="text-brand-green hover:underline">כניסת מתאמנים</RouterLink>
+      עדיין לא יצרת סיסמה? יש להשתמש בקישור ההצטרפות שקיבלת מהמאמן/ת.
+    </p>
+    <p class="text-sm text-neutral-600">
+      מאמן/ת?
+      <RouterLink to="/login" class="text-brand-green hover:underline">כניסת מאמנים</RouterLink>
     </p>
   </section>
 </template>

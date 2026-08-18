@@ -6,6 +6,7 @@ import TraineeStatusBadge from '../components/TraineeStatusBadge.vue'
 import TraineeProgressSection from '../../progress/components/TraineeProgressSection.vue'
 import TraineeCircumferenceSection from '../../progress/components/TraineeCircumferenceSection.vue'
 import TraineeProgressPhotosSection from '../../progress/components/TraineeProgressPhotosSection.vue'
+import TraineeInviteSection from '../components/TraineeInviteSection.vue'
 import { useTraineesStore } from '../store/trainees'
 
 const route = useRoute()
@@ -209,6 +210,7 @@ async function confirmArchive() {
           </template>
         </div>
 
+        <TraineeInviteSection :trainee="trainee" />
         <TraineeProgressSection :trainee="trainee" />
         <TraineeCircumferenceSection :trainee="trainee" />
         <TraineeProgressPhotosSection :trainee="trainee" />
