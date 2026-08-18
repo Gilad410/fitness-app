@@ -37,17 +37,17 @@ const recentNotifications = computed(() => notificationsStore.items.slice(0, 3))
 
 const dateTimeFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'short', timeStyle: 'short' })
 
-// "בקרוב" only for sections 022_trainee_nutrition_access.sql doesn't grant
-// access to yet -- nutrition is now a real, working feature (own read
-// access + trainee_log_nutrition_entry()/trainee_delete_nutrition_entry()),
-// so its card no longer carries that badge.
+// "בקרוב" only for sections not yet backed by a real migration. Nutrition
+// (022) and training (023) are now real, working features -- own
+// read/write or read-only RPC access -- so their cards no longer carry
+// that badge.
 const futureCards = [
   {
     title: 'תוכנית האימונים שלי',
     description: 'התרגילים, הסטים והחזרות שהוגדרו עבורך.',
     icon: IconDumbbell,
     to: '/trainee/training',
-    comingSoon: true,
+    comingSoon: false,
   },
   {
     title: 'התזונה שלי',
