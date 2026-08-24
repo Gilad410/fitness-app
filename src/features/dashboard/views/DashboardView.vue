@@ -45,8 +45,12 @@ const cards = computed(() => [
     title: 'התקדמות',
     description: 'עקוב אחר התקדמות והישגי המתאמנים',
     icon: IconTrendingUp,
+    // No single live metric is fetched for this card (unlike לקוחות/התראות)
+    // -- kept neutral rather than inventing one. Routes to the existing,
+    // fully working coach Progress area (/progress, ProgressTraineesListView.vue).
     value: '—',
-    comingSoon: true,
+    comingSoon: false,
+    to: '/progress',
   },
   {
     title: 'תזונה',
