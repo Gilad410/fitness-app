@@ -38,9 +38,9 @@ const recentNotifications = computed(() => notificationsStore.items.slice(0, 3))
 const dateTimeFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'short', timeStyle: 'short' })
 
 // "בקרוב" only for sections not yet backed by a real migration. Nutrition
-// (022), training (023), and progress (024) are now real, working
-// features -- own read/write or read-only RPC access -- so their cards no
-// longer carry that badge.
+// (022), training (023), progress (024), and measurements/photos (025)
+// are now real, working features -- own read/write or read-only RPC
+// access -- so their cards no longer carry that badge.
 const futureCards = [
   {
     title: 'תוכנית האימונים שלי',
@@ -68,7 +68,7 @@ const futureCards = [
     description: 'היקפי גוף ותמונות התקדמות פרטיות.',
     icon: IconRuler,
     to: '/trainee/measurements',
-    comingSoon: true,
+    comingSoon: false,
   },
 ]
 </script>

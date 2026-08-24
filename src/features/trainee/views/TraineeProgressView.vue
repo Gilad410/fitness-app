@@ -73,13 +73,15 @@ const deltaFromStart = computed(() => {
 
 // Phrased as a plain-language status rather than a signed number, since
 // "-4 ק"ג" reads ambiguously (missing 4kg? 4kg over?) without a sign
-// legend -- same wording as the coach's TraineeProgressSection.vue.
+// legend. Only meaningful once a current weight exists (needs something
+// to compare the target against) -- target_weight itself is shown
+// unconditionally in the template regardless of this.
 const targetStatus = computed(() => {
   if (currentWeight.value === null || !profile.value?.target_weight) return null
   const diff = currentWeight.value - profile.value.target_weight
   const rounded = Math.round(Math.abs(diff) * 10) / 10
   if (rounded === 0) return 'הגעת ליעד'
-  return diff < 0 ? `חסר ${rounded} ק"ג` : `${rounded} ק"ג מעל היעד`
+  return diff < 0 ? `חסרים ${rounded} ק"ג` : `${rounded} ק"ג מעל היעד`
 })
 
 // Hand-rolled inline SVG line chart -- no charting library in the project,
@@ -176,6 +178,24 @@ async function confirmDelete(logId) {
       </div>
 
       <template v-else>
+        <!-- Target weight -- prominently shown at the top, independent of
+        whether any progress logs exist yet, since it's read from the
+        trainee's own profile (useTraineeProfileStore), not from history. -->
+        <section class="mb-6 rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm sm:p-6">
+          <h2 class="mb-4 font-semibold text-brand-black">משקל יעד</h2>
+          <div v-if="profile?.target_weight" class="grid grid-cols-2 gap-4 sm:grid-cols-3">
+            <div>
+              <dt class="text-sm text-neutral-600">משקל יעד</dt>
+              <dd class="text-lg font-semibold text-brand-black">{{ profile.target_weight }} ק"ג</dd>
+            </div>
+            <div v-if="targetStatus">
+              <dt class="text-sm text-neutral-600">לעומת יעד</dt>
+              <dd class="text-lg font-semibold text-brand-black">{{ targetStatus }}</dd>
+            </div>
+          </div>
+          <p v-else class="text-sm text-neutral-600">טרם הוגדר משקל יעד</p>
+        </section>
+
         <div class="flex flex-col gap-4 rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm sm:p-6">
           <div class="flex flex-wrap items-center justify-between gap-4">
             <h2 class="font-semibold text-brand-black">היסטוריית התקדמות</h2>
@@ -189,7 +209,7 @@ async function confirmDelete(logId) {
             </button>
           </div>
 
-          <div v-if="currentWeight !== null" class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          <div v-if="currentWeight !== null" class="grid grid-cols-2 gap-4 sm:grid-cols-3">
             <div>
               <dt class="text-sm text-neutral-600">משקל נוכחי</dt>
               <dd class="text-lg font-semibold text-brand-black">{{ currentWeight }} ק"ג</dd>
@@ -198,17 +218,9 @@ async function confirmDelete(logId) {
               <dt class="text-sm text-neutral-600">משקל התחלתי</dt>
               <dd class="text-lg font-semibold text-brand-black">{{ profile.starting_weight }} ק"ג</dd>
             </div>
-            <div v-if="profile?.target_weight">
-              <dt class="text-sm text-neutral-600">משקל יעד</dt>
-              <dd class="text-lg font-semibold text-brand-black">{{ profile.target_weight }} ק"ג</dd>
-            </div>
             <div v-if="profile?.starting_weight">
               <dt class="text-sm text-neutral-600">לעומת התחלה</dt>
               <dd class="text-lg font-semibold text-brand-black">{{ deltaFromStart }}</dd>
-            </div>
-            <div v-if="profile?.target_weight">
-              <dt class="text-sm text-neutral-600">לעומת יעד</dt>
-              <dd class="text-lg font-semibold text-brand-black">{{ targetStatus }}</dd>
             </div>
           </div>
 
