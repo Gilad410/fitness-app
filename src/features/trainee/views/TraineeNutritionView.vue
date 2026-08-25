@@ -29,8 +29,16 @@ const restaurantStore = useRestaurantFoodItemsStore()
 const checking = ref(true)
 const loadError = ref('')
 
+// Local calendar date (not UTC -- toISOString().slice(0, 10) reads the
+// UTC date, which is a day behind local time for part of the evening in
+// timezones ahead of UTC). Same approach as
+// TraineeMeasurementsView.vue / TraineeProgressView.vue.
 function todayIsoDate() {
-  return new Date().toISOString().slice(0, 10)
+  const now = new Date()
+  const year = now.getFullYear()
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  const day = String(now.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
 }
 
 const selectedDate = ref(todayIsoDate())

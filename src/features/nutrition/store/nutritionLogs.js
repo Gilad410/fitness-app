@@ -31,12 +31,23 @@ export const useNutritionLogsStore = defineStore('nutritionLogs', {
   },
 
   actions: {
-    // Loads a trainee's food log once and caches the in-flight/resolved
-    // promise, so views can call this on every mount without refetching.
+    // Dedupes concurrent in-flight calls for the same trainee (e.g. a
+    // component mounting and firing this twice in the same tick), but
+    // deliberately does NOT cache the resolved/rejected result: the
+    // in-flight promise is cleared as soon as it settles, so the next
+    // call -- e.g. the coach leaving and re-entering this trainee's
+    // nutrition workspace -- always re-fetches from Supabase instead of
+    // silently returning a stale snapshot from earlier in the session
+    // (a trainee can log a new entry at any time, from another device).
     ensureLoaded(traineeId) {
       if (this.loadPromises[traineeId]) return this.loadPromises[traineeId]
-      this.loadPromises[traineeId] = this.fetchForTrainee(traineeId)
-      return this.loadPromises[traineeId]
+      const promise = this.fetchForTrainee(traineeId).finally(() => {
+        if (this.loadPromises[traineeId] === promise) {
+          this.loadPromises[traineeId] = null
+        }
+      })
+      this.loadPromises[traineeId] = promise
+      return promise
     },
 
     async fetchForTrainee(traineeId) {
