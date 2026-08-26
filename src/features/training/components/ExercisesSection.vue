@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { useWorkoutExercisesStore, validateExerciseVideoFile } from '../store/exercises'
+import { useExerciseSubmissionsStore } from '../store/exerciseSubmissions'
 import { useExerciseReferenceCatalogStore } from '../store/exerciseReferenceCatalog'
 import { EXERCISE_CATEGORIES } from '../config/exerciseCategories'
 
@@ -23,6 +24,7 @@ const props = defineProps({
 const CUSTOM_OPTION_VALUE = '__custom__'
 
 const exercisesStore = useWorkoutExercisesStore()
+const submissionsStore = useExerciseSubmissionsStore()
 const catalogStore = useExerciseReferenceCatalogStore()
 
 const checking = ref(true)
@@ -159,6 +161,92 @@ function retryVideoLoad(exercise) {
   exercisesStore.fetchVideoSignedUrl(exercise.id, exercise.video_storage_path)
 }
 
+// ---- Trainee performance video, coach side (030_trainee_exercise_submission_videos.sql) ----
+// Read-only playback + delete + mark-reviewed only -- there is NO upload
+// or replace control here; a trainee's own performance video is uploaded
+// exclusively by the trainee (TraineeTrainingView.vue /
+// traineeExerciseSubmissions.js). Entirely separate state from the
+// instructional-video block above -- separate store, separate busy/error/
+// playback-error tracking, separate confirmation id -- so neither feature
+// can interfere with the other even accidentally.
+const submissionBusyId = ref(null)
+const submissionErrorByExerciseId = reactive({})
+const submissionPlaybackError = reactive({})
+const confirmDeleteSubmissionId = ref(null)
+// Coach-note textarea state (031_trainee_submission_coach_note.sql):
+// undefined for an exercise means "show the submission's own current
+// coach_note (or '' if none)"; once the coach types anything, this holds
+// the live in-progress value instead -- avoids needing a separate
+// onMounted seeding step for a field the submissions store may still be
+// loading when this component first renders. Cleared back to undefined
+// after a successful save so the textarea reverts to reflecting the
+// server's (trimmed) value.
+const noteDraftByExerciseId = reactive({})
+
+const NOTE_MAX_LENGTH = 1000
+
+const submissionDateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
+
+function noteDraftFor(exercise) {
+  if (Object.prototype.hasOwnProperty.call(noteDraftByExerciseId, exercise.id)) {
+    return noteDraftByExerciseId[exercise.id]
+  }
+  return submissionsStore.submissionFor(exercise.id)?.coach_note ?? ''
+}
+
+function requestDeleteSubmission(exerciseId) {
+  submissionErrorByExerciseId[exerciseId] = ''
+  confirmDeleteSubmissionId.value = exerciseId
+}
+
+function cancelDeleteSubmission() {
+  confirmDeleteSubmissionId.value = null
+}
+
+async function confirmDeleteSubmission(exercise) {
+  submissionBusyId.value = exercise.id
+  try {
+    await submissionsStore.remove(exercise.id)
+    confirmDeleteSubmissionId.value = null
+    delete noteDraftByExerciseId[exercise.id]
+  } catch (err) {
+    submissionErrorByExerciseId[exercise.id] = err.message
+  } finally {
+    submissionBusyId.value = null
+  }
+}
+
+// Serves both "mark reviewed" (first time, note optional) and "update the
+// note later" (submission already reviewed) -- the same action either
+// way, matching coach_mark_submission_reviewed(uuid, text)'s own design
+// (031). Client-side length check backs up the textarea's own maxlength
+// attribute (belt and suspenders, same convention as every other
+// client-validated field in this app) with a clear Hebrew error instead
+// of a raw RPC rejection.
+async function markSubmissionReviewed(exercise) {
+  submissionErrorByExerciseId[exercise.id] = ''
+  const note = noteDraftFor(exercise)
+  if (note.length > NOTE_MAX_LENGTH) {
+    submissionErrorByExerciseId[exercise.id] = `ההערה ארוכה מדי (מקסימום ${NOTE_MAX_LENGTH} תווים).`
+    return
+  }
+
+  submissionBusyId.value = exercise.id
+  try {
+    await submissionsStore.markReviewed(exercise.id, note)
+    delete noteDraftByExerciseId[exercise.id]
+  } catch (err) {
+    submissionErrorByExerciseId[exercise.id] = err.message
+  } finally {
+    submissionBusyId.value = null
+  }
+}
+
+function retrySubmissionVideoLoad(exercise, storagePath) {
+  submissionPlaybackError[exercise.id] = false
+  submissionsStore.fetchVideoSignedUrl(exercise.id, storagePath)
+}
+
 function emptyForm() {
   return {
     category: '',
@@ -191,14 +279,35 @@ watch(
 onMounted(async () => {
   try {
     await exercisesStore.ensureLoaded(props.workoutId)
+    const loadedExercises = exercisesStore.exercisesFor(props.workoutId)
     // Eagerly fetch a signed preview URL for every exercise that already
     // has a video -- fire-and-forget, each one updates the store
     // independently as it resolves, so this never blocks the rest of the
     // section from rendering.
-    for (const exercise of exercisesStore.exercisesFor(props.workoutId)) {
+    for (const exercise of loadedExercises) {
       if (exercise.video_storage_path) {
         exercisesStore.fetchVideoSignedUrl(exercise.id, exercise.video_storage_path)
       }
+    }
+
+    // Trainee performance-video submissions, one batch fetch for the
+    // whole workout -- a separate store/table/bucket, see the block above.
+    try {
+      await submissionsStore.ensureLoadedForWorkout(
+        props.workoutId,
+        loadedExercises.map((exercise) => exercise.id),
+      )
+      for (const exercise of loadedExercises) {
+        const submission = submissionsStore.submissionFor(exercise.id)
+        if (submission) {
+          submissionsStore.fetchVideoSignedUrl(exercise.id, submission.storage_path)
+        }
+      }
+    } catch {
+      // Surfaced per-exercise via the submissions block itself falling
+      // back to its own empty/error state; never blocks the rest of the
+      // section (instructional videos, add/edit/delete/reorder) from
+      // working.
     }
   } catch (err) {
     loadError.value = err.message
@@ -836,6 +945,116 @@ async function move(exerciseId, direction) {
 
             <p v-if="videoErrorByExerciseId[exercise.id]" class="mt-2 text-xs text-status-red">
               {{ videoErrorByExerciseId[exercise.id] }}
+            </p>
+          </div>
+
+          <div class="mt-3 rounded-lg border border-neutral-300 p-3">
+            <span class="text-xs font-semibold text-brand-black">סרטון ביצוע של המתאמן</span>
+
+            <template v-if="submissionsStore.submissionFor(exercise.id)">
+              <div class="mt-1 flex flex-wrap items-center gap-2 text-xs text-neutral-600">
+                <span>{{ submissionDateFormatter.format(new Date(submissionsStore.submissionFor(exercise.id).submitted_at)) }}</span>
+                <span
+                  class="rounded-full px-2 py-0.5 text-xs font-medium"
+                  :class="
+                    submissionsStore.submissionFor(exercise.id).reviewed_at
+                      ? 'bg-brand-green/10 text-brand-green'
+                      : 'bg-status-red/10 text-status-red'
+                  "
+                >
+                  {{ submissionsStore.submissionFor(exercise.id).reviewed_at ? 'נבדק על ידי המאמן' : 'ממתין לבדיקת המאמן' }}
+                </span>
+              </div>
+
+              <video
+                v-if="submissionsStore.videoUrlFor(exercise.id) && !submissionPlaybackError[exercise.id]"
+                :src="submissionsStore.videoUrlFor(exercise.id)"
+                controls
+                preload="metadata"
+                class="mt-2 w-full max-w-sm rounded-lg"
+                @error="submissionPlaybackError[exercise.id] = true"
+              ></video>
+              <p
+                v-else-if="submissionPlaybackError[exercise.id] || submissionsStore.videoUrlErrorFor(exercise.id)"
+                class="mt-2 text-xs text-status-red"
+              >
+                {{ submissionsStore.videoUrlErrorFor(exercise.id) || 'לא ניתן להפעיל את הסרטון כרגע.' }}
+                <button
+                  type="button"
+                  class="font-medium text-brand-green hover:underline"
+                  @click="retrySubmissionVideoLoad(exercise, submissionsStore.submissionFor(exercise.id).storage_path)"
+                >
+                  נסה שוב
+                </button>
+              </p>
+              <p v-else class="mt-2 text-xs text-neutral-600">טוען סרטון...</p>
+
+              <label class="mt-2 flex flex-col gap-1">
+                <span class="text-xs text-neutral-600">הערת מאמן – לא חובה</span>
+                <textarea
+                  :value="noteDraftFor(exercise)"
+                  :disabled="submissionBusyId === exercise.id"
+                  rows="2"
+                  maxlength="1000"
+                  placeholder="לדוגמה: שמור על גב ישר והאט את הירידה"
+                  class="rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-brand-green focus:outline-none disabled:opacity-60"
+                  @input="noteDraftByExerciseId[exercise.id] = $event.target.value"
+                ></textarea>
+                <span class="self-end text-xs text-neutral-600">{{ noteDraftFor(exercise).length }}/1000</span>
+              </label>
+
+              <div class="mt-2 flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  :disabled="submissionBusyId === exercise.id"
+                  class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-40"
+                  @click="markSubmissionReviewed(exercise)"
+                >
+                  {{
+                    submissionBusyId === exercise.id
+                      ? 'שומר...'
+                      : submissionsStore.submissionFor(exercise.id).reviewed_at
+                        ? 'עדכן הערת מאמן'
+                        : 'שמור הערה וסמן כנבדק'
+                  }}
+                </button>
+                <button
+                  type="button"
+                  :disabled="submissionBusyId === exercise.id"
+                  class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-status-red hover:bg-status-red/10 disabled:opacity-40"
+                  @click="requestDeleteSubmission(exercise.id)"
+                >
+                  מחק
+                </button>
+              </div>
+
+              <div
+                v-if="confirmDeleteSubmissionId === exercise.id"
+                class="mt-2 flex flex-wrap items-center gap-2 rounded-md bg-neutral-100 px-2 py-1.5 text-xs"
+              >
+                <span class="text-brand-black">למחוק את סרטון הביצוע של המתאמן/ת?</span>
+                <button
+                  type="button"
+                  :disabled="submissionBusyId === exercise.id"
+                  class="rounded-md bg-status-red px-2 py-1 text-xs font-medium text-brand-white hover:bg-status-red/90 disabled:opacity-60"
+                  @click="confirmDeleteSubmission(exercise)"
+                >
+                  {{ submissionBusyId === exercise.id ? 'מוחק...' : 'כן, מחק' }}
+                </button>
+                <button
+                  type="button"
+                  :disabled="submissionBusyId === exercise.id"
+                  class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-60"
+                  @click="cancelDeleteSubmission"
+                >
+                  ביטול
+                </button>
+              </div>
+            </template>
+            <p v-else class="mt-2 text-xs text-neutral-600">המתאמן/ת עדיין לא העלה/תה סרטון ביצוע לתרגיל זה.</p>
+
+            <p v-if="submissionErrorByExerciseId[exercise.id]" class="mt-2 text-xs text-status-red">
+              {{ submissionErrorByExerciseId[exercise.id] }}
             </p>
           </div>
         </template>

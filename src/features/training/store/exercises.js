@@ -139,7 +139,18 @@ export const useWorkoutExercisesStore = defineStore('workoutExercises', {
       }
 
       const { error } = await supabase.from('trainee_workout_exercises').delete().eq('id', exerciseId)
-      if (error) throw error
+      if (error) {
+        // Postgres foreign_key_violation -- trainee_exercise_submission_videos.exercise_id
+        // references this row with ON DELETE RESTRICT (030), specifically
+        // so a trainee's already-submitted performance video can never be
+        // silently orphaned by an unrelated exercise-management action.
+        if (error.code === '23503') {
+          throw new Error(
+            'לתרגיל זה יש סרטון ביצוע שהעלה המתאמן/ת. יש למחוק את סרטון הביצוע לפני מחיקת התרגיל.',
+          )
+        }
+        throw error
+      }
 
       this.exercisesByWorkout[workoutId] = exercises.filter((e) => e.id !== exerciseId)
       this.clearVideoUrl(exerciseId)
