@@ -6,6 +6,7 @@ import {
   useTraineeExerciseSubmissionsStore,
   validateSubmissionVideoFile,
 } from '../store/traineeExerciseSubmissions'
+import { workoutDisplayLabel } from '../../training/config/workoutDisplay'
 
 // Read-only trainee view of their own active training program
 // (public.trainee_get_active_training_program(), 023_trainee_training_access.sql).
@@ -229,11 +230,11 @@ onMounted(() => {
 
         <section v-else class="flex flex-col gap-4">
           <div
-            v-for="workout in programStore.program.workouts"
+            v-for="(workout, workoutIndex) in programStore.program.workouts"
             :key="workout.id"
             class="rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm sm:p-6"
           >
-            <h3 class="font-semibold text-brand-black">{{ workout.name }}</h3>
+            <h3 class="font-semibold text-brand-black">{{ workoutDisplayLabel(workout.name, workoutIndex) }}</h3>
             <p v-if="workout.notes" class="mt-1 whitespace-pre-wrap text-sm text-neutral-600">
               {{ workout.notes }}
             </p>

@@ -1,6 +1,7 @@
 <script setup>
 import { computed, nextTick, onMounted, reactive, ref } from 'vue'
 import { useTrainingWorkoutsStore } from '../store/workouts'
+import { workoutDisplayLabel } from '../config/workoutDisplay'
 import ExercisesSection from './ExercisesSection.vue'
 
 const props = defineProps({
@@ -61,7 +62,11 @@ async function handleAdd() {
   addingWorkout.value = true
   try {
     const created = await workoutsStore.create(props.programId, {
-      name: addForm.name.trim(),
+      // Optional (032_optional_workout_name.sql) -- a blank/whitespace-only
+      // name is saved as null, matching the trimmed non-null-or-non-empty
+      // shape the column's own CHECK constraint requires. A null name
+      // simply displays as the plain "אימון N" (workoutDisplayLabel).
+      name: addForm.name.trim() === '' ? null : addForm.name.trim(),
       notes: addForm.notes.trim() === '' ? null : addForm.notes.trim(),
     })
     addForm.name = ''
@@ -81,7 +86,7 @@ async function handleAdd() {
 function startEdit(workout) {
   editError.value = ''
   editingId.value = workout.id
-  editForm.name = workout.name
+  editForm.name = workout.name ?? ''
   editForm.notes = workout.notes ?? ''
 }
 
@@ -94,7 +99,9 @@ async function saveEdit(workoutId) {
   savingEdit.value = true
   try {
     await workoutsStore.update(props.programId, workoutId, {
-      name: editForm.name.trim(),
+      // Optional -- clearing the field back to blank saves null, returning
+      // that workout to the plain numbered display (same rule as handleAdd).
+      name: editForm.name.trim() === '' ? null : editForm.name.trim(),
       notes: editForm.notes.trim() === '' ? null : editForm.notes.trim(),
     })
     editingId.value = null
@@ -151,11 +158,11 @@ async function move(workoutId, direction) {
       @submit.prevent="handleAdd"
     >
       <label class="flex flex-col gap-1">
-        <span class="text-sm text-neutral-600">שם האימון</span>
+        <span class="text-sm text-neutral-600">שם האימון – לא חובה</span>
         <input
           v-model="addForm.name"
           type="text"
-          required
+          placeholder="לדוגמה: רגליים, גב ויד קדמית, חזה"
           class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
         />
       </label>
@@ -219,11 +226,11 @@ async function move(workoutId, direction) {
         <template v-if="editingId === workout.id">
           <form class="flex flex-col gap-3" @submit.prevent="saveEdit(workout.id)">
             <label class="flex flex-col gap-1">
-              <span class="text-sm text-neutral-600">שם האימון</span>
+              <span class="text-sm text-neutral-600">שם האימון – לא חובה</span>
               <input
                 v-model="editForm.name"
                 type="text"
-                required
+                placeholder="לדוגמה: רגליים, גב ויד קדמית, חזה"
                 class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
               />
             </label>
@@ -261,7 +268,7 @@ async function move(workoutId, direction) {
         <template v-else>
           <div class="flex flex-wrap items-start justify-between gap-3">
             <div class="min-w-0">
-              <h3 class="font-semibold text-brand-black">{{ workout.name }}</h3>
+              <h3 class="font-semibold text-brand-black">{{ workoutDisplayLabel(workout.name, index) }}</h3>
               <p v-if="workout.notes" class="mt-1 text-sm text-neutral-600">{{ workout.notes }}</p>
             </div>
 
