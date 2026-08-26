@@ -189,7 +189,7 @@ async function setStatus(status) {
           </div>
         </div>
 
-        <WorkoutsSection :program-id="program.id" />
+        <WorkoutsSection :program-id="program.id" :trainee-id="route.params.traineeId" />
       </template>
     </section>
   </AppLayout>

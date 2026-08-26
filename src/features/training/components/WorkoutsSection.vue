@@ -5,6 +5,10 @@ import ExercisesSection from './ExercisesSection.vue'
 
 const props = defineProps({
   programId: { type: String, required: true },
+  // Threaded down to ExercisesSection.vue -- needed to build each
+  // exercise's instructional-video Storage path
+  // ({coachId}/{traineeId}/{exerciseId}.{ext}, 027's required structure).
+  traineeId: { type: String, required: true },
 })
 
 const workoutsStore = useTrainingWorkoutsStore()
@@ -319,7 +323,11 @@ async function move(workoutId, direction) {
           </div>
 
           <div class="mt-4 border-t border-neutral-300 pt-4">
-            <ExercisesSection :workout-id="workout.id" :auto-open-add="workout.id === lastCreatedWorkoutId" />
+            <ExercisesSection
+              :workout-id="workout.id"
+              :trainee-id="traineeId"
+              :auto-open-add="workout.id === lastCreatedWorkoutId"
+            />
           </div>
         </template>
       </li>

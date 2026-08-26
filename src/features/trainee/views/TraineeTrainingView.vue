@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, reactive } from 'vue'
 import TraineeLayout from '../layouts/TraineeLayout.vue'
 import { useTraineeTrainingProgramStore } from '../store/traineeTrainingProgram'
 
@@ -7,13 +7,41 @@ import { useTraineeTrainingProgramStore } from '../store/traineeTrainingProgram'
 // (public.trainee_get_active_training_program(), 023_trainee_training_access.sql).
 // No create/edit/reorder/status/archive/delete controls exist anywhere on
 // this page -- there is nothing here that writes anything; the store only
-// ever calls the one read-only RPC.
+// ever calls the one read-only RPC, plus (for instructional videos,
+// 027_exercise_instructional_videos.sql) a read-only signed-URL fetch --
+// no upload/replace/remove control exists here for a video either.
 const programStore = useTraineeTrainingProgramStore()
 
+// Mirrors the coach's own ExercisesSection.vue playback-error handling: a
+// <video> element failing to play (e.g. an expired signed URL) sets this
+// rather than auto-retrying, so a stale/broken link never loops -- just
+// that one exercise shows a clear Hebrew message with an explicit retry,
+// without breaking the rest of the training program.
+const videoPlaybackError = reactive({})
+
+function retryVideoLoad(exercise) {
+  videoPlaybackError[exercise.id] = false
+  programStore.fetchVideoSignedUrl(exercise.id, exercise.video_storage_path)
+}
+
 onMounted(() => {
-  programStore.fetchActiveProgram().catch(() => {
-    // surfaced via programStore.error below
-  })
+  programStore
+    .fetchActiveProgram()
+    .then(() => {
+      // Eagerly fetch a signed preview URL for every exercise that already
+      // has a video -- fire-and-forget, each one updates the store
+      // independently as it resolves.
+      for (const workout of programStore.program?.workouts ?? []) {
+        for (const exercise of workout.exercises) {
+          if (exercise.video_storage_path) {
+            programStore.fetchVideoSignedUrl(exercise.id, exercise.video_storage_path)
+          }
+        }
+      }
+    })
+    .catch(() => {
+      // surfaced via programStore.error below
+    })
 })
 </script>
 
@@ -93,6 +121,31 @@ onMounted(() => {
                 <p v-if="exercise.notes" class="mt-1 whitespace-pre-wrap text-sm text-neutral-600">
                   {{ exercise.notes }}
                 </p>
+
+                <template v-if="exercise.video_storage_path">
+                  <video
+                    v-if="programStore.videoUrlFor(exercise.id) && !videoPlaybackError[exercise.id]"
+                    :src="programStore.videoUrlFor(exercise.id)"
+                    controls
+                    preload="metadata"
+                    class="mt-2 w-full max-w-sm rounded-lg"
+                    @error="videoPlaybackError[exercise.id] = true"
+                  ></video>
+                  <p
+                    v-else-if="videoPlaybackError[exercise.id] || programStore.videoUrlErrorFor(exercise.id)"
+                    class="mt-2 text-xs text-status-red"
+                  >
+                    {{ programStore.videoUrlErrorFor(exercise.id) || 'לא ניתן להפעיל את הסרטון כרגע.' }}
+                    <button
+                      type="button"
+                      class="font-medium text-brand-green hover:underline"
+                      @click="retryVideoLoad(exercise)"
+                    >
+                      נסה שוב
+                    </button>
+                  </p>
+                  <p v-else class="mt-2 text-xs text-neutral-600">טוען סרטון...</p>
+                </template>
               </li>
             </ul>
           </div>

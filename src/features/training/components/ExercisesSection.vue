@@ -1,11 +1,14 @@
 <script setup>
 import { computed, onMounted, reactive, ref, watch } from 'vue'
-import { useWorkoutExercisesStore } from '../store/exercises'
+import { useWorkoutExercisesStore, validateExerciseVideoFile } from '../store/exercises'
 import { useExerciseReferenceCatalogStore } from '../store/exerciseReferenceCatalog'
 import { EXERCISE_CATEGORIES } from '../config/exerciseCategories'
 
 const props = defineProps({
   workoutId: { type: String, required: true },
+  // Needed to build each exercise's instructional-video Storage path
+  // ({coachId}/{traineeId}/{exerciseId}.{ext}, 027's required structure).
+  traineeId: { type: String, required: true },
   // True for a workout that was just created in this session (set by the
   // parent WorkoutsSection) -- opens the add-exercise form so a coach who
   // just created their first workout lands straight on the category/
@@ -50,6 +53,112 @@ const deleteError = ref('')
 const movingId = ref(null)
 const moveError = ref('')
 
+// ---- Instructional video (027_exercise_instructional_videos.sql) ----
+// videoBusyId: exercise currently uploading/replacing/removing (disables
+// that exercise's own video controls only -- other exercises stay usable).
+// videoErrorByExerciseId: upload/replace/remove error, per exercise.
+// videoPlaybackError: true once a rendered <video> element itself failed
+// to play (e.g. a signed URL that expired after being fetched) -- kept
+// separate from the store's videoUrlErrorFor (its fetch-time error) so a
+// playback failure never triggers an automatic refetch loop; it always
+// waits for an explicit "נסה שוב" click.
+// confirmRemoveVideoId: exercise currently showing the remove-video
+// confirmation.
+// pendingReplace: { exerciseId, file } staged while the replace
+// confirmation is shown, or null -- a first-time attach (no existing
+// video) skips this and uploads immediately.
+const videoBusyId = ref(null)
+const videoErrorByExerciseId = reactive({})
+const videoPlaybackError = reactive({})
+const confirmRemoveVideoId = ref(null)
+const pendingReplace = ref(null)
+// Plain (non-reactive) map of exercise id -> hidden <input type="file">
+// element, populated via the template :ref callback -- only ever used
+// imperatively to open the native file picker, same pattern
+// WorkoutsSection.vue already uses for its own scroll-into-view map.
+const videoInputEls = {}
+
+function setVideoInputRef(exerciseId, el) {
+  if (el) videoInputEls[exerciseId] = el
+}
+
+function triggerVideoInput(exerciseId) {
+  videoInputEls[exerciseId]?.click()
+}
+
+function handleVideoFileChange(exercise, event) {
+  const file = event.target.files?.[0] ?? null
+  // Reset immediately so picking the exact same file again still fires
+  // 'change' (the browser otherwise treats an identical selection as a
+  // no-op).
+  event.target.value = ''
+  if (!file) return
+
+  videoErrorByExerciseId[exercise.id] = ''
+  const validationError = validateExerciseVideoFile(file)
+  if (validationError) {
+    videoErrorByExerciseId[exercise.id] = validationError
+    return
+  }
+
+  if (exercise.video_storage_path) {
+    // Replacing an existing video requires the coach's explicit
+    // confirmation below before anything is uploaded.
+    pendingReplace.value = { exerciseId: exercise.id, file }
+  } else {
+    runAttachVideo(exercise, file)
+  }
+}
+
+async function runAttachVideo(exercise, file) {
+  videoErrorByExerciseId[exercise.id] = ''
+  videoPlaybackError[exercise.id] = false
+  videoBusyId.value = exercise.id
+  try {
+    await exercisesStore.attachVideo(props.workoutId, exercise.id, props.traineeId, file)
+    pendingReplace.value = null
+  } catch (err) {
+    videoErrorByExerciseId[exercise.id] = err.message
+  } finally {
+    videoBusyId.value = null
+  }
+}
+
+function confirmReplaceVideo(exercise) {
+  if (!pendingReplace.value || pendingReplace.value.exerciseId !== exercise.id) return
+  runAttachVideo(exercise, pendingReplace.value.file)
+}
+
+function cancelReplaceVideo() {
+  pendingReplace.value = null
+}
+
+function requestRemoveVideo(exerciseId) {
+  videoErrorByExerciseId[exerciseId] = ''
+  confirmRemoveVideoId.value = exerciseId
+}
+
+function cancelRemoveVideo() {
+  confirmRemoveVideoId.value = null
+}
+
+async function confirmRemoveVideo(exercise) {
+  videoBusyId.value = exercise.id
+  try {
+    await exercisesStore.removeVideo(props.workoutId, exercise.id)
+    confirmRemoveVideoId.value = null
+  } catch (err) {
+    videoErrorByExerciseId[exercise.id] = err.message
+  } finally {
+    videoBusyId.value = null
+  }
+}
+
+function retryVideoLoad(exercise) {
+  videoPlaybackError[exercise.id] = false
+  exercisesStore.fetchVideoSignedUrl(exercise.id, exercise.video_storage_path)
+}
+
 function emptyForm() {
   return {
     category: '',
@@ -82,6 +191,15 @@ watch(
 onMounted(async () => {
   try {
     await exercisesStore.ensureLoaded(props.workoutId)
+    // Eagerly fetch a signed preview URL for every exercise that already
+    // has a video -- fire-and-forget, each one updates the store
+    // independently as it resolves, so this never blocks the rest of the
+    // section from rendering.
+    for (const exercise of exercisesStore.exercisesFor(props.workoutId)) {
+      if (exercise.video_storage_path) {
+        exercisesStore.fetchVideoSignedUrl(exercise.id, exercise.video_storage_path)
+      }
+    }
   } catch (err) {
     loadError.value = err.message
   } finally {
@@ -605,6 +723,120 @@ async function move(exerciseId, direction) {
                 </button>
               </template>
             </div>
+          </div>
+
+          <div class="mt-3 rounded-lg border border-neutral-300 p-3">
+            <span class="text-xs font-semibold text-brand-black">סרטון הדרכה</span>
+
+            <template v-if="exercise.video_storage_path">
+              <video
+                v-if="exercisesStore.videoUrlFor(exercise.id) && !videoPlaybackError[exercise.id]"
+                :src="exercisesStore.videoUrlFor(exercise.id)"
+                controls
+                preload="metadata"
+                class="mt-2 w-full max-w-sm rounded-lg"
+                @error="videoPlaybackError[exercise.id] = true"
+              ></video>
+              <p
+                v-else-if="videoPlaybackError[exercise.id] || exercisesStore.videoUrlErrorFor(exercise.id)"
+                class="mt-2 text-xs text-status-red"
+              >
+                {{ exercisesStore.videoUrlErrorFor(exercise.id) || 'לא ניתן להפעיל את הסרטון כרגע.' }}
+                <button
+                  type="button"
+                  class="font-medium text-brand-green hover:underline"
+                  @click="retryVideoLoad(exercise)"
+                >
+                  נסה שוב
+                </button>
+              </p>
+              <p v-else class="mt-2 text-xs text-neutral-600">טוען סרטון...</p>
+            </template>
+            <p v-else class="mt-2 text-xs text-neutral-600">לא צורף סרטון הדרכה לתרגיל זה.</p>
+
+            <input
+              :ref="(el) => setVideoInputRef(exercise.id, el)"
+              type="file"
+              accept="video/mp4,video/webm,video/quicktime"
+              class="hidden"
+              @change="handleVideoFileChange(exercise, $event)"
+            />
+
+            <div class="mt-2 flex flex-wrap gap-2">
+              <button
+                type="button"
+                :disabled="videoBusyId === exercise.id"
+                class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-40"
+                @click="triggerVideoInput(exercise.id)"
+              >
+                {{
+                  videoBusyId === exercise.id
+                    ? 'מעלה...'
+                    : exercise.video_storage_path
+                      ? 'החלף סרטון'
+                      : 'הוסף סרטון הדרכה'
+                }}
+              </button>
+              <button
+                v-if="exercise.video_storage_path"
+                type="button"
+                :disabled="videoBusyId === exercise.id"
+                class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-status-red hover:bg-status-red/10 disabled:opacity-40"
+                @click="requestRemoveVideo(exercise.id)"
+              >
+                הסר סרטון
+              </button>
+            </div>
+
+            <div
+              v-if="pendingReplace && pendingReplace.exerciseId === exercise.id"
+              class="mt-2 flex flex-wrap items-center gap-2 rounded-md bg-neutral-100 px-2 py-1.5 text-xs"
+            >
+              <span class="text-brand-black">להחליף את הסרטון הקיים ב&quot;{{ pendingReplace.file.name }}&quot;?</span>
+              <button
+                type="button"
+                :disabled="videoBusyId === exercise.id"
+                class="rounded-md bg-brand-green px-2 py-1 text-xs font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+                @click="confirmReplaceVideo(exercise)"
+              >
+                {{ videoBusyId === exercise.id ? 'מעלה...' : 'כן, החלף' }}
+              </button>
+              <button
+                type="button"
+                :disabled="videoBusyId === exercise.id"
+                class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-60"
+                @click="cancelReplaceVideo"
+              >
+                ביטול
+              </button>
+            </div>
+
+            <div
+              v-if="confirmRemoveVideoId === exercise.id"
+              class="mt-2 flex flex-wrap items-center gap-2 rounded-md bg-neutral-100 px-2 py-1.5 text-xs"
+            >
+              <span class="text-brand-black">להסיר את סרטון ההדרכה?</span>
+              <button
+                type="button"
+                :disabled="videoBusyId === exercise.id"
+                class="rounded-md bg-status-red px-2 py-1 text-xs font-medium text-brand-white hover:bg-status-red/90 disabled:opacity-60"
+                @click="confirmRemoveVideo(exercise)"
+              >
+                {{ videoBusyId === exercise.id ? 'מוחק...' : 'כן, הסר' }}
+              </button>
+              <button
+                type="button"
+                :disabled="videoBusyId === exercise.id"
+                class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-60"
+                @click="cancelRemoveVideo"
+              >
+                ביטול
+              </button>
+            </div>
+
+            <p v-if="videoErrorByExerciseId[exercise.id]" class="mt-2 text-xs text-status-red">
+              {{ videoErrorByExerciseId[exercise.id] }}
+            </p>
           </div>
         </template>
       </li>
