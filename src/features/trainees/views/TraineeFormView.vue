@@ -2,6 +2,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AppLayout from '../../../layouts/AppLayout.vue'
+import BackLink from '../../../components/layout/BackLink.vue'
 import { useTraineesStore } from '../store/trainees'
 
 const route = useRoute()
@@ -10,6 +11,9 @@ const traineesStore = useTraineesStore()
 
 const id = computed(() => route.params.id)
 const isEdit = computed(() => !!id.value)
+// New trainee has no detail page yet to go back to -- back to the list.
+// Editing an existing one returns to that trainee's own detail page.
+const backTo = computed(() => (isEdit.value ? `/trainees/${id.value}` : '/trainees'))
 
 const fullName = ref('')
 const email = ref('')
@@ -100,6 +104,8 @@ async function handleSubmit() {
 <template>
   <AppLayout>
     <section class="mx-auto max-w-lg">
+      <BackLink :to="backTo" />
+
       <h1 class="mb-6 text-2xl font-bold text-brand-black sm:text-3xl">
         {{ isEdit ? 'עריכת מתאמן' : 'הוספת מתאמן' }}
       </h1>

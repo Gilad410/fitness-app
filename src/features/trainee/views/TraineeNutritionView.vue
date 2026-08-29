@@ -7,6 +7,7 @@ import { useTraineeNutritionStore } from '../store/traineeNutrition'
 import { useFoodsStore } from '../../nutrition/store/foods'
 import { useFoodReferenceCatalogStore } from '../../nutrition/store/foodReferenceCatalog'
 import { useRestaurantFoodItemsStore } from '../../nutrition/store/restaurantFoodItems'
+import { formatNutritionAmount } from '../../../lib/formatNumber'
 
 // Trainee-side nutrition: own history + logging a new entry. Reads/writes
 // go exclusively through useTraineeNutritionStore (RLS-scoped SELECT +
@@ -339,9 +340,10 @@ function entryQuantityLabel(log) {
           </div>
 
           <p class="text-sm text-neutral-600">
-            סה"כ קלוריות: <span class="font-semibold text-brand-black">{{ dailyTotal }}</span>
+            סה"כ קלוריות:
+            <span class="font-semibold text-brand-black">{{ formatNutritionAmount(dailyTotal) }}</span>
             &middot; סה"כ חלבון:
-            <span class="font-semibold text-brand-black">{{ dailyProteinTotal }} גר'</span>
+            <span class="font-semibold text-brand-black">{{ formatNutritionAmount(dailyProteinTotal) }} גר'</span>
             <span v-if="dailyProteinUnknown"> (לא כולל פריט/ים עם חלבון לא ידוע)</span>
           </p>
 

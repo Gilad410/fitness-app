@@ -2,6 +2,7 @@
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import AppLayout from '../../../layouts/AppLayout.vue'
+import BackLink from '../../../components/layout/BackLink.vue'
 import TraineeStatusBadge from '../../trainees/components/TraineeStatusBadge.vue'
 import { useTraineesStore } from '../../trainees/store/trainees'
 import { useTrainingProgramsStore } from '../store/trainingPrograms'
@@ -75,6 +76,8 @@ async function handleAdd() {
       <p v-else-if="!trainee" class="text-neutral-600">המתאמן לא נמצא.</p>
 
       <template v-else>
+        <BackLink to="/training" />
+
         <div class="mb-6 flex items-center gap-3">
           <h1 class="text-2xl font-bold text-brand-black sm:text-3xl">{{ trainee.full_name }}</h1>
           <TraineeStatusBadge :status="trainee.status" />

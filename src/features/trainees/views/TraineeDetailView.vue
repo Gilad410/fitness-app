@@ -2,6 +2,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import AppLayout from '../../../layouts/AppLayout.vue'
+import BackLink from '../../../components/layout/BackLink.vue'
 import TraineeStatusBadge from '../components/TraineeStatusBadge.vue'
 import TraineeProgressSection from '../../progress/components/TraineeProgressSection.vue'
 import TraineeCircumferenceSection from '../../progress/components/TraineeCircumferenceSection.vue'
@@ -71,6 +72,8 @@ async function confirmArchive() {
       <p v-else-if="!trainee" class="text-neutral-600">המתאמן לא נמצא.</p>
 
       <template v-else>
+        <BackLink to="/trainees" />
+
         <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
           <div class="flex items-center gap-3">
             <h1 class="text-2xl font-bold text-brand-black sm:text-3xl">

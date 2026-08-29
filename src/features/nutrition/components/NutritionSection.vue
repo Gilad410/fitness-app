@@ -6,6 +6,7 @@ import { useFoodReferenceCatalogStore } from '../store/foodReferenceCatalog'
 import { useRestaurantFoodItemsStore } from '../store/restaurantFoodItems'
 import ExternalChainLink from './ExternalChainLink.vue'
 import { externalChainLinks } from '../config/externalChainLinks'
+import { formatNutritionAmount } from '../../../lib/formatNumber'
 
 const props = defineProps({
   traineeId: { type: String, required: true },
@@ -346,9 +347,10 @@ async function handleDelete(logId) {
       <div>
         <h2 class="font-semibold text-brand-black">תזונה</h2>
         <p v-if="!checking" class="text-sm text-neutral-600">
-          סה"כ קלוריות היום: <span class="font-semibold text-brand-black">{{ todayTotal }}</span>
+          סה"כ קלוריות היום:
+          <span class="font-semibold text-brand-black">{{ formatNutritionAmount(todayTotal) }}</span>
           &middot; סה"כ חלבון היום:
-          <span class="font-semibold text-brand-black">{{ todayProteinTotal }} גר'</span>
+          <span class="font-semibold text-brand-black">{{ formatNutritionAmount(todayProteinTotal) }} גר'</span>
           <span v-if="todayProteinUnknown">(לא כולל פריט/ים עם חלבון לא ידוע)</span>
         </p>
       </div>
@@ -671,7 +673,8 @@ async function handleDelete(logId) {
         <div class="mb-2 flex items-baseline justify-between gap-4">
           <p class="text-sm text-neutral-600">{{ dateFormatter.format(new Date(group.date)) }}</p>
           <p class="text-sm font-semibold text-brand-black">
-            סה"כ {{ group.total }} קק"ל &middot; {{ group.protein }} גר' חלבון
+            סה"כ {{ formatNutritionAmount(group.total) }} קק"ל &middot;
+            {{ formatNutritionAmount(group.protein) }} גר' חלבון
             <span v-if="group.hasUnknownProtein" class="font-normal text-neutral-600">(+חלבון לא ידוע)</span>
           </p>
         </div>
