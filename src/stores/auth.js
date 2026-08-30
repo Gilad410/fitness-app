@@ -182,12 +182,40 @@ export const useAuthStore = defineStore('auth', {
     },
 
     async signOut() {
-      const { error } = await supabase.auth.signOut()
+      try {
+        const { error } = await supabase.auth.signOut()
+        if (error) throw error
+      } finally {
+        // Local state is cleared even if the remote call fails (e.g. no
+        // network) -- callers that force a sign-out to fail closed (the
+        // router guard's trainee active-link check) rely on isAuthenticated
+        // being false immediately afterwards regardless, so they don't loop
+        // trying to re-verify a session they can no longer trust.
+        this.user = null
+        this.role = null
+        this.roleLoaded = false
+        this.roleLoadPromise = null
+      }
+    },
+
+    // Re-verifies, on demand, that the signed-in trainee still has an
+    // active, linked trainee row (public.trainees.status = 'active') --
+    // the same fact 033_pre_pilot_security_hardening.sql already makes
+    // trainee_get_auth_context() enforce for every protected read. role
+    // alone (isTrainee) can't tell a paused/archived trainee from an active
+    // one, since public.user_roles and public.trainees.status are separate
+    // tables -- that split is exactly why this check exists.
+    //
+    // Deliberately NOT cached like loadRole(): the router guard calls this
+    // on every trainee-route navigation so a coach pausing/archiving
+    // mid-session is caught on the trainee's very next navigation, not just
+    // at their next login. Throws on a genuine RPC/network failure so the
+    // caller can fail closed without confusing "confirmed inactive" with
+    // "couldn't check" (see router/index.js).
+    async checkTraineeActiveLink() {
+      const { data, error } = await supabase.rpc('trainee_get_auth_context')
       if (error) throw error
-      this.user = null
-      this.role = null
-      this.roleLoaded = false
-      this.roleLoadPromise = null
+      return Array.isArray(data) ? data.length > 0 : !!data
     },
   },
 })

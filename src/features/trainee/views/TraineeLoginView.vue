@@ -1,6 +1,6 @@
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '../../../stores/auth'
 
 const email = ref('')
@@ -11,6 +11,24 @@ const showPassword = ref(false)
 
 const authStore = useAuthStore()
 const router = useRouter()
+const route = useRoute()
+
+// Set by the router guard (see router/index.js) when it force-signs-out a
+// trainee whose account is no longer active/linked, or when it couldn't
+// verify that at all (RPC/network failure) -- the two are deliberately
+// worded differently so a real account problem isn't mistaken for a
+// transient glitch worth just retrying. The login form itself stays fully
+// usable either way: a reactivated trainee (or a retry once the network is
+// back) just logs in again normally.
+const inactiveMessage = computed(() => {
+  if (route.query.inactive === '1') {
+    return 'החשבון אינו פעיל או אינו מקושר. יש לפנות למאמן/ת.'
+  }
+  if (route.query.inactive === 'error') {
+    return 'לא ניתן לאמת את החשבון כרגע. נסה שוב.'
+  }
+  return ''
+})
 
 // signInWithRoleCheck() requires the resolved role to be 'trainee' --
 // a coach account (or one with no role at all) is signed back out and
@@ -32,6 +50,13 @@ async function handleSubmit() {
 <template>
   <section class="mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-6 p-6">
     <h1 class="text-2xl font-bold text-brand-black">כניסת מתאמנים</h1>
+
+    <p
+      v-if="inactiveMessage"
+      class="rounded-lg border border-status-red/30 bg-status-red/10 px-3 py-2 text-sm text-status-red"
+    >
+      {{ inactiveMessage }}
+    </p>
 
     <form class="flex flex-col gap-4" @submit.prevent="handleSubmit">
       <label class="flex flex-col gap-1">

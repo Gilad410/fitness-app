@@ -235,8 +235,35 @@ router.beforeEach(async (to) => {
   if (to.meta.requiresRole === 'coach' && !authStore.isCoach) {
     return ownAreaRoute()
   }
-  if (to.meta.requiresRole === 'trainee' && !authStore.isTrainee) {
-    return ownAreaRoute()
+  if (to.meta.requiresRole === 'trainee') {
+    if (!authStore.isTrainee) {
+      return ownAreaRoute()
+    }
+
+    // Role alone isn't enough here: user_roles and trainees.status are
+    // separate tables, so a paused or archived trainee still passes the
+    // isTrainee check above. Re-verify against the same RPC the database
+    // already uses to gate every protected trainee read (033), on every
+    // trainee-route navigation (not cached) -- this is what actually
+    // catches a coach pausing/archiving the trainee mid-session, not just
+    // a fresh login.
+    let hasActiveLink
+    try {
+      hasActiveLink = await authStore.checkTraineeActiveLink()
+    } catch {
+      // Couldn't verify (RPC/network failure) -- fail closed rather than
+      // render a protected page for an account we can't currently vouch
+      // for. Signing out (instead of leaving the session in place) also
+      // avoids a redirect loop: an authenticated trainee landing on
+      // guestOnly /trainee/login would otherwise be bounced straight back
+      // here by ownAreaRoute() above.
+      await authStore.signOut()
+      return { name: 'trainee-login', query: { inactive: 'error' } }
+    }
+    if (!hasActiveLink) {
+      await authStore.signOut()
+      return { name: 'trainee-login', query: { inactive: '1' } }
+    }
   }
 })
 
