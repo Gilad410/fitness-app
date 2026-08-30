@@ -361,7 +361,7 @@ function entryQuantityLabel(log) {
               <button
                 type="button"
                 :class="[
-                  'rounded-lg border px-3 py-1.5 text-sm font-medium',
+                  'inline-flex min-h-11 items-center justify-center rounded-lg border px-3 py-1.5 text-sm font-medium',
                   entrySource === 'coach'
                     ? 'border-brand-green bg-brand-green text-brand-white'
                     : 'border-neutral-300 text-brand-black hover:bg-neutral-100',
@@ -373,7 +373,7 @@ function entryQuantityLabel(log) {
               <button
                 type="button"
                 :class="[
-                  'rounded-lg border px-3 py-1.5 text-sm font-medium',
+                  'inline-flex min-h-11 items-center justify-center rounded-lg border px-3 py-1.5 text-sm font-medium',
                   entrySource === 'reference'
                     ? 'border-brand-green bg-brand-green text-brand-white'
                     : 'border-neutral-300 text-brand-black hover:bg-neutral-100',
@@ -385,7 +385,7 @@ function entryQuantityLabel(log) {
               <button
                 type="button"
                 :class="[
-                  'rounded-lg border px-3 py-1.5 text-sm font-medium',
+                  'inline-flex min-h-11 items-center justify-center rounded-lg border px-3 py-1.5 text-sm font-medium',
                   entrySource === 'restaurant'
                     ? 'border-brand-green bg-brand-green text-brand-white'
                     : 'border-neutral-300 text-brand-black hover:bg-neutral-100',
@@ -421,7 +421,7 @@ function entryQuantityLabel(log) {
                 role="option"
                 :aria-selected="entryFoodId === food.id"
                 :class="[
-                  'w-full rounded-md px-2 py-1.5 text-start text-sm hover:bg-neutral-100',
+                  'w-full rounded-md px-2 py-3 text-start text-sm hover:bg-neutral-100',
                   entryFoodId === food.id ? 'bg-brand-green/10 font-medium text-brand-black' : '',
                 ]"
                 @click="entryFoodId = food.id"
@@ -470,7 +470,7 @@ function entryQuantityLabel(log) {
               <li v-for="item in referenceResults" :key="item.id">
                 <button
                   type="button"
-                  class="w-full rounded-md px-2 py-1.5 text-start text-sm hover:bg-neutral-100"
+                  class="w-full rounded-md px-2 py-3 text-start text-sm hover:bg-neutral-100"
                   @click="pickReference(item)"
                 >
                   {{ item.name }}
@@ -536,7 +536,7 @@ function entryQuantityLabel(log) {
                   <button
                     type="button"
                     :class="[
-                      'w-full rounded-md px-2 py-1.5 text-start text-sm hover:bg-neutral-100',
+                      'w-full rounded-md px-2 py-3 text-start text-sm hover:bg-neutral-100',
                       selectedRestaurantItemId === item.id ? 'bg-brand-green/10 font-medium text-brand-black' : '',
                     ]"
                     @click="selectedRestaurantItemId = item.id"
@@ -593,14 +593,14 @@ function entryQuantityLabel(log) {
             <button
               type="submit"
               :disabled="nutritionStore.adding"
-              class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:cursor-not-allowed disabled:opacity-60"
+              class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:cursor-not-allowed disabled:opacity-60"
             >
               {{ nutritionStore.adding ? 'שומר...' : 'שמור' }}
             </button>
             <button
               type="button"
               :disabled="nutritionStore.adding"
-              class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-60"
+              class="inline-flex min-h-11 items-center justify-center rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-60"
               @click="showAddEntry = false; resetForm()"
             >
               ביטול

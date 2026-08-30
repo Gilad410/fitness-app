@@ -580,7 +580,7 @@ async function confirmDeletePhoto(photo) {
             >
               <p class="mb-2 text-sm text-neutral-600">{{ dateFormatter.format(new Date(session.date)) }}</p>
 
-              <div class="grid grid-cols-3 gap-3">
+              <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
                 <div v-for="angle in ANGLES" :key="angle.key" class="flex flex-col gap-2">
                   <template v-if="session.byAngle[angle.key]">
                     <img
@@ -594,7 +594,7 @@ async function confirmDeletePhoto(photo) {
                       <button
                         type="button"
                         :disabled="photosStore.deletingId === session.byAngle[angle.key].id"
-                        class="rounded-lg bg-status-red px-2 py-1 text-xs font-medium text-brand-white hover:bg-status-red/90 disabled:cursor-not-allowed disabled:opacity-60"
+                        class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg bg-status-red px-2 py-1 text-xs font-medium text-brand-white hover:bg-status-red/90 disabled:cursor-not-allowed disabled:opacity-60"
                         @click="confirmDeletePhoto(session.byAngle[angle.key])"
                       >
                         {{ photosStore.deletingId === session.byAngle[angle.key].id ? 'מוחק...' : 'אישור מחיקה' }}
@@ -602,7 +602,7 @@ async function confirmDeletePhoto(photo) {
                       <button
                         type="button"
                         :disabled="photosStore.deletingId === session.byAngle[angle.key].id"
-                        class="rounded-lg border border-neutral-300 px-2 py-1 text-xs font-medium text-brand-black hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-60"
+                        class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-neutral-300 px-2 py-1 text-xs font-medium text-brand-black hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-60"
                         @click="confirmDeletePhotoId = null"
                       >
                         ביטול
@@ -611,7 +611,7 @@ async function confirmDeletePhoto(photo) {
                     <button
                       v-else
                       type="button"
-                      class="rounded-lg border border-neutral-300 px-2 py-1 text-xs font-medium text-brand-black hover:bg-neutral-100"
+                      class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-neutral-300 px-2 py-1 text-xs font-medium text-brand-black hover:bg-neutral-100"
                       @click="confirmDeletePhotoId = session.byAngle[angle.key].id"
                     >
                       מחק

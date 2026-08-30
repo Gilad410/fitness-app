@@ -352,7 +352,7 @@ onMounted(() => {
                     <button
                       type="button"
                       :disabled="submissionBusyId === exercise.id"
-                      class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-40"
+                      class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-40"
                       @click="triggerSubmissionInput(exercise.id)"
                     >
                       {{
@@ -367,7 +367,7 @@ onMounted(() => {
                       v-if="submissionsStore.submissionFor(exercise.id)"
                       type="button"
                       :disabled="submissionBusyId === exercise.id"
-                      class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-status-red hover:bg-status-red/10 disabled:opacity-40"
+                      class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-neutral-300 px-2 py-1 text-xs text-status-red hover:bg-status-red/10 disabled:opacity-40"
                       @click="requestDeleteSubmission(exercise.id)"
                     >
                       מחק
@@ -384,7 +384,7 @@ onMounted(() => {
                     <button
                       type="button"
                       :disabled="submissionBusyId === exercise.id"
-                      class="rounded-md bg-brand-green px-2 py-1 text-xs font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+                      class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md bg-brand-green px-2 py-1 text-xs font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
                       @click="confirmReplaceSubmission(exercise)"
                     >
                       {{ submissionBusyId === exercise.id ? 'מעלה...' : 'כן, החלף' }}
@@ -392,7 +392,7 @@ onMounted(() => {
                     <button
                       type="button"
                       :disabled="submissionBusyId === exercise.id"
-                      class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-60"
+                      class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-60"
                       @click="cancelReplaceSubmission"
                     >
                       ביטול
@@ -407,7 +407,7 @@ onMounted(() => {
                     <button
                       type="button"
                       :disabled="submissionBusyId === exercise.id"
-                      class="rounded-md bg-status-red px-2 py-1 text-xs font-medium text-brand-white hover:bg-status-red/90 disabled:opacity-60"
+                      class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md bg-status-red px-2 py-1 text-xs font-medium text-brand-white hover:bg-status-red/90 disabled:opacity-60"
                       @click="confirmDeleteSubmission(exercise)"
                     >
                       {{ submissionBusyId === exercise.id ? 'מוחק...' : 'כן, מחק' }}
@@ -415,7 +415,7 @@ onMounted(() => {
                     <button
                       type="button"
                       :disabled="submissionBusyId === exercise.id"
-                      class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-60"
+                      class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-60"
                       @click="cancelDeleteSubmission"
                     >
                       ביטול

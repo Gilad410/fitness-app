@@ -26,7 +26,7 @@ async function handleLogout() {
     <div class="flex items-center gap-3">
       <button
         type="button"
-        class="rounded-md p-1.5 text-brand-white hover:bg-white/10"
+        class="rounded-md p-2.5 text-brand-white hover:bg-white/10"
         aria-label="פתיחת תפריט ניווט"
         @click="$emit('toggle-sidebar')"
       >
@@ -66,7 +66,7 @@ async function handleLogout() {
       </div>
       <button
         type="button"
-        class="rounded-lg border border-neutral-600 px-3 py-1.5 text-sm font-medium text-brand-white transition-colors hover:border-brand-green hover:text-brand-green"
+        class="inline-flex min-h-11 items-center justify-center rounded-lg border border-neutral-600 px-3 py-1.5 text-sm font-medium text-brand-white transition-colors hover:border-brand-green hover:text-brand-green"
         @click="handleLogout"
       >
         התנתקות
