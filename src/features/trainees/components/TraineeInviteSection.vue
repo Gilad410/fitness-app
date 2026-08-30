@@ -175,7 +175,7 @@ async function copyLink() {
         <button
           type="button"
           :disabled="invitesStore.unlinking"
-          class="rounded-lg border border-status-red/40 px-4 py-2 text-sm font-medium text-status-red hover:bg-status-red/5 disabled:cursor-not-allowed disabled:opacity-60"
+          class="inline-flex min-h-11 items-center justify-center rounded-lg border border-status-red/40 px-4 py-2 text-sm font-medium text-status-red hover:bg-status-red/5 disabled:cursor-not-allowed disabled:opacity-60"
           @click="showUnlinkConfirm = true"
         >
           נתק חשבון מתאמן
@@ -192,7 +192,7 @@ async function copyLink() {
           <button
             type="button"
             :disabled="invitesStore.unlinking"
-            class="rounded-lg bg-status-red px-4 py-2 text-sm font-medium text-brand-white hover:bg-status-red/90 disabled:cursor-not-allowed disabled:opacity-60"
+            class="inline-flex min-h-11 items-center justify-center rounded-lg bg-status-red px-4 py-2 text-sm font-medium text-brand-white hover:bg-status-red/90 disabled:cursor-not-allowed disabled:opacity-60"
             @click="handleUnlink"
           >
             {{ invitesStore.unlinking ? 'מנתק...' : 'כן, נתק חשבון' }}
@@ -200,7 +200,7 @@ async function copyLink() {
           <button
             type="button"
             :disabled="invitesStore.unlinking"
-            class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-60"
+            class="inline-flex min-h-11 items-center justify-center rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-60"
             @click="showUnlinkConfirm = false"
           >
             ביטול

@@ -178,7 +178,7 @@ const dateTimeFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long', 
         <div>
           <button
             type="submit"
-            class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark"
+            class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark"
           >
             שלח התראה
           </button>
@@ -216,7 +216,7 @@ const dateTimeFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long', 
           <button
             type="button"
             :disabled="notificationsStore.sending"
-            class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+            class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
             @click="handleConfirmSend"
           >
             {{ notificationsStore.sending ? 'שולח...' : 'אישור שליחה' }}
@@ -224,7 +224,7 @@ const dateTimeFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long', 
           <button
             type="button"
             :disabled="notificationsStore.sending"
-            class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100 disabled:opacity-60"
+            class="inline-flex min-h-11 items-center justify-center rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100 disabled:opacity-60"
             @click="confirming = false"
           >
             ביטול

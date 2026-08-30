@@ -781,7 +781,7 @@ async function move(exerciseId, direction) {
               <button
                 type="button"
                 :disabled="index === 0 || movingId === exercise.id"
-                class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-40"
+                class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-40"
                 aria-label="הזז תרגיל למעלה"
                 @click="move(exercise.id, -1)"
               >
@@ -790,7 +790,7 @@ async function move(exerciseId, direction) {
               <button
                 type="button"
                 :disabled="index === exercises.length - 1 || movingId === exercise.id"
-                class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-40"
+                class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-40"
                 aria-label="הזז תרגיל למטה"
                 @click="move(exercise.id, 1)"
               >
@@ -801,7 +801,7 @@ async function move(exerciseId, direction) {
                 <button
                   type="button"
                   :disabled="deletingId === exercise.id"
-                  class="rounded-md bg-status-red px-2 py-1 text-xs font-medium text-brand-white hover:bg-status-red/90 disabled:opacity-60"
+                  class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md bg-status-red px-2 py-1 text-xs font-medium text-brand-white hover:bg-status-red/90 disabled:opacity-60"
                   @click="confirmDelete(exercise.id)"
                 >
                   {{ deletingId === exercise.id ? 'מוחק...' : 'אישור מחיקה' }}
@@ -809,7 +809,7 @@ async function move(exerciseId, direction) {
                 <button
                   type="button"
                   :disabled="deletingId === exercise.id"
-                  class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-60"
+                  class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-60"
                   @click="confirmDeleteId = null"
                 >
                   ביטול
@@ -818,14 +818,14 @@ async function move(exerciseId, direction) {
               <template v-else>
                 <button
                   type="button"
-                  class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100"
+                  class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100"
                   @click="startEdit(exercise)"
                 >
                   ערוך
                 </button>
                 <button
                   type="button"
-                  class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-status-red hover:bg-status-red/10"
+                  class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-neutral-300 px-2 py-1 text-xs text-status-red hover:bg-status-red/10"
                   @click="confirmDeleteId = exercise.id"
                 >
                   מחק
@@ -875,7 +875,7 @@ async function move(exerciseId, direction) {
               <button
                 type="button"
                 :disabled="videoBusyId === exercise.id"
-                class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-40"
+                class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-40"
                 @click="triggerVideoInput(exercise.id)"
               >
                 {{
@@ -890,7 +890,7 @@ async function move(exerciseId, direction) {
                 v-if="exercise.video_storage_path"
                 type="button"
                 :disabled="videoBusyId === exercise.id"
-                class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-status-red hover:bg-status-red/10 disabled:opacity-40"
+                class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-neutral-300 px-2 py-1 text-xs text-status-red hover:bg-status-red/10 disabled:opacity-40"
                 @click="requestRemoveVideo(exercise.id)"
               >
                 הסר סרטון
@@ -905,7 +905,7 @@ async function move(exerciseId, direction) {
               <button
                 type="button"
                 :disabled="videoBusyId === exercise.id"
-                class="rounded-md bg-brand-green px-2 py-1 text-xs font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+                class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md bg-brand-green px-2 py-1 text-xs font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
                 @click="confirmReplaceVideo(exercise)"
               >
                 {{ videoBusyId === exercise.id ? 'מעלה...' : 'כן, החלף' }}
@@ -913,7 +913,7 @@ async function move(exerciseId, direction) {
               <button
                 type="button"
                 :disabled="videoBusyId === exercise.id"
-                class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-60"
+                class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-60"
                 @click="cancelReplaceVideo"
               >
                 ביטול
@@ -928,7 +928,7 @@ async function move(exerciseId, direction) {
               <button
                 type="button"
                 :disabled="videoBusyId === exercise.id"
-                class="rounded-md bg-status-red px-2 py-1 text-xs font-medium text-brand-white hover:bg-status-red/90 disabled:opacity-60"
+                class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md bg-status-red px-2 py-1 text-xs font-medium text-brand-white hover:bg-status-red/90 disabled:opacity-60"
                 @click="confirmRemoveVideo(exercise)"
               >
                 {{ videoBusyId === exercise.id ? 'מוחק...' : 'כן, הסר' }}
@@ -936,7 +936,7 @@ async function move(exerciseId, direction) {
               <button
                 type="button"
                 :disabled="videoBusyId === exercise.id"
-                class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-60"
+                class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-60"
                 @click="cancelRemoveVideo"
               >
                 ביטול
@@ -1007,7 +1007,7 @@ async function move(exerciseId, direction) {
                 <button
                   type="button"
                   :disabled="submissionBusyId === exercise.id"
-                  class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-40"
+                  class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-40"
                   @click="markSubmissionReviewed(exercise)"
                 >
                   {{
@@ -1021,7 +1021,7 @@ async function move(exerciseId, direction) {
                 <button
                   type="button"
                   :disabled="submissionBusyId === exercise.id"
-                  class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-status-red hover:bg-status-red/10 disabled:opacity-40"
+                  class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-neutral-300 px-2 py-1 text-xs text-status-red hover:bg-status-red/10 disabled:opacity-40"
                   @click="requestDeleteSubmission(exercise.id)"
                 >
                   מחק
@@ -1036,7 +1036,7 @@ async function move(exerciseId, direction) {
                 <button
                   type="button"
                   :disabled="submissionBusyId === exercise.id"
-                  class="rounded-md bg-status-red px-2 py-1 text-xs font-medium text-brand-white hover:bg-status-red/90 disabled:opacity-60"
+                  class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md bg-status-red px-2 py-1 text-xs font-medium text-brand-white hover:bg-status-red/90 disabled:opacity-60"
                   @click="confirmDeleteSubmission(exercise)"
                 >
                   {{ submissionBusyId === exercise.id ? 'מוחק...' : 'כן, מחק' }}
@@ -1044,7 +1044,7 @@ async function move(exerciseId, direction) {
                 <button
                   type="button"
                   :disabled="submissionBusyId === exercise.id"
-                  class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-60"
+                  class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-60"
                   @click="cancelDeleteSubmission"
                 >
                   ביטול

@@ -145,7 +145,7 @@ async function move(workoutId, direction) {
       <button
         v-if="!showAddForm && workouts.length > 0"
         type="button"
-        class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark"
+        class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark"
         @click="showAddForm = true"
       >
         הוסף אימון
@@ -276,7 +276,7 @@ async function move(workoutId, direction) {
               <button
                 type="button"
                 :disabled="index === 0 || movingId === workout.id"
-                class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-40"
+                class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-40"
                 aria-label="הזז אימון למעלה"
                 @click="move(workout.id, -1)"
               >
@@ -285,7 +285,7 @@ async function move(workoutId, direction) {
               <button
                 type="button"
                 :disabled="index === workouts.length - 1 || movingId === workout.id"
-                class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-40"
+                class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-40"
                 aria-label="הזז אימון למטה"
                 @click="move(workout.id, 1)"
               >
@@ -296,7 +296,7 @@ async function move(workoutId, direction) {
                 <button
                   type="button"
                   :disabled="deletingId === workout.id"
-                  class="rounded-md bg-status-red px-2 py-1 text-xs font-medium text-brand-white hover:bg-status-red/90 disabled:opacity-60"
+                  class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md bg-status-red px-2 py-1 text-xs font-medium text-brand-white hover:bg-status-red/90 disabled:opacity-60"
                   @click="confirmDelete(workout.id)"
                 >
                   {{ deletingId === workout.id ? 'מוחק...' : 'אישור מחיקה' }}
@@ -304,7 +304,7 @@ async function move(workoutId, direction) {
                 <button
                   type="button"
                   :disabled="deletingId === workout.id"
-                  class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-60"
+                  class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100 disabled:opacity-60"
                   @click="confirmDeleteId = null"
                 >
                   ביטול
@@ -313,14 +313,14 @@ async function move(workoutId, direction) {
               <template v-else>
                 <button
                   type="button"
-                  class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100"
+                  class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-neutral-300 px-2 py-1 text-xs text-brand-black hover:bg-neutral-100"
                   @click="startEdit(workout)"
                 >
                   ערוך
                 </button>
                 <button
                   type="button"
-                  class="rounded-md border border-neutral-300 px-2 py-1 text-xs text-status-red hover:bg-status-red/10"
+                  class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-neutral-300 px-2 py-1 text-xs text-status-red hover:bg-status-red/10"
                   @click="confirmDeleteId = workout.id"
                 >
                   מחק

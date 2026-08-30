@@ -61,7 +61,7 @@ const filteredTrainees = computed(() => {
             v-for="option in filterOptions"
             :key="option.value"
             type="button"
-            class="rounded-full border px-3 py-1 text-sm font-medium"
+            class="inline-flex min-h-11 items-center justify-center rounded-full border px-3 py-1 text-sm font-medium"
             :class="
               statusFilter === option.value
                 ? 'border-brand-green bg-brand-green/10 text-brand-green'

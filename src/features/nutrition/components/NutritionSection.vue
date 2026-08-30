@@ -414,7 +414,7 @@ async function handleDelete(logId) {
                   role="option"
                   :aria-selected="entryFoodId === food.id"
                   :class="[
-                    'flex-1 rounded-md px-2 py-1.5 text-start text-sm hover:bg-neutral-100',
+                    'flex-1 rounded-md px-2 py-3 text-start text-sm hover:bg-neutral-100',
                     entryFoodId === food.id ? 'bg-brand-green/10 font-medium text-brand-black' : '',
                   ]"
                   @click="entryFoodId = food.id"
@@ -424,7 +424,7 @@ async function handleDelete(logId) {
                 <button
                   type="button"
                   :aria-label="`הסר את ${food.name} מרשימת הבחירה`"
-                  class="shrink-0 rounded-md px-2 py-1.5 text-sm text-neutral-600 hover:bg-status-red/10 hover:text-status-red"
+                  class="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-md text-sm text-neutral-600 hover:bg-status-red/10 hover:text-status-red"
                   @click="requestRemoveFood(food)"
                 >
                   ✕
@@ -435,7 +435,7 @@ async function handleDelete(logId) {
                 <button
                   type="button"
                   :disabled="archivingFoodId === food.id"
-                  class="rounded-md bg-status-red px-2 py-1 text-xs font-medium text-brand-white hover:bg-status-red/90 disabled:opacity-60"
+                  class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md bg-status-red px-2 py-1 text-xs font-medium text-brand-white hover:bg-status-red/90 disabled:opacity-60"
                   @click="confirmRemoveFood(food)"
                 >
                   {{ archivingFoodId === food.id ? 'מסיר...' : 'כן, הסר' }}
@@ -443,7 +443,7 @@ async function handleDelete(logId) {
                 <button
                   type="button"
                   :disabled="archivingFoodId === food.id"
-                  class="rounded-md border border-neutral-300 px-2 py-1 text-xs font-medium text-brand-black hover:bg-neutral-100 disabled:opacity-60"
+                  class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-neutral-300 px-2 py-1 text-xs font-medium text-brand-black hover:bg-neutral-100 disabled:opacity-60"
                   @click="cancelRemoveFood"
                 >
                   ביטול
@@ -489,7 +489,7 @@ async function handleDelete(logId) {
             <li v-for="food in nameSuggestions" :key="food.id">
               <button
                 type="button"
-                class="w-full rounded-md px-2 py-1.5 text-start text-sm hover:bg-neutral-100"
+                class="w-full rounded-md px-2 py-3 text-start text-sm hover:bg-neutral-100"
                 @click="pickSuggestion(food)"
               >
                 {{ food.name }}
@@ -641,14 +641,14 @@ async function handleDelete(logId) {
         <button
           type="submit"
           :disabled="addingEntry"
-          class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+          class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
         >
           {{ addingEntry ? 'שומר...' : 'שמור' }}
         </button>
         <button
           type="button"
           :disabled="addingEntry"
-          class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100 disabled:opacity-60"
+          class="inline-flex min-h-11 items-center justify-center rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100 disabled:opacity-60"
           @click="showAddEntry = false; resetForm()"
         >
           ביטול

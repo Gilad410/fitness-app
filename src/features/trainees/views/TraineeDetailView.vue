@@ -83,7 +83,7 @@ async function confirmArchive() {
           </div>
           <RouterLink
             :to="`/trainees/${trainee.id}/edit`"
-            class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100"
+            class="inline-flex min-h-11 items-center justify-center rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100"
           >
             ערוך
           </RouterLink>
@@ -146,7 +146,7 @@ async function confirmArchive() {
             <button
               type="button"
               :disabled="updating"
-              class="rounded-lg bg-status-red px-4 py-2 text-sm font-medium text-brand-white hover:bg-status-red/90 disabled:opacity-60"
+              class="inline-flex min-h-11 items-center justify-center rounded-lg bg-status-red px-4 py-2 text-sm font-medium text-brand-white hover:bg-status-red/90 disabled:opacity-60"
               @click="confirmArchive"
             >
               {{ updating ? 'מעביר לארכיון...' : 'כן, העבר לארכיון' }}
@@ -154,7 +154,7 @@ async function confirmArchive() {
             <button
               type="button"
               :disabled="updating"
-              class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100 disabled:opacity-60"
+              class="inline-flex min-h-11 items-center justify-center rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100 disabled:opacity-60"
               @click="showArchiveConfirm = false"
             >
               ביטול
@@ -167,7 +167,7 @@ async function confirmArchive() {
             <button
               type="button"
               :disabled="updating"
-              class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100 disabled:opacity-60"
+              class="inline-flex min-h-11 items-center justify-center rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100 disabled:opacity-60"
               @click="setStatus('paused')"
             >
               השהה
@@ -175,7 +175,7 @@ async function confirmArchive() {
             <button
               type="button"
               :disabled="updating"
-              class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100 disabled:opacity-60"
+              class="inline-flex min-h-11 items-center justify-center rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100 disabled:opacity-60"
               @click="showArchiveConfirm = true"
             >
               העבר לארכיון
@@ -186,7 +186,7 @@ async function confirmArchive() {
             <button
               type="button"
               :disabled="updating"
-              class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+              class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
               @click="setStatus('active')"
             >
               הפעל מחדש
@@ -194,7 +194,7 @@ async function confirmArchive() {
             <button
               type="button"
               :disabled="updating"
-              class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100 disabled:opacity-60"
+              class="inline-flex min-h-11 items-center justify-center rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100 disabled:opacity-60"
               @click="showArchiveConfirm = true"
             >
               העבר לארכיון
@@ -205,7 +205,7 @@ async function confirmArchive() {
             <button
               type="button"
               :disabled="updating"
-              class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+              class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
               @click="setStatus('active')"
             >
               שחזר

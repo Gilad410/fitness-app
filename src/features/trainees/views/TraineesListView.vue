@@ -34,7 +34,7 @@ const filteredTrainees = computed(() => {
         <h1 class="text-2xl font-bold text-brand-black sm:text-3xl">מתאמנים</h1>
         <RouterLink
           to="/trainees/new"
-          class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark"
+          class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark"
         >
           הוסף מתאמן
         </RouterLink>
@@ -61,7 +61,7 @@ const filteredTrainees = computed(() => {
             v-for="option in filterOptions"
             :key="option.value"
             type="button"
-            class="rounded-full border px-3 py-1 text-sm font-medium"
+            class="inline-flex min-h-11 items-center justify-center rounded-full border px-3 py-1 text-sm font-medium"
             :class="
               statusFilter === option.value
                 ? 'border-brand-green bg-brand-green/10 text-brand-green'

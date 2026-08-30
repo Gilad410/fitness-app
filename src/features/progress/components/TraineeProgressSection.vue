@@ -148,7 +148,7 @@ async function confirmDelete(logId) {
       <button
         v-if="!showAddMeasurement"
         type="button"
-        class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark"
+        class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark"
         @click="showAddMeasurement = true"
       >
         הוסף מדידה
@@ -286,7 +286,7 @@ async function confirmDelete(logId) {
             <button
               type="button"
               :disabled="deletingId === log.id"
-              class="rounded-lg bg-status-red px-3 py-1.5 text-xs font-medium text-brand-white hover:bg-status-red/90 disabled:opacity-60"
+              class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg bg-status-red px-3 py-1.5 text-xs font-medium text-brand-white hover:bg-status-red/90 disabled:opacity-60"
               @click="confirmDelete(log.id)"
             >
               {{ deletingId === log.id ? 'מוחק...' : 'אישור מחיקה' }}
@@ -294,7 +294,7 @@ async function confirmDelete(logId) {
             <button
               type="button"
               :disabled="deletingId === log.id"
-              class="rounded-lg border border-neutral-300 px-3 py-1.5 text-xs font-medium text-brand-black hover:bg-neutral-100 disabled:opacity-60"
+              class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-neutral-300 px-3 py-1.5 text-xs font-medium text-brand-black hover:bg-neutral-100 disabled:opacity-60"
               @click="confirmDeleteId = null"
             >
               ביטול
@@ -303,7 +303,7 @@ async function confirmDelete(logId) {
           <button
             v-else
             type="button"
-            class="rounded-lg border border-neutral-300 px-3 py-1.5 text-xs font-medium text-brand-black hover:bg-neutral-100"
+            class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-neutral-300 px-3 py-1.5 text-xs font-medium text-brand-black hover:bg-neutral-100"
             @click="confirmDeleteId = log.id"
           >
             מחק

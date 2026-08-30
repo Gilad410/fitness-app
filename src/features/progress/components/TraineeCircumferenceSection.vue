@@ -112,7 +112,7 @@ async function confirmDelete(logId) {
       <button
         v-if="!showAddMeasurement"
         type="button"
-        class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark"
+        class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark"
         @click="showAddMeasurement = true"
       >
         הוסף מדידה
