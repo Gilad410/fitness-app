@@ -34,7 +34,7 @@ const filteredTrainees = computed(() => {
         <h1 class="text-2xl font-bold text-brand-black sm:text-3xl">מתאמנים</h1>
         <RouterLink
           to="/trainees/new"
-          class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark"
+          class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white"
         >
           הוסף מתאמן
         </RouterLink>
@@ -64,7 +64,7 @@ const filteredTrainees = computed(() => {
             class="inline-flex min-h-11 items-center justify-center rounded-full border px-3 py-1 text-sm font-medium"
             :class="
               statusFilter === option.value
-                ? 'border-brand-green bg-brand-green/10 text-brand-green'
+                ? 'border-brand-green bg-brand-green/10 text-brand-green-dark'
                 : 'border-neutral-300 text-neutral-600 hover:bg-neutral-100'
             "
             @click="statusFilter = option.value"
@@ -75,7 +75,7 @@ const filteredTrainees = computed(() => {
 
         <p v-if="traineesStore.trainees.length === 0" class="text-neutral-600">
           עדיין אין מתאמנים.
-          <RouterLink to="/trainees/new" class="text-brand-green hover:underline">
+          <RouterLink to="/trainees/new" class="text-brand-green-dark hover:underline">
             הוסף מתאמן ראשון
           </RouterLink>
         </p>

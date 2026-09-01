@@ -145,7 +145,7 @@ async function move(workoutId, direction) {
       <button
         v-if="!showAddForm && workouts.length > 0"
         type="button"
-        class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark"
+        class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white"
         @click="showAddForm = true"
       >
         הוסף אימון
@@ -181,7 +181,7 @@ async function move(workoutId, direction) {
         <button
           type="submit"
           :disabled="addingWorkout"
-          class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+          class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white disabled:opacity-60"
         >
           {{ addingWorkout ? 'שומר...' : 'שמור אימון' }}
         </button>
@@ -208,7 +208,7 @@ async function move(workoutId, direction) {
       <p class="text-sm text-neutral-600">כדי להוסיף תרגילים, יש ליצור תחילה אימון</p>
       <button
         type="button"
-        class="rounded-lg bg-brand-green px-5 py-2.5 text-sm font-semibold text-brand-white hover:bg-brand-green-dark"
+        class="rounded-lg bg-brand-green px-5 py-2.5 text-sm font-semibold text-brand-black hover:bg-brand-green-dark hover:text-brand-white"
         @click="showAddForm = true"
       >
         הוסף אימון ראשון
@@ -249,7 +249,7 @@ async function move(workoutId, direction) {
               <button
                 type="submit"
                 :disabled="savingEdit"
-                class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+                class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white disabled:opacity-60"
               >
                 {{ savingEdit ? 'שומר...' : 'שמירה' }}
               </button>

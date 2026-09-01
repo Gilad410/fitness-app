@@ -84,7 +84,7 @@ const formatDate = (value) => dateFormatter.format(new Date(value))
                     </p>
                   </div>
                   <span
-                    class="shrink-0 rounded-lg bg-brand-green px-3 py-1.5 text-sm font-medium text-brand-white"
+                    class="shrink-0 rounded-lg bg-brand-green px-3 py-1.5 text-sm font-medium text-brand-black"
                   >
                     לצפייה במשקל
                   </span>
@@ -118,7 +118,7 @@ const formatDate = (value) => dateFormatter.format(new Date(value))
                     </p>
                   </div>
                   <span
-                    class="shrink-0 rounded-lg bg-brand-green px-3 py-1.5 text-sm font-medium text-brand-white"
+                    class="shrink-0 rounded-lg bg-brand-green px-3 py-1.5 text-sm font-medium text-brand-black"
                   >
                     לצפייה בתוכנית
                   </span>

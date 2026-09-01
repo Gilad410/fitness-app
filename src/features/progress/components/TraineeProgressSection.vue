@@ -148,7 +148,7 @@ async function confirmDelete(logId) {
       <button
         v-if="!showAddMeasurement"
         type="button"
-        class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark"
+        class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white"
         @click="showAddMeasurement = true"
       >
         הוסף מדידה
@@ -192,7 +192,7 @@ async function confirmDelete(logId) {
           <polyline
             :points="chart.linePoints"
             fill="none"
-            stroke="#16a34a"
+            stroke="#168345"
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -244,7 +244,7 @@ async function confirmDelete(logId) {
         <button
           type="submit"
           :disabled="addingLog"
-          class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+          class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white disabled:opacity-60"
         >
           {{ addingLog ? 'שומר...' : 'שמור מדידה' }}
         </button>

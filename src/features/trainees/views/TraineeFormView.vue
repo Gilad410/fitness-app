@@ -282,7 +282,7 @@ async function handleSubmit() {
         <button
           type="submit"
           :disabled="loading"
-          class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+          class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white disabled:opacity-60"
         >
           {{ loading ? 'שומר...' : 'שמירה' }}
         </button>

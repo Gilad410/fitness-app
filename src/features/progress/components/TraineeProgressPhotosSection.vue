@@ -142,7 +142,7 @@ async function confirmDelete(photo) {
       <button
         v-if="!showAddPhotos"
         type="button"
-        class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark"
+        class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white"
         @click="showAddPhotos = true"
       >
         הוסף תמונות
@@ -204,7 +204,7 @@ async function confirmDelete(photo) {
         <button
           type="submit"
           :disabled="addingPhotos"
-          class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+          class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white disabled:opacity-60"
         >
           {{ addingPhotos ? 'מעלה...' : 'שמור תמונות' }}
         </button>

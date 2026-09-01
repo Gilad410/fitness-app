@@ -1,5 +1,7 @@
 <script setup>
-defineProps({
+import { computed } from 'vue'
+
+const props = defineProps({
   icon: { type: [Object, Function], required: true },
   title: { type: String, required: true },
   description: { type: String, required: true },
@@ -7,7 +9,20 @@ defineProps({
   caption: { type: String, default: '' },
   comingSoon: { type: Boolean, default: true },
   to: { type: String, default: null },
+  // Opt-in only -- this card is shared with the trainee home page
+  // (TraineeHomeView.vue), which never passes this prop and so keeps
+  // rendering with the exact original classes below. Only the coach
+  // dashboard (DashboardView.vue) passes tone="coach", to swap the icon
+  // color from the primary athletic green (weak contrast as small text on
+  // its own soft-green circle) to the darker, more readable coach green.
+  tone: { type: String, default: 'default' },
 })
+
+const iconWrapperClass = computed(() =>
+  props.tone === 'coach'
+    ? 'flex size-10 items-center justify-center rounded-xl bg-brand-green/10 text-brand-green-dark'
+    : 'flex size-10 items-center justify-center rounded-xl bg-brand-green/10 text-brand-green',
+)
 </script>
 
 <template>
@@ -17,9 +32,7 @@ defineProps({
     class="flex flex-col gap-4 rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm transition-shadow hover:shadow-md sm:p-6"
   >
     <div class="flex items-start justify-between gap-3">
-      <span
-        class="flex size-10 items-center justify-center rounded-xl bg-brand-green/10 text-brand-green"
-      >
+      <span :class="iconWrapperClass">
         <component :is="icon" class="size-5" />
       </span>
       <span

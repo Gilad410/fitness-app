@@ -186,7 +186,7 @@ async function confirmArchive() {
             <button
               type="button"
               :disabled="updating"
-              class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+              class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white disabled:opacity-60"
               @click="setStatus('active')"
             >
               הפעל מחדש
@@ -205,7 +205,7 @@ async function confirmArchive() {
             <button
               type="button"
               :disabled="updating"
-              class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+              class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white disabled:opacity-60"
               @click="setStatus('active')"
             >
               שחזר

@@ -43,7 +43,7 @@ const programs = computed(() => programsStore.programsFor(route.params.traineeId
 
 const statusLabels = { active: 'פעילה', inactive: 'לא פעילה' }
 const statusClasses = {
-  active: 'bg-brand-green/10 text-brand-green',
+  active: 'bg-brand-green/10 text-brand-green-dark',
   inactive: 'bg-neutral-100 text-neutral-600',
 }
 
@@ -89,7 +89,7 @@ async function handleAdd() {
             <button
               v-if="!showAddForm"
               type="button"
-              class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark"
+              class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white"
               @click="showAddForm = true"
             >
               תוכנית חדשה
@@ -125,7 +125,7 @@ async function handleAdd() {
               <button
                 type="submit"
                 :disabled="addingProgram"
-                class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+                class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white disabled:opacity-60"
               >
                 {{ addingProgram ? 'שומר...' : 'שמור תוכנית' }}
               </button>

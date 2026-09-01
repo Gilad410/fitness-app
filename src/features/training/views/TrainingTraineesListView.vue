@@ -63,7 +63,7 @@ const filteredTrainees = computed(() => {
             class="inline-flex min-h-11 items-center justify-center rounded-full border px-3 py-1 text-sm font-medium"
             :class="
               statusFilter === option.value
-                ? 'border-brand-green bg-brand-green/10 text-brand-green'
+                ? 'border-brand-green bg-brand-green/10 text-brand-green-dark'
                 : 'border-neutral-300 text-neutral-600 hover:bg-neutral-100'
             "
             @click="statusFilter = option.value"

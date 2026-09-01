@@ -54,7 +54,7 @@ const navItems = [
         :key="item.label"
         :to="item.to"
         class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-base font-medium text-brand-black transition-colors"
-        active-class="bg-brand-green/10 text-brand-green"
+        active-class="bg-brand-green/10 text-brand-green-dark"
         @click="$emit('close')"
       >
         <component :is="item.icon" class="size-6 shrink-0" />

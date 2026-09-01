@@ -39,7 +39,7 @@ const program = computed(() =>
 
 const statusLabels = { active: 'פעילה', inactive: 'לא פעילה' }
 const statusClasses = {
-  active: 'bg-brand-green/10 text-brand-green',
+  active: 'bg-brand-green/10 text-brand-green-dark',
   inactive: 'bg-neutral-100 text-neutral-600',
 }
 
@@ -141,7 +141,7 @@ async function setStatus(status) {
                 <button
                   type="submit"
                   :disabled="savingDetails"
-                  class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+                  class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white disabled:opacity-60"
                 >
                   {{ savingDetails ? 'שומר...' : 'שמירה' }}
                 </button>
@@ -181,7 +181,7 @@ async function setStatus(status) {
               v-else
               type="button"
               :disabled="updatingStatus"
-              class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+              class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white disabled:opacity-60"
               @click="setStatus('active')"
             >
               {{ updatingStatus ? 'מעדכן...' : 'סמן כפעילה' }}

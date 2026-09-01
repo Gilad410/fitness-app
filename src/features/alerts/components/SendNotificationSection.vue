@@ -173,12 +173,12 @@ const dateTimeFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long', 
         </label>
 
         <p v-if="validationError" class="text-sm text-status-red">{{ validationError }}</p>
-        <p v-if="successMessage" class="text-sm text-brand-green">{{ successMessage }}</p>
+        <p v-if="successMessage" class="text-sm text-brand-green-dark">{{ successMessage }}</p>
 
         <div>
           <button
             type="submit"
-            class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark"
+            class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white"
           >
             שלח התראה
           </button>
@@ -216,7 +216,7 @@ const dateTimeFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long', 
           <button
             type="button"
             :disabled="notificationsStore.sending"
-            class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+            class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white disabled:opacity-60"
             @click="handleConfirmSend"
           >
             {{ notificationsStore.sending ? 'שולח...' : 'אישור שליחה' }}
@@ -270,7 +270,7 @@ const dateTimeFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long', 
           </p>
           <span
             class="shrink-0 rounded-full px-2 py-0.5 text-xs font-medium"
-            :class="n.is_read ? 'bg-neutral-100 text-neutral-600' : 'bg-brand-green/10 text-brand-green'"
+            :class="n.is_read ? 'bg-neutral-100 text-neutral-600' : 'bg-brand-green/10 text-brand-green-dark'"
           >
             {{ n.is_read ? 'נקראה' : 'טרם נקראה' }}
           </span>

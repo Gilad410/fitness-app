@@ -466,7 +466,7 @@ async function move(exerciseId, direction) {
       <button
         v-if="!showAddForm"
         type="button"
-        class="rounded-lg bg-brand-green px-3 py-1.5 text-xs font-semibold text-brand-white hover:bg-brand-green-dark"
+        class="rounded-lg bg-brand-green px-3 py-1.5 text-xs font-semibold text-brand-black hover:bg-brand-green-dark hover:text-brand-white"
         @click="showAddForm = true"
       >
         + הוסף תרגיל
@@ -531,7 +531,7 @@ async function move(exerciseId, direction) {
           <button
             v-if="!catalogUnavailable && addForm.category"
             type="button"
-            class="self-start text-xs font-medium text-brand-green hover:underline"
+            class="self-start text-xs font-medium text-brand-green-dark hover:underline"
             @click="backToList(addForm)"
           >
             בחר מהרשימה
@@ -600,7 +600,7 @@ async function move(exerciseId, direction) {
         <button
           type="submit"
           :disabled="addingExercise"
-          class="rounded-lg bg-brand-green px-3 py-1.5 text-xs font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+          class="rounded-lg bg-brand-green px-3 py-1.5 text-xs font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white disabled:opacity-60"
         >
           {{ addingExercise ? 'שומר...' : 'שמור תרגיל' }}
         </button>
@@ -681,7 +681,7 @@ async function move(exerciseId, direction) {
                 <button
                   v-if="!catalogUnavailable && editForm.category"
                   type="button"
-                  class="self-start text-xs font-medium text-brand-green hover:underline"
+                  class="self-start text-xs font-medium text-brand-green-dark hover:underline"
                   @click="backToList(editForm)"
                 >
                   בחר מהרשימה
@@ -749,7 +749,7 @@ async function move(exerciseId, direction) {
               <button
                 type="submit"
                 :disabled="savingEdit"
-                class="rounded-lg bg-brand-green px-3 py-1.5 text-xs font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+                class="rounded-lg bg-brand-green px-3 py-1.5 text-xs font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white disabled:opacity-60"
               >
                 {{ savingEdit ? 'שומר...' : 'שמירה' }}
               </button>
@@ -853,7 +853,7 @@ async function move(exerciseId, direction) {
                 {{ exercisesStore.videoUrlErrorFor(exercise.id) || 'לא ניתן להפעיל את הסרטון כרגע.' }}
                 <button
                   type="button"
-                  class="font-medium text-brand-green hover:underline"
+                  class="font-medium text-brand-green-dark hover:underline"
                   @click="retryVideoLoad(exercise)"
                 >
                   נסה שוב
@@ -905,7 +905,7 @@ async function move(exerciseId, direction) {
               <button
                 type="button"
                 :disabled="videoBusyId === exercise.id"
-                class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md bg-brand-green px-2 py-1 text-xs font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+                class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md bg-brand-green px-2 py-1 text-xs font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white disabled:opacity-60"
                 @click="confirmReplaceVideo(exercise)"
               >
                 {{ videoBusyId === exercise.id ? 'מעלה...' : 'כן, החלף' }}
@@ -958,7 +958,7 @@ async function move(exerciseId, direction) {
                   class="rounded-full px-2 py-0.5 text-xs font-medium"
                   :class="
                     submissionsStore.submissionFor(exercise.id).reviewed_at
-                      ? 'bg-brand-green/10 text-brand-green'
+                      ? 'bg-brand-green/10 text-brand-green-dark'
                       : 'bg-status-red/10 text-status-red'
                   "
                 >
@@ -981,7 +981,7 @@ async function move(exerciseId, direction) {
                 {{ submissionsStore.videoUrlErrorFor(exercise.id) || 'לא ניתן להפעיל את הסרטון כרגע.' }}
                 <button
                   type="button"
-                  class="font-medium text-brand-green hover:underline"
+                  class="font-medium text-brand-green-dark hover:underline"
                   @click="retrySubmissionVideoLoad(exercise, submissionsStore.submissionFor(exercise.id).storage_path)"
                 >
                   נסה שוב

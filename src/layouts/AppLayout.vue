@@ -7,7 +7,7 @@ const isSidebarOpen = ref(false)
 </script>
 
 <template>
-  <div class="min-h-screen bg-neutral-100">
+  <div class="coach-portal min-h-screen bg-neutral-100">
     <TheHeader @toggle-sidebar="isSidebarOpen = !isSidebarOpen" />
 
     <TheSidebar :open="isSidebarOpen" @close="isSidebarOpen = false" />

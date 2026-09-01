@@ -357,7 +357,7 @@ async function handleDelete(logId) {
       <button
         v-if="!showAddEntry"
         type="button"
-        class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark"
+        class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white"
         @click="showAddEntry = true"
       >
         הוסף מאכל
@@ -377,7 +377,7 @@ async function handleDelete(logId) {
             :class="[
               'rounded-lg border px-3 py-1.5 text-sm font-medium',
               entrySource === 'regular'
-                ? 'border-brand-green bg-brand-green text-brand-white'
+                ? 'border-brand-green bg-brand-green text-brand-black'
                 : 'border-neutral-300 text-brand-black hover:bg-neutral-100',
             ]"
             @click="setEntrySource('regular')"
@@ -389,7 +389,7 @@ async function handleDelete(logId) {
             :class="[
               'rounded-lg border px-3 py-1.5 text-sm font-medium',
               entrySource === 'restaurant'
-                ? 'border-brand-green bg-brand-green text-brand-white'
+                ? 'border-brand-green bg-brand-green text-brand-black'
                 : 'border-neutral-300 text-brand-black hover:bg-neutral-100',
             ]"
             @click="setEntrySource('restaurant')"
@@ -641,7 +641,7 @@ async function handleDelete(logId) {
         <button
           type="submit"
           :disabled="addingEntry"
-          class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+          class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white disabled:opacity-60"
         >
           {{ addingEntry ? 'שומר...' : 'שמור' }}
         </button>

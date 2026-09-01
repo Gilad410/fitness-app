@@ -27,7 +27,7 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <section class="mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-6 p-6">
+  <section class="coach-portal mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-6 bg-brand-white p-6">
     <h1 class="text-2xl font-bold text-brand-black">התחברות</h1>
 
     <form class="flex flex-col gap-4" @submit.prevent="handleSubmit">
@@ -97,7 +97,7 @@ async function handleSubmit() {
       <button
         type="submit"
         :disabled="loading"
-        class="rounded-lg bg-brand-green px-4 py-2 font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+        class="rounded-lg bg-brand-green px-4 py-2 font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white disabled:opacity-60"
       >
         {{ loading ? 'מתחבר...' : 'התחברות' }}
       </button>
@@ -109,7 +109,7 @@ async function handleSubmit() {
     so there is nothing useful to route a stranger into. -->
     <p class="text-sm text-neutral-600">
       מתאמן/ת שקיבל/ה הזמנה מהמאמן/ת?
-      <RouterLink to="/trainee/login" class="text-brand-green hover:underline">כניסת מתאמנים</RouterLink>
+      <RouterLink to="/trainee/login" class="text-brand-green-dark hover:underline">כניסת מתאמנים</RouterLink>
     </p>
   </section>
 </template>

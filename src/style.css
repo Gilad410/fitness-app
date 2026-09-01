@@ -28,3 +28,24 @@ body {
   color: var(--color-brand-black);
   background: var(--color-brand-white);
 }
+
+/*
+ * Coach portal color refresh (color-only).
+ * Scoped to `.coach-portal` (the coach AppLayout root, plus the standalone
+ * coach login/signup screens) so every Tailwind utility that already
+ * references these same custom properties (bg-brand-green, text-brand-black,
+ * border-neutral-300, ...) picks up the new palette automatically for coach
+ * screens only. CSS custom properties cascade through the DOM tree, so the
+ * trainee portal -- which never renders inside an element carrying this
+ * class -- keeps resolving the original values above, untouched.
+ */
+.coach-portal {
+  --color-brand-black: #0d1210; /* header / near-black, also main text */
+  --color-brand-green: #39d477; /* primary athletic green */
+  --color-brand-green-dark: #168345; /* dark green: readable text + hover states */
+  --color-neutral-600: #69766e; /* secondary text */
+  --color-neutral-500: #69766e; /* secondary text (small captions) */
+  --color-neutral-300: #dbe4de; /* borders */
+  --color-neutral-100: #f4f7f5; /* main page background / soft neutral surfaces */
+  --color-neutral-50: #f4f7f5; /* soft neutral surface (dashed callout boxes) */
+}

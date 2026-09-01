@@ -33,7 +33,7 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <section class="mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-6 p-6">
+  <section class="coach-portal mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-6 bg-brand-white p-6">
     <h1 class="text-2xl font-bold text-brand-black">הרשמה</h1>
 
     <p v-if="confirmationSent" class="text-neutral-600">
@@ -108,7 +108,7 @@ async function handleSubmit() {
       <button
         type="submit"
         :disabled="loading"
-        class="rounded-lg bg-brand-green px-4 py-2 font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+        class="rounded-lg bg-brand-green px-4 py-2 font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white disabled:opacity-60"
       >
         {{ loading ? 'נרשם...' : 'הרשמה' }}
       </button>
@@ -116,7 +116,7 @@ async function handleSubmit() {
 
     <p class="text-sm text-neutral-600">
       כבר יש לך חשבון?
-      <RouterLink to="/login" class="text-brand-green hover:underline">התחברות</RouterLink>
+      <RouterLink to="/login" class="text-brand-green-dark hover:underline">התחברות</RouterLink>
     </p>
   </section>
 </template>

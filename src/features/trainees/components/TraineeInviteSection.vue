@@ -33,7 +33,7 @@ const statusLabel = computed(() => {
 
 const statusClass = computed(() => {
   if (props.trainee.invite_status === 'invited') return 'bg-status-yellow/10 text-status-yellow'
-  if (props.trainee.invite_status === 'accepted') return 'bg-brand-green/10 text-brand-green'
+  if (props.trainee.invite_status === 'accepted') return 'bg-brand-green/10 text-brand-green-dark'
   return 'bg-neutral-100 text-neutral-600'
 })
 
@@ -111,7 +111,7 @@ async function copyLink() {
         <button
           type="button"
           :disabled="!hasEmail || invitesStore.issuing"
-          class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:cursor-not-allowed disabled:opacity-60"
+          class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white disabled:cursor-not-allowed disabled:opacity-60"
           @click="handleIssue"
         >
           {{ invitesStore.issuing ? 'שולח הזמנה...' : 'הזמן מתאמן' }}

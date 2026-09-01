@@ -10,7 +10,7 @@ const labels = {
 }
 
 const classes = {
-  active: 'bg-brand-green/10 text-brand-green',
+  active: 'bg-brand-green/10 text-brand-green-dark',
   paused: 'bg-status-yellow/10 text-status-yellow',
   archived: 'bg-neutral-100 text-neutral-600',
 }

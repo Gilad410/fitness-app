@@ -90,6 +90,7 @@ const cards = computed(() => [
       <DashboardCard
         v-for="card in cards"
         :key="card.title"
+        tone="coach"
         :title="card.title"
         :description="card.description"
         :icon="card.icon"
