@@ -30,22 +30,77 @@ body {
 }
 
 /*
- * Coach portal color refresh (color-only).
- * Scoped to `.coach-portal` (the coach AppLayout root, plus the standalone
- * coach login/signup screens) so every Tailwind utility that already
- * references these same custom properties (bg-brand-green, text-brand-black,
- * border-neutral-300, ...) picks up the new palette automatically for coach
- * screens only. CSS custom properties cascade through the DOM tree, so the
- * trainee portal -- which never renders inside an element carrying this
- * class -- keeps resolving the original values above, untouched.
+ * "Electric Coach" visual system -- the approved shared design for both
+ * portals. Scoped to `.coach-portal` (coach AppLayout root, plus the
+ * standalone coach login/signup screens) and `.trainee-portal` (trainee
+ * TraineeLayout root, plus the trainee login/join screens) so every
+ * Tailwind utility already used throughout both portals (bg-brand-green,
+ * text-brand-black, border-neutral-300, bg-status-red, DashboardCard.vue,
+ * forms, buttons, badges, ...) picks up this palette automatically -- no
+ * feature view or shared component needs to change. CSS custom properties
+ * cascade through the DOM tree, so anything rendered outside either scope
+ * (there currently isn't anything) would keep resolving Tailwind's plain
+ * defaults, untouched.
+ *
+ * Navy header + primary text, pale lavender page background, white
+ * surfaces, blue as the primary accent and violet as the secondary one;
+ * red (`--color-status-red`) is reserved for notifications/warnings, never
+ * used as a general accent.
+ *
+ * `--ec-violet`/`--ec-mint` are roles this palette adds (vivid violet +
+ * a distinct positive-progress green) that don't have an existing
+ * --color-* slot to reuse; kept as their own small namespace and used only
+ * by the handful of surfaces that need them (the mobile bottom nav's Add
+ * button and the progress chart's logged-weight line -- see
+ * TraineeProgressSection.vue).
  */
-.coach-portal {
-  --color-brand-black: #0d1210; /* header / near-black, also main text */
-  --color-brand-green: #39d477; /* primary athletic green */
-  --color-brand-green-dark: #168345; /* dark green: readable text + hover states */
-  --color-neutral-600: #69766e; /* secondary text */
-  --color-neutral-500: #69766e; /* secondary text (small captions) */
-  --color-neutral-300: #dbe4de; /* borders */
-  --color-neutral-100: #f4f7f5; /* main page background / soft neutral surfaces */
-  --color-neutral-50: #f4f7f5; /* soft neutral surface (dashed callout boxes) */
+.coach-portal,
+.trainee-portal {
+  --color-brand-black: #12153a; /* primary text; also the header's navy bg */
+  --color-brand-green: #2f6fed; /* electric blue -- primary accent (buttons, active nav, links) */
+  --color-brand-green-dark: #1d4ed8; /* darker blue -- hover states, high-contrast text-on-tint */
+  --color-neutral-600: #5b6178; /* secondary text */
+  --color-neutral-500: #5b6178; /* secondary text (small captions) */
+  --color-neutral-300: #e2e5f5; /* soft borders */
+  --color-neutral-100: #eef0fb; /* light lavender page background */
+  --color-neutral-50: #eef0fb; /* soft neutral surface (dashed callout boxes) */
+  --color-status-red: #d1402f; /* coral -- reserved for notifications/warnings */
+  /* --color-status-yellow intentionally left at its default (#d97706):
+     not part of the requested palette, and changing it would blur its
+     existing distinct "pending/caution" meaning from the coral above. */
+
+  --ec-violet: #8b5cf6; /* vivid violet -- secondary accent (Add button gradient) */
+  --ec-mint: #17b892; /* mint -- positive progress (progress chart trend line) */
+}
+
+/*
+ * Responsive navigation, shared by both portals: a phone-sized touch
+ * viewport gets a fixed bottom nav (TheBottomNavElectric.vue /
+ * TraineeBottomNavElectric.vue) instead of the top-right hamburger that
+ * opens the existing off-canvas drawer (TheHeader+TheSidebar /
+ * TraineeHeader+TraineeSidebar). Both viewport width AND pointer/hover
+ * capability are required -- not user-agent sniffing -- so a narrow
+ * desktop browser window with a mouse still keeps the familiar hamburger
+ * menu instead of being treated as a phone.
+ */
+.coach-portal .ec-bottom-nav,
+.trainee-portal .ec-bottom-nav {
+  display: none;
+}
+
+@media (max-width: 640px) and (pointer: coarse) {
+  .coach-portal .ec-menu-trigger,
+  .trainee-portal .ec-menu-trigger {
+    display: none;
+  }
+  .coach-portal .ec-bottom-nav,
+  .trainee-portal .ec-bottom-nav {
+    display: block;
+  }
+  /* Keeps page content clear of the fixed bottom nav, sized for its own
+     height plus the device's safe-area inset (notch/home-indicator). */
+  .coach-portal .ec-main,
+  .trainee-portal .ec-main {
+    padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+  }
 }

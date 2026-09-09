@@ -34,7 +34,9 @@ onMounted(async () => {
 
 const logs = computed(() => progressLogsStore.logsFor(props.trainee.id))
 const ascendingLogs = computed(() => progressLogsStore.ascendingLogsFor(props.trainee.id))
-const currentWeight = computed(() => progressLogsStore.latestLogFor(props.trainee.id)?.weight ?? null)
+const currentWeight = computed(
+  () => progressLogsStore.latestLogFor(props.trainee.id)?.weight ?? null,
+)
 
 function todayIsoDate() {
   return new Date().toISOString().slice(0, 10)
@@ -92,8 +94,7 @@ const chart = computed(() => {
   const timeSpan = maxTime - minTime || 1
   const weightSpan = maxWeight - minWeight || 1
 
-  const toX = (t) =>
-    CHART_PADDING + ((t - minTime) / timeSpan) * (CHART_WIDTH - 2 * CHART_PADDING)
+  const toX = (t) => CHART_PADDING + ((t - minTime) / timeSpan) * (CHART_WIDTH - 2 * CHART_PADDING)
   const toY = (w) =>
     CHART_PADDING + (1 - (w - minWeight) / weightSpan) * (CHART_HEIGHT - 2 * CHART_PADDING)
 
@@ -142,7 +143,9 @@ async function confirmDelete(logId) {
 </script>
 
 <template>
-  <div class="mt-8 flex flex-col gap-4 rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm sm:p-6">
+  <div
+    class="mt-8 flex flex-col gap-4 rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm sm:p-6"
+  >
     <div class="flex flex-wrap items-center justify-between gap-4">
       <h2 class="font-semibold text-brand-black">היסטוריית התקדמות</h2>
       <button
@@ -185,14 +188,14 @@ async function confirmDelete(logId) {
             :x2="CHART_WIDTH"
             :y1="chart.targetY"
             :y2="chart.targetY"
-            stroke="#d97706"
+            stroke="var(--color-status-yellow)"
             stroke-width="1"
             stroke-dasharray="4 3"
           />
           <polyline
             :points="chart.linePoints"
             fill="none"
-            stroke="#168345"
+            stroke="var(--ec-mint, var(--color-brand-green-dark))"
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"

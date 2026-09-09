@@ -48,7 +48,7 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <section class="mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-6 p-6">
+  <section class="trainee-portal mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-6 bg-brand-white p-6">
     <h1 class="text-2xl font-bold text-brand-black">כניסת מתאמנים</h1>
 
     <p

@@ -236,14 +236,14 @@ async function confirmDelete(logId) {
                 :x2="CHART_WIDTH"
                 :y1="chart.targetY"
                 :y2="chart.targetY"
-                stroke="#d97706"
+                stroke="var(--color-status-yellow)"
                 stroke-width="1"
                 stroke-dasharray="4 3"
               />
               <polyline
                 :points="chart.linePoints"
                 fill="none"
-                stroke="#16a34a"
+                stroke="var(--ec-mint, var(--color-brand-green-dark))"
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"

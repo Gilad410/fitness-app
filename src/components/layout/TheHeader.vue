@@ -18,9 +18,14 @@ async function handleLogout() {
     class="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-neutral-300 bg-brand-black px-4 sm:px-6"
   >
     <div class="flex items-center gap-3">
+      <!--
+        `ec-menu-trigger` (see style.css) hides this on phone-sized touch
+        viewports in favor of TheBottomNavElectric.vue; on desktop/tablet
+        it opens the existing right-hand drawer (TheSidebar.vue).
+      -->
       <button
         type="button"
-        class="rounded-md p-2.5 text-brand-white hover:bg-white/10"
+        class="ec-menu-trigger rounded-md p-2.5 text-brand-white hover:bg-white/10"
         aria-label="פתיחת תפריט ניווט"
         @click="$emit('toggle-sidebar')"
       >
@@ -43,13 +48,14 @@ async function handleLogout() {
       <span class="text-lg font-bold text-brand-white">ניהול כושר</span>
     </div>
 
-    <div class="flex items-center gap-3 sm:gap-4">
+    <div class="flex items-center gap-2 sm:gap-4">
       <span class="hidden max-w-[12rem] truncate text-sm text-neutral-300 sm:inline">
         {{ authStore.user?.email }}
       </span>
+
       <button
         type="button"
-        class="inline-flex min-h-11 items-center justify-center rounded-lg border border-neutral-600 px-3 py-1.5 text-sm font-medium text-brand-white transition-colors hover:border-brand-green hover:text-brand-green"
+        class="inline-flex min-h-11 shrink-0 items-center justify-center rounded-full border border-neutral-600 px-3 py-1.5 text-sm font-medium text-brand-white transition-colors hover:border-brand-green hover:text-brand-green"
         @click="handleLogout"
       >
         התנתקות

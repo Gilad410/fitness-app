@@ -3,10 +3,11 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../../stores/auth'
 import { useTraineeProfileStore } from '../store/traineeProfile'
 
-// Mirrors src/components/layout/TheHeader.vue's structure/branding
-// (same sticky black bar, same hamburger-to-toggle-sidebar pattern) but is
-// its own component with no import of anything coach-side, so the trainee
-// area can never accidentally pull in coach chrome.
+// Mirrors src/components/layout/TheHeader.vue's structure/branding/visual
+// design (same sticky navy bar, same hamburger-to-toggle-sidebar pattern,
+// same `.trainee-portal` scoped palette -- see style.css) but is its own
+// component with no import of anything coach-side, so the trainee area can
+// never accidentally pull in coach chrome.
 defineEmits(['toggle-sidebar'])
 
 const authStore = useAuthStore()
@@ -24,9 +25,15 @@ async function handleLogout() {
     class="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-neutral-300 bg-brand-black px-4 sm:px-6"
   >
     <div class="flex items-center gap-3">
+      <!--
+        `ec-menu-trigger` (see style.css) hides this on phone-sized touch
+        viewports in favor of TraineeBottomNavElectric.vue; on
+        desktop/tablet it opens the existing right-hand drawer
+        (TraineeSidebar.vue).
+      -->
       <button
         type="button"
-        class="rounded-md p-2.5 text-brand-white hover:bg-white/10"
+        class="ec-menu-trigger rounded-md p-2.5 text-brand-white hover:bg-white/10"
         aria-label="פתיחת תפריט ניווט"
         @click="$emit('toggle-sidebar')"
       >
@@ -66,7 +73,7 @@ async function handleLogout() {
       </div>
       <button
         type="button"
-        class="inline-flex min-h-11 items-center justify-center rounded-lg border border-neutral-600 px-3 py-1.5 text-sm font-medium text-brand-white transition-colors hover:border-brand-green hover:text-brand-green"
+        class="inline-flex min-h-11 shrink-0 items-center justify-center rounded-full border border-neutral-600 px-3 py-1.5 text-sm font-medium text-brand-white transition-colors hover:border-brand-green hover:text-brand-green"
         @click="handleLogout"
       >
         התנתקות
