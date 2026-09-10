@@ -31,6 +31,13 @@ const logNote = ref('')
 
 const confirmDeleteId = ref(null)
 
+// Weight values/comparisons/chart/history are sensitive -- hidden behind
+// one explicit "הצג נתוני משקל" click, rather than shown immediately on
+// page load. Purely a display gate: data still loads as before, and
+// adding a new measurement works regardless of this flag (its own
+// showAddMeasurement toggle/button/form are unaffected).
+const weightRevealed = ref(false)
+
 onMounted(async () => {
   try {
     await Promise.all([progressLogsStore.ensureLoaded(), profileStore.fetchProfile()])
@@ -178,10 +185,22 @@ async function confirmDelete(logId) {
       </div>
 
       <template v-else>
+        <button
+          v-if="!weightRevealed"
+          type="button"
+          class="mb-6 rounded-lg border border-neutral-300 bg-brand-white px-4 py-2 text-sm font-medium text-brand-black shadow-sm hover:bg-neutral-100"
+          @click="weightRevealed = true"
+        >
+          הצג נתוני משקל
+        </button>
+
         <!-- Target weight -- prominently shown at the top, independent of
         whether any progress logs exist yet, since it's read from the
         trainee's own profile (useTraineeProfileStore), not from history. -->
-        <section class="mb-6 rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm sm:p-6">
+        <section
+          v-if="weightRevealed"
+          class="mb-6 rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm sm:p-6"
+        >
           <h2 class="mb-4 font-semibold text-brand-black">משקל יעד</h2>
           <div v-if="profile?.target_weight" class="grid grid-cols-2 gap-4 sm:grid-cols-3">
             <div>
@@ -209,7 +228,7 @@ async function confirmDelete(logId) {
             </button>
           </div>
 
-          <div v-if="currentWeight !== null" class="grid grid-cols-2 gap-4 sm:grid-cols-3">
+          <div v-if="weightRevealed && currentWeight !== null" class="grid grid-cols-2 gap-4 sm:grid-cols-3">
             <div>
               <dt class="text-sm text-neutral-600">משקל נוכחי</dt>
               <dd class="text-lg font-semibold text-brand-black">{{ currentWeight }} ק"ג</dd>
@@ -224,7 +243,7 @@ async function confirmDelete(logId) {
             </div>
           </div>
 
-          <div v-if="chart" dir="ltr" class="rounded-xl border border-neutral-300 p-3">
+          <div v-if="weightRevealed && chart" dir="ltr" class="rounded-xl border border-neutral-300 p-3">
             <svg
               :viewBox="`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`"
               preserveAspectRatio="none"
@@ -315,9 +334,11 @@ async function confirmDelete(logId) {
             {{ progressLogsStore.deleteError }}
           </p>
 
-          <p v-if="logs.length === 0" class="text-sm text-neutral-600">אין עדיין מדידות.</p>
+          <p v-if="weightRevealed && logs.length === 0" class="text-sm text-neutral-600">
+            אין עדיין מדידות.
+          </p>
 
-          <ul v-else class="flex flex-col gap-3">
+          <ul v-else-if="weightRevealed" class="flex flex-col gap-3">
             <li
               v-for="log in logs"
               :key="log.id"

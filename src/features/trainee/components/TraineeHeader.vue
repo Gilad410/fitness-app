@@ -2,6 +2,7 @@
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../../stores/auth'
 import { useTraineeProfileStore } from '../store/traineeProfile'
+import { useTraineeNutritionPlanStore } from '../store/traineeNutritionPlan'
 
 // Mirrors src/components/layout/TheHeader.vue's structure/branding/visual
 // design (same sticky navy bar, same hamburger-to-toggle-sidebar pattern,
@@ -12,10 +13,16 @@ defineEmits(['toggle-sidebar'])
 
 const authStore = useAuthStore()
 const profileStore = useTraineeProfileStore()
+const nutritionPlanStore = useTraineeNutritionPlanStore()
 const router = useRouter()
 
 async function handleLogout() {
   await authStore.signOut()
+  // Explicit clear of sensitive per-account cached state -- see
+  // traineeNutritionPlan.js's reset()/traineeNutritionPlanCore.js for why
+  // this is a belt-and-suspenders addition on top of (not a replacement
+  // for) that store's own lazy per-access isolation.
+  nutritionPlanStore.reset()
   router.push('/trainee/login')
 }
 </script>

@@ -5,6 +5,7 @@ import AppLayout from '../../../layouts/AppLayout.vue'
 import BackLink from '../../../components/layout/BackLink.vue'
 import TraineeStatusBadge from '../../trainees/components/TraineeStatusBadge.vue'
 import NutritionSection from '../components/NutritionSection.vue'
+import NutritionPlanSection from '../components/NutritionPlanSection.vue'
 import { useTraineesStore } from '../../trainees/store/trainees'
 
 // Per-trainee nutrition workspace, reached from the "תזונה" main area
@@ -42,6 +43,7 @@ const trainee = computed(() => traineesStore.getById(route.params.id))
           <TraineeStatusBadge :status="trainee.status" />
         </div>
 
+        <NutritionPlanSection :trainee-id="trainee.id" />
         <NutritionSection :trainee-id="trainee.id" />
       </template>
     </section>

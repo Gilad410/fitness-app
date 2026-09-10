@@ -9,10 +9,17 @@ import IconBell from '../../../components/icons/IconBell.vue'
 import { useAuthStore } from '../../../stores/auth'
 import { useTraineesStore } from '../../trainees/store/trainees'
 import { useAlertsStore } from '../../alerts/store/alerts'
+import { resolveDisplayName } from '../../../lib/displayName'
 
 const authStore = useAuthStore()
 const traineesStore = useTraineesStore()
 const alertsStore = useAlertsStore()
+
+// Display name for the dashboard greeting -- never the account's raw
+// email. See src/lib/displayName.js (and its own test file) for the exact
+// fallback order and edge cases -- pulled out as a pure function so it's
+// unit-testable without a Vue test harness this repo doesn't have.
+const displayName = computed(() => resolveDisplayName(authStore.user))
 
 onMounted(async () => {
   try {
@@ -78,7 +85,7 @@ const cards = computed(() => [
   <AppLayout>
     <section class="mb-6 sm:mb-8">
       <h1 class="text-2xl font-bold text-brand-black sm:text-3xl">
-        ברוך הבא{{ authStore.user?.email ? `, ${authStore.user.email}` : '' }}
+        ברוך הבא{{ displayName ? `, ${displayName}` : '' }}
       </h1>
       <p class="mt-1 text-sm text-neutral-600">{{ today }}</p>
     </section>

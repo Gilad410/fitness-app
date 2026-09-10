@@ -22,6 +22,15 @@ const confirmDeleteId = ref(null)
 const deletingId = ref(null)
 const deleteError = ref('')
 
+// Weight values/comparisons/chart/history are sensitive -- hidden behind
+// one explicit "הצג נתוני משקל" click for the whole section, rather than
+// shown immediately on page load. Purely a display gate: the data still
+// loads in the background as before (logsChecking/logsError, the chart
+// computed, etc. are all unaffected), and adding a new measurement below
+// works regardless of this flag. Reset per component instance -- a fresh
+// visit to this trainee's page starts hidden again.
+const weightRevealed = ref(false)
+
 onMounted(async () => {
   try {
     await progressLogsStore.ensureLoaded(props.trainee.id)
@@ -160,6 +169,15 @@ async function confirmDelete(logId) {
 
     <p v-if="logsChecking" class="text-sm text-neutral-600">טוען...</p>
 
+    <button
+      v-else-if="!weightRevealed"
+      type="button"
+      class="self-start rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100"
+      @click="weightRevealed = true"
+    >
+      הצג נתוני משקל
+    </button>
+
     <template v-else-if="!logsError">
       <div v-if="currentWeight !== null" class="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <div>
@@ -265,11 +283,14 @@ async function confirmDelete(logId) {
     <p v-if="logsError" class="text-sm text-status-red">{{ logsError }}</p>
     <p v-if="deleteError" class="text-sm text-status-red">{{ deleteError }}</p>
 
-    <p v-if="!logsChecking && !logsError && logs.length === 0" class="text-sm text-neutral-600">
+    <p
+      v-if="weightRevealed && !logsChecking && !logsError && logs.length === 0"
+      class="text-sm text-neutral-600"
+    >
       אין עדיין מדידות.
     </p>
 
-    <ul v-else-if="!logsChecking && !logsError" class="flex flex-col gap-3">
+    <ul v-else-if="weightRevealed && !logsChecking && !logsError" class="flex flex-col gap-3">
       <li
         v-for="log in logs"
         :key="log.id"

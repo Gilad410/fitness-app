@@ -1,6 +1,6 @@
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '../../../stores/auth'
 
 const email = ref('')
@@ -11,6 +11,14 @@ const showPassword = ref(false)
 
 const authStore = useAuthStore()
 const router = useRouter()
+const route = useRoute()
+
+// Set by ResetPasswordView.vue after a successful password reset (sets
+// the new password, signs out, and lands back here) -- confirms it worked
+// rather than leaving the coach to guess.
+const resetMessage = computed(() =>
+  route.query.reset === '1' ? 'הסיסמה עודכנה בהצלחה. ניתן להתחבר כעת.' : '',
+)
 
 async function handleSubmit() {
   error.value = ''
@@ -29,6 +37,13 @@ async function handleSubmit() {
 <template>
   <section class="coach-portal mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-6 bg-brand-white p-6">
     <h1 class="text-2xl font-bold text-brand-black">התחברות</h1>
+
+    <p
+      v-if="resetMessage"
+      class="rounded-lg border border-brand-green/30 bg-brand-green/10 px-3 py-2 text-sm text-brand-black"
+    >
+      {{ resetMessage }}
+    </p>
 
     <form class="flex flex-col gap-4" @submit.prevent="handleSubmit">
       <label class="flex flex-col gap-1">
@@ -91,6 +106,10 @@ async function handleSubmit() {
           </button>
         </div>
       </label>
+
+      <RouterLink to="/forgot-password" class="self-start text-sm text-brand-green-dark hover:underline">
+        שכחת סיסמה?
+      </RouterLink>
 
       <p v-if="error" class="text-sm text-status-red">{{ error }}</p>
 

@@ -52,6 +52,10 @@ function todayIsoDate() {
 const dateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
 
 // ---- Weight summary (reused stores, no duplicated data) ----
+// Hidden behind an explicit click, same as the dedicated weight screens
+// (TraineeProgressSection.vue / TraineeProgressView.vue) -- purely a
+// display gate, the underlying data is unaffected.
+const weightRevealed = ref(false)
 const currentWeight = computed(() => progressLogsStore.latestLog?.weight ?? null)
 const targetWeight = computed(() => profileStore.profile?.target_weight ?? null)
 
@@ -187,6 +191,15 @@ function setFileInputRef(angle, el) {
 
 const confirmDeletePhotoId = ref(null)
 
+// Photos are sensitive -- shown only after an explicit click, per photo,
+// same as the coach's own TraineeProgressPhotosSection.vue. Purely a
+// display gate: upload, delete, and the signed URLs (already fetched into
+// the store regardless) are unaffected.
+const revealedPhotos = reactive({})
+function revealPhoto(photoId) {
+  revealedPhotos[photoId] = true
+}
+
 // Flat rows (one per angle) grouped into date "sessions" for display.
 // photos is already sorted newest-date-first by the store, and Map
 // preserves insertion order, so the grouped list stays in that order too.
@@ -306,10 +319,18 @@ async function confirmDeletePhoto(photo) {
         <!-- Weight summary -- reused from useTraineeProgressLogsStore / useTraineeProfileStore, no new data. -->
         <section
           v-if="currentWeight !== null || targetWeight !== null"
-          class="mb-6 rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm sm:p-6"
+          class="mb-6 flex flex-col gap-4 rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm sm:p-6"
         >
-          <h2 class="mb-4 font-semibold text-brand-black">משקל</h2>
-          <div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
+          <h2 class="font-semibold text-brand-black">משקל</h2>
+          <button
+            v-if="!weightRevealed"
+            type="button"
+            class="self-start rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100"
+            @click="weightRevealed = true"
+          >
+            הצג נתוני משקל
+          </button>
+          <div v-else class="grid grid-cols-2 gap-4 sm:grid-cols-3">
             <div v-if="currentWeight !== null">
               <dt class="text-sm text-neutral-600">משקל נוכחי</dt>
               <dd class="text-lg font-semibold text-brand-black">{{ currentWeight }} ק"ג</dd>
@@ -584,10 +605,19 @@ async function confirmDeletePhoto(photo) {
                 <div v-for="angle in ANGLES" :key="angle.key" class="flex flex-col gap-2">
                   <template v-if="session.byAngle[angle.key]">
                     <img
+                      v-if="revealedPhotos[session.byAngle[angle.key].id]"
                       :src="session.byAngle[angle.key].signedUrl"
                       :alt="angle.label"
                       class="aspect-square w-full rounded-lg border border-neutral-300 object-cover"
                     />
+                    <button
+                      v-else
+                      type="button"
+                      class="flex aspect-square w-full items-center justify-center rounded-lg border border-neutral-300 bg-neutral-100 px-2 text-center text-xs font-medium text-brand-black hover:bg-neutral-200"
+                      @click="revealPhoto(session.byAngle[angle.key].id)"
+                    >
+                      הצג תמונה
+                    </button>
                     <span class="text-center text-xs text-neutral-600">{{ angle.label }}</span>
 
                     <template v-if="confirmDeletePhotoId === session.byAngle[angle.key].id">

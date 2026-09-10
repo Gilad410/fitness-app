@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import DashboardView from '../features/dashboard/views/DashboardView.vue'
 import LoginView from '../features/auth/views/LoginView.vue'
+import ForgotPasswordView from '../features/auth/views/ForgotPasswordView.vue'
+import ResetPasswordView from '../features/auth/views/ResetPasswordView.vue'
 import TraineesListView from '../features/trainees/views/TraineesListView.vue'
 import TraineeFormView from '../features/trainees/views/TraineeFormView.vue'
 import TraineeInviteView from '../features/trainees/views/TraineeInviteView.vue'
@@ -15,6 +17,8 @@ import TrainingProgramDetailView from '../features/training/views/TrainingProgra
 import AlertsView from '../features/alerts/views/AlertsView.vue'
 import TraineeJoinView from '../features/trainee/views/TraineeJoinView.vue'
 import TraineeLoginView from '../features/trainee/views/TraineeLoginView.vue'
+import TraineeForgotPasswordView from '../features/trainee/views/TraineeForgotPasswordView.vue'
+import TraineeResetPasswordView from '../features/trainee/views/TraineeResetPasswordView.vue'
 import TraineeHomeView from '../features/trainee/views/TraineeHomeView.vue'
 import TraineeNotificationsView from '../features/trainee/views/TraineeNotificationsView.vue'
 import TraineeTrainingView from '../features/trainee/views/TraineeTrainingView.vue'
@@ -45,6 +49,13 @@ const router = createRouter({
       meta: { requiresAuth: true, requiresRole: 'coach' },
     },
     { path: '/login', name: 'login', component: LoginView, meta: { guestOnly: true } },
+    // Both public (no requiresAuth/guestOnly) -- forgot-password must work
+    // for an anonymous visitor by definition, and reset-password's own
+    // session comes from a fresh recovery-link click (or doesn't exist at
+    // all, e.g. an expired link), never from the normal auth flow this
+    // guard otherwise governs. Same reasoning as /trainee/join above.
+    { path: '/forgot-password', name: 'forgot-password', component: ForgotPasswordView },
+    { path: '/reset-password', name: 'reset-password', component: ResetPasswordView },
     {
       path: '/trainees',
       name: 'trainees',
@@ -145,6 +156,16 @@ const router = createRouter({
       name: 'trainee-login',
       component: TraineeLoginView,
       meta: { guestOnly: true },
+    },
+    {
+      path: '/trainee/forgot-password',
+      name: 'trainee-forgot-password',
+      component: TraineeForgotPasswordView,
+    },
+    {
+      path: '/trainee/reset-password',
+      name: 'trainee-reset-password',
+      component: TraineeResetPasswordView,
     },
     {
       path: '/trainee',

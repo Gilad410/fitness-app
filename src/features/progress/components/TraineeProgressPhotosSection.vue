@@ -29,6 +29,19 @@ const confirmDeleteId = ref(null)
 const deletingId = ref(null)
 const deleteError = ref('')
 
+// Photos are sensitive -- shown only after an explicit click, per photo,
+// rather than immediately on page load. Keyed by photo id (not angle/date)
+// so revealing one photo never reveals another; reset per component
+// instance (a fresh visit to this trainee's page starts hidden again).
+// Purely a display gate -- upload, delete, and the underlying signed URLs
+// (already fetched into the store regardless, same as before) are
+// unaffected; this only controls whether the <img> for an already-loaded
+// photo is rendered.
+const revealed = reactive({})
+function revealPhoto(photoId) {
+  revealed[photoId] = true
+}
+
 onMounted(async () => {
   try {
     await progressPhotosStore.ensureLoaded(props.trainee.id)
@@ -244,10 +257,19 @@ async function confirmDelete(photo) {
           <div v-for="angle in ANGLES" :key="angle.key" class="flex flex-col gap-2">
             <template v-if="session.byAngle[angle.key]">
               <img
+                v-if="revealed[session.byAngle[angle.key].id]"
                 :src="session.byAngle[angle.key].signedUrl"
                 :alt="angle.label"
                 class="aspect-square w-full rounded-lg border border-neutral-300 object-cover"
               />
+              <button
+                v-else
+                type="button"
+                class="flex aspect-square w-full items-center justify-center rounded-lg border border-neutral-300 bg-neutral-100 px-2 text-center text-xs font-medium text-brand-black hover:bg-neutral-200"
+                @click="revealPhoto(session.byAngle[angle.key].id)"
+              >
+                הצג תמונה
+              </button>
               <span class="text-center text-xs text-neutral-600">{{ angle.label }}</span>
 
               <template v-if="confirmDeleteId === session.byAngle[angle.key].id">

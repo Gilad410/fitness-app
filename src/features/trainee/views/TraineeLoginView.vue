@@ -38,6 +38,11 @@ const onboardedMessage = computed(() =>
   route.query.onboarded === '1' ? 'החשבון הוגדר בהצלחה. ניתן להתחבר כעת.' : '',
 )
 
+// Set by TraineeResetPasswordView.vue after a successful password reset.
+const resetMessage = computed(() =>
+  route.query.reset === '1' ? 'הסיסמה עודכנה בהצלחה. ניתן להתחבר כעת.' : '',
+)
+
 // signInWithRoleCheck() requires the resolved role to be 'trainee' --
 // a coach account (or one with no role at all) is signed back out and
 // rejected with a clear Hebrew error before ever reaching /trainee.
@@ -64,6 +69,13 @@ async function handleSubmit() {
       class="rounded-lg border border-brand-green/30 bg-brand-green/10 px-3 py-2 text-sm text-brand-green-dark"
     >
       {{ onboardedMessage }}
+    </p>
+
+    <p
+      v-if="resetMessage"
+      class="rounded-lg border border-brand-green/30 bg-brand-green/10 px-3 py-2 text-sm text-brand-green-dark"
+    >
+      {{ resetMessage }}
     </p>
 
     <p
@@ -134,6 +146,13 @@ async function handleSubmit() {
           </button>
         </div>
       </label>
+
+      <RouterLink
+        to="/trainee/forgot-password"
+        class="self-start text-sm text-brand-green-dark hover:underline"
+      >
+        שכחת סיסמה?
+      </RouterLink>
 
       <p v-if="error" class="text-sm text-status-red">{{ error }}</p>
 

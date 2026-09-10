@@ -4,6 +4,7 @@ import TraineeLayout from '../layouts/TraineeLayout.vue'
 import ExternalChainLink from '../../nutrition/components/ExternalChainLink.vue'
 import { externalChainLinks } from '../../nutrition/config/externalChainLinks'
 import { useTraineeNutritionStore } from '../store/traineeNutrition'
+import TraineeNutritionPlanSection from '../components/TraineeNutritionPlanSection.vue'
 import { useFoodsStore } from '../../nutrition/store/foods'
 import { useFoodReferenceCatalogStore } from '../../nutrition/store/foodReferenceCatalog'
 import { useRestaurantFoodItemsStore } from '../../nutrition/store/restaurantFoodItems'
@@ -319,6 +320,8 @@ function entryQuantityLabel(log) {
       </div>
 
       <template v-else>
+        <TraineeNutritionPlanSection />
+
         <section class="mb-6 flex flex-col gap-4 rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm sm:p-6">
           <div class="flex flex-wrap items-end justify-between gap-4">
             <label class="flex flex-col gap-1">
