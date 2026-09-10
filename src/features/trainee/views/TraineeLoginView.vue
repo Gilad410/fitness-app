@@ -30,6 +30,14 @@ const inactiveMessage = computed(() => {
   return ''
 })
 
+// Set by TraineeJoinView.vue after the trainee finishes onboarding from
+// the coach's invite email (chooses a password, is signed out, and lands
+// back here) -- confirms the account is ready rather than leaving them to
+// guess whether it worked.
+const onboardedMessage = computed(() =>
+  route.query.onboarded === '1' ? 'החשבון הוגדר בהצלחה. ניתן להתחבר כעת.' : '',
+)
+
 // signInWithRoleCheck() requires the resolved role to be 'trainee' --
 // a coach account (or one with no role at all) is signed back out and
 // rejected with a clear Hebrew error before ever reaching /trainee.
@@ -50,6 +58,13 @@ async function handleSubmit() {
 <template>
   <section class="trainee-portal mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-6 bg-brand-white p-6">
     <h1 class="text-2xl font-bold text-brand-black">כניסת מתאמנים</h1>
+
+    <p
+      v-if="onboardedMessage"
+      class="rounded-lg border border-brand-green/30 bg-brand-green/10 px-3 py-2 text-sm text-brand-green-dark"
+    >
+      {{ onboardedMessage }}
+    </p>
 
     <p
       v-if="inactiveMessage"

@@ -32,12 +32,20 @@ const filteredTrainees = computed(() => {
     <div class="mx-auto max-w-lg">
       <section class="mb-6 flex flex-wrap items-center justify-between gap-4 sm:mb-8">
         <h1 class="text-2xl font-bold text-brand-black sm:text-3xl">מתאמנים</h1>
-        <RouterLink
-          to="/trainees/new"
-          class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white"
-        >
-          הוסף מתאמן
-        </RouterLink>
+        <div class="flex flex-wrap gap-3">
+          <RouterLink
+            to="/trainees/invite"
+            class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white"
+          >
+            הזמן מתאמן
+          </RouterLink>
+          <RouterLink
+            to="/trainees/new"
+            class="inline-flex min-h-11 items-center justify-center rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100"
+          >
+            הוסף מתאמן
+          </RouterLink>
+        </div>
       </section>
 
       <p v-if="traineesStore.loading && !traineesStore.loaded" class="text-neutral-600">

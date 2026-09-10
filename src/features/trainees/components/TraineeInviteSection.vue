@@ -216,7 +216,7 @@ async function copyLink() {
       class="flex flex-col gap-2 rounded-xl border border-brand-green/30 bg-brand-green/5 p-4"
     >
       <p class="text-sm font-medium text-brand-black">
-        ההזמנה נוצרה. יש להעביר את הקישור למתאמן/ת (לא נשלח מייל אוטומטית):
+        נשלחה הזמנה במייל אל {{ trainee.email }}. אפשר גם להעביר את הקישור הבא ידנית במידת הצורך:
       </p>
       <div class="flex flex-wrap items-center gap-2">
         <code

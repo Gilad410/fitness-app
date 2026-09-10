@@ -3,6 +3,7 @@ import DashboardView from '../features/dashboard/views/DashboardView.vue'
 import LoginView from '../features/auth/views/LoginView.vue'
 import TraineesListView from '../features/trainees/views/TraineesListView.vue'
 import TraineeFormView from '../features/trainees/views/TraineeFormView.vue'
+import TraineeInviteView from '../features/trainees/views/TraineeInviteView.vue'
 import TraineeDetailView from '../features/trainees/views/TraineeDetailView.vue'
 import NutritionTraineesListView from '../features/nutrition/views/NutritionTraineesListView.vue'
 import NutritionWorkspaceView from '../features/nutrition/views/NutritionWorkspaceView.vue'
@@ -54,6 +55,16 @@ const router = createRouter({
       path: '/trainees/new',
       name: 'trainee-new',
       component: TraineeFormView,
+      meta: { requiresAuth: true, requiresRole: 'coach' },
+    },
+    // Declared before /trainees/:id (a static segment always outranks a
+    // dynamic one in vue-router 4's matcher, but /trainees/new above
+    // already established the convention of listing the static route
+    // first anyway) so this never gets swallowed as :id === 'invite'.
+    {
+      path: '/trainees/invite',
+      name: 'trainee-invite',
+      component: TraineeInviteView,
       meta: { requiresAuth: true, requiresRole: 'coach' },
     },
     {

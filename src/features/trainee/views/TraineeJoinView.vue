@@ -1,7 +1,8 @@
 <script setup>
-import { computed, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed, onMounted, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '../../../stores/auth'
+import { supabase } from '../../../lib/supabaseClient'
 
 // Minimum password length -- mirrors src/features/auth/views/SignupView.vue's
 // existing `minlength="6"`, i.e. the same Supabase project password
@@ -12,6 +13,7 @@ const MIN_PASSWORD_LENGTH = 6
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 const route = useRoute()
+const router = useRouter()
 const authStore = useAuthStore()
 
 // route.query.token can be undefined, a string, or (if the link is
@@ -27,6 +29,68 @@ const showConfirmPassword = ref(false)
 const loading = ref(false)
 const error = ref('')
 const submitted = ref(false)
+
+// This page now doubles as the redirect target for the coach's "Invite
+// trainee" action (supabase/functions/invite-trainee -- an
+// auth.admin.inviteUserByEmail call), not just the self-serve
+// token-in-the-URL flow below. That invite email's link authenticates the
+// browser itself (Supabase's own invite/magic-link flow) before landing
+// here, so by the time this page mounts the trainee may already have an
+// active session -- one the linking trigger
+// (link_trainee_on_email_confirmed, 021_trainee_auth_and_roles.sql) has
+// already turned into a fully linked, role='trainee' account server-side.
+// checkingSession gates the template on authStore.loadRole() actually
+// having resolved, so a still-loading role can't be momentarily
+// mistaken for "no session"/"wrong account" (the branch below it) before
+// the real answer is in.
+const checkingSession = ref(true)
+const newPassword = ref('')
+const confirmNewPassword = ref('')
+const settingPassword = ref(false)
+const setPasswordError = ref('')
+
+onMounted(async () => {
+  await authStore.init()
+  if (authStore.isAuthenticated) {
+    await authStore.loadRole()
+  }
+  checkingSession.value = false
+})
+
+function validateNewPassword() {
+  if (newPassword.value.length < MIN_PASSWORD_LENGTH) {
+    return `הסיסמה חייבת לכלול לפחות ${MIN_PASSWORD_LENGTH} תווים.`
+  }
+  if (newPassword.value !== confirmNewPassword.value) return 'הסיסמאות אינן תואמות.'
+  return ''
+}
+
+// Completes onboarding for the already-authenticated (invite-link) case:
+// the account exists and is already linked/role-granted by the server-side
+// trigger -- all that's left is giving it a password. Deliberately signs
+// out and sends the trainee to the normal /trainee/login screen afterward
+// rather than continuing straight into /trainee on this session, so "log
+// in through the existing trainee login page" is the one, real, tested
+// path into the app regardless of which onboarding route got them here.
+async function handleSetPassword() {
+  setPasswordError.value = ''
+  const validationError = validateNewPassword()
+  if (validationError) {
+    setPasswordError.value = validationError
+    return
+  }
+  settingPassword.value = true
+  try {
+    const { error: updateError } = await supabase.auth.updateUser({ password: newPassword.value })
+    if (updateError) throw updateError
+    await authStore.signOut()
+    router.push({ name: 'trainee-login', query: { onboarded: '1' } })
+  } catch {
+    setPasswordError.value = 'שמירת הסיסמה נכשלה. יש לנסות שוב.'
+  } finally {
+    settingPassword.value = false
+  }
+}
 
 function validate() {
   if (!token.value) return 'קישור ההזמנה אינו תקין. יש לבקש מהמאמן/ת קישור הזמנה חדש.'
@@ -93,8 +157,57 @@ async function handleSubmit() {
   <section class="trainee-portal mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-6 bg-brand-white p-6">
     <h1 class="text-2xl font-bold text-brand-black">הצטרפות מתאמן/ת</h1>
 
+    <p v-if="checkingSession" class="text-sm text-neutral-600">טוען...</p>
+
+    <!-- Reached via the coach's "Invite trainee" email (Supabase's own
+    invite link) -- the account is already authenticated and already
+    linked/role-granted server-side; all that's left is choosing a
+    password. -->
+    <template v-else-if="authStore.isAuthenticated && authStore.isTrainee">
+      <p class="text-sm text-neutral-600">
+        ברוך/ה הבא/ה{{ authStore.user?.email ? `, ${authStore.user.email}` : '' }}! נותר רק להגדיר
+        סיסמה כדי להשלים את ההרשמה.
+      </p>
+
+      <form class="flex flex-col gap-4" @submit.prevent="handleSetPassword">
+        <label class="flex flex-col gap-1">
+          <span class="text-sm text-neutral-600">סיסמה</span>
+          <input
+            v-model="newPassword"
+            type="password"
+            required
+            :minlength="MIN_PASSWORD_LENGTH"
+            autocomplete="new-password"
+            class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
+          />
+        </label>
+
+        <label class="flex flex-col gap-1">
+          <span class="text-sm text-neutral-600">אימות סיסמה</span>
+          <input
+            v-model="confirmNewPassword"
+            type="password"
+            required
+            :minlength="MIN_PASSWORD_LENGTH"
+            autocomplete="new-password"
+            class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
+          />
+        </label>
+
+        <p v-if="setPasswordError" class="text-sm text-status-red">{{ setPasswordError }}</p>
+
+        <button
+          type="submit"
+          :disabled="settingPassword"
+          class="rounded-lg bg-brand-green px-4 py-2 font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+        >
+          {{ settingPassword ? 'שומר...' : 'שמירת סיסמה וכניסה' }}
+        </button>
+      </form>
+    </template>
+
     <div
-      v-if="authStore.isAuthenticated"
+      v-else-if="authStore.isAuthenticated"
       class="flex flex-col gap-3 rounded-xl border border-status-yellow/40 bg-status-yellow/5 p-4 text-sm text-brand-black"
     >
       <p>
