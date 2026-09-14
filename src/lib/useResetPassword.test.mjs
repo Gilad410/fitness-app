@@ -147,6 +147,73 @@ test('REPRO 2: PASSWORD_RECOVERY arrives AFTER the initial mount check -- the fo
 })
 
 // ---------------------------------------------------------------------
+// REPRO 3: authStore.init() resolving is not proof the SDK's own
+// PASSWORD_RECOVERY notification has been delivered yet -- see the
+// module header's "A timing detail investigated" section for the full
+// trace through the installed @supabase/auth-js source.
+//
+// Scope, to avoid over-claiming (an earlier version of this comment did):
+// this test only demonstrates that `initialize()` used to resolve with
+// `hasValidRecoveryContext` still `false` in this specific window (a
+// possible transient incorrect render) -- REPRO 2 above already shows
+// the OLD code self-corrects reactively once the event lands regardless,
+// so this closes a brief flash, not a persistent failure. (A separately
+// reported persistent "invalid or expired" was investigated and traced
+// to an unrelated cause -- an older, already-superseded recovery email
+// being opened instead of the latest one -- confirmed by the user; no
+// code change was needed for that.)
+// ---------------------------------------------------------------------
+test('REPRO 3: initialize() does not resolve with hasValidRecoveryContext still false while the SDK\'s own notification is still in flight (closes a possible transient flash)', async () => {
+  const authEventState = reactive(createAuthEventState())
+  // Mirrors the actual @supabase/auth-js GoTrueClient ordering (read
+  // directly from node_modules/@supabase/auth-js/dist/main/GoTrueClient.js):
+  // for a URL-detected recovery callback, the session/user are already
+  // established by the time its own initializePromise resolves (which is
+  // what the real getSession(), and so authStore.init(), await), but its
+  // PASSWORD_RECOVERY notification to subscribers is scheduled via a
+  // `setTimeout(fn, 0)` registered BEFORE that resolution -- so it is
+  // GUARANTEED to still be pending at the instant authStore.init()
+  // resolves (all of that resolution is plain microtask-chained, and
+  // microtasks always drain completely before any macrotask, including a
+  // 0ms setTimeout, gets a chance to run).
+  const authStore = reactive({
+    user: null,
+    async init() {
+      setTimeout(() => {
+        applyAuthEvent(authEventState, 'PASSWORD_RECOVERY', 'trainee-1')
+      }, 0)
+      // The session itself is already established by the time this
+      // resolves -- a plain microtask-based await, exactly like the real
+      // getSession()/authStore.init().
+      authStore.user = { id: 'trainee-1' }
+    },
+  })
+
+  const supabase = makeSupabase()
+  const rp = useResetPassword({
+    authStore,
+    authEventState,
+    supabase,
+    router: makeRouter(),
+    loginRouteName: 'trainee-login',
+  })
+
+  await rp.initialize()
+
+  assert.equal(rp.checkingSession.value, false)
+  assert.equal(
+    rp.hasValidRecoveryContext.value,
+    true,
+    'without the extra wait, initialize() resolves with this still false at the exact instant checkingSession flips -- a transient render window this wait closes (see REPRO 2, which shows the old code self-corrects anyway once the event lands)',
+  )
+
+  rp.newPassword.value = 'newpassword123'
+  rp.confirmNewPassword.value = 'newpassword123'
+  await rp.handleSubmit()
+  assert.equal(supabase.calls.length, 1)
+})
+
+// ---------------------------------------------------------------------
 // General coverage
 // ---------------------------------------------------------------------
 test('happy path: valid recovery, matching passwords -> updateUser called, context consumed, signed out, redirected', async () => {

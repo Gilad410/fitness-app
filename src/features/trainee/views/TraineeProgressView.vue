@@ -32,10 +32,11 @@ const logNote = ref('')
 const confirmDeleteId = ref(null)
 
 // Weight values/comparisons/chart/history are sensitive -- hidden behind
-// one explicit "הצג נתוני משקל" click, rather than shown immediately on
-// page load. Purely a display gate: data still loads as before, and
-// adding a new measurement works regardless of this flag (its own
-// showAddMeasurement toggle/button/form are unaffected).
+// an explicit "הצג משקל" click, rather than shown immediately on page
+// load. Reversible (the same button becomes "הסתר משקל" once revealed),
+// not a one-time reveal. Purely a display gate: data still loads as
+// before, and adding a new measurement works regardless of this flag
+// (its own showAddMeasurement toggle/button/form are unaffected).
 const weightRevealed = ref(false)
 
 onMounted(async () => {
@@ -186,12 +187,11 @@ async function confirmDelete(logId) {
 
       <template v-else>
         <button
-          v-if="!weightRevealed"
           type="button"
           class="mb-6 rounded-lg border border-neutral-300 bg-brand-white px-4 py-2 text-sm font-medium text-brand-black shadow-sm hover:bg-neutral-100"
-          @click="weightRevealed = true"
+          @click="weightRevealed = !weightRevealed"
         >
-          הצג נתוני משקל
+          {{ weightRevealed ? 'הסתר משקל' : 'הצג משקל' }}
         </button>
 
         <!-- Target weight -- prominently shown at the top, independent of

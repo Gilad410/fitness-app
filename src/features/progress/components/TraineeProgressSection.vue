@@ -23,12 +23,16 @@ const deletingId = ref(null)
 const deleteError = ref('')
 
 // Weight values/comparisons/chart/history are sensitive -- hidden behind
-// one explicit "הצג נתוני משקל" click for the whole section, rather than
-// shown immediately on page load. Purely a display gate: the data still
-// loads in the background as before (logsChecking/logsError, the chart
-// computed, etc. are all unaffected), and adding a new measurement below
-// works regardless of this flag. Reset per component instance -- a fresh
-// visit to this trainee's page starts hidden again.
+// an explicit "הצג משקל" click for the whole section, rather than shown
+// immediately on page load. Reversible: the same button becomes "הסתר
+// משקל" once revealed, toggling back and forth freely (not a one-time
+// reveal) -- corrected per explicit instruction after an earlier version
+// only ever revealed once with no way to hide again. Purely a display
+// gate: the data still loads in the background as before
+// (logsChecking/logsError, the chart computed, etc. are all unaffected),
+// and adding a new measurement below works regardless of this flag.
+// Reset per component instance -- a fresh visit to this trainee's page
+// starts hidden again.
 const weightRevealed = ref(false)
 
 onMounted(async () => {
@@ -170,15 +174,15 @@ async function confirmDelete(logId) {
     <p v-if="logsChecking" class="text-sm text-neutral-600">טוען...</p>
 
     <button
-      v-else-if="!weightRevealed"
+      v-else
       type="button"
       class="self-start rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100"
-      @click="weightRevealed = true"
+      @click="weightRevealed = !weightRevealed"
     >
-      הצג נתוני משקל
+      {{ weightRevealed ? 'הסתר משקל' : 'הצג משקל' }}
     </button>
 
-    <template v-else-if="!logsError">
+    <template v-if="weightRevealed && !logsError">
       <div v-if="currentWeight !== null" class="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <div>
           <dt class="text-sm text-neutral-600">משקל נוכחי</dt>

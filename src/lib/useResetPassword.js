@@ -41,6 +41,63 @@ const MIN_PASSWORD_LENGTH = 6
 // immediately before ever calling updateUser() -- explicit, visible
 // revalidation at the one moment that actually matters, not an
 // assumption that the computed must already be fresh.
+//
+// =====================================================================
+// A timing detail investigated during a since-resolved manual-test
+// report ("invalid or expired" on a genuinely fresh recovery link).
+// Kept, but scoped down to what it actually explains.
+// =====================================================================
+// The reported failure's real cause turned out to be unrelated to this
+// app: the account being tested had multiple recovery emails in flight,
+// and an OLDER link (whose token Supabase had already superseded when a
+// newer request was issued) was being opened instead of the latest one
+// -- confirmed against Supabase Auth logs and by the user. No code
+// change was needed for that.
+//
+// While investigating, this real timing detail was found by reading the
+// installed SDK's own source
+// (node_modules/@supabase/auth-js/dist/main/GoTrueClient.js): for a
+// URL-detected recovery callback (the implicit-flow hash tokens this
+// app's redirectTo lands on), GoTrueClient's internal _initialize()
+// does, in order: (1) validates the access_token via a real network call
+// (_getUser), (2) awaits _saveSession(session) -- the session/user ARE
+// already established in memory at this point -- and only THEN (3)
+// schedules its own PASSWORD_RECOVERY notification via `setTimeout(fn,
+// 0)`, deliberately BEFORE its internal `initializePromise` (the exact
+// promise `getSession()` -- and so `authStore.init()` -- awaits)
+// resolves. The SDK's own comments explain this is intentional, to avoid
+// a deadlock if a subscriber callback itself calls getSession()/getUser().
+//
+// The consequence: `authStore.init()` resolving is proof the SESSION is
+// already established, but is NOT proof the PASSWORD_RECOVERY event has
+// reached `authEventState` yet. Without the `setTimeout` wait below,
+// `checkingSession.value = false` is set (and the template first reads
+// `hasValidRecoveryContext`) BEFORE that notification has necessarily
+// arrived -- a real, deterministic window, not a rare race.
+//
+// This is only ever a possible BRIEF, TRANSIENT incorrect render for a
+// link that's actually fine, never a persistent one: `hasValidRecoveryContext`
+// above is a LIVE `computed()` over the reactive `authEventState`, so
+// once the event lands (even one tick later), the template re-renders
+// correctly with no remount needed (see REPRO 2 above, which already
+// covers exactly this self-correcting path). REPRO 3 below covers the
+// narrower transient window this wait closes.
+//
+// The wait below is kept since it's safe and removes even that transient
+// flash: it waits for one further macrotask, via our own
+// `setTimeout(resolve, 0)`, AFTER `authStore.init()` resolves, before
+// ever reading `hasValidRecoveryContext`. Because the SDK's own
+// notification timeout (when a callback is actually present in the URL)
+// is registered strictly earlier (during `_initialize()`, before
+// `initializePromise` -- and so `authStore.init()` -- could resolve),
+// and same-delay timers fire in the order they were registered (a JS
+// spec guarantee, not a timing heuristic), this new timeout is
+// guaranteed to run AFTER the SDK's -- so by the time it fires,
+// `authEventState` has already been updated if a recovery (or plain
+// sign-in) callback was actually present in the URL. For the ordinary
+// case (no callback in the URL at all), `_initialize()` never schedules
+// any such timeout, so this wait adds one harmless, imperceptible extra
+// tick before correctly showing "invalid".
 export function useResetPassword({ authStore, authEventState, supabase, router, loginRouteName }) {
   const checkingSession = ref(true)
   const newPassword = ref('')
@@ -61,6 +118,10 @@ export function useResetPassword({ authStore, authEventState, supabase, router, 
   // component context.
   async function initialize() {
     await authStore.init()
+    // See the module header ("A timing detail investigated...") for
+    // exactly why this wait is necessary and why it's guaranteed correct,
+    // not a heuristic delay.
+    await new Promise((resolve) => setTimeout(resolve, 0))
     checkingSession.value = false
   }
 
