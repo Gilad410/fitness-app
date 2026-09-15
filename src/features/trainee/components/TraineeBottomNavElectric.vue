@@ -127,39 +127,43 @@ watch(moreOpen, async (open) => {
     <div class="grid grid-cols-5 items-center px-1 pt-2 pb-1.5">
       <RouterLink
         to="/trainee"
-        class="flex flex-col items-center gap-1 rounded-lg py-1 text-[11px] font-medium text-neutral-600"
-        active-class="!text-brand-green-dark"
-        exact-active-class="!text-brand-green-dark"
+        class="ec-nav-item flex flex-col items-center gap-1 rounded-lg py-1 text-[11px] font-medium text-neutral-600"
+        active-class="is-active !text-brand-green-dark"
+        exact-active-class="is-active !text-brand-green-dark"
       >
         <IconHome class="size-6" />
         בית
+        <span class="ec-nav-item-dot" aria-hidden="true" />
       </RouterLink>
 
       <RouterLink
         to="/trainee/training"
-        class="flex flex-col items-center gap-1 rounded-lg py-1 text-[11px] font-medium text-neutral-600"
-        active-class="!text-brand-green-dark"
+        class="ec-nav-item flex flex-col items-center gap-1 rounded-lg py-1 text-[11px] font-medium text-neutral-600"
+        active-class="is-active !text-brand-green-dark"
       >
         <IconDumbbell class="size-6" />
         אימון
+        <span class="ec-nav-item-dot" aria-hidden="true" />
       </RouterLink>
 
       <RouterLink
         to="/trainee/nutrition"
-        class="flex flex-col items-center gap-1 rounded-lg py-1 text-[11px] font-medium text-neutral-600"
-        active-class="!text-brand-green-dark"
+        class="ec-nav-item flex flex-col items-center gap-1 rounded-lg py-1 text-[11px] font-medium text-neutral-600"
+        active-class="is-active !text-brand-green-dark"
       >
         <IconApple class="size-6" />
         תזונה
+        <span class="ec-nav-item-dot" aria-hidden="true" />
       </RouterLink>
 
       <RouterLink
         to="/trainee/progress"
-        class="flex flex-col items-center gap-1 rounded-lg py-1 text-[11px] font-medium text-neutral-600"
-        active-class="!text-brand-green-dark"
+        class="ec-nav-item flex flex-col items-center gap-1 rounded-lg py-1 text-[11px] font-medium text-neutral-600"
+        active-class="is-active !text-brand-green-dark"
       >
         <IconTrendingUp class="size-6" />
         התקדמות
+        <span class="ec-nav-item-dot" aria-hidden="true" />
       </RouterLink>
 
       <button

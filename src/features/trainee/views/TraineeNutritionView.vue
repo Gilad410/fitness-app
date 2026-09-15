@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import TraineeLayout from '../layouts/TraineeLayout.vue'
 import ExternalChainLink from '../../nutrition/components/ExternalChainLink.vue'
 import { externalChainLinks } from '../../nutrition/config/externalChainLinks'
@@ -9,6 +9,7 @@ import { useFoodsStore } from '../../nutrition/store/foods'
 import { useFoodReferenceCatalogStore } from '../../nutrition/store/foodReferenceCatalog'
 import { useRestaurantFoodItemsStore } from '../../nutrition/store/restaurantFoodItems'
 import { formatNutritionAmount } from '../../../lib/formatNumber'
+import { startRetentionClock, stopRetentionClock } from '../../nutrition/lib/nutritionRetentionClock'
 
 // Trainee-side nutrition: own history + logging a new entry. Reads/writes
 // go exclusively through useTraineeNutritionStore (RLS-scoped SELECT +
@@ -44,6 +45,22 @@ function todayIsoDate() {
 }
 
 const selectedDate = ref(todayIsoDate())
+
+// Keeps the shared retentionCutoff (nutritionRetentionClock.js, the exact
+// same module the coach's NutritionSection.vue uses) current for as long
+// as this view is mounted -- a periodic re-check plus an immediate one on
+// tab focus/visibility restoration (e.g. the trainee's phone waking from
+// sleep) -- so useTraineeNutritionStore's getters (forDate/dailyTotalFor/
+// etc., all reactive on that same ref) stop showing/counting an
+// already-fetched entry once it ages out of the 7-day retention window,
+// without needing a fresh fetch. Started in onMounted, stopped in
+// onUnmounted.
+onMounted(() => {
+  startRetentionClock()
+})
+onUnmounted(() => {
+  stopRetentionClock()
+})
 
 onMounted(async () => {
   try {
@@ -342,22 +359,40 @@ function entryQuantityLabel(log) {
             </button>
           </div>
 
-          <p class="text-sm text-neutral-600">
-            סה"כ קלוריות:
-            <span class="font-semibold text-brand-black">{{ formatNutritionAmount(dailyTotal) }}</span>
-            &middot; סה"כ חלבון:
-            <span class="font-semibold text-brand-black">{{ formatNutritionAmount(dailyProteinTotal) }} גר'</span>
-            <span v-if="dailyProteinUnknown"> (לא כולל פריט/ים עם חלבון לא ידוע)</span>
-          </p>
+          <!-- Two color-coded stat pairs instead of a middot-joined line --
+               calories and protein each keep one consistent color
+               app-wide (see style.css's Tempo rollout notes). No ring
+               here: unlike the design preview, the real trainee schema
+               has no daily calorie/protein GOAL value to measure against
+               (only starting/target *weight* exist), and inventing one
+               would mean fabricating data this view has no business
+               showing -- so this stays a plain, honest total display. -->
+          <div class="flex flex-wrap items-baseline gap-x-5 gap-y-1">
+            <span class="inline-flex items-baseline gap-1.5">
+              <span class="ec-num text-2xl" style="color: var(--color-brand-green)">{{ formatNutritionAmount(dailyTotal) }}</span>
+              <span class="text-sm text-neutral-600">קק"ל</span>
+            </span>
+            <span class="inline-flex items-baseline gap-1.5">
+              <span class="ec-num text-2xl" style="color: var(--ec-violet)">{{ formatNutritionAmount(dailyProteinTotal) }}</span>
+              <span class="text-sm text-neutral-600">גר' חלבון</span>
+            </span>
+            <span v-if="dailyProteinUnknown" class="text-xs text-neutral-500">(לא כולל פריט/ים עם חלבון לא ידוע)</span>
+          </div>
 
           <p v-if="successMessage" class="text-sm text-brand-green">{{ successMessage }}</p>
         </section>
 
-        <form
-          v-if="showAddEntry"
-          class="mb-6 flex flex-col gap-4 rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm sm:p-6"
-          @submit.prevent="handleAddEntry"
-        >
+        <!-- Inline add-entry form, in its original place in the page flow
+             (not an overlay) -- only a restrained fade/slide-in on open
+             (.ec-panel*, style.css) was added on top of the original
+             structure. Every field/handler below is the same,
+             unchanged logic already in this file. -->
+        <Transition name="ec-panel">
+          <form
+            v-if="showAddEntry"
+            class="mb-6 flex flex-col gap-4 rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm sm:p-6"
+            @submit.prevent="handleAddEntry"
+          >
           <div class="flex flex-col gap-1">
             <span class="text-sm text-neutral-600">מקור המאכל</span>
             <div class="flex flex-wrap gap-2">
@@ -424,8 +459,8 @@ function entryQuantityLabel(log) {
                 role="option"
                 :aria-selected="entryFoodId === food.id"
                 :class="[
-                  'w-full rounded-md px-2 py-3 text-start text-sm hover:bg-neutral-100',
-                  entryFoodId === food.id ? 'bg-brand-green/10 font-medium text-brand-black' : '',
+                  'w-full rounded-md border-s-4 border-transparent px-2 py-3 text-start text-sm hover:bg-neutral-100',
+                  entryFoodId === food.id ? 'border-brand-green bg-brand-green/10 font-medium text-brand-black' : '',
                 ]"
                 @click="entryFoodId = food.id"
               >
@@ -539,8 +574,8 @@ function entryQuantityLabel(log) {
                   <button
                     type="button"
                     :class="[
-                      'w-full rounded-md px-2 py-3 text-start text-sm hover:bg-neutral-100',
-                      selectedRestaurantItemId === item.id ? 'bg-brand-green/10 font-medium text-brand-black' : '',
+                      'w-full rounded-md border-s-4 border-transparent px-2 py-3 text-start text-sm hover:bg-neutral-100',
+                      selectedRestaurantItemId === item.id ? 'border-brand-green bg-brand-green/10 font-medium text-brand-black' : '',
                     ]"
                     @click="selectedRestaurantItemId = item.id"
                   >
@@ -570,12 +605,13 @@ function entryQuantityLabel(log) {
                 />
               </label>
 
-              <p v-if="selectedRestaurantItem" class="text-sm text-neutral-600">
-                סה"כ: <span class="font-semibold text-brand-black">{{ restaurantPreviewCalories }} קק"ל</span>
-                <template v-if="restaurantPreviewProtein !== null">
-                  &middot; <span class="font-semibold text-brand-black">{{ restaurantPreviewProtein }} ג'</span> חלבון
-                </template>
-                <template v-else> &middot; חלבון לא ידוע</template>
+              <p v-if="selectedRestaurantItem" class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <span class="text-sm text-neutral-600">סה"כ:</span>
+                <span class="ec-num text-sm" style="color: var(--color-brand-green)">{{ restaurantPreviewCalories }} קק"ל</span>
+                <span v-if="restaurantPreviewProtein !== null" class="ec-num text-sm" style="color: var(--ec-violet)">
+                  {{ restaurantPreviewProtein }} ג' חלבון
+                </span>
+                <span v-else class="text-xs text-neutral-500">חלבון לא ידוע</span>
               </p>
             </template>
           </template>
@@ -609,7 +645,8 @@ function entryQuantityLabel(log) {
               ביטול
             </button>
           </div>
-        </form>
+          </form>
+        </Transition>
 
         <section class="rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm sm:p-6">
           <h2 class="mb-3 font-semibold text-brand-black">{{ dateFormatter.format(new Date(selectedDate)) }}</h2>
@@ -630,9 +667,21 @@ function entryQuantityLabel(log) {
             >
               <div class="min-w-0">
                 <p class="truncate text-brand-black">{{ entryDisplayName(log) }}</p>
-                <p class="text-sm text-neutral-600">
-                  {{ entryQuantityLabel(log) }} &middot; {{ log.calories }} קק"ל &middot;
-                  {{ log.protein === null ? 'חלבון לא ידוע' : `${log.protein} גר' חלבון` }}
+                <p class="text-sm text-neutral-600">{{ entryQuantityLabel(log) }}</p>
+                <p class="mt-0.5 flex items-baseline gap-3">
+                  <span class="inline-flex items-baseline gap-1">
+                    <span class="ec-num text-sm" style="color: var(--color-brand-green)">{{ log.calories }}</span>
+                    <span class="text-xs text-neutral-500">קק"ל</span>
+                  </span>
+                  <span class="inline-flex items-baseline gap-1">
+                    <template v-if="log.protein === null">
+                      <span class="text-xs text-neutral-500">חלבון לא ידוע</span>
+                    </template>
+                    <template v-else>
+                      <span class="ec-num text-sm" style="color: var(--ec-violet)">{{ log.protein }}</span>
+                      <span class="text-xs text-neutral-500">גר' חלבון</span>
+                    </template>
+                  </span>
                 </p>
               </div>
 

@@ -26,6 +26,8 @@ import TraineeNutritionView from '../features/trainee/views/TraineeNutritionView
 import TraineeProgressView from '../features/trainee/views/TraineeProgressView.vue'
 import TraineeMeasurementsView from '../features/trainee/views/TraineeMeasurementsView.vue'
 import NoAccessView from '../features/trainee/views/NoAccessView.vue'
+import DesignPreviewHome from '../features/designPreview/DesignPreviewHome.vue'
+import DesignPreviewNutrition from '../features/designPreview/DesignPreviewNutrition.vue'
 import { useAuthStore } from '../stores/auth'
 
 // NOTE on /signup: public coach self-signup (src/features/auth/views/SignupView.vue)
@@ -208,6 +210,28 @@ const router = createRouter({
       name: 'trainee-measurements',
       component: TraineeMeasurementsView,
       meta: { requiresAuth: true, requiresRole: 'trainee' },
+    },
+
+    // Isolated visual-direction preview -- demo data only (see
+    // src/features/designPreview/designPreviewData.js), no store/
+    // supabaseClient import anywhere in that folder, and no auth/role
+    // requirement -- accessible whether signed in or not, and not linked
+    // from any real nav (TheSidebar/TheBottomNavElectric/
+    // TraineeSidebar/TraineeBottomNavElectric are all untouched). Not
+    // meant to be reached except by pasting this exact URL.
+    {
+      path: '/design-preview',
+      redirect: '/design-preview/home',
+    },
+    {
+      path: '/design-preview/home',
+      name: 'design-preview-home',
+      component: DesignPreviewHome,
+    },
+    {
+      path: '/design-preview/nutrition',
+      name: 'design-preview-nutrition',
+      component: DesignPreviewNutrition,
     },
 
     // Authenticated but role-less landing (orphan account, or an invite

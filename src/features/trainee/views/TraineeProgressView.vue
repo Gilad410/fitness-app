@@ -205,7 +205,7 @@ async function confirmDelete(logId) {
           <div v-if="profile?.target_weight" class="grid grid-cols-2 gap-4 sm:grid-cols-3">
             <div>
               <dt class="text-sm text-neutral-600">משקל יעד</dt>
-              <dd class="text-lg font-semibold text-brand-black">{{ profile.target_weight }} ק"ג</dd>
+              <dd class="ec-num text-xl" style="color: var(--ec-violet)">{{ profile.target_weight }} ק"ג</dd>
             </div>
             <div v-if="targetStatus">
               <dt class="text-sm text-neutral-600">לעומת יעד</dt>
@@ -231,11 +231,11 @@ async function confirmDelete(logId) {
           <div v-if="weightRevealed && currentWeight !== null" class="grid grid-cols-2 gap-4 sm:grid-cols-3">
             <div>
               <dt class="text-sm text-neutral-600">משקל נוכחי</dt>
-              <dd class="text-lg font-semibold text-brand-black">{{ currentWeight }} ק"ג</dd>
+              <dd class="ec-num text-xl" style="color: var(--color-brand-green)">{{ currentWeight }} ק"ג</dd>
             </div>
             <div v-if="profile?.starting_weight">
               <dt class="text-sm text-neutral-600">משקל התחלתי</dt>
-              <dd class="text-lg font-semibold text-brand-black">{{ profile.starting_weight }} ק"ג</dd>
+              <dd class="ec-num text-xl" style="color: var(--color-brand-black); opacity: 0.7">{{ profile.starting_weight }} ק"ג</dd>
             </div>
             <div v-if="profile?.starting_weight">
               <dt class="text-sm text-neutral-600">לעומת התחלה</dt>

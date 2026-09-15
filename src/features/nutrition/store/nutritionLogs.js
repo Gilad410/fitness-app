@@ -1,6 +1,13 @@
 import { defineStore } from 'pinia'
 import { supabase } from '../../../lib/supabaseClient'
 import { useAuthStore } from '../../../stores/auth'
+import { retentionCutoff } from '../lib/nutritionRetentionClock'
+import {
+  retainedLogs,
+  dailyCaloriesTotal,
+  dailyProteinTotal as dailyProteinTotalOf,
+  dailyHasUnknownProtein,
+} from '../lib/nutritionLogsCore'
 
 export const useNutritionLogsStore = defineStore('nutritionLogs', {
   state: () => ({
@@ -10,24 +17,26 @@ export const useNutritionLogsStore = defineStore('nutritionLogs', {
   }),
 
   getters: {
-    logsFor: (state) => (traineeId) => state.logsByTrainee[traineeId] ?? [],
+    // Every getter below reads retentionCutoff.value (via
+    // nutritionLogsCore.js) -- reactive on the shared clock in
+    // nutritionRetentionClock.js, so cached entries/totals here stop
+    // being shown/counted once they age out of the 7-day retention
+    // window, even without a fresh fetch, for as long as
+    // NutritionSection.vue keeps the clock running. Server-side RLS
+    // (038_trainee_nutrition_log_retention.sql) remains the actual
+    // enforcement -- this is a client-side courtesy layer on top of it.
+    logsFor: (state) => (traineeId) => retainedLogs(state.logsByTrainee[traineeId], retentionCutoff.value),
 
     dailyTotalFor: (state) => (traineeId, date) =>
-      (state.logsByTrainee[traineeId] ?? [])
-        .filter((log) => log.logged_at === date)
-        .reduce((sum, log) => sum + Number(log.calories), 0),
+      dailyCaloriesTotal(state.logsByTrainee[traineeId], date, retentionCutoff.value),
 
     // Only sums entries with a known protein value — an entry logged
     // against a food with unset protein is excluded, not treated as 0.
     dailyProteinTotalFor: (state) => (traineeId, date) =>
-      (state.logsByTrainee[traineeId] ?? [])
-        .filter((log) => log.logged_at === date && log.protein !== null)
-        .reduce((sum, log) => sum + Number(log.protein), 0),
+      dailyProteinTotalOf(state.logsByTrainee[traineeId], date, retentionCutoff.value),
 
     dailyHasUnknownProteinFor: (state) => (traineeId, date) =>
-      (state.logsByTrainee[traineeId] ?? []).some(
-        (log) => log.logged_at === date && log.protein === null,
-      ),
+      dailyHasUnknownProtein(state.logsByTrainee[traineeId], date, retentionCutoff.value),
   },
 
   actions: {

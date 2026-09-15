@@ -332,11 +332,11 @@ async function confirmDeletePhoto(photo) {
           <div v-if="weightRevealed" class="grid grid-cols-2 gap-4 sm:grid-cols-3">
             <div v-if="currentWeight !== null">
               <dt class="text-sm text-neutral-600">משקל נוכחי</dt>
-              <dd class="text-lg font-semibold text-brand-black">{{ currentWeight }} ק"ג</dd>
+              <dd class="ec-num text-xl" style="color: var(--color-brand-green)">{{ currentWeight }} ק"ג</dd>
             </div>
             <div v-if="targetWeight !== null">
               <dt class="text-sm text-neutral-600">משקל יעד</dt>
-              <dd class="text-lg font-semibold text-brand-black">{{ targetWeight }} ק"ג</dd>
+              <dd class="ec-num text-xl" style="color: var(--ec-violet)">{{ targetWeight }} ק"ג</dd>
             </div>
             <div v-if="weightTargetStatus">
               <dt class="text-sm text-neutral-600">לעומת יעד</dt>

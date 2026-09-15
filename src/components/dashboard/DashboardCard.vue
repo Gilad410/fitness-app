@@ -49,7 +49,7 @@ const iconWrapperClass = computed(() =>
     </div>
 
     <div v-if="value" class="flex items-baseline gap-2">
-      <p class="text-2xl font-bold text-brand-black">{{ value }}</p>
+      <p class="ec-num text-2xl" style="color: var(--color-brand-green)">{{ value }}</p>
       <p v-if="caption" class="text-xs text-neutral-500">{{ caption }}</p>
     </div>
   </component>

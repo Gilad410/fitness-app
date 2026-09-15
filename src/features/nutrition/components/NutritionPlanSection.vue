@@ -489,12 +489,16 @@ async function saveEditItem(mealId, item) {
            trainee's own read-only view (planTotals.js), so the two never
            disagree about the plan's overall numbers. -->
       <div class="rounded-xl border border-neutral-300 bg-neutral-50 p-4">
-        <p class="text-sm text-neutral-600">
-          סה"כ לתוכנית:
-          <span class="font-semibold text-brand-black">{{ formatNutritionAmount(totalsForPlan.calories) }} קק"ל</span>
-          &middot;
-          <span class="font-semibold text-brand-black">{{ formatNutritionAmount(totalsForPlan.protein) }} גר'</span>
-          חלבון
+        <p class="mb-1 text-sm text-neutral-600">סה"כ לתוכנית</p>
+        <p class="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+          <span class="inline-flex items-baseline gap-1.5">
+            <span class="ec-num text-lg" style="color: var(--color-brand-green)">{{ formatNutritionAmount(totalsForPlan.calories) }}</span>
+            <span class="text-sm text-neutral-600">קק"ל</span>
+          </span>
+          <span class="inline-flex items-baseline gap-1.5">
+            <span class="ec-num text-lg" style="color: var(--ec-violet)">{{ formatNutritionAmount(totalsForPlan.protein) }}</span>
+            <span class="text-sm text-neutral-600">גר' חלבון</span>
+          </span>
         </p>
         <p v-if="totalsForPlan.hasUnknownProtein" class="mt-1 text-sm text-neutral-600">
           (סכום החלבון אינו כולל פריט/ים עם חלבון לא ידוע)
@@ -618,17 +622,15 @@ async function saveEditItem(mealId, item) {
                   <p v-if="mealTotals(meal).itemCount === 0" class="mt-1 text-sm text-neutral-600">
                     אין נתונים תזונתיים מחושבים לארוחה זו.
                   </p>
-                  <p v-else class="mt-1 text-sm text-neutral-600">
-                    סה"כ לארוחה:
-                    <span class="font-semibold text-brand-black">
+                  <p v-else class="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                    <span class="text-sm text-neutral-600">סה"כ לארוחה:</span>
+                    <span class="ec-num text-sm" style="color: var(--color-brand-green)">
                       {{ formatNutritionAmount(mealTotals(meal).calories) }} קק"ל
                     </span>
-                    &middot;
-                    <span class="font-semibold text-brand-black">
-                      {{ formatNutritionAmount(mealTotals(meal).protein) }} גר'
+                    <span class="ec-num text-sm" style="color: var(--ec-violet)">
+                      {{ formatNutritionAmount(mealTotals(meal).protein) }} גר' חלבון
                     </span>
-                    חלבון
-                    <span v-if="mealTotals(meal).hasUnknownProtein">(לא כולל פריט/ים עם חלבון לא ידוע)</span>
+                    <span v-if="mealTotals(meal).hasUnknownProtein" class="text-xs text-neutral-500">(לא כולל פריט/ים עם חלבון לא ידוע)</span>
                   </p>
                 </div>
 
@@ -742,9 +744,21 @@ async function saveEditItem(mealId, item) {
                     <template v-else>
                       <div class="min-w-0">
                         <p class="truncate text-brand-black">{{ entryDisplayName(item) }}</p>
-                        <p class="text-sm text-neutral-600">
-                          {{ entryQuantityLabel(item) }} &middot; {{ item.calories }} קק"ל &middot;
-                          {{ item.protein === null ? 'חלבון לא ידוע' : `${item.protein} גר' חלבון` }}
+                        <p class="text-sm text-neutral-600">{{ entryQuantityLabel(item) }}</p>
+                        <p class="mt-0.5 flex items-baseline gap-3">
+                          <span class="inline-flex items-baseline gap-1">
+                            <span class="ec-num text-sm" style="color: var(--color-brand-green)">{{ item.calories }}</span>
+                            <span class="text-xs text-neutral-500">קק"ל</span>
+                          </span>
+                          <span class="inline-flex items-baseline gap-1">
+                            <template v-if="item.protein === null">
+                              <span class="text-xs text-neutral-500">חלבון לא ידוע</span>
+                            </template>
+                            <template v-else>
+                              <span class="ec-num text-sm" style="color: var(--ec-violet)">{{ item.protein }}</span>
+                              <span class="text-xs text-neutral-500">גר' חלבון</span>
+                            </template>
+                          </span>
                         </p>
                       </div>
 

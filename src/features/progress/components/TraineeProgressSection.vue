@@ -186,7 +186,7 @@ async function confirmDelete(logId) {
       <div v-if="currentWeight !== null" class="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <div>
           <dt class="text-sm text-neutral-600">משקל נוכחי</dt>
-          <dd class="text-lg font-semibold text-brand-black">{{ currentWeight }} ק"ג</dd>
+          <dd class="ec-num text-xl" style="color: var(--color-brand-green)">{{ currentWeight }} ק"ג</dd>
         </div>
         <div v-if="trainee.starting_weight">
           <dt class="text-sm text-neutral-600">לעומת התחלה</dt>

@@ -1,5 +1,5 @@
 <script setup>
-import { nextTick, ref, useTemplateRef, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, useTemplateRef, watch } from 'vue'
 import IconHome from '../icons/IconHome.vue'
 import IconUsers from '../icons/IconUsers.vue'
 import IconBell from '../icons/IconBell.vue'
@@ -9,6 +9,8 @@ import IconTrendingUp from '../icons/IconTrendingUp.vue'
 import IconApple from '../icons/IconApple.vue'
 import IconDumbbell from '../icons/IconDumbbell.vue'
 import { useAlertsStore } from '../../features/alerts/store/alerts'
+import { useTraineesStore } from '../../features/trainees/store/trainees'
+import { useSelectedTraineeStore } from '../../features/trainees/store/selectedTrainee'
 
 // Mobile bottom navigation for the coach portal, part of the "Electric
 // Coach" visual design. Rendered by AppLayout.vue on every coach screen;
@@ -24,15 +26,49 @@ import { useAlertsStore } from '../../features/alerts/store/alerts'
 // real, already-working destinations (same routes the existing sidebar
 // links to), not new features.
 const alertsStore = useAlertsStore()
+const traineesStore = useTraineesStore()
+const selectedTraineeStore = useSelectedTraineeStore()
 const moreOpen = ref(false)
 const moreToggleRef = useTemplateRef('moreToggle')
 const moreSheetRef = useTemplateRef('moreSheet')
 
-const moreItems = [
-  { label: 'התקדמות', icon: IconTrendingUp, to: '/progress' },
-  { label: 'תזונה', icon: IconApple, to: '/nutrition' },
-  { label: 'תוכניות אימון', icon: IconDumbbell, to: '/training' },
-]
+// TheSidebar.vue and this component are BOTH always mounted by
+// AppLayout.vue on every coach screen (CSS alone decides which is
+// visually shown, per this file's own header comment) -- so
+// traineesStore.ensureLoaded() below is a harmless, cached/deduped
+// repeat of the exact same call TheSidebar.vue's own onMounted already
+// makes, not a new fetch.
+onMounted(() => {
+  traineesStore.ensureLoaded()
+})
+
+// Same remembered-trainee fallback logic as TheSidebar.vue's
+// activeTraineeId -- see selectedTrainee.js for the full reasoning. Only
+// counts if it still resolves to a real trainee in this coach's own
+// (RLS-scoped) roster -- deleted, or nothing ever selected, and every
+// item below falls back to its plain picker-list route.
+const activeTraineeId = computed(() => {
+  const id = selectedTraineeStore.traineeId
+  return id && traineesStore.getById(id) ? id : null
+})
+
+const moreItems = computed(() => [
+  {
+    label: 'התקדמות',
+    icon: IconTrendingUp,
+    to: activeTraineeId.value ? `/progress/${activeTraineeId.value}` : '/progress',
+  },
+  {
+    label: 'תזונה',
+    icon: IconApple,
+    to: activeTraineeId.value ? `/nutrition/${activeTraineeId.value}` : '/nutrition',
+  },
+  {
+    label: 'תוכניות אימון',
+    icon: IconDumbbell,
+    to: activeTraineeId.value ? `/training/${activeTraineeId.value}` : '/training',
+  },
+])
 
 function closeMore() {
   moreOpen.value = false
@@ -123,21 +159,23 @@ watch(moreOpen, async (open) => {
     <div class="grid grid-cols-5 items-end px-1 pt-2 pb-1.5">
       <RouterLink
         to="/"
-        class="flex flex-col items-center gap-1 rounded-lg py-1 text-[11px] font-medium text-neutral-600"
-        active-class="!text-brand-green-dark"
-        exact-active-class="!text-brand-green-dark"
+        class="ec-nav-item flex flex-col items-center gap-1 rounded-lg py-1 text-[11px] font-medium text-neutral-600"
+        active-class="is-active !text-brand-green-dark"
+        exact-active-class="is-active !text-brand-green-dark"
       >
         <IconHome class="size-6" />
         בית
+        <span class="ec-nav-item-dot" aria-hidden="true" />
       </RouterLink>
 
       <RouterLink
         to="/trainees"
-        class="flex flex-col items-center gap-1 rounded-lg py-1 text-[11px] font-medium text-neutral-600"
-        active-class="!text-brand-green-dark"
+        class="ec-nav-item flex flex-col items-center gap-1 rounded-lg py-1 text-[11px] font-medium text-neutral-600"
+        active-class="is-active !text-brand-green-dark"
       >
         <IconUsers class="size-6" />
         מתאמנים
+        <span class="ec-nav-item-dot" aria-hidden="true" />
       </RouterLink>
 
       <!-- Prominent central Add action: a real, already-working
@@ -157,8 +195,8 @@ watch(moreOpen, async (open) => {
 
       <RouterLink
         to="/alerts"
-        class="relative flex flex-col items-center gap-1 rounded-lg py-1 text-[11px] font-medium text-neutral-600"
-        active-class="!text-brand-green-dark"
+        class="ec-nav-item relative flex flex-col items-center gap-1 rounded-lg py-1 text-[11px] font-medium text-neutral-600"
+        active-class="is-active !text-brand-green-dark"
       >
         <span class="relative">
           <IconBell class="size-6" />
@@ -170,6 +208,7 @@ watch(moreOpen, async (open) => {
           </span>
         </span>
         התראות
+        <span class="ec-nav-item-dot" aria-hidden="true" />
       </RouterLink>
 
       <button

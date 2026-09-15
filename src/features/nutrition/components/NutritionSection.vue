@@ -1,11 +1,12 @@
 <script setup>
-import { computed, onMounted, ref, useTemplateRef } from 'vue'
+import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 import { useFoodsStore } from '../store/foods'
 import { useNutritionLogsStore } from '../store/nutritionLogs'
 import { useRestaurantFoodItemsStore } from '../store/restaurantFoodItems'
 import FoodQuantityPicker from './FoodQuantityPicker.vue'
 import { formatNutritionAmount } from '../../../lib/formatNumber'
 import { entryDisplayName, entryQuantityLabel } from '../lib/entryDisplay'
+import { startRetentionClock, stopRetentionClock } from '../lib/nutritionRetentionClock'
 
 const props = defineProps({
   traineeId: { type: String, required: true },
@@ -32,6 +33,22 @@ const pickerRef = useTemplateRef('picker')
 
 const deletingLogId = ref(null)
 const deleteError = ref('')
+
+// Keeps the shared retentionCutoff (nutritionRetentionClock.js) current
+// for as long as this section is mounted -- a periodic re-check plus an
+// immediate one on tab focus/visibility restoration (e.g. the coach's
+// laptop waking from sleep hours later) -- so nutritionLogsStore's
+// getters (logsFor/dailyTotalFor/etc., all reactive on that same ref)
+// stop showing/counting an already-fetched entry once it ages out of the
+// 7-day retention window, without needing a fresh fetch. Started in
+// onMounted, stopped in onUnmounted -- reference-counted, so this is safe
+// even if some future screen also renders this section concurrently.
+onMounted(() => {
+  startRetentionClock()
+})
+onUnmounted(() => {
+  stopRetentionClock()
+})
 
 onMounted(async () => {
   try {
@@ -133,13 +150,17 @@ async function handleDelete(logId) {
     <div class="flex flex-wrap items-center justify-between gap-4">
       <div>
         <h2 class="font-semibold text-brand-black">תזונה</h2>
-        <p v-if="!checking" class="text-sm text-neutral-600">
-          סה"כ קלוריות היום:
-          <span class="font-semibold text-brand-black">{{ formatNutritionAmount(todayTotal) }}</span>
-          &middot; סה"כ חלבון היום:
-          <span class="font-semibold text-brand-black">{{ formatNutritionAmount(todayProteinTotal) }} גר'</span>
-          <span v-if="todayProteinUnknown">(לא כולל פריט/ים עם חלבון לא ידוע)</span>
-        </p>
+        <div v-if="!checking" class="mt-1 flex flex-wrap items-baseline gap-x-4 gap-y-1">
+          <span class="inline-flex items-baseline gap-1.5">
+            <span class="ec-num text-lg" style="color: var(--color-brand-green)">{{ formatNutritionAmount(todayTotal) }}</span>
+            <span class="text-sm text-neutral-600">קק"ל היום</span>
+          </span>
+          <span class="inline-flex items-baseline gap-1.5">
+            <span class="ec-num text-lg" style="color: var(--ec-violet)">{{ formatNutritionAmount(todayProteinTotal) }}</span>
+            <span class="text-sm text-neutral-600">גר' חלבון היום</span>
+          </span>
+          <span v-if="todayProteinUnknown" class="text-xs text-neutral-500">(לא כולל פריט/ים עם חלבון לא ידוע)</span>
+        </div>
       </div>
       <button
         v-if="!showAddEntry"
@@ -205,10 +226,10 @@ async function handleDelete(logId) {
       >
         <div class="mb-2 flex items-baseline justify-between gap-4">
           <p class="text-sm text-neutral-600">{{ dateFormatter.format(new Date(group.date)) }}</p>
-          <p class="text-sm font-semibold text-brand-black">
-            סה"כ {{ formatNutritionAmount(group.total) }} קק"ל &middot;
-            {{ formatNutritionAmount(group.protein) }} גר' חלבון
-            <span v-if="group.hasUnknownProtein" class="font-normal text-neutral-600">(+חלבון לא ידוע)</span>
+          <p class="flex items-baseline gap-3">
+            <span class="ec-num text-sm" style="color: var(--color-brand-green)">{{ formatNutritionAmount(group.total) }} קק"ל</span>
+            <span class="ec-num text-sm" style="color: var(--ec-violet)">{{ formatNutritionAmount(group.protein) }} גר' חלבון</span>
+            <span v-if="group.hasUnknownProtein" class="text-xs font-normal text-neutral-600">(+חלבון לא ידוע)</span>
           </p>
         </div>
         <ul class="flex flex-col gap-2">
@@ -219,9 +240,21 @@ async function handleDelete(logId) {
           >
             <div class="min-w-0">
               <p class="truncate text-brand-black">{{ entryDisplayName(log) }}</p>
-              <p class="text-sm text-neutral-600">
-                {{ entryQuantityLabel(log) }} &middot; {{ log.calories }} קק"ל &middot;
-                {{ log.protein === null ? 'חלבון לא ידוע' : `${log.protein} גר' חלבון` }}
+              <p class="text-sm text-neutral-600">{{ entryQuantityLabel(log) }}</p>
+              <p class="mt-0.5 flex items-baseline gap-3">
+                <span class="inline-flex items-baseline gap-1">
+                  <span class="ec-num text-sm" style="color: var(--color-brand-green)">{{ log.calories }}</span>
+                  <span class="text-xs text-neutral-500">קק"ל</span>
+                </span>
+                <span class="inline-flex items-baseline gap-1">
+                  <template v-if="log.protein === null">
+                    <span class="text-xs text-neutral-500">חלבון לא ידוע</span>
+                  </template>
+                  <template v-else>
+                    <span class="ec-num text-sm" style="color: var(--ec-violet)">{{ log.protein }}</span>
+                    <span class="text-xs text-neutral-500">גר' חלבון</span>
+                  </template>
+                </span>
               </p>
             </div>
             <button

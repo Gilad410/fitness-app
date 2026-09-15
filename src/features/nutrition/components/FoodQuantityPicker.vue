@@ -297,8 +297,8 @@ defineExpose({ resolve, reset })
                 role="option"
                 :aria-selected="entryFoodId === food.id"
                 :class="[
-                  'flex-1 rounded-md px-2 py-3 text-start text-sm hover:bg-neutral-100',
-                  entryFoodId === food.id ? 'bg-brand-green/10 font-medium text-brand-black' : '',
+                  'flex-1 rounded-md border-s-4 border-transparent px-2 py-3 text-start text-sm hover:bg-neutral-100',
+                  entryFoodId === food.id ? 'border-brand-green bg-brand-green/10 font-medium text-brand-black' : '',
                 ]"
                 @click="entryFoodId = food.id"
               >
@@ -343,8 +343,8 @@ defineExpose({ resolve, reset })
             role="option"
             :aria-selected="entryFoodId === NEW_FOOD_VALUE"
             :class="[
-              'w-full rounded-md px-2 py-1.5 text-start text-sm font-medium hover:bg-neutral-100',
-              entryFoodId === NEW_FOOD_VALUE ? 'bg-brand-green/10 text-brand-black' : 'text-brand-green-dark',
+              'w-full rounded-md border-s-4 border-transparent px-2 py-1.5 text-start text-sm font-medium hover:bg-neutral-100',
+              entryFoodId === NEW_FOOD_VALUE ? 'border-brand-green bg-brand-green/10 text-brand-black' : 'text-brand-green-dark',
             ]"
             @click="entryFoodId = NEW_FOOD_VALUE"
           >
@@ -466,8 +466,8 @@ defineExpose({ resolve, reset })
             <button
               type="button"
               :class="[
-                'w-full rounded-md px-2 py-1.5 text-start text-sm hover:bg-neutral-100',
-                selectedRestaurantItemId === item.id ? 'bg-brand-green/10 font-medium text-brand-black' : '',
+                'w-full rounded-md border-s-4 border-transparent px-2 py-1.5 text-start text-sm hover:bg-neutral-100',
+                selectedRestaurantItemId === item.id ? 'border-brand-green bg-brand-green/10 font-medium text-brand-black' : '',
               ]"
               @click="selectedRestaurantItemId = item.id"
             >
@@ -498,12 +498,13 @@ defineExpose({ resolve, reset })
           />
         </label>
 
-        <p v-if="selectedRestaurantItem" class="text-sm text-neutral-600">
-          סה"כ: <span class="font-semibold text-brand-black">{{ restaurantPreviewCalories }} קק"ל</span>
-          <template v-if="restaurantPreviewProtein !== null">
-            &middot; <span class="font-semibold text-brand-black">{{ restaurantPreviewProtein }} ג'</span> חלבון
-          </template>
-          <template v-else> &middot; חלבון לא ידוע</template>
+        <p v-if="selectedRestaurantItem" class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <span class="text-sm text-neutral-600">סה"כ:</span>
+          <span class="ec-num text-sm" style="color: var(--color-brand-green)">{{ restaurantPreviewCalories }} קק"ל</span>
+          <span v-if="restaurantPreviewProtein !== null" class="ec-num text-sm" style="color: var(--ec-violet)">
+            {{ restaurantPreviewProtein }} ג' חלבון
+          </span>
+          <span v-else class="text-xs text-neutral-500">חלבון לא ידוע</span>
         </p>
       </template>
     </template>

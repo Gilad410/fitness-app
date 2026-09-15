@@ -8,6 +8,8 @@ import TraineeProgressSection from '../components/TraineeProgressSection.vue'
 import TraineeCircumferenceSection from '../components/TraineeCircumferenceSection.vue'
 import TraineeProgressPhotosSection from '../components/TraineeProgressPhotosSection.vue'
 import { useTraineesStore } from '../../trainees/store/trainees'
+import { useSelectedTraineeStore } from '../../trainees/store/selectedTrainee'
+import { reconcileSelectionWithRoute } from '../../trainees/store/selectedTraineeStorage'
 
 // Per-trainee progress workspace, reached from the "התקדמות" main area
 // (ProgressTraineesListView) -- mirrors NutritionWorkspaceView.vue. Renders
@@ -17,15 +19,25 @@ import { useTraineesStore } from '../../trainees/store/trainees'
 // shows a minimal header.
 const route = useRoute()
 const traineesStore = useTraineesStore()
+const selectedTraineeStore = useSelectedTraineeStore()
 
 const checking = ref(true)
+
+const trainee = computed(() => traineesStore.getById(route.params.id))
 
 onMounted(async () => {
   await traineesStore.ensureLoaded()
   checking.value = false
+  // See selectedTraineeStorage.js's reconcileSelectionWithRoute() for the
+  // full precedence/stale-clear reasoning.
+  const outcome = reconcileSelectionWithRoute({
+    resolvedTraineeId: trainee.value?.id ?? null,
+    routeParamId: route.params.id,
+    rememberedId: selectedTraineeStore.traineeId,
+  })
+  if (outcome.type === 'select') selectedTraineeStore.select(outcome.traineeId)
+  else if (outcome.type === 'clear') selectedTraineeStore.clear()
 })
-
-const trainee = computed(() => traineesStore.getById(route.params.id))
 </script>
 
 <template>

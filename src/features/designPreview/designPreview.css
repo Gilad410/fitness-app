@@ -1,0 +1,329 @@
+/*
+ * "Tempo" -- a bold visual-direction preview for the coach/trainee app.
+ * Entirely scoped under `.tempo-preview` so it can NEVER bleed into the
+ * real `.coach-portal`/`.trainee-portal` screens (src/style.css) -- this
+ * file is only ever imported by DesignPreviewShell.vue, which is only
+ * ever rendered by the isolated /design-preview/* routes.
+ *
+ * Keeps the exact requested palette as CSS custom properties (so it's
+ * easy to audit against the brief), plus two refinements: a deep
+ * navy->violet hero gradient (the one bold surface per screen) and a
+ * slightly deepened coral for AA contrast on white at the sizes used
+ * here -- both noted inline below.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;800&display=swap');
+
+.tempo-preview {
+  --tp-navy: #12153a;
+  --tp-blue: #2f6fed; /* calories -- one metric, one color */
+  --tp-violet: #8b5cf6; /* protein */
+  --tp-mint: #17b892; /* goal met / positive */
+  --tp-lavender: #eef0fb; /* page ground */
+  --tp-white: #ffffff;
+  --tp-coral: #c8362a; /* warnings/destructive -- deepened ~1 step from the
+    brief's reference coral for AA contrast on white at 14px; same hue,
+    same role, never used as a general accent */
+  --tp-ink-soft: #5b6178; /* secondary text on light surfaces */
+  --tp-border: #e2e5f5;
+
+  font-family: 'Heebo', 'Segoe UI', system-ui, sans-serif;
+  background: var(--tp-lavender);
+  color: var(--tp-navy);
+  direction: rtl;
+  min-height: 100vh;
+}
+
+.tempo-preview * {
+  box-sizing: border-box;
+}
+
+/* Tabular, heavy numerals for every stat display -- the one typographic
+   "move" this direction makes, carried consistently rather than reaching
+   for a second typeface. */
+.tp-num {
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+/* ---- Demo banner -- always visible, never mistakable for the real app ---- */
+.tp-demo-banner {
+  background: var(--tp-navy);
+  color: var(--tp-white);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 0.4rem 1rem;
+}
+.tp-demo-banner a {
+  color: var(--tp-lavender);
+  text-decoration: underline;
+  margin-inline-start: 0.5rem;
+}
+
+/* ---- Hero surface -- the one bold gradient per screen ---- */
+.tp-hero {
+  background: radial-gradient(120% 140% at 100% 0%, #3a2f7d 0%, var(--tp-navy) 55%, #0d0f2c 100%);
+  color: var(--tp-white);
+  border-radius: 0 0 1.75rem 1.75rem;
+  padding: 1.5rem 1.25rem 1.75rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---- Ring ---- */
+.tp-ring-svg {
+  transform: rotate(-90deg);
+}
+.tp-ring-track {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.14);
+}
+.tp-ring-progress {
+  fill: none;
+  stroke: var(--tp-blue);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---- Flat, tinted NAVIGATION cards (quick-access grid) -- deliberately
+   NOT shadowed/elevated: structure distinguishes "go somewhere" surfaces
+   from "read something" surfaces below, rather than one card style for
+   everything. ---- */
+.tp-nav-card {
+  background: var(--tp-white);
+  border: 1px solid var(--tp-border);
+  border-radius: 1.25rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-height: 44px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.tp-nav-card:active {
+  transform: scale(0.97);
+}
+.tp-nav-card:hover {
+  box-shadow: 0 4px 16px rgba(18, 21, 58, 0.08);
+}
+.tp-nav-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---- Elevated CONTENT cards (meal log rows, notifications) ---- */
+.tp-card {
+  background: var(--tp-white);
+  border-radius: 1.25rem;
+  box-shadow: 0 1px 3px rgba(18, 21, 58, 0.06), 0 8px 24px rgba(18, 21, 58, 0.05);
+}
+
+/* ---- Stat pairs -- replaces a middot-joined "X קק"ל · Y גר' חלבון" line
+   with two color-coded chips; each metric keeps its one color. ---- */
+.tp-stat-pair {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.3rem;
+}
+
+/* ---- Buttons ---- */
+.tp-btn-primary {
+  background: var(--tp-blue);
+  color: var(--tp-white);
+  font-weight: 600;
+  border-radius: 1rem;
+  min-height: 48px;
+  padding: 0 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: transform 0.12s ease, background-color 0.15s ease;
+}
+.tp-btn-primary:active {
+  transform: scale(0.96);
+  background: #2a5fd1;
+}
+.tp-btn-primary:disabled {
+  opacity: 0.5;
+}
+
+.tp-fab {
+  position: fixed;
+  inset-inline-end: 1.25rem;
+  bottom: calc(5.75rem + env(safe-area-inset-bottom));
+  z-index: 20;
+  background: var(--tp-blue);
+  color: var(--tp-white);
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 28px rgba(47, 111, 237, 0.45);
+  transition: transform 0.15s ease;
+}
+.tp-fab:active {
+  transform: scale(0.92);
+}
+
+/* ---- Source chips (food picker) ---- */
+.tp-chip {
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border: 1px solid var(--tp-border);
+  color: var(--tp-ink-soft);
+  min-height: 40px;
+  transition: transform 0.12s ease, background-color 0.15s ease, color 0.15s ease;
+}
+.tp-chip:active {
+  transform: scale(0.96);
+}
+.tp-chip[aria-pressed='true'] {
+  background: var(--tp-navy);
+  border-color: var(--tp-navy);
+  color: var(--tp-white);
+}
+
+/* ---- Bottom sheet (mobile) / centered dialog (desktop) ---- */
+.tp-sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(12, 14, 40, 0.45);
+  z-index: 40;
+}
+.tp-sheet {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 50;
+  background: var(--tp-white);
+  border-radius: 1.5rem 1.5rem 0 0;
+  max-height: min(88vh, 720px);
+  display: flex;
+  flex-direction: column;
+  padding-bottom: env(safe-area-inset-bottom);
+  box-shadow: 0 -12px 40px rgba(18, 21, 58, 0.25);
+}
+.tp-sheet-handle {
+  width: 2.5rem;
+  height: 0.3rem;
+  border-radius: 999px;
+  background: var(--tp-border);
+  margin: 0.6rem auto 0.25rem;
+}
+
+.tp-sheet-enter-active,
+.tp-sheet-leave-active {
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.32s ease;
+}
+.tp-sheet-enter-from,
+.tp-sheet-leave-to {
+  transform: translateY(100%);
+}
+.tp-backdrop-enter-active,
+.tp-backdrop-leave-active {
+  transition: opacity 0.25s ease;
+}
+.tp-backdrop-enter-from,
+.tp-backdrop-leave-to {
+  opacity: 0;
+}
+
+/* Toast (success feedback) */
+.tp-toast-enter-active,
+.tp-toast-leave-active {
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.28s ease;
+}
+.tp-toast-enter-from {
+  transform: translateY(-12px) scale(0.96);
+  opacity: 0;
+}
+.tp-toast-leave-to {
+  opacity: 0;
+}
+
+/* ---- Bottom nav (mobile) ---- */
+.tp-bottom-nav {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 30;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--tp-border);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.tp-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.5rem 0.25rem;
+  min-height: 44px;
+  color: var(--tp-ink-soft);
+  border-radius: 0.75rem;
+}
+.tp-nav-item.is-active {
+  color: var(--tp-blue);
+}
+.tp-nav-item.is-active .tp-nav-item-dot {
+  opacity: 1;
+  transform: scale(1);
+}
+.tp-nav-item-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--tp-blue);
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+/* ---- Desktop rail (>= 900px) ---- */
+@media (min-width: 900px) {
+  .tp-bottom-nav {
+    display: none;
+  }
+  .tp-rail {
+    display: flex;
+  }
+}
+.tp-rail {
+  display: none;
+}
+
+/* Reduced motion: keep opacity fades only, drop transform-based motion
+   entirely (sheet slide, button press-scale, toast slide). */
+@media (prefers-reduced-motion: reduce) {
+  .tp-sheet-enter-active,
+  .tp-sheet-leave-active,
+  .tp-toast-enter-active,
+  .tp-toast-leave-active,
+  .tp-nav-card,
+  .tp-btn-primary,
+  .tp-fab,
+  .tp-chip {
+    transition-duration: 0.01ms !important;
+  }
+  .tp-sheet-enter-from,
+  .tp-sheet-leave-to,
+  .tp-toast-enter-from {
+    transform: none !important;
+  }
+}
+
+.tempo-preview :focus-visible {
+  outline: 2px solid var(--tp-blue);
+  outline-offset: 2px;
+}

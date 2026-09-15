@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import TheHeader from '../components/layout/TheHeader.vue'
 import TheSidebar from '../components/layout/TheSidebar.vue'
 import TheBottomNavElectric from '../components/layout/TheBottomNavElectric.vue'
+import { useSelectedTraineeStore } from '../features/trainees/store/selectedTrainee'
 
 // Every coach screen (dashboard, trainees, nutrition, progress, training,
 // alerts) renders through this one shared layout, so applying the
@@ -16,6 +17,16 @@ import TheBottomNavElectric from '../components/layout/TheBottomNavElectric.vue'
 // top-right hamburger (TheHeader/TheSidebar's drawer toggle) -- see the
 // `.ec-menu-trigger`/`.ec-bottom-nav` media-query rules in style.css.
 const isSidebarOpen = ref(false)
+
+// Restores the coach's remembered trainee selection (selectedTrainee.js)
+// on every AppLayout mount -- i.e. on every coach page load, including a
+// hard refresh/direct URL visit, since Pinia's own in-memory state starts
+// fresh then. Cheap and idempotent to repeat on every SPA navigation too
+// (same "remounts on every navigation" reasoning TheSidebar.vue's alerts
+// refetch already relies on) -- it always re-reads from storage rather
+// than trusting whatever the in-memory value already was, so it can never
+// leak a stale value across a coach switch in the same tab either.
+useSelectedTraineeStore().restore()
 </script>
 
 <template>

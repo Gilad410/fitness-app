@@ -9,21 +9,36 @@ import TraineeCircumferenceSection from '../../progress/components/TraineeCircum
 import TraineeProgressPhotosSection from '../../progress/components/TraineeProgressPhotosSection.vue'
 import TraineeInviteSection from '../components/TraineeInviteSection.vue'
 import { useTraineesStore } from '../store/trainees'
+import { useSelectedTraineeStore } from '../store/selectedTrainee'
+import { reconcileSelectionWithRoute } from '../store/selectedTraineeStorage'
 
 const route = useRoute()
 const traineesStore = useTraineesStore()
+const selectedTraineeStore = useSelectedTraineeStore()
 
 const checking = ref(true)
 const error = ref('')
 const updating = ref(false)
 const showArchiveConfirm = ref(false)
 
+const trainee = computed(() => traineesStore.getById(route.params.id))
+
 onMounted(async () => {
   await traineesStore.ensureLoaded()
   checking.value = false
+  // Opening a trainee's own profile is the most natural "select this
+  // trainee" action -- from here on, the Progress/Nutrition/Training nav
+  // items jump straight into THIS trainee's workspace (selectedTrainee.js).
+  // See selectedTraineeStorage.js's reconcileSelectionWithRoute() for the
+  // full precedence/stale-clear reasoning.
+  const outcome = reconcileSelectionWithRoute({
+    resolvedTraineeId: trainee.value?.id ?? null,
+    routeParamId: route.params.id,
+    rememberedId: selectedTraineeStore.traineeId,
+  })
+  if (outcome.type === 'select') selectedTraineeStore.select(outcome.traineeId)
+  else if (outcome.type === 'clear') selectedTraineeStore.clear()
 })
-
-const trainee = computed(() => traineesStore.getById(route.params.id))
 
 const hasStartingCircumferences = computed(() => {
   const t = trainee.value
@@ -112,11 +127,11 @@ async function confirmArchive() {
           </div>
           <div v-if="trainee.starting_weight">
             <dt class="text-sm text-neutral-600">משקל התחלתי</dt>
-            <dd class="text-brand-black">{{ trainee.starting_weight }} ק"ג</dd>
+            <dd class="ec-num text-lg" style="color: var(--color-brand-black); opacity: 0.7">{{ trainee.starting_weight }} ק"ג</dd>
           </div>
           <div v-if="trainee.target_weight">
             <dt class="text-sm text-neutral-600">משקל מטרה</dt>
-            <dd class="text-brand-black">{{ trainee.target_weight }} ק"ג</dd>
+            <dd class="ec-num text-lg" style="color: var(--ec-violet)">{{ trainee.target_weight }} ק"ג</dd>
           </div>
           <div v-if="hasStartingCircumferences">
             <dt class="text-sm text-neutral-600">היקפים התחלתיים</dt>

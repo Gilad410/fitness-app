@@ -1,3 +1,9 @@
+/* Heebo -- the "Tempo" visual direction's one type family (see
+   src/features/designPreview/, the isolated source of truth this
+   rollout follows). Carried with real weight range (400/600/800) rather
+   than pairing in a second Latin-only display face -- @import must
+   precede every other rule, including Tailwind's own, per the CSS spec. */
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;800&display=swap');
 @import 'tailwindcss';
 
 /*
@@ -7,7 +13,7 @@
  * so no custom spacing tokens are needed here.
  */
 @theme {
-  --font-sans: 'Rubik', 'Segoe UI', system-ui, sans-serif;
+  --font-sans: 'Heebo', 'Rubik', 'Segoe UI', system-ui, sans-serif;
 
   --color-brand-black: #0a0a0a;
   --color-brand-white: #ffffff;
@@ -64,7 +70,11 @@ body {
   --color-neutral-300: #e2e5f5; /* soft borders */
   --color-neutral-100: #eef0fb; /* light lavender page background */
   --color-neutral-50: #eef0fb; /* soft neutral surface (dashed callout boxes) */
-  --color-status-red: #d1402f; /* coral -- reserved for notifications/warnings */
+  --color-status-red: #c8362a; /* coral -- reserved for notifications/warnings/destructive actions.
+    Deepened one step from the design preview's original #d1402f reference
+    for AA contrast on white at small text sizes (buttons/badges/error
+    text already rely on this token at 12-14px throughout both portals);
+    same hue, same sole role -- never used as a general accent. */
   /* --color-status-yellow intentionally left at its default (#d97706):
      not part of the requested palette, and changing it would blur its
      existing distinct "pending/caution" meaning from the coral above. */
@@ -102,5 +112,88 @@ body {
   .coach-portal .ec-main,
   .trainee-portal .ec-main {
     padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+  }
+}
+
+/*
+ * "Tempo" rollout -- subtle polish on top of the ORIGINAL screens, not a
+ * replacement for them (independent review correction: an earlier pass
+ * restructured the trainee nutrition add-entry form into a bottom-sheet
+ * overlay -- a real information-architecture change, not a polish -- and
+ * has since been reverted back to its original inline-in-the-page-flow
+ * form; see TraineeNutritionView.vue). What remains here is deliberately
+ * small: number typography, clearer selected/active states, and two
+ * restrained, direction-of-change motions (a panel opening in place, a
+ * button responding to a press) -- nothing that adds a new overlay,
+ * panel type, or navigation pattern the original app didn't already have.
+ */
+
+/* Tabular, heavy numerals for stat displays (calorie/protein/weight
+   values) -- the one typographic "move" this direction makes, carried
+   consistently rather than a second typeface -- applied to EXISTING
+   numbers in their EXISTING position (a <dd>, a list-row figure), never
+   to a new element. */
+.ec-num {
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+/* An existing inline form/panel (already part of the page, e.g. the
+   nutrition "add entry" card) fading and easing into place when it
+   opens, and back out when it closes -- the form's own position in the
+   page flow is unchanged, this only softens its appearance/disappearance. */
+.ec-panel-enter-active,
+.ec-panel-leave-active {
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.ec-panel-enter-from,
+.ec-panel-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+/* Restrained press feedback for primary actions -- answers the tap
+   itself, nothing decorative or looping. */
+.ec-press {
+  transition: transform 0.1s ease;
+}
+.ec-press:active {
+  transform: scale(0.97);
+}
+
+/* Bottom-nav active-state dot (TheBottomNavElectric.vue /
+   TraineeBottomNavElectric.vue) -- a second, quieter signal alongside
+   the existing color change, so the active tab reads clearly even for a
+   viewer who can't distinguish the color shift alone. */
+.ec-nav-item-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: currentColor;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.ec-nav-item.is-active .ec-nav-item-dot {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Respected everywhere: strips every transform-based motion above down
+   to opacity-only (or nothing, for the press feedback), instantly. */
+@media (prefers-reduced-motion: reduce) {
+  .ec-panel-enter-active,
+  .ec-panel-leave-active,
+  .ec-press,
+  .ec-nav-item-dot {
+    transition-duration: 0.01ms !important;
+  }
+  .ec-panel-enter-from,
+  .ec-panel-leave-to {
+    transform: none !important;
+  }
+  .ec-press:active {
+    transform: none !important;
   }
 }

@@ -1,6 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/auth'
+import { useSelectedTraineeStore } from '../../features/trainees/store/selectedTrainee'
 
 defineEmits(['toggle-sidebar'])
 
@@ -9,6 +10,13 @@ const router = useRouter()
 
 async function handleLogout() {
   await authStore.signOut()
+  // Explicit clear of the remembered trainee selection -- see
+  // selectedTrainee.js's own header for why (a different coach signing in
+  // on the same browser must never even briefly see this one's last
+  // selection) -- same belt-and-suspenders convention
+  // TraineeHeader.vue's handleLogout() already uses for the trainee
+  // portal's own per-account state.
+  useSelectedTraineeStore().clear()
   router.push('/login')
 }
 </script>

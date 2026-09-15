@@ -5,6 +5,8 @@ import AppLayout from '../../../layouts/AppLayout.vue'
 import BackLink from '../../../components/layout/BackLink.vue'
 import TraineeStatusBadge from '../../trainees/components/TraineeStatusBadge.vue'
 import { useTraineesStore } from '../../trainees/store/trainees'
+import { useSelectedTraineeStore } from '../../trainees/store/selectedTrainee'
+import { reconcileSelectionWithRoute } from '../../trainees/store/selectedTraineeStorage'
 import { useTrainingProgramsStore } from '../store/trainingPrograms'
 
 // Lists one trainee's training programs (a trainee can have more than
@@ -14,6 +16,7 @@ import { useTrainingProgramsStore } from '../store/trainingPrograms'
 // opens TrainingProgramDetailView at /training/:traineeId/:programId.
 const route = useRoute()
 const traineesStore = useTraineesStore()
+const selectedTraineeStore = useSelectedTraineeStore()
 const programsStore = useTrainingProgramsStore()
 
 const checkingTrainee = ref(true)
@@ -25,9 +28,20 @@ const addingProgram = ref(false)
 const addError = ref('')
 const addForm = reactive({ name: '', notes: '' })
 
+const trainee = computed(() => traineesStore.getById(route.params.traineeId))
+
 onMounted(async () => {
   await traineesStore.ensureLoaded()
   checkingTrainee.value = false
+  // See selectedTraineeStorage.js's reconcileSelectionWithRoute() for the
+  // full precedence/stale-clear reasoning.
+  const outcome = reconcileSelectionWithRoute({
+    resolvedTraineeId: trainee.value?.id ?? null,
+    routeParamId: route.params.traineeId,
+    rememberedId: selectedTraineeStore.traineeId,
+  })
+  if (outcome.type === 'select') selectedTraineeStore.select(outcome.traineeId)
+  else if (outcome.type === 'clear') selectedTraineeStore.clear()
 
   try {
     await programsStore.ensureLoaded(route.params.traineeId)
@@ -37,8 +51,6 @@ onMounted(async () => {
     checkingPrograms.value = false
   }
 })
-
-const trainee = computed(() => traineesStore.getById(route.params.traineeId))
 const programs = computed(() => programsStore.programsFor(route.params.traineeId))
 
 const statusLabels = { active: 'פעילה', inactive: 'לא פעילה' }
