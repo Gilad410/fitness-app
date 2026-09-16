@@ -204,6 +204,19 @@ export const RESTAURANT_BRAND_PATTERN =
 export const RESTAURANT_WORD_PATTERN = /\brestaurant\b/i
 export const FAST_FOOD_PATTERN = /(^|--\s*)fast[- ]?foods?,/i
 
+// Matches a named commercial GROCERY brand (as opposed to a restaurant
+// chain, already covered by RESTAURANT_BRAND_PATTERN) anywhere in a
+// source_name/description string. Found via a post-deployment
+// plausibility audit: CHOBANI and Archway both slipped through the
+// restaurant-only check because USDA sometimes files a specific
+// packaged-goods brand's product under a non-"Branded" dataType (SR
+// Legacy here), same root cause as the restaurant-chain finding. A
+// generic-food catalog must never carry a specific brand's product as
+// if it were the generic food. Deliberately a short, reviewed list (not
+// a heuristic like "any capitalized word") -- extend as new cases are
+// found, same discipline as RESTAURANT_BRAND_PATTERN.
+export const GROCERY_BRAND_PATTERN = /\bCHOBANI\b|\bARCHWAY\b/i
+
 // Validates a merged, final-state list of { name, calories, protein,
 // category, basis, sourceId, sourceName } catalog rows. Returns { errors,
 // warnings } -- both plain string arrays, empty when the catalog is
@@ -271,6 +284,9 @@ export function validateCatalogRows(rows) {
         }
         if (FAST_FOOD_PATTERN.test(row.sourceName)) {
           errors.push(`${label}: source_name is a "Fast foods, ..." industry-wide average -- "${row.sourceName}"`)
+        }
+        if (GROCERY_BRAND_PATTERN.test(row.sourceName)) {
+          errors.push(`${label}: source_name names a specific commercial grocery brand -- "${row.sourceName}"`)
         }
       }
     }
