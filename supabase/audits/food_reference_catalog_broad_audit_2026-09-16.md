@@ -1,170 +1,110 @@
-# Food Reference Catalog — Broad 50-100 Item Audit (2026-09-16)
+# Food Reference Catalog — Broad Audit, Revised (2026-09-16)
 
-**Read-only audit + one small reviewable batch (`044`). No Supabase changes, no migration applied, no merge, no deployment.**
+**Read-only audit. No Supabase changes, no migration applied, no merge, no deployment.**
+
+**Revision note:** this replaces the previous version of this report. Banana chips has been removed entirely from the proposed batch — it was a real, correctly-sourced finding, but not a priority for this pass, per explicit instruction. This revision instead focuses on genuinely common everyday foods people actually search for: pizza, sushi, noodles, common pasta types, complex pasta dishes (tomato sauce, bolognese, carbonara, pesto, tuna pasta), tomatoes and other everyday vegetables, and similar staples. **The proposed migration batch (`043`) is unchanged from before — this pass found no new item with a direct, authoritative generic USDA record to add.** Where a composite dish has no such record, it's marked `blocked` or `recipe-derived candidate` below, not guessed.
 
 ## Method
 
-`DEMO_KEY` is still rate-limited (checked again this pass, ~4h remaining) and no personal key was used. As with the prior passes, every item below is either already live, a real record from this session's original 1,010-candidate bulk verification, or explicitly marked "needs live verification" — nothing is invented. Only **direct, generic USDA records** are used throughout; every candidate was checked against `RESTAURANT_BRAND_PATTERN`/`RESTAURANT_WORD_PATTERN`/`FAST_FOOD_PATTERN`/`GROCERY_BRAND_PATTERN`, and nothing recipe-derived, supplement-classed, or obscure is included as an "add."
-
-This pass specifically re-examined every one of the remaining (not-yet-addressed) `needs_manual_review.json` entries with the same numeric bounds-check rigor used for `043`, to see if any more real "add via recategorization" opportunities existed. **One did** (banana chips) — drafted below as `044`. Everything else in that remaining pool turned out to need either a live search or a bound-tuning policy decision (already out of scope), or is a genuine content/naming mismatch not worth adding as-is.
+`DEMO_KEY` remains rate-limited this session, no personal key used. As before, every item below is either already live, a real record from the original 1,010-candidate bulk pass, or explicitly `blocked, needs live search` — nothing invented.
 
 ---
 
-## Meat & Poultry — 10 audited
+## Pizza
 
-| Hebrew | USDA name | kcal/protein | Status | Confidence / reason |
+| Hebrew | USDA name | kcal/protein | Status | Reason |
 |---|---|---|---|---|
-| חזה עוף גולמי (ללא עור) | Chicken, breast, boneless, skinless, raw | 106/22.5 | already present & verified | fdcId 2646170, Foundation |
-| בשר בקר טחון מבושל | Beef, ground, unspecified fat content, cooked | 240/25.1 | already present & verified | fdcId 172161, SR Legacy |
-| סטייק אנטריקוט גולמי | Beef, ribeye, steak, boneless, choice, raw | 254/18.7 | already present & verified | fdcId 2646172, Foundation |
-| כבש (טלה) צלוי | Lamb, loin, cooked, roasted | 309/22.6 | already present & verified | fdcId 172490, SR Legacy |
-| הודו טחון מבושל | Turkey, ground, cooked | 203/27.4 | already present & verified | fdcId 171506, SR Legacy |
-| עגל צלוי | Veal, loin, cooked, roasted | 175/26.3 | already present & verified | fdcId 175274, SR Legacy |
-| חזה עוף צלוי | Chicken, broilers or fryers, breast, cooked, roasted | 165/31.0 | **needs correction** (already drafted in merged `041` — not yet applied) | fdcId 171477, SR Legacy |
-| נקניקיה | Hot dog, beef | 310/11.7 | keep excluded | protein 11.7g is 0.3g under `meat_poultry`'s floor of 12 — no other category fits a hot dog better; a bound-tuning decision (out of scope this pass), not a recategorization |
-| שניצל עוף | Fast foods, chicken, breaded and fried, boneless pieces, plain | 307/15.9 | keep excluded | industry-wide Fast-foods average, excluded by standing rule (confirmed decision from a prior turn) |
-| קורנד בקר (בשר משומר) | Beef, corned beef hash, with potato, canned | 164/8.7 | keep excluded | a composite canned product (hash + potato), not plain corned beef — plain corned beef is already correctly live under a separate name (קורנביף משומר, fdcId 170602); adding this would be confusing, not useful |
+| פיצה קפואה | Pizza, cheese, from frozen, thick crust | 268 / 10.4 | **already present & verified** | fdcId 2708613, Survey (FNDDS) — a real, generic, whole-pizza record. Plain "pizza" is genuinely well covered already. |
+| פיצה גבינה | (only match: "Topping from cheese pizza") | 230 / 16.9 | keep excluded | fdcId 2705787 is explicitly just the topping portion, not the whole dish — correctly excluded, and redundant with the whole-pizza record above anyway |
+| פיצה ירקות | (only match: "Topping from vegetable pizza") | 247 / 15.6 | keep excluded | fdcId 2705788, same topping-only issue |
+| פיצה משפחתית (family-size) | no real match found | — | blocked, needs live search | the only candidate returned was an unrelated soy yogurt product — a bad search result, not a near-miss |
+| פיצה פפרוני (עם תחליף בקר) | a specific "Pizza with pepperoni, stuffed crust" record surfaced as a near-miss | — | blocked, needs live search | promising lead, but its fdcId/values were never fetched (didn't clear strict matching at the time) — low priority since generic pizza is already covered |
 
-## Fish & Seafood — 6 audited
+**Bottom line: pizza itself is not a gap.** The remaining items above are redundant naming variants of a dish that's already correctly represented, not missing coverage.
 
-| Hebrew | USDA name | kcal/protein | Status | Confidence / reason |
+## Sushi
+
+| Item | Status | Reason |
+|---|---|---|
+| Any sushi roll variant (salmon/avocado, California, "sushi burger") | **blocked, needs live search** — unchanged from the prior review | No match in any Hebrew variant tried. Missing base ingredients confirmed still absent: nori (seaweed), rice vinegar, seasoned sushi rice. Raw fish itself (salmon, tuna) is already live and could support a future recipe-derived attempt once those 2-3 missing ingredients are found — not attempted this pass (no invented values). |
+
+## Noodles & all common pasta types
+
+| Hebrew | USDA name | kcal/protein | Status |
+|---|---|---|---|
+| פסטה גולמית (יבשה) | Pasta, dry, enriched | 371 / 13.0 | already present & verified (fdcId 169736) |
+| פסטה מלאה גולמית (יבשה) | Pasta, whole-wheat, dry | 352 / 13.9 | already present & verified (fdcId 169738) |
+| פסטה מבושלת | Pasta, fresh-refrigerated, plain, cooked | 131 / 5.15 | already present & verified (fdcId 169728) |
+| פסטה מלאה מבושלת | Pasta, whole grain, cooked | 159 / 5.82 | already present & verified (fdcId 168916) |
+| אטריות ביצים מבושלות | Noodles, egg, enriched, cooked | 138 / 4.54 | already present & verified (fdcId 169732) |
+| אטריות אורז מבושלות | Rice noodles, cooked | 108 / 1.79 | already present & verified (fdcId 168914) |
+| אטריות סובה מבושלות | Noodles, japanese, soba, cooked | 99 / 5.06 | already present & verified (fdcId 168907) |
+
+**Bottom line: every common plain pasta/noodle type is already covered** (dry and cooked, plain and whole-wheat, egg/rice/soba noodles). No gap here.
+
+## Complex pasta dishes
+
+| Dish | Status | Reason |
+|---|---|---|
+| **Tuna pasta** | **already present & verified** | "פסטה עם טונה" → "Macaroni or pasta salad with tuna," fdcId 2708942, Survey (FNDDS), **200 kcal / 6.69g protein**. This one is fully covered — no action needed. |
+| **Tomato sauce pasta** | blocked, needs live search (promising lead) | Only fully-matched record found is explicitly restaurant-qualified ("Pasta with tomato-based sauce, restaurant," fdcId 2708830) — correctly excluded per standing rule. A different, better-looking candidate, **"Pasta with tomato-based sauce and cheese"** (generic, not restaurant-qualified), surfaced as a near-miss but its fdcId/values were never fetched. **Top priority for the next live search** — likely resolvable without a recipe estimate. |
+| **Bolognese** | blocked, needs live search or recipe-derived candidate | No dish-level match at all (closest results were just plain cooked pasta or a bottled spaghetti sauce). Base ingredients partially available (cooked ground beef is live; tomato, onion, garlic are live) but raw ground beef still isn't — a recipe-derived attempt is possible in principle, not attempted this pass. |
+| **Carbonara** | blocked, needs live search or recipe-derived candidate | No dish-level match found. Base ingredients (egg, parmesan, pasta) are already live; bacon/guanciale is not. A recipe-derived attempt is possible in principle, not attempted this pass. |
+| **Pesto pasta** | blocked, needs live search or recipe-derived candidate | No dish-level match — only the pesto sauce itself is live ("רוטב פסטו," fdcId 2710175, 580/8.61). Pasta + pesto sauce are both already live ingredients, making this the most straightforward recipe-derived candidate of the four if you'd like one drafted — not computed this pass (no ratio approved yet). |
+
+None of the four "recipe-derived candidate" dishes above have had any value computed or proposed this pass — per instruction, a status label only, nothing invented.
+
+## Tomatoes & other everyday vegetables
+
+| Hebrew | USDA name | kcal/protein | Status | Reason |
 |---|---|---|---|---|
-| סלמון גולמי | Fish, salmon, raw | 188/20.4 | already present & verified | fdcId 2706284, Survey (FNDDS) |
-| טונה בשימורים | Fish, tuna, light, canned in water, drained | 90/19.0 | already present & verified | fdcId 334194, Foundation |
-| דג בקלה מבושל | Fish, cod, Pacific, cooked | 84/20.4 | already present & verified | fdcId 175178, SR Legacy |
-| שרימפס מבושל | Crustaceans, shrimp, mixed species, cooked | 119/22.8 | already present & verified | fdcId 171971, SR Legacy |
-| צדפות (אוסטרות) גולמיות | Oysters, raw | 51/5.71 | keep excluded | protein floor for `fish_seafood` is 8 — oysters are a genuine low-protein seafood outlier; bound-tuning decision, out of scope this pass |
-| שרימפס בציפוי פריך מטוגן | Fast foods, shrimp, breaded and fried | 308/7.84 | keep excluded | Fast-foods industry average |
+| עגבניה | Tomatoes, raw | 20 / 0.82 | already present & verified | fdcId 2709719, Survey (FNDDS) |
+| עגבניות משומרות בקופסה (פילטו) | Tomato, puree, canned | 40.8 / 1.58 | already present & verified | fdcId 2685582, Foundation |
+| עגבניות מיובשות בשמש | Tomatoes, sun-dried | 258 / 14.1 | already present & verified | fdcId 168567, SR Legacy |
+| ברוקולי | Broccoli, raw | 31 / 2.57 | already present & verified | fdcId 747447, Foundation |
+| תפוח אדמה | Potatoes, raw, skin | 58 / 2.57 | already present & verified | fdcId 170032, SR Legacy |
+| בצל | Onions, raw | 40 / 1.1 | already present & verified | fdcId 170000, SR Legacy |
+| **עגבניות שרי (cherry tomatoes)** | (wrongly matched to "Cherries, raw") | — | **blocked, needs live search** | genuine gap — a very common everyday item with no correct match yet, not a preparation issue, a wrong-food match |
+| **רסק עגבניות (tomato paste)** | never independently searched | — | **blocked, needs live search** | only appeared as part of a compound query ("ג'חנון עם רסק עגבניות") that failed for unrelated reasons — tomato paste on its own was never actually tried against the live API. Common everyday ingredient, worth prioritizing. |
 
-## Eggs — 5 audited
-
-| Hebrew | USDA name | kcal/protein | Status | Confidence / reason |
-|---|---|---|---|---|
-| ביצה קשה | Egg, whole, cooked, hard-boiled | 155/12.6 | already present & verified | fdcId 173424, SR Legacy |
-| חביתה | Egg, whole, cooked, omelet | 154/10.6 | already present & verified | fdcId 172185, SR Legacy |
-| חלמון ביצה | Egg, yolk, raw, fresh | 322/15.9 | already present & verified | fdcId 172184, SR Legacy |
-| חלבון ביצה | Egg, white, raw, fresh | 52/10.9 | keep excluded | `egg` category's kcal floor is 60, 8 under — bound-tuning, out of scope. High-value once resolved (commonly tracked for protein). |
-| חביתת ירקות | "Other vegetables as ingredient in omelet" | 39/3.24 | keep excluded | wrong/partial match — this is just the vegetable component, not the whole omelet dish; needs live verification for a real vegetable-omelet record |
-
-## Dairy & Common Spreads — 8 audited
-
-| Hebrew | USDA name | kcal/protein | Status | Confidence / reason |
-|---|---|---|---|---|
-| קוטג' 5% | Cheese, cottage, low fat | 82/11.0 | already present & verified | fdcId 2705756, Survey (FNDDS) |
-| חלב 3% | Milk, whole, 3.25% milkfat | 60/3.27 | already present & verified | fdcId 746782, Foundation |
-| פטה | Cheese, feta | 265/14.2 | already present & verified | fdcId 173420, SR Legacy |
-| מוצרלה | Cheese, mozzarella, whole milk | 299/22.2 | **needs correction** (already drafted in merged `041` — not yet applied) | fdcId 170845, SR Legacy |
-| יוגורט יווני 0% | Yogurt, Greek, plain, nonfat | 61/10.0 | **needs correction** (already drafted in merged `041` — not yet applied) | fdcId 330137, Foundation |
-| חמאת בוטנים | Peanut butter | 598/22.2 | **needs correction** (already drafted in merged `041` — not yet applied) | fdcId 2707537, Survey (FNDDS) |
-| חלב מלא (3.5%) | — | — | needs live verification | detail fetch was never completed this session (null values) — a very common everyday item, worth prioritizing |
-| חלב שוקו | (currently a wrong match, 535 kcal — likely a concentrate/mix, not ready-to-drink) | 535/7.65 | keep excluded, needs live verification | kcal far exceeds a real ready-to-drink chocolate milk's typical ~80-90 kcal; the matched record is almost certainly the wrong prep state |
-
-## Grains, Rice, Potatoes & Bread — 8 audited
-
-| Hebrew | USDA name | kcal/protein | Status | Confidence / reason |
-|---|---|---|---|---|
-| אורז לבן מבושל | Rice, white, cooked, glutinous | 96/2.0 | already present & verified | fdcId 2708422, Survey (FNDDS) |
-| תפוח אדמה אפוי | Potato, baked, NFS | 93/2.0 | already present & verified | fdcId 2709383, Survey (FNDDS) |
-| לחם מלא | Bread, whole wheat | 254/12.3 | already present & verified | fdcId 2707709, Survey (FNDDS) |
-| פיתה | Bread, pita, white, enriched | 275/9.1 | already present & verified | fdcId 174915, SR Legacy |
-| קינואה מבושלת | Quinoa, cooked | 120/4.4 | already present & verified | fdcId 168917, SR Legacy |
-| בייגל | (currently wrong: matched to bagel chips) | — | **DELETE, drafted in `043`** — no replacement value guessed | needs live verification for a real "Bagel, plain" record |
-| בננה מיובשת (צ'יפס בננה) | Banana chips | 519/2.3 | **add, drafted this pass as `044`** | `fruit`'s kcal ceiling (350) doesn't fit a fried/oiled snack — `sweets_snacks` (ceiling 620) does. fdcId 2709200, Survey (FNDDS). Full name used deliberately (not bare "dried banana") to avoid the same naming ambiguity flagged for בייגלה. |
-| קמח שקדים | Flour, almond | 622/26.2 | **recategorize, drafted in `043`** | grain_carb → nuts_seeds_fats |
-
-## Pasta & Noodles — 4 audited (already comprehensively covered, restated briefly)
-
-Dry/cooked pasta (plain + whole-wheat), egg noodles, rice noodles, soba noodles — all already present & verified, no action needed. Sauced composite dishes remain out of scope (recipe-derived only, not attempted this pass).
-
-## Legumes — 5 audited
-
-| Hebrew | USDA name | kcal/protein | Status | Confidence / reason |
-|---|---|---|---|---|
-| חומוס מבושל | Chickpeas, cooked, boiled, with salt | 164/8.9 | already present & verified | fdcId 173799, SR Legacy |
-| עדשים מבושלות | Lentils, cooked, boiled, with salt | 114/9.0 | already present & verified | fdcId 175254, SR Legacy |
-| טופו | Tofu, raw, firm | 144/17.3 | already present & verified | fdcId 172475, SR Legacy |
-| שעועית לבנה מבושלת | Beans, white, cooked, boiled, with salt | 139/9.7 | already present & verified | fdcId 175249, SR Legacy |
-| חלבון סויה טקסטורי (TVP) יבש | Textured vegetable protein, dry | 366/51.1 | keep excluded | `legume`'s protein ceiling (45) doesn't fit a dehydrated/concentrated protein product — bound-tuning decision, out of scope this pass |
-
-## Vegetables — 6 audited (near-complete coverage, only real gaps listed)
-
-| Hebrew | USDA name | kcal/protein | Status | Confidence / reason |
-|---|---|---|---|---|
-| עגבניה | Tomatoes, raw | 20/0.82 | already present & verified | fdcId 2709719, Survey (FNDDS) |
-| ברוקולי | Broccoli, raw | 31/2.57 | already present & verified | fdcId 747447, Foundation |
-| תפוח אדמה | Potatoes, raw, skin | 58/2.57 | already present & verified | fdcId 170032, SR Legacy |
-| עגבניות שרי | (matched wrongly to "Cherries, raw") | — | keep excluded, needs live verification | wrong-food match, not a preparation issue — genuine gap, common everyday item |
-| זיתים | (matched wrongly to "Olive tapenade") | 282/0.73 | keep excluded, needs live verification | tapenade is a different product (spread with capers/anchovies), materially wrong nutrition profile for plain olives |
-| דלעת אפויה | (matched wrongly to "Seeds, pumpkin and squash seed kernels, roasted") | 574/29.84 | keep excluded, needs live verification | matched the seeds, not the roasted flesh — wrong food entirely |
-
-## Fruits — 5 audited
-
-| Hebrew | USDA name | kcal/protein | Status | Confidence / reason |
-|---|---|---|---|---|
-| תפוח | Apple, raw | 61/0.17 | already present & verified | fdcId 2709215, Survey (FNDDS) |
-| בננה | Bananas, raw | 89/1.09 | already present & verified | fdcId 173944, SR Legacy |
-| אבוקדו | Avocado, raw | 160/2.0 | already present & verified | fdcId 2709223, Survey (FNDDS) |
-| קוקוס | Nuts, coconut meat, raw | 354/3.33 | **recategorize, drafted in `043`** | fruit → nuts_seeds_fats |
-| אשכולית לבנה | (matched wrongly to grapefruit juice, not whole fruit) | 39/0.5 | keep excluded, needs live verification | prep-state mismatch (juice vs. whole fruit) |
-
-## Snacks (`sweets_snacks`) — 6 audited
-
-| Hebrew | USDA name | kcal/protein | Status | Confidence / reason |
-|---|---|---|---|---|
-| פופקורן | Snacks, popcorn, air-popped | 387/12.9 | already present & verified | fdcId 167959, SR Legacy |
-| דבש | Honey | 304/0.3 | already present & verified | fdcId 169640, SR Legacy |
-| עוגיות | Cookies, shortbread, commercially prepared, plain | 514/5.4 | already present & verified | fdcId 174967, SR Legacy |
-| עוגיות ג'ינג'ר | Archway Home Style Cookies, Reduced Fat Ginger Snaps (branded) | 424/4.7 | **DELETE, already drafted in merged `041` — not yet applied** | branded (Archway), no clean generic replacement found |
-| גרנולה | Cookie, granola | 464/9.8 | **recategorize, drafted in `043`** | grain_carb → sweets_snacks |
-| בננה מיובשת (צ'יפס בננה) | Banana chips | 519/2.3 | **add, drafted this pass as `044`** | see Grains section above |
-
-## Oils (`nuts_seeds_fats`) — 4 audited (fully covered)
-
-שמן זית (olive, 900/0, fdcId 2710186), שמן קנולה (canola, 900/0, fdcId 2710188), שמן חמניות (sunflower, 900/0, fdcId 2710192), שמן קוקוס (coconut, 892/0, fdcId 171412) — all already present & verified. No gaps found in common everyday cooking oils.
-
-## Common Israeli Foods — 8 audited
-
-| Hebrew | USDA name | kcal/protein | Status | Confidence / reason |
-|---|---|---|---|---|
-| חומוס (ממרח) | Hummus, commercial | 237/7.8 | already present & verified | fdcId 174289, SR Legacy |
-| טחינה | Seeds, sesame butter, paste | 586/18.1 | already present & verified | fdcId 170191, SR Legacy |
-| פיתה | Bread, pita, white, enriched | 275/9.1 | already present & verified | fdcId 174915, SR Legacy |
-| סלט ירקות (ישראלי) | Lettuce, salad with assorted vegetables | 23/1.19 | already present & verified | fdcId 2709823, Survey (FNDDS) |
-| פלאפל | Falafel | 514/8.28 | **add, drafted in `042` — not yet applied** | fdcId 2707408, Survey (FNDDS) |
-| מטבוחה | — | — | recipe-derived estimate only, not migrated | proposed 146.87 kcal/1.59g, clearly labeled, pending your ratio/yield approval |
-| שקשוקה | — | — | recipe-derived estimate only, not migrated | proposed 145.67 kcal/6.92g, clearly labeled; a promising direct FNDDS candidate exists but its exact values were never captured — still blocked |
-| שווארמה | — | — | keep excluded (confirmed decision from a prior turn) | no match in any variant; method-dependent, not recipe-decomposable with confidence |
+**Bottom line: everyday vegetable staples are extremely well covered** (tomato in 3 forms, potato, onion, broccoli, and dozens more from earlier passes). The two real gaps — cherry tomatoes and tomato paste — are both genuine and worth prioritizing in the next live pass.
 
 ---
 
-## Summary
+## Revised proposed batch
 
-- **~58 items audited** across the 12 requested categories.
-- **~40 already present & verified**, no action needed — confirms strong existing coverage.
-- **7 already-known corrections/additions pending your approval from prior rounds** (`041`'s 4 corrections + `042`'s falafel + `043`'s בייגל deletion + `043`'s 6-item recategorization batch) — restated here for completeness, not new work.
-- **1 genuinely new finding this pass**: בננה מיובשת (צ'יפס בננה) / banana chips — drafted as `044`.
-- **~10 items kept excluded** with a precise, individually-verified reason (wrong match, branded, Fast-foods average, or a bound-tuning issue out of scope).
-- **~8 items flagged "needs live verification"** — real gaps worth prioritizing next: cherry tomatoes, plain olives, roasted pumpkin, white grapefruit (whole fruit), whole milk 3.5%, chocolate milk, plain bagel, vegetable omelet.
+**Unchanged from the prior review — no new item qualified this pass:**
 
-## Code drafted
+- `041` — 4 corrections + 2 deletions (already merged to `main`, still not applied to Supabase).
+- `042` — falafel addition (drafted, not applied).
+- `043` — בייגל wrong-match deletion + 6-item category-reassignment batch (drafted, not applied).
 
-- `supabase/sql/044_food_reference_catalog_banana_chips_recategorization.sql` — new, draft-only single-row insert (same `ON CONFLICT DO NOTHING` pattern as `040`/`042`). **Not applied.**
-- `src/features/nutrition/lib/foodCatalogRealData.test.mjs` — extended with 6 new tests for `044`: exact name/values/category/basis/source, plausibility pass under the new category and fail under the old one, zero validation errors, no duplicate name, idempotent insert.
+**Removed from the batch, per instruction:** banana chips (`044`) — the migration file and its 6 tests have been deleted from this branch entirely, not just deprioritized.
+
+**No new migration was drafted this pass.** Every genuinely common food investigated (pizza, sushi, pasta/noodle types, tomato-sauce/bolognese/carbonara/pesto/tuna pasta, tomatoes, everyday vegetables) turned out to be either already well covered, or blocked on a live USDA search that can't be completed with `DEMO_KEY` still rate-limited and no personal key in use this turn.
+
+## Priority list for the next live-verification pass (revised, in order)
+
+1. **"Pasta with tomato-based sauce and cheese"** — promising non-restaurant lead, likely resolvable directly.
+2. **Cherry tomatoes** — common, currently wrong-matched to cherries.
+3. **Tomato paste** — common, never actually searched standalone.
+4. Sushi base ingredients (nori, rice vinegar, seasoned sushi rice).
+5. Bolognese / carbonara / pesto pasta — check for a direct dish-level FNDDS record before resorting to a recipe estimate.
+6. (Carried over from before, unchanged priority) ground beef raw, breadcrumbs, phyllo dough, basmati rice, a plain "bagel" record, non-branded French fries, whole milk 3.5%, labneh, silan, margarine, matzah.
 
 ## Verification
 
-- `node --test` across all 20 `*.test.mjs` files: **241/241 passing** (6 new for `044`).
+- `node --test` across all 20 `*.test.mjs` files: **235/235 passing** (back to the pre-`044` count — the 6 banana-chips tests were removed along with the file).
 - `npm run lint`: clean.
-- `npm run build`: succeeds (pre-existing chunk-size advisory only).
-- `044`'s SQL verified parseable under `pglast`.
+- No new SQL file this pass — nothing to re-validate with `pglast`.
 - No USDA API key used.
 
-## Exact file list (this pass)
+## Exact file list (this revision)
 
 ```
-supabase/sql/044_food_reference_catalog_banana_chips_recategorization.sql       (new, draft migration, NOT applied)
-src/features/nutrition/lib/foodCatalogRealData.test.mjs                          (+~65 lines: 6 new 044 tests)
-supabase/audits/food_reference_catalog_broad_audit_2026-09-16.md                (this report)
+supabase/sql/044_food_reference_catalog_banana_chips_recategorization.sql       (DELETED -- removed per instruction)
+src/features/nutrition/lib/foodCatalogRealData.test.mjs                          (-65 lines: the 6 044 tests removed)
+supabase/audits/food_reference_catalog_broad_audit_2026-09-16.md                (rewritten, this report)
 ```
 
-No Supabase changes, no migration applied, no merge, no deployment occurred in this pass.
+No Supabase changes, no migration applied, no merge, no deployment occurred in this pass. The active proposed batch for your review remains exactly `041` (merged, not yet applied) + `042` + `043` (drafted, not applied) — nothing more.
