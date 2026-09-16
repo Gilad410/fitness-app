@@ -19,6 +19,7 @@ import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import { parseCatalogValues, validateCatalogRows } from './foodCatalogValidation.js'
+import { checkPlausibility } from './foodCatalogPlausibility.js'
 
 const here = path.dirname(fileURLToPath(import.meta.url))
 const sqlDir = path.resolve(here, '../../../../supabase/sql')
@@ -383,4 +384,186 @@ test('the pre-041 catalog (as currently live) DOES still carry the 3 known brand
   const { errors } = validateCatalogRows(all)
   const brandErrors = errors.filter((e) => /grocery brand/i.test(e))
   assert.equal(brandErrors.length, 3, 'expected the live (pre-041) catalog to still contain exactly the 3 known branded rows (2 deleted + 1 corrected by 041)')
+})
+
+// ---------------------------------------------------------------------
+// 042 (falafel addition -- drafted, NOT yet applied). A clean,
+// primary-source USDA match (fdcId 2707408, Survey (FNDDS), full token
+// coverage, no restaurant/brand qualifier) that was wrongly excluded
+// during the original pass because it fell outside prepared_dish's
+// plausibility kcal ceiling (500 at the time). Approved for inclusion
+// alongside raising that ceiling to 550 -- see
+// foodCatalogPlausibility.js and the expansion proposal report.
+// ---------------------------------------------------------------------
+
+function load042Addition() {
+  const text = read('042_food_reference_catalog_falafel_addition.sql')
+  return parseCatalogValues(text)
+}
+
+test('042 inserts exactly 1 new row: falafel', () => {
+  const rows = load042Addition()
+  assert.equal(rows.length, 1)
+  assert.equal(rows[0].name, 'פלאפל')
+})
+
+test('042\'s falafel row carries the exact live-verified USDA values, category, basis and source', () => {
+  const [row] = load042Addition()
+  assert.equal(row.calories, 514)
+  assert.equal(row.protein, 8.28)
+  assert.equal(row.category, 'prepared_dish')
+  assert.equal(row.basis, 'as_sold')
+  assert.equal(row.sourceId, '2707408')
+  assert.ok(row.sourceName.includes('USDA FoodData Central'))
+  const url = row.fields.find((f) => typeof f === 'string' && f.startsWith('https://fdc.nal.usda.gov/'))
+  assert.ok(url && url.includes('2707408'), 'source_url must reference fdcId 2707408')
+})
+
+test('042\'s falafel row passes validateCatalogRows with zero errors', () => {
+  const { errors } = validateCatalogRows(load042Addition())
+  assert.deepEqual(errors, [])
+})
+
+test('042\'s falafel row is plausible ONLY under the raised prepared_dish ceiling (regression proving the rule change is what unblocks it, not a data change)', () => {
+  const [row] = load042Addition()
+  const underRaisedCeiling = checkPlausibility(row.category, row.calories, row.protein)
+  assert.equal(underRaisedCeiling.plausible, true)
+
+  // Simulate the OLD 500 ceiling directly (without importing the old
+  // scratchpad tool, which was never committed) to prove this is a real
+  // before/after, not a tautology.
+  const OLD_PREPARED_DISH_CEILING = 500
+  const wouldHaveBeenFlagged = row.calories > OLD_PREPARED_DISH_CEILING
+  assert.equal(wouldHaveBeenFlagged, true, 'falafel (514 kcal) must have been outside the old 500 ceiling -- otherwise there was nothing to fix')
+})
+
+test('042 does not duplicate a name already present in the 039+040 catalog (no accidental double-insert)', () => {
+  const { all } = loadFinalCatalog()
+  const existingNames = new Set(all.map((r) => r.name.toLowerCase()))
+  const [row] = load042Addition()
+  assert.ok(!existingNames.has(row.name.toLowerCase()), `"${row.name}" must not already exist in the 039+040 catalog`)
+})
+
+test('042 uses the same ON CONFLICT ((lower(name))) DO NOTHING guard as 040 (idempotent, safe to re-run)', () => {
+  const text = read('042_food_reference_catalog_falafel_addition.sql')
+  assert.match(text, /on conflict \(\(lower\(name\)\)\) do nothing;/)
+})
+
+// ---------------------------------------------------------------------
+// 043 (wrong-match + category-reassignment fixes -- drafted, NOT yet
+// applied). Scope, per explicit instruction: ONLY the live בייגל
+// wrong-match bug and the 6 missing rows whose only blocker was a
+// category assignment. Bound-tuning fixes (egg white, oysters, TVP,
+// cornstarch) are explicitly out of scope and untouched by 043.
+// ---------------------------------------------------------------------
+
+function load043Fixes() {
+  const text = read('043_food_reference_catalog_category_fixes.sql')
+  const deleteBlock = text.slice(text.indexOf('delete from'), text.indexOf('-- Part 2'))
+  const deletedNames = [...deleteBlock.matchAll(/lower\('((?:[^'\\]|'')*)'\)/g)].map((m) => m[1].replace(/''/g, "'"))
+  const insertBlock = text.slice(text.indexOf('insert into'), text.indexOf('on conflict'))
+  const inserted = parseCatalogValues(insertBlock)
+  return { deletedNames, inserted, text }
+}
+
+test('043 deletes exactly 1 row (the wrong בייגל mapping) and inserts exactly 6 recategorized rows', () => {
+  const { deletedNames, inserted } = load043Fixes()
+  assert.deepEqual(deletedNames, ['בייגל'])
+  assert.equal(inserted.length, 6, `expected 6 recategorized inserts, found ${inserted.length}`)
+})
+
+test('043\'s 6 recategorized rows carry the exact live-verified USDA values, corrected category, and source', () => {
+  const { inserted } = load043Fixes()
+  const byName = new Map(inserted.map((r) => [r.name, r]))
+
+  const expected = {
+    'בייגלה': { calories: 451, protein: 12.3, category: 'sweets_snacks', basis: 'as_sold', sourceId: '2708292' },
+    'קוקוס': { calories: 354, protein: 3.33, category: 'nuts_seeds_fats', basis: 'raw', sourceId: '170169' },
+    'חמאת שקדים': { calories: 641, protein: 20.7, category: 'nuts_seeds_fats', basis: 'as_sold', sourceId: '2707533' },
+    'ממרח חמאת בוטנים חלק': { calories: 520, protein: 25.9, category: 'nuts_seeds_fats', basis: 'as_sold', sourceId: '172458' },
+    'גרנולה': { calories: 464, protein: 9.8, category: 'sweets_snacks', basis: 'as_sold', sourceId: '2707933' },
+    'קמח שקדים': { calories: 622.042, protein: 26.24375, category: 'nuts_seeds_fats', basis: 'raw', sourceId: '2261420' },
+  }
+
+  for (const [name, exp] of Object.entries(expected)) {
+    const row = byName.get(name)
+    assert.ok(row, `expected a row for "${name}"`)
+    assert.equal(row.calories, exp.calories, `${name}: calories`)
+    assert.equal(row.protein, exp.protein, `${name}: protein`)
+    assert.equal(row.category, exp.category, `${name}: category`)
+    assert.equal(row.basis, exp.basis, `${name}: basis`)
+    assert.equal(row.sourceId, exp.sourceId, `${name}: source_id`)
+    assert.ok(row.sourceName.includes('USDA FoodData Central'), `${name}: source_name must cite USDA FoodData Central`)
+    const url = row.fields.find((f) => typeof f === 'string' && f.startsWith('https://fdc.nal.usda.gov/'))
+    assert.ok(url && url.includes(exp.sourceId), `${name}: source_url must reference its own source_id`)
+  }
+})
+
+test('043\'s 6 recategorized rows are plausible under their NEW category (proves the fix is real, not just a relabel)', () => {
+  const { inserted } = load043Fixes()
+  for (const row of inserted) {
+    const { plausible, issues } = checkPlausibility(row.category, row.calories, row.protein)
+    assert.equal(plausible, true, `${row.name}: expected plausible under "${row.category}", issues: ${issues.join('; ')}`)
+  }
+})
+
+test('043\'s 6 recategorized rows would NOT have been plausible under their OLD (wrong) category -- proves there was a real problem to fix', () => {
+  const { inserted } = load043Fixes()
+  const OLD_CATEGORY = {
+    'בייגלה': 'grain_carb',
+    'קוקוס': 'fruit',
+    'חמאת שקדים': 'sauce_condiment',
+    'ממרח חמאת בוטנים חלק': 'sauce_condiment',
+    'גרנולה': 'grain_carb',
+    'קמח שקדים': 'grain_carb',
+  }
+  for (const row of inserted) {
+    const oldCategory = OLD_CATEGORY[row.name]
+    const { plausible } = checkPlausibility(oldCategory, row.calories, row.protein)
+    assert.equal(plausible, false, `${row.name}: expected implausible under the old "${oldCategory}" category (otherwise there was nothing to fix)`)
+  }
+})
+
+test('043 passes validateCatalogRows with zero errors (no restaurant/brand/fast-food/duplicate issues introduced)', () => {
+  const { inserted } = load043Fixes()
+  const { errors } = validateCatalogRows(inserted)
+  assert.deepEqual(errors, [])
+})
+
+test('043 does not duplicate a name already present in the 039+040 catalog', () => {
+  const { all } = loadFinalCatalog()
+  const existingNames = new Set(all.map((r) => r.name.toLowerCase()))
+  const { inserted } = load043Fixes()
+  for (const row of inserted) {
+    assert.ok(!existingNames.has(row.name.toLowerCase()), `"${row.name}" must not already exist in the 039+040 catalog`)
+  }
+})
+
+test('043 deletes the wrong בייגל row BEFORE inserting the corrected בייגלה row (distinct names, but keeps the fix\'s intent legible)', () => {
+  const text = read('043_food_reference_catalog_category_fixes.sql')
+  const deleteIndex = text.indexOf('delete from')
+  const insertIndex = text.indexOf('insert into')
+  assert.ok(deleteIndex !== -1 && insertIndex !== -1 && deleteIndex < insertIndex)
+})
+
+test('043 is transaction-safe: wrapped in begin;/commit; with a guard verifying its own intended effect, scoped to only the rows it touches', () => {
+  const text = read('043_food_reference_catalog_category_fixes.sql')
+  const withoutComments = text.replace(/--.*$/gm, '')
+  assert.match(withoutComments.trimStart(), /^\s*begin;/, '043 must open with begin;')
+  assert.match(withoutComments.trimEnd(), /commit;\s*$/, '043 must close with commit;')
+  assert.match(withoutComments, /raise exception/i, '043 must guard its own effect')
+  const doBlock = withoutComments.slice(withoutComments.indexOf('do $$'), withoutComments.indexOf('commit;'))
+  assert.doesNotMatch(doBlock, /select count\(\*\) into \w+\s*\n\s*from public\.food_reference_catalog;/, 'the guard must not count the whole table')
+})
+
+test('043 uses ON CONFLICT ((lower(name))) DO NOTHING on its insert (idempotent, safe to re-run)', () => {
+  const text = read('043_food_reference_catalog_category_fixes.sql')
+  assert.match(text, /on conflict \(\(lower\(name\)\)\) do nothing;/)
+})
+
+test('043 explicitly does NOT touch the 4 bound-tuning items (egg white, oysters, TVP, cornstarch) -- out of scope for this pass', () => {
+  const text = read('043_food_reference_catalog_category_fixes.sql')
+  for (const outOfScope of ['חלבון ביצה', 'צדפות', 'חלבון סויה טקסטורי', 'עמילן תירס']) {
+    assert.ok(!text.includes(outOfScope), `043 must not reference "${outOfScope}" -- bound-tuning is a separate decision, not recategorization`)
+  }
 })
