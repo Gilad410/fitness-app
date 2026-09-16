@@ -22,9 +22,14 @@ import { parseCatalogValues, validateCatalogRows } from './foodCatalogValidation
 
 const here = path.dirname(fileURLToPath(import.meta.url))
 const sqlDir = path.resolve(here, '../../../../supabase/sql')
+const auditsDir = path.resolve(here, '../../../../supabase/audits')
 
 function read(file) {
   return readFileSync(path.join(sqlDir, file), 'utf8')
+}
+
+function readAudit(file) {
+  return readFileSync(path.join(auditsDir, file), 'utf8')
 }
 
 // 039 corrects/backfills the surviving pre-existing rows (calories,
@@ -117,23 +122,44 @@ test('039\'s UPDATE ... SET clause never references a v.<column> missing from th
   assert.deepEqual(missing, [], `SET clause references v.<column> not present in the "as v(...)" alias: ${missing.join(', ')}`)
 })
 
-test('039\'s mutating statements (DELETE/ALTER/UPDATE) are wrapped in an explicit begin;/commit; transaction (atomic -- a mid-script failure leaves nothing partially applied)', () => {
+test('039 opens with begin; and closes with commit;, wrapping DELETE/ALTER/UPDATE/report in order (atomic -- a mid-script failure leaves nothing partially applied)', () => {
   const text = read('039_food_reference_catalog_metadata.sql')
   const withoutComments = text.replace(/--.*$/gm, '')
-  // The file opens with a standalone, deliberately UN-transactional
-  // PREFLIGHT `select` (it must be runnable independently, any time,
-  // read-only) -- begin;/commit; only need to wrap the actual writes.
+  assert.match(withoutComments.trimStart(), /^\s*begin;/, '039 must open with an explicit begin; (no statement before it)')
   assert.match(withoutComments.trimEnd(), /commit;\s*$/, '039 must close with an explicit commit;')
   const beginIndex = withoutComments.indexOf('begin;')
   const deleteIndex = withoutComments.indexOf('delete from')
   const alterIndex = withoutComments.indexOf('alter table')
   const updateIndex = withoutComments.indexOf('update public.food_reference_catalog as f')
   const commitIndex = withoutComments.lastIndexOf('commit;')
-  assert.ok(beginIndex !== -1, '039 must contain an explicit begin;')
   assert.ok(
     beginIndex < deleteIndex && deleteIndex < alterIndex && alterIndex < updateIndex && updateIndex < commitIndex,
     'begin; must precede DELETE/ALTER/UPDATE, and commit; must come after all of them',
   )
+})
+
+test('039 never references category/basis/source_* before its own begin;/ALTER TABLE creates them', () => {
+  // Regression test for a real production failure: an earlier version
+  // put a PREFLIGHT `select` referencing these columns BEFORE begin;/the
+  // ALTER TABLE that creates them -- ERROR 42703 ("column category does
+  // not exist"), the very first statement in the file, caught only by
+  // actually running it against Supabase (it aborted before the real
+  // transaction ever started). Nothing before begin; may reference any
+  // column this migration itself adds.
+  const text = read('039_food_reference_catalog_metadata.sql')
+  const withoutComments = text.replace(/--.*$/gm, '')
+  const beginIndex = withoutComments.indexOf('begin;')
+  const beforeBegin = withoutComments.slice(0, beginIndex)
+  assert.doesNotMatch(beforeBegin, /\bcategory\b|\bbasis\b|\bsource_name\b|\bsource_id\b|\bsource_url\b|\bsource_checked_at\b/)
+})
+
+test('039\'s ALTER TABLE uses "add column if not exists" for every new column (defensive against a prior attempt leaving one behind)', () => {
+  const text = read('039_food_reference_catalog_metadata.sql')
+  const alterBlock = text.slice(text.indexOf('alter table public.food_reference_catalog'), text.indexOf('update public.food_reference_catalog as f'))
+  const addColumnCount = (alterBlock.match(/add column/gi) || []).length
+  const addColumnIfNotExistsCount = (alterBlock.match(/add column if not exists/gi) || []).length
+  assert.equal(addColumnCount, 6, `expected 6 "add column" clauses, found ${addColumnCount}`)
+  assert.equal(addColumnIfNotExistsCount, 6, 'every "add column" clause must use "if not exists"')
 })
 
 test('039 never tightens category/basis/source_* to NOT NULL (deliberate -- the live table can hold rows outside this migration\'s own known name lists; tightening deferred to a future migration)', () => {
@@ -141,23 +167,31 @@ test('039 never tightens category/basis/source_* to NOT NULL (deliberate -- the 
   assert.doesNotMatch(text, /set\s+not\s+null/i)
 })
 
-test('the PREFLIGHT query is a standalone, read-only SELECT positioned BEFORE begin; (never inside the transaction, runnable independently at any time)', () => {
+test('039\'s safe-by-construction leftover-nulls report is a read-only SELECT positioned AFTER the ALTER TABLE and BEFORE the final commit; (never a raise/exception -- can\'t abort the migration)', () => {
   const text = read('039_food_reference_catalog_metadata.sql')
   const withoutComments = text.replace(/--.*$/gm, '')
-  // The real `begin;` statement (not just a mention of the word inside a
-  // comment, e.g. this file's own header explains the fix using the
-  // literal text "begin;") -- found in the code with comments stripped.
-  const beginIndex = withoutComments.indexOf('begin;')
-  const preflightIndex = text.indexOf('PREFLIGHT')
-  assert.ok(preflightIndex !== -1, 'expected a PREFLIGHT section marker')
-  const selectIndex = withoutComments.indexOf('select')
-  assert.ok(selectIndex !== -1 && selectIndex < beginIndex, 'expected the PREFLIGHT select to be positioned before the real begin; statement')
-  const preflightBlock = withoutComments.slice(selectIndex, beginIndex)
-  assert.match(preflightBlock, /from public\.food_reference_catalog/)
-  assert.match(preflightBlock, /category is null/)
-  assert.match(preflightBlock, /source_id is null/)
-  assert.match(preflightBlock, /source_url is null/)
-  assert.doesNotMatch(preflightBlock, /\b(delete|insert|update|alter)\b/i, 'the PREFLIGHT query must be read-only -- no writes')
+  const alterIndex = withoutComments.indexOf('alter table')
+  const updateIndex = withoutComments.indexOf('update public.food_reference_catalog as f')
+  const commitIndex = withoutComments.lastIndexOf('commit;')
+  const reportSelectIndex = withoutComments.indexOf('select id, name, calories_per_100g')
+  assert.ok(reportSelectIndex !== -1, 'expected a report select after the corrections')
+  assert.ok(
+    alterIndex < updateIndex && updateIndex < reportSelectIndex && reportSelectIndex < commitIndex,
+    'the report select must come after ALTER TABLE and UPDATE, and before the final commit;',
+  )
+  assert.doesNotMatch(withoutComments, /raise\s+exception/i, '039 must never raise/abort on finding leftover-null rows -- report only')
+})
+
+test('the standalone preflight check file is schema-agnostic (references only columns that predate 039, so it can never fail regardless of whether 039 has run)', () => {
+  const text = readAudit('food_reference_catalog_039_preflight_check.sql')
+  // Comments are allowed to mention category/basis/source_* in prose
+  // (explaining why the query below doesn't) -- only the actual SQL
+  // matters for "can this query ever fail with column-does-not-exist".
+  const withoutComments = text.replace(/--.*$/gm, '')
+  assert.doesNotMatch(withoutComments, /\bcategory\b|\bbasis\b|\bsource_name\b|\bsource_id\b|\bsource_url\b|\bsource_checked_at\b/)
+  assert.match(withoutComments, /from public\.food_reference_catalog/)
+  assert.match(withoutComments, /information_schema\.columns/)
+  assert.doesNotMatch(withoutComments, /\b(delete|insert|update|alter)\b/i, 'the preflight check must be read-only -- no writes')
 })
 
 test('the 039 DELETE list and the 039/040 final catalog names never overlap (nothing "corrected" that was also deleted)', () => {

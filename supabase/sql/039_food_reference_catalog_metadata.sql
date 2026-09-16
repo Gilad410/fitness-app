@@ -3,8 +3,8 @@
 -- Run this file manually, once, in the Supabase Dashboard -> SQL Editor,
 -- after 001_trainees.sql .. 038_trainee_nutrition_log_retention.sql.
 --
--- Corrected re-run (twice): two prior attempts at this migration failed
--- in the SQL Editor:
+-- Corrected re-run (three times): three prior attempts at this
+-- migration failed in the SQL Editor:
 --   1. `ERROR 42703: column v.source_url does not exist` -- the UPDATE's
 --      SET clause referenced v.source_url, but the VALUES(...) list
 --      feeding v never included a source_url column. Fixed by adding
@@ -15,18 +15,36 @@
 --      table has rows outside this migration's own known 349 (221
 --      corrected + 113 deleted), left over with nulls. Fixed by NOT
 --      tightening those columns to NOT NULL in this migration at all
---      (see the PREFLIGHT query and the note near this file's end for
---      the full reasoning) -- this migration only ever touches the 334
---      rows it explicitly names, never anything else, and never fails
---      because of rows it doesn't recognize.
--- Both failures are safe: the whole file is explicitly wrapped in
--- `begin;` / `commit;` (below), so each failed attempt rolled back
--- cleanly with nothing partially applied -- confirmed safe to just
--- re-run this corrected file from the top; nothing needs to be undone
--- first. The explicit wrapper also means any FUTURE failure (not just
--- these two) can never leave a partial DELETE/UPDATE/ALTER applied,
--- independent of whatever multi-statement transaction behavior the SQL
--- Editor itself does or doesn't provide by default.
+--      (see the note near this file's end for the full reasoning) --
+--      this migration only ever touches the 334 rows it explicitly
+--      names, never anything else, and never fails because of rows it
+--      doesn't recognize.
+--   3. `ERROR 42703: column "category" does not exist` at the
+--      then-first statement in the file -- an earlier fix for #2 added
+--      a PREFLIGHT `select` referencing category/basis/source_* BEFORE
+--      this file's own `begin;`/ALTER TABLE, which is what actually
+--      creates those columns. Run as one pasted script (as this file is
+--      meant to be), that select was the very first statement and
+--      failed immediately, before the real transaction below ever
+--      started -- so nothing was applied, but nothing else ran either.
+--      Fixed by removing that query from this file entirely: a
+--      schema-agnostic preflight check (references only columns that
+--      have existed since 004, so it can never hit this problem) now
+--      lives in its own separate file,
+--      supabase/audits/food_reference_catalog_039_preflight_check.sql
+--      -- run that FIRST, independently, any time; and a second,
+--      safe-by-construction report of any still-missing metadata is
+--      produced by THIS file itself, automatically, as its last
+--      statement (after the ALTER TABLE has already run) -- see its end.
+-- All three failures were safe: the whole file is explicitly wrapped in
+-- `begin;` / `commit;` (below), so each failed attempt that got past the
+-- top of the file rolled back cleanly with nothing partially applied --
+-- confirmed safe to just re-run this corrected file from the top;
+-- nothing needs to be undone first. The explicit wrapper also means any
+-- FUTURE failure (not just these three) can never leave a partial
+-- DELETE/UPDATE/ALTER applied, independent of whatever multi-statement
+-- transaction behavior the SQL Editor itself does or doesn't provide by
+-- default.
 --
 -- Supersedes an earlier, memory-based draft of this same milestone (never
 -- applied to Supabase, never committed) with a properly source-verified
@@ -50,7 +68,7 @@
 --     (the USDA fdcId), source_url (a live, working per-food FDC link),
 --     source_checked_at (the date this session verified it). Stay
 --     NULLABLE -- deliberately NOT tightened to NOT NULL by this file
---     (see the PREFLIGHT query below and the note near this file's end).
+--     (see the note near this file's end, right before its commit;).
 --     Every one of the 221 corrected rows gets a real,
 --     non-null value in all six columns regardless (the 113
 --     deleted rows are removed entirely, not left behind with nulls);
@@ -60,50 +78,6 @@
 -- 269 further new verified products are added by
 -- 040_food_reference_catalog_usda_verified_expansion.sql, which must run after
 -- this file (it needs these columns to exist).
-
--- ============================================================================
--- PREFLIGHT -- a separate, standalone, READ-ONLY report query (no writes,
--- not part of the transaction below, safe to run anytime and as many
--- times as you like).
---
--- IMPORTANT run order: this query needs the category/basis/source_*
--- columns, which the migration below creates -- it will error with
--- "column category does not exist" if run before that migration has
--- succeeded at least once. Given both prior attempts at this migration
--- failed and were fully rolled back (the explicit begin;/commit; wrapper
--- means neither the ALTER TABLE nor anything else from those attempts
--- is still applied), run this query AFTER the corrected migration below
--- has completed successfully, whenever you're ready to look into the
--- leftover rows before considering a future NOT NULL migration.
---
--- Reports every row in food_reference_catalog missing
--- category/basis/source_name/source_id/source_url/source_checked_at --
--- i.e. every row outside this migration's own DELETE (113 names) /
--- UPDATE (221 names) lists. A non-empty result means the live table
--- holds rows this migration doesn't recognize (added by hand since 008,
--- or a naming drift) -- this migration leaves them untouched and
--- nullable either way; see the note near the end of this file (right
--- before its final commit;) for the full reasoning.
--- ============================================================================
-select
-  id,
-  name,
-  calories_per_100g,
-  protein_per_100g,
-  category,
-  basis,
-  source_name,
-  source_id,
-  source_url,
-  source_checked_at
-from public.food_reference_catalog
-where category is null
-   or basis is null
-   or source_name is null
-   or source_id is null
-   or source_url is null
-   or source_checked_at is null
-order by name;
 
 begin;
 
@@ -231,23 +205,27 @@ where lower(name) in (
   lower('פיצה משפחתית')
 );
 
+-- IF NOT EXISTS on every column (defensive): if a prior attempt somehow
+-- left one of these columns behind despite the begin;/commit; wrapper,
+-- adding it again is a no-op (a notice, not an error) instead of
+-- ERROR 42701 ("column already exists") aborting this run too.
 alter table public.food_reference_catalog
-  add column category text
+  add column if not exists category text
     check (category in (
       'fruit', 'vegetable', 'grain_carb', 'bread_bakery', 'meat_poultry',
       'fish_seafood', 'egg', 'dairy', 'plant_milk', 'legume',
       'nuts_seeds_fats', 'sweets_snacks', 'sauce_condiment', 'spice_herb',
       'beverage', 'prepared_dish', 'soup_salad', 'sandwich', 'supplement'
     )),
-  add column basis text
+  add column if not exists basis text
     check (basis in (
       'raw', 'cooked', 'grilled', 'roasted', 'fried', 'boiled', 'baked',
       'steamed', 'dried', 'canned_drained', 'as_sold'
     )),
-  add column source_name text check (char_length(trim(source_name)) > 0),
-  add column source_id text check (char_length(trim(source_id)) > 0),
-  add column source_url text check (char_length(trim(source_url)) > 0),
-  add column source_checked_at date;
+  add column if not exists source_name text check (char_length(trim(source_name)) > 0),
+  add column if not exists source_id text check (char_length(trim(source_id)) > 0),
+  add column if not exists source_url text check (char_length(trim(source_url)) > 0),
+  add column if not exists source_checked_at date;
 
 -- Correct calories/protein where the live migration-008 value differs
 -- from the verified USDA figure, and backfill category/basis/source_*
@@ -487,9 +465,8 @@ from (values
 ) as v(name, calories_per_100g, protein_per_100g, category, basis, source_name, source_id, source_url)
 where lower(f.name) = lower(v.name);
 
--- NOT tightened to NOT NULL in this migration (deliberate; see the
--- PREFLIGHT query above this file's BEGIN block). A first attempt at
--- tightening failed: P0001, 15 row(s) already in the live table --
+-- NOT tightened to NOT NULL in this migration (deliberate). A first
+-- attempt at tightening failed: P0001, 15 row(s) already in the live table --
 -- outside this migration's own 221-corrected / 113-deleted name lists
 -- (349 total, derived from this repo's 005/006/007 history) -- still
 -- had null category/basis/source_* after the DELETE+UPDATE above. That
@@ -507,9 +484,29 @@ where lower(f.name) = lower(v.name);
 -- standard SQL: `x in (...)` and comparisons against NULL evaluate to
 -- NULL, which a CHECK constraint treats as satisfied, not violated).
 -- Tightening to NOT NULL is deferred to a future migration, once the
--- PREFLIGHT query's rows have been individually reviewed and either
+-- report below (or
+-- supabase/audits/food_reference_catalog_039_preflight_check.sql, run
+-- any time) has been individually reviewed and every row either
 -- classified, corrected, or knowingly left as legacy/unclassified --
 -- exactly the same "nullable until a coach/migration supplies a real
 -- value" pattern this table already uses for protein_per_100g (005).
+-- Safe-by-construction report (not a check, never aborts anything --
+-- a plain select can't raise on finding nulls the way the old guard's
+-- `raise exception` did): every row STILL missing category/basis/
+-- source_* after the correction above, now that the columns
+-- definitely exist (the ALTER TABLE already ran, successfully, earlier
+-- in this same transaction). Supabase's SQL Editor shows the result of
+-- the last query in a multi-statement run, so this is deliberately the
+-- last thing before commit; -- you'll see this result set right after
+-- running the file. Empty result = every row in the table now has full
+-- source metadata; a non-empty result is exactly the
+-- supabase/audits/food_reference_catalog_039_preflight_check.sql
+-- situation, now with real names, right after this migration lands.
+select id, name, calories_per_100g, protein_per_100g,
+  category, basis, source_name, source_id, source_url, source_checked_at
+from public.food_reference_catalog
+where category is null or basis is null or source_name is null
+   or source_id is null or source_url is null or source_checked_at is null
+order by name;
 
 commit;
