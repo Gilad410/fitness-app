@@ -166,3 +166,15 @@ test('validateCatalogRows: a plain, real source_name with no restaurant/fast-foo
   const { errors } = validateCatalogRows([{ name: 'x', calories: 1, protein: 1, sourceId: '169097', sourceName: 'USDA FoodData Central (SR Legacy) -- Oranges, raw, all commercial varieties' }])
   assert.deepEqual(errors, [])
 })
+
+test('validateCatalogRows: catches a named commercial grocery brand in source_name (CHOBANI)', () => {
+  const { errors } = validateCatalogRows([{ name: 'x', calories: 1, protein: 1, sourceName: 'USDA FoodData Central (SR Legacy) -- Yogurt, Greek, nonfat, peach, CHOBANI' }])
+  assert.equal(errors.length, 1)
+  assert.match(errors[0], /specific commercial grocery brand/)
+})
+
+test('validateCatalogRows: catches a named commercial grocery brand in source_name (Archway)', () => {
+  const { errors } = validateCatalogRows([{ name: 'x', calories: 1, protein: 1, sourceName: 'USDA FoodData Central (SR Legacy) -- Archway Home Style Cookies, Reduced Fat Ginger Snaps' }])
+  assert.equal(errors.length, 1)
+  assert.match(errors[0], /specific commercial grocery brand/)
+})
