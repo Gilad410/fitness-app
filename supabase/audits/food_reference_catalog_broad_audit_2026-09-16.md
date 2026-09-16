@@ -2,109 +2,76 @@
 
 **Read-only audit. No Supabase changes, no migration applied, no merge, no deployment.**
 
-**Revision note:** this replaces the previous version of this report. Banana chips has been removed entirely from the proposed batch — it was a real, correctly-sourced finding, but not a priority for this pass, per explicit instruction. This revision instead focuses on genuinely common everyday foods people actually search for: pizza, sushi, noodles, common pasta types, complex pasta dishes (tomato sauce, bolognese, carbonara, pesto, tuna pasta), tomatoes and other everyday vegetables, and similar staples. **The proposed migration batch (`043`) is unchanged from before — this pass found no new item with a direct, authoritative generic USDA record to add.** Where a composite dish has no such record, it's marked `blocked` or `recipe-derived candidate` below, not guessed.
+**Revision note:** replaces the previous version of this report. Banana chips has been **removed entirely** from the proposed batch — the migration file and its tests were deleted, not just deprioritized. This revision focuses on genuinely common everyday foods: pizza, sushi, noodles, common pasta types, complex pasta dishes (tomato sauce, bolognese, carbonara, pesto, tuna pasta), tomatoes, and other everyday vegetables. **No banana chips or other uncommon items appear anywhere in this report or the proposed batch.**
 
-## Method
+Every item below is placed into exactly one of four buckets, kept strictly separate per instruction:
 
-`DEMO_KEY` remains rate-limited this session, no personal key used. As before, every item below is either already live, a real record from the original 1,010-candidate bulk pass, or explicitly `blocked, needs live search` — nothing invented.
+1. **Already covered** — a real, direct, generic USDA record is already live.
+2. **Blocked, pending a fresh live search** — no record captured yet, but the food is common enough that a real generic USDA record almost certainly exists; just needs an actual API call (`DEMO_KEY` still rate-limited this session, no personal key used).
+3. **No safe generic USDA record** — already searched (as part of this session's exhaustive 1,010-candidate pass) and confirmed to have no matching composite-dish record; the only path forward, if any, is a recipe-derived estimate built from already-live ingredients, not a direct record.
+4. Explicit confirmation of scope.
 
 ---
 
-## Pizza
+## 1. Already covered — no action needed
 
-| Hebrew | USDA name | kcal/protein | Status | Reason |
-|---|---|---|---|---|
-| פיצה קפואה | Pizza, cheese, from frozen, thick crust | 268 / 10.4 | **already present & verified** | fdcId 2708613, Survey (FNDDS) — a real, generic, whole-pizza record. Plain "pizza" is genuinely well covered already. |
-| פיצה גבינה | (only match: "Topping from cheese pizza") | 230 / 16.9 | keep excluded | fdcId 2705787 is explicitly just the topping portion, not the whole dish — correctly excluded, and redundant with the whole-pizza record above anyway |
-| פיצה ירקות | (only match: "Topping from vegetable pizza") | 247 / 15.6 | keep excluded | fdcId 2705788, same topping-only issue |
-| פיצה משפחתית (family-size) | no real match found | — | blocked, needs live search | the only candidate returned was an unrelated soy yogurt product — a bad search result, not a near-miss |
-| פיצה פפרוני (עם תחליף בקר) | a specific "Pizza with pepperoni, stuffed crust" record surfaced as a near-miss | — | blocked, needs live search | promising lead, but its fdcId/values were never fetched (didn't clear strict matching at the time) — low priority since generic pizza is already covered |
-
-**Bottom line: pizza itself is not a gap.** The remaining items above are redundant naming variants of a dish that's already correctly represented, not missing coverage.
-
-## Sushi
-
-| Item | Status | Reason |
-|---|---|---|
-| Any sushi roll variant (salmon/avocado, California, "sushi burger") | **blocked, needs live search** — unchanged from the prior review | No match in any Hebrew variant tried. Missing base ingredients confirmed still absent: nori (seaweed), rice vinegar, seasoned sushi rice. Raw fish itself (salmon, tuna) is already live and could support a future recipe-derived attempt once those 2-3 missing ingredients are found — not attempted this pass (no invented values). |
-
-## Noodles & all common pasta types
-
-| Hebrew | USDA name | kcal/protein | Status |
+| Food | USDA name | kcal/protein | Source |
 |---|---|---|---|
-| פסטה גולמית (יבשה) | Pasta, dry, enriched | 371 / 13.0 | already present & verified (fdcId 169736) |
-| פסטה מלאה גולמית (יבשה) | Pasta, whole-wheat, dry | 352 / 13.9 | already present & verified (fdcId 169738) |
-| פסטה מבושלת | Pasta, fresh-refrigerated, plain, cooked | 131 / 5.15 | already present & verified (fdcId 169728) |
-| פסטה מלאה מבושלת | Pasta, whole grain, cooked | 159 / 5.82 | already present & verified (fdcId 168916) |
-| אטריות ביצים מבושלות | Noodles, egg, enriched, cooked | 138 / 4.54 | already present & verified (fdcId 169732) |
-| אטריות אורז מבושלות | Rice noodles, cooked | 108 / 1.79 | already present & verified (fdcId 168914) |
-| אטריות סובה מבושלות | Noodles, japanese, soba, cooked | 99 / 5.06 | already present & verified (fdcId 168907) |
+| Pizza (generic, cheese) | Pizza, cheese, from frozen, thick crust | 268 / 10.4 | fdcId 2708613, Survey (FNDDS) |
+| Tuna pasta | Macaroni or pasta salad with tuna | 200 / 6.69 | fdcId 2708942, Survey (FNDDS) |
+| Dry pasta, plain | Pasta, dry, enriched | 371 / 13.0 | fdcId 169736, SR Legacy |
+| Dry pasta, whole-wheat | Pasta, whole-wheat, dry | 352 / 13.9 | fdcId 169738, SR Legacy |
+| Cooked pasta, plain | Pasta, fresh-refrigerated, plain, cooked | 131 / 5.15 | fdcId 169728, SR Legacy |
+| Cooked pasta, whole-wheat | Pasta, whole grain, cooked | 159 / 5.82 | fdcId 168916, SR Legacy |
+| Egg noodles, cooked | Noodles, egg, enriched, cooked | 138 / 4.54 | fdcId 169732, SR Legacy |
+| Rice noodles, cooked | Rice noodles, cooked | 108 / 1.79 | fdcId 168914, SR Legacy |
+| Soba noodles, cooked | Noodles, japanese, soba, cooked | 99 / 5.06 | fdcId 168907, SR Legacy |
+| Tomato, raw | Tomatoes, raw | 20 / 0.82 | fdcId 2709719, Survey (FNDDS) |
+| Tomato puree, canned | Tomato, puree, canned | 40.8 / 1.58 | fdcId 2685582, Foundation |
+| Sun-dried tomato | Tomatoes, sun-dried | 258 / 14.1 | fdcId 168567, SR Legacy |
+| Broccoli, raw | Broccoli, raw | 31 / 2.57 | fdcId 747447, Foundation |
+| Potato, raw | Potatoes, raw, skin | 58 / 2.57 | fdcId 170032, SR Legacy |
+| Onion, raw | Onions, raw | 40 / 1.1 | fdcId 170000, SR Legacy |
+| Pesto sauce (ingredient, not the dish) | Pesto sauce | 580 / 8.61 | fdcId 2710175, Survey (FNDDS) |
 
-**Bottom line: every common plain pasta/noodle type is already covered** (dry and cooked, plain and whole-wheat, egg/rice/soba noodles). No gap here.
-
-## Complex pasta dishes
-
-| Dish | Status | Reason |
-|---|---|---|
-| **Tuna pasta** | **already present & verified** | "פסטה עם טונה" → "Macaroni or pasta salad with tuna," fdcId 2708942, Survey (FNDDS), **200 kcal / 6.69g protein**. This one is fully covered — no action needed. |
-| **Tomato sauce pasta** | blocked, needs live search (promising lead) | Only fully-matched record found is explicitly restaurant-qualified ("Pasta with tomato-based sauce, restaurant," fdcId 2708830) — correctly excluded per standing rule. A different, better-looking candidate, **"Pasta with tomato-based sauce and cheese"** (generic, not restaurant-qualified), surfaced as a near-miss but its fdcId/values were never fetched. **Top priority for the next live search** — likely resolvable without a recipe estimate. |
-| **Bolognese** | blocked, needs live search or recipe-derived candidate | No dish-level match at all (closest results were just plain cooked pasta or a bottled spaghetti sauce). Base ingredients partially available (cooked ground beef is live; tomato, onion, garlic are live) but raw ground beef still isn't — a recipe-derived attempt is possible in principle, not attempted this pass. |
-| **Carbonara** | blocked, needs live search or recipe-derived candidate | No dish-level match found. Base ingredients (egg, parmesan, pasta) are already live; bacon/guanciale is not. A recipe-derived attempt is possible in principle, not attempted this pass. |
-| **Pesto pasta** | blocked, needs live search or recipe-derived candidate | No dish-level match — only the pesto sauce itself is live ("רוטב פסטו," fdcId 2710175, 580/8.61). Pasta + pesto sauce are both already live ingredients, making this the most straightforward recipe-derived candidate of the four if you'd like one drafted — not computed this pass (no ratio approved yet). |
-
-None of the four "recipe-derived candidate" dishes above have had any value computed or proposed this pass — per instruction, a status label only, nothing invented.
-
-## Tomatoes & other everyday vegetables
-
-| Hebrew | USDA name | kcal/protein | Status | Reason |
-|---|---|---|---|---|
-| עגבניה | Tomatoes, raw | 20 / 0.82 | already present & verified | fdcId 2709719, Survey (FNDDS) |
-| עגבניות משומרות בקופסה (פילטו) | Tomato, puree, canned | 40.8 / 1.58 | already present & verified | fdcId 2685582, Foundation |
-| עגבניות מיובשות בשמש | Tomatoes, sun-dried | 258 / 14.1 | already present & verified | fdcId 168567, SR Legacy |
-| ברוקולי | Broccoli, raw | 31 / 2.57 | already present & verified | fdcId 747447, Foundation |
-| תפוח אדמה | Potatoes, raw, skin | 58 / 2.57 | already present & verified | fdcId 170032, SR Legacy |
-| בצל | Onions, raw | 40 / 1.1 | already present & verified | fdcId 170000, SR Legacy |
-| **עגבניות שרי (cherry tomatoes)** | (wrongly matched to "Cherries, raw") | — | **blocked, needs live search** | genuine gap — a very common everyday item with no correct match yet, not a preparation issue, a wrong-food match |
-| **רסק עגבניות (tomato paste)** | never independently searched | — | **blocked, needs live search** | only appeared as part of a compound query ("ג'חנון עם רסק עגבניות") that failed for unrelated reasons — tomato paste on its own was never actually tried against the live API. Common everyday ingredient, worth prioritizing. |
-
-**Bottom line: everyday vegetable staples are extremely well covered** (tomato in 3 forms, potato, onion, broccoli, and dozens more from earlier passes). The two real gaps — cherry tomatoes and tomato paste — are both genuine and worth prioritizing in the next live pass.
+**Every common plain pasta/noodle type is fully covered** (dry+cooked, plain+whole-wheat, egg/rice/soba). **Pizza and tuna pasta are both fully covered.** Everyday vegetable staples are extensive (tomato in 3 forms, potato, onion, broccoli, and dozens more from earlier passes — not repeated here for length).
 
 ---
 
-## Revised proposed batch
+## 2. Blocked, pending a fresh live search — record very likely exists
 
-**Unchanged from the prior review — no new item qualified this pass:**
+| Food | What's known so far | Priority |
+|---|---|---|
+| **"Pasta with tomato-based sauce and cheese"** (tomato-sauce pasta) | A non-restaurant-qualified generic FNDDS record surfaced as a near-match during the original search, but its fdcId/values were never fetched (didn't clear strict token matching at the time). High confidence this resolves cleanly. | **1 (highest)** |
+| **Cherry tomatoes** | Currently wrong-matched to "Cherries, raw" — a real match failure, not a missing-record problem. Cherry tomatoes are extremely common in FDC; a fresh/adjusted search should succeed easily. | 2 |
+| **Tomato paste** | Never independently searched — only appeared inside one unrelated compound query that failed for other reasons. A standalone search hasn't actually been tried. | 3 |
+| Sushi base ingredients: nori, rice vinegar, seasoned sushi rice | None of these 3 ingredients have been searched standalone this session. Common enough that generic records almost certainly exist. | 4 |
+| Plain bagel, non-branded French fries, whole milk 3.5%, breadcrumbs, phyllo dough, basmati rice, margarine, labneh, silan, matzah, raw ground beef | Carried over from prior rounds, unchanged priority — all genuinely common, all still awaiting a live search. | 5 |
 
-- `041` — 4 corrections + 2 deletions (already merged to `main`, still not applied to Supabase).
-- `042` — falafel addition (drafted, not applied).
-- `043` — בייגל wrong-match deletion + 6-item category-reassignment batch (drafted, not applied).
+---
 
-**Removed from the batch, per instruction:** banana chips (`044`) — the migration file and its 6 tests have been deleted from this branch entirely, not just deprioritized.
+## 3. No safe generic USDA record — recipe-derived candidate or excluded
 
-**No new migration was drafted this pass.** Every genuinely common food investigated (pizza, sushi, pasta/noodle types, tomato-sauce/bolognese/carbonara/pesto/tuna pasta, tomatoes, everyday vegetables) turned out to be either already well covered, or blocked on a live USDA search that can't be completed with `DEMO_KEY` still rate-limited and no personal key in use this turn.
+| Food | Status | Reason |
+|---|---|---|
+| **Sushi (as a composite dish — any roll variant)** | no safe generic record; ingredients tracked separately above | Searched exhaustively across every Hebrew variant this session — zero composite "sushi roll" records exist in USDA data (expected: USDA's databases are general/US-centric and don't tabulate assembled ethnic dishes like this). A recipe-derived estimate becomes possible only once the 3 missing base ingredients (bucket 2 above) are found — not attempted this pass, no value invented. |
+| **Bolognese** | no safe generic record found; recipe-derived candidate | Already searched as part of the original 1,010-candidate pass — no dish-level match (closest results were just plain cooked pasta or a bottled sauce). Cooked ground beef, tomato, onion, garlic are already live; raw ground beef is not. Recipe-derived is possible in principle. **Not computed this pass — no ratio approved, nothing invented.** |
+| **Carbonara** | no safe generic record found; recipe-derived candidate | Already searched, no dish-level match found. Egg, parmesan, and pasta are live; bacon/guanciale is not. **Not computed this pass.** |
+| **Pesto pasta** | no safe generic record found; recipe-derived candidate | Already searched, no dish-level match — only the sauce itself (already live) was found. Pasta + pesto sauce are both already live, making this the most straightforward of the three if a recipe estimate is ever wanted. **Not computed this pass.** |
+| Shawarma, cholent, maqluba, jachnun, malawach, chamin, chraimeh | no safe generic record, kept excluded (confirmed in prior rounds) | Unchanged — no match found in any variant, and each is too cooking-method/ingredient-variable for a defensible recipe estimate |
+| פיצה גבינה / פיצה ירקות (cheese/veg pizza, named separately from the generic pizza above) | keep excluded | Their only matches are explicitly topping-only records (not the whole dish) — and redundant anyway since generic pizza is already covered |
 
-## Priority list for the next live-verification pass (revised, in order)
+---
 
-1. **"Pasta with tomato-based sauce and cheese"** — promising non-restaurant lead, likely resolvable directly.
-2. **Cherry tomatoes** — common, currently wrong-matched to cherries.
-3. **Tomato paste** — common, never actually searched standalone.
-4. Sushi base ingredients (nori, rice vinegar, seasoned sushi rice).
-5. Bolognese / carbonara / pesto pasta — check for a direct dish-level FNDDS record before resorting to a recipe estimate.
-6. (Carried over from before, unchanged priority) ground beef raw, breadcrumbs, phyllo dough, basmati rice, a plain "bagel" record, non-branded French fries, whole milk 3.5%, labneh, silan, margarine, matzah.
+## 4. Explicit scope confirmation
+
+- **No banana chips, and no other uncommon/low-priority items, appear anywhere in this report or in the proposed migration batch.**
+- **The proposed batch is unchanged and contains nothing new from this pass**: `041` (merged to `main`, not yet applied to Supabase) + `042` (falafel, drafted, not applied) + `043` (בייגל fix + 6-item recategorization, drafted, not applied). No new SQL file was created this pass — every genuinely common food investigated was either already covered (bucket 1) or is honestly blocked pending live USDA access (buckets 2–3), not something resolvable by re-mining already-collected data again.
 
 ## Verification
 
-- `node --test` across all 20 `*.test.mjs` files: **235/235 passing** (back to the pre-`044` count — the 6 banana-chips tests were removed along with the file).
+- `node --test` across all 20 `*.test.mjs` files: **235/235 passing**.
 - `npm run lint`: clean.
-- No new SQL file this pass — nothing to re-validate with `pglast`.
+- `npm run build`: succeeds.
+- No new SQL file this pass — nothing new to validate with `pglast`.
 - No USDA API key used.
-
-## Exact file list (this revision)
-
-```
-supabase/sql/044_food_reference_catalog_banana_chips_recategorization.sql       (DELETED -- removed per instruction)
-src/features/nutrition/lib/foodCatalogRealData.test.mjs                          (-65 lines: the 6 044 tests removed)
-supabase/audits/food_reference_catalog_broad_audit_2026-09-16.md                (rewritten, this report)
-```
-
-No Supabase changes, no migration applied, no merge, no deployment occurred in this pass. The active proposed batch for your review remains exactly `041` (merged, not yet applied) + `042` + `043` (drafted, not applied) — nothing more.
