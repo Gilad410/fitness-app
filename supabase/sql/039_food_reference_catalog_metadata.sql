@@ -3,17 +3,28 @@
 -- Run this file manually, once, in the Supabase Dashboard -> SQL Editor,
 -- after 001_trainees.sql .. 038_trainee_nutrition_log_retention.sql.
 --
--- Corrected re-run: a first attempt at this migration failed in the SQL
--- Editor with `ERROR 42703: column v.source_url does not exist` -- the
--- UPDATE's SET clause referenced v.source_url, but the VALUES(...) list
--- feeding v never included a source_url column. Fixed by adding
--- source_url to both the VALUES tuples and the `as v(...)` alias.
--- Transaction safety: the whole file is now explicitly wrapped in
--- `begin;` / `commit;` (added below), so that failure rolled back
+-- Corrected re-run (twice): two prior attempts at this migration failed
+-- in the SQL Editor:
+--   1. `ERROR 42703: column v.source_url does not exist` -- the UPDATE's
+--      SET clause referenced v.source_url, but the VALUES(...) list
+--      feeding v never included a source_url column. Fixed by adding
+--      source_url to both the VALUES tuples and the `as v(...)` alias.
+--   2. `P0001: 15 row(s) ... are missing category/basis/source_* after
+--      the correction pass` -- a guard that tried tightening
+--      category/basis/source_* to NOT NULL failed because the LIVE
+--      table has rows outside this migration's own known 349 (221
+--      corrected + 113 deleted), left over with nulls. Fixed by NOT
+--      tightening those columns to NOT NULL in this migration at all
+--      (see the PREFLIGHT query and the note near this file's end for
+--      the full reasoning) -- this migration only ever touches the 334
+--      rows it explicitly names, never anything else, and never fails
+--      because of rows it doesn't recognize.
+-- Both failures are safe: the whole file is explicitly wrapped in
+-- `begin;` / `commit;` (below), so each failed attempt rolled back
 -- cleanly with nothing partially applied -- confirmed safe to just
 -- re-run this corrected file from the top; nothing needs to be undone
 -- first. The explicit wrapper also means any FUTURE failure (not just
--- this one) can never leave a partial DELETE/UPDATE/ALTER applied,
+-- these two) can never leave a partial DELETE/UPDATE/ALTER applied,
 -- independent of whatever multi-statement transaction behavior the SQL
 -- Editor itself does or doesn't provide by default.
 --
@@ -37,13 +48,62 @@
 --     basis and full source attribution for every one of them.
 --   * New nullable columns: category, basis, source_name, source_id
 --     (the USDA fdcId), source_url (a live, working per-food FDC link),
---     source_checked_at (the date this session verified it) -- tightened
---     to NOT NULL at the end of this file, once every surviving row has
---     a real value for all of them.
+--     source_checked_at (the date this session verified it). Stay
+--     NULLABLE -- deliberately NOT tightened to NOT NULL by this file
+--     (see the PREFLIGHT query below and the note near this file's end).
+--     Every one of the 221 corrected rows gets a real,
+--     non-null value in all six columns regardless (the 113
+--     deleted rows are removed entirely, not left behind with nulls);
+--     the choice not to enforce NOT NULL is purely about not asserting
+--     anything about OTHER rows this migration doesn't know about.
 --
 -- 269 further new verified products are added by
 -- 040_food_reference_catalog_usda_verified_expansion.sql, which must run after
 -- this file (it needs these columns to exist).
+
+-- ============================================================================
+-- PREFLIGHT -- a separate, standalone, READ-ONLY report query (no writes,
+-- not part of the transaction below, safe to run anytime and as many
+-- times as you like).
+--
+-- IMPORTANT run order: this query needs the category/basis/source_*
+-- columns, which the migration below creates -- it will error with
+-- "column category does not exist" if run before that migration has
+-- succeeded at least once. Given both prior attempts at this migration
+-- failed and were fully rolled back (the explicit begin;/commit; wrapper
+-- means neither the ALTER TABLE nor anything else from those attempts
+-- is still applied), run this query AFTER the corrected migration below
+-- has completed successfully, whenever you're ready to look into the
+-- leftover rows before considering a future NOT NULL migration.
+--
+-- Reports every row in food_reference_catalog missing
+-- category/basis/source_name/source_id/source_url/source_checked_at --
+-- i.e. every row outside this migration's own DELETE (113 names) /
+-- UPDATE (221 names) lists. A non-empty result means the live table
+-- holds rows this migration doesn't recognize (added by hand since 008,
+-- or a naming drift) -- this migration leaves them untouched and
+-- nullable either way; see the note near the end of this file (right
+-- before its final commit;) for the full reasoning.
+-- ============================================================================
+select
+  id,
+  name,
+  calories_per_100g,
+  protein_per_100g,
+  category,
+  basis,
+  source_name,
+  source_id,
+  source_url,
+  source_checked_at
+from public.food_reference_catalog
+where category is null
+   or basis is null
+   or source_name is null
+   or source_id is null
+   or source_url is null
+   or source_checked_at is null
+order by name;
 
 begin;
 
@@ -427,32 +487,29 @@ from (values
 ) as v(name, calories_per_100g, protein_per_100g, category, basis, source_name, source_id, source_url)
 where lower(f.name) = lower(v.name);
 
--- Guard: raises and rolls back the whole migration if any surviving row
--- is missing category/basis/source_* after the correction above -- e.g. a
--- row added by hand in the SQL Editor since migration 008 that this file
--- doesn't know about.
-do $$
-declare
-  v_missing int;
-begin
-  select count(*) into v_missing
-  from public.food_reference_catalog
-  where category is null or basis is null or source_name is null
-     or source_id is null or source_url is null or source_checked_at is null;
-
-  if v_missing > 0 then
-    raise exception
-      '% row(s) in food_reference_catalog are missing category/basis/source_* after the correction pass -- fix before tightening to NOT NULL',
-      v_missing;
-  end if;
-end $$;
-
-alter table public.food_reference_catalog
-  alter column category set not null,
-  alter column basis set not null,
-  alter column source_name set not null,
-  alter column source_id set not null,
-  alter column source_url set not null,
-  alter column source_checked_at set not null;
+-- NOT tightened to NOT NULL in this migration (deliberate; see the
+-- PREFLIGHT query above this file's BEGIN block). A first attempt at
+-- tightening failed: P0001, 15 row(s) already in the live table --
+-- outside this migration's own 221-corrected / 113-deleted name lists
+-- (349 total, derived from this repo's 005/006/007 history) -- still
+-- had null category/basis/source_* after the DELETE+UPDATE above. That
+-- means the live table currently holds rows this migration doesn't
+-- recognize: added by hand directly in the SQL Editor at some point
+-- (the food_reference_catalog table's own established maintenance
+-- pattern -- see 004_food_reference_catalog.sql's own comment), a
+-- naming drift from this repo's migration history, or similar.
+--
+-- Per instruction, this migration must not delete or overwrite data it
+-- doesn't recognize, and must not fail/roll back the verified
+-- corrections above just because of rows outside its own scope. So:
+-- category/basis/source_name/source_id/source_url/source_checked_at
+-- stay nullable (their CHECK constraints above already tolerate null --
+-- standard SQL: `x in (...)` and comparisons against NULL evaluate to
+-- NULL, which a CHECK constraint treats as satisfied, not violated).
+-- Tightening to NOT NULL is deferred to a future migration, once the
+-- PREFLIGHT query's rows have been individually reviewed and either
+-- classified, corrected, or knowingly left as legacy/unclassified --
+-- exactly the same "nullable until a coach/migration supplies a real
+-- value" pattern this table already uses for protein_per_100g (005).
 
 commit;

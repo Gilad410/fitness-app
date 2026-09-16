@@ -117,11 +117,47 @@ test('039\'s UPDATE ... SET clause never references a v.<column> missing from th
   assert.deepEqual(missing, [], `SET clause references v.<column> not present in the "as v(...)" alias: ${missing.join(', ')}`)
 })
 
-test('039 is wrapped in an explicit begin;/commit; transaction (atomic -- a mid-script failure leaves nothing partially applied)', () => {
+test('039\'s mutating statements (DELETE/ALTER/UPDATE) are wrapped in an explicit begin;/commit; transaction (atomic -- a mid-script failure leaves nothing partially applied)', () => {
   const text = read('039_food_reference_catalog_metadata.sql')
   const withoutComments = text.replace(/--.*$/gm, '')
-  assert.match(withoutComments.trimStart(), /^\s*begin;/, '039 must open with an explicit begin;')
+  // The file opens with a standalone, deliberately UN-transactional
+  // PREFLIGHT `select` (it must be runnable independently, any time,
+  // read-only) -- begin;/commit; only need to wrap the actual writes.
   assert.match(withoutComments.trimEnd(), /commit;\s*$/, '039 must close with an explicit commit;')
+  const beginIndex = withoutComments.indexOf('begin;')
+  const deleteIndex = withoutComments.indexOf('delete from')
+  const alterIndex = withoutComments.indexOf('alter table')
+  const updateIndex = withoutComments.indexOf('update public.food_reference_catalog as f')
+  const commitIndex = withoutComments.lastIndexOf('commit;')
+  assert.ok(beginIndex !== -1, '039 must contain an explicit begin;')
+  assert.ok(
+    beginIndex < deleteIndex && deleteIndex < alterIndex && alterIndex < updateIndex && updateIndex < commitIndex,
+    'begin; must precede DELETE/ALTER/UPDATE, and commit; must come after all of them',
+  )
+})
+
+test('039 never tightens category/basis/source_* to NOT NULL (deliberate -- the live table can hold rows outside this migration\'s own known name lists; tightening deferred to a future migration)', () => {
+  const text = read('039_food_reference_catalog_metadata.sql')
+  assert.doesNotMatch(text, /set\s+not\s+null/i)
+})
+
+test('the PREFLIGHT query is a standalone, read-only SELECT positioned BEFORE begin; (never inside the transaction, runnable independently at any time)', () => {
+  const text = read('039_food_reference_catalog_metadata.sql')
+  const withoutComments = text.replace(/--.*$/gm, '')
+  // The real `begin;` statement (not just a mention of the word inside a
+  // comment, e.g. this file's own header explains the fix using the
+  // literal text "begin;") -- found in the code with comments stripped.
+  const beginIndex = withoutComments.indexOf('begin;')
+  const preflightIndex = text.indexOf('PREFLIGHT')
+  assert.ok(preflightIndex !== -1, 'expected a PREFLIGHT section marker')
+  const selectIndex = withoutComments.indexOf('select')
+  assert.ok(selectIndex !== -1 && selectIndex < beginIndex, 'expected the PREFLIGHT select to be positioned before the real begin; statement')
+  const preflightBlock = withoutComments.slice(selectIndex, beginIndex)
+  assert.match(preflightBlock, /from public\.food_reference_catalog/)
+  assert.match(preflightBlock, /category is null/)
+  assert.match(preflightBlock, /source_id is null/)
+  assert.match(preflightBlock, /source_url is null/)
+  assert.doesNotMatch(preflightBlock, /\b(delete|insert|update|alter)\b/i, 'the PREFLIGHT query must be read-only -- no writes')
 })
 
 test('the 039 DELETE list and the 039/040 final catalog names never overlap (nothing "corrected" that was also deleted)', () => {
