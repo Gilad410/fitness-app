@@ -96,6 +96,34 @@ test('no row in the final catalog is a named-restaurant-chain, "restaurant"-qual
   assert.deepEqual(restaurantErrors, [])
 })
 
+test('039\'s UPDATE ... SET clause never references a v.<column> missing from the "as v(...)" alias', () => {
+  // Regression test for a real production failure: the SET clause once
+  // referenced `v.source_url`, but the `from (values ...) as v(...)`
+  // alias list didn't include source_url as one of its columns --
+  // Postgres error 42703 ("column v.source_url does not exist"), caught
+  // only when actually run against Supabase. This statically re-derives
+  // both sides from the SQL text itself and fails loudly if they ever
+  // drift apart again, without needing a live database to catch it.
+  const text = read('039_food_reference_catalog_metadata.sql')
+  const updateBlock = text.slice(text.indexOf('update public.food_reference_catalog'), text.indexOf('where lower(f.name)'))
+  const setColumns = [...updateBlock.matchAll(/^\s*(\w+)\s*=\s*v\.(\w+)/gm)].map((m) => m[2])
+  assert.ok(setColumns.length > 0, 'expected to find at least one v.<column> reference in the SET clause')
+
+  const aliasMatch = text.match(/\)\s*as\s*v\(([^)]+)\)/)
+  assert.ok(aliasMatch, 'expected to find the "as v(...)" alias column list')
+  const aliasColumns = aliasMatch[1].split(',').map((c) => c.trim())
+
+  const missing = setColumns.filter((c) => !aliasColumns.includes(c))
+  assert.deepEqual(missing, [], `SET clause references v.<column> not present in the "as v(...)" alias: ${missing.join(', ')}`)
+})
+
+test('039 is wrapped in an explicit begin;/commit; transaction (atomic -- a mid-script failure leaves nothing partially applied)', () => {
+  const text = read('039_food_reference_catalog_metadata.sql')
+  const withoutComments = text.replace(/--.*$/gm, '')
+  assert.match(withoutComments.trimStart(), /^\s*begin;/, '039 must open with an explicit begin;')
+  assert.match(withoutComments.trimEnd(), /commit;\s*$/, '039 must close with an explicit commit;')
+})
+
 test('the 039 DELETE list and the 039/040 final catalog names never overlap (nothing "corrected" that was also deleted)', () => {
   const text = read('039_food_reference_catalog_metadata.sql')
   const deleteSection = text.slice(text.indexOf('delete from'), text.indexOf('alter table'))
