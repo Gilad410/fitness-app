@@ -19,6 +19,7 @@ import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import { parseCatalogValues, validateCatalogRows } from './foodCatalogValidation.js'
+import { checkPlausibility } from './foodCatalogPlausibility.js'
 
 const here = path.dirname(fileURLToPath(import.meta.url))
 const sqlDir = path.resolve(here, '../../../../supabase/sql')
@@ -383,4 +384,67 @@ test('the pre-041 catalog (as currently live) DOES still carry the 3 known brand
   const { errors } = validateCatalogRows(all)
   const brandErrors = errors.filter((e) => /grocery brand/i.test(e))
   assert.equal(brandErrors.length, 3, 'expected the live (pre-041) catalog to still contain exactly the 3 known branded rows (2 deleted + 1 corrected by 041)')
+})
+
+// ---------------------------------------------------------------------
+// 042 (falafel addition -- drafted, NOT yet applied). A clean,
+// primary-source USDA match (fdcId 2707408, Survey (FNDDS), full token
+// coverage, no restaurant/brand qualifier) that was wrongly excluded
+// during the original pass because it fell outside prepared_dish's
+// plausibility kcal ceiling (500 at the time). Approved for inclusion
+// alongside raising that ceiling to 550 -- see
+// foodCatalogPlausibility.js and the expansion proposal report.
+// ---------------------------------------------------------------------
+
+function load042Addition() {
+  const text = read('042_food_reference_catalog_falafel_addition.sql')
+  return parseCatalogValues(text)
+}
+
+test('042 inserts exactly 1 new row: falafel', () => {
+  const rows = load042Addition()
+  assert.equal(rows.length, 1)
+  assert.equal(rows[0].name, 'פלאפל')
+})
+
+test('042\'s falafel row carries the exact live-verified USDA values, category, basis and source', () => {
+  const [row] = load042Addition()
+  assert.equal(row.calories, 514)
+  assert.equal(row.protein, 8.28)
+  assert.equal(row.category, 'prepared_dish')
+  assert.equal(row.basis, 'as_sold')
+  assert.equal(row.sourceId, '2707408')
+  assert.ok(row.sourceName.includes('USDA FoodData Central'))
+  const url = row.fields.find((f) => typeof f === 'string' && f.startsWith('https://fdc.nal.usda.gov/'))
+  assert.ok(url && url.includes('2707408'), 'source_url must reference fdcId 2707408')
+})
+
+test('042\'s falafel row passes validateCatalogRows with zero errors', () => {
+  const { errors } = validateCatalogRows(load042Addition())
+  assert.deepEqual(errors, [])
+})
+
+test('042\'s falafel row is plausible ONLY under the raised prepared_dish ceiling (regression proving the rule change is what unblocks it, not a data change)', () => {
+  const [row] = load042Addition()
+  const underRaisedCeiling = checkPlausibility(row.category, row.calories, row.protein)
+  assert.equal(underRaisedCeiling.plausible, true)
+
+  // Simulate the OLD 500 ceiling directly (without importing the old
+  // scratchpad tool, which was never committed) to prove this is a real
+  // before/after, not a tautology.
+  const OLD_PREPARED_DISH_CEILING = 500
+  const wouldHaveBeenFlagged = row.calories > OLD_PREPARED_DISH_CEILING
+  assert.equal(wouldHaveBeenFlagged, true, 'falafel (514 kcal) must have been outside the old 500 ceiling -- otherwise there was nothing to fix')
+})
+
+test('042 does not duplicate a name already present in the 039+040 catalog (no accidental double-insert)', () => {
+  const { all } = loadFinalCatalog()
+  const existingNames = new Set(all.map((r) => r.name.toLowerCase()))
+  const [row] = load042Addition()
+  assert.ok(!existingNames.has(row.name.toLowerCase()), `"${row.name}" must not already exist in the 039+040 catalog`)
+})
+
+test('042 uses the same ON CONFLICT ((lower(name))) DO NOTHING guard as 040 (idempotent, safe to re-run)', () => {
+  const text = read('042_food_reference_catalog_falafel_addition.sql')
+  assert.match(text, /on conflict \(\(lower\(name\)\)\) do nothing;/)
 })
