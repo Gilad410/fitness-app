@@ -567,3 +567,59 @@ test('043 explicitly does NOT touch the 4 bound-tuning items (egg white, oysters
     assert.ok(!text.includes(outOfScope), `043 must not reference "${outOfScope}" -- bound-tuning is a separate decision, not recategorization`)
   }
 })
+
+// ---------------------------------------------------------------------
+// 044 (banana chips recategorization -- drafted, NOT yet applied).
+// Found during the broader 50-100-item audit pass: same defect class as
+// 043 (clean USDA match held back only by a category whose plausibility
+// bounds didn't fit it -- fruit's kcal ceiling vs. a calorie-dense fried
+// snack, not a fresh fruit).
+// ---------------------------------------------------------------------
+
+function load044Addition() {
+  const text = read('044_food_reference_catalog_banana_chips_recategorization.sql')
+  return parseCatalogValues(text)
+}
+
+test('044 inserts exactly 1 new row: banana chips, under its full honest name', () => {
+  const rows = load044Addition()
+  assert.equal(rows.length, 1)
+  assert.equal(rows[0].name, "בננה מיובשת (צ'יפס בננה)")
+})
+
+test("044's row carries the exact live-verified USDA values, corrected category, and source", () => {
+  const [row] = load044Addition()
+  assert.equal(row.calories, 519)
+  assert.equal(row.protein, 2.3)
+  assert.equal(row.category, 'sweets_snacks')
+  assert.equal(row.basis, 'dried')
+  assert.equal(row.sourceId, '2709200')
+  assert.ok(row.sourceName.includes('USDA FoodData Central'))
+  const url = row.fields.find((f) => typeof f === 'string' && f.startsWith('https://fdc.nal.usda.gov/'))
+  assert.ok(url && url.includes('2709200'))
+})
+
+test('044\'s row is plausible under its NEW category and would NOT have been under the OLD one', () => {
+  const [row] = load044Addition()
+  const underNew = checkPlausibility(row.category, row.calories, row.protein)
+  assert.equal(underNew.plausible, true)
+  const underOld = checkPlausibility('fruit', row.calories, row.protein)
+  assert.equal(underOld.plausible, false, 'expected implausible under fruit -- otherwise there was nothing to fix')
+})
+
+test('044 passes validateCatalogRows with zero errors', () => {
+  const { errors } = validateCatalogRows(load044Addition())
+  assert.deepEqual(errors, [])
+})
+
+test('044 does not duplicate a name already present in the 039+040 catalog', () => {
+  const { all } = loadFinalCatalog()
+  const existingNames = new Set(all.map((r) => r.name.toLowerCase()))
+  const [row] = load044Addition()
+  assert.ok(!existingNames.has(row.name.toLowerCase()))
+})
+
+test('044 uses ON CONFLICT ((lower(name))) DO NOTHING (idempotent, safe to re-run)', () => {
+  const text = read('044_food_reference_catalog_banana_chips_recategorization.sql')
+  assert.match(text, /on conflict \(\(lower\(name\)\)\) do nothing;/)
+})
