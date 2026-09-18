@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { lookupBarcode, isPlausibleBarcode, SOURCE_OPEN_FOOD_FACTS } from './barcodeLookup.js'
+import { lookupBarcode, isPlausibleBarcode, normalizeBarcode, SOURCE_OPEN_FOOD_FACTS } from './barcodeLookup.js'
 
 function fakeFetch(response, { ok = true, status = 200, throwOnFetch = false, throwOnJson = false } = {}) {
   return async () => {
@@ -15,6 +15,38 @@ function fakeFetch(response, { ok = true, status = 200, throwOnFetch = false, th
     }
   }
 }
+
+// ---------------------------------------------------------------------
+// normalizeBarcode -- the single funnel point found missing during a
+// real investigation (barcode 7622202268298: approved and saved, but
+// not reused on the next scan). Every caller that stores, looks up, or
+// sends a barcode anywhere now goes through this first.
+// ---------------------------------------------------------------------
+
+test('normalizeBarcode: trims surrounding whitespace', () => {
+  assert.equal(normalizeBarcode('  7622202268298  '), '7622202268298')
+})
+
+test('normalizeBarcode: an already-clean barcode passes through unchanged', () => {
+  assert.equal(normalizeBarcode('7622202268298'), '7622202268298')
+})
+
+test('normalizeBarcode: coerces null/undefined to an empty string, never throws', () => {
+  assert.equal(normalizeBarcode(null), '')
+  assert.equal(normalizeBarcode(undefined), '')
+})
+
+test('normalizeBarcode: coerces a non-string (e.g. a number, if a caller ever passed one) to its string form', () => {
+  assert.equal(normalizeBarcode(7622202268298), '7622202268298')
+})
+
+test('isPlausibleBarcode and lookupBarcode agree on the normalized form of a barcode entered with incidental whitespace -- the exact class of mismatch the fix closes', async () => {
+  assert.equal(isPlausibleBarcode('  7622202268298  '), true)
+  const fetchImpl = fakeFetch({ status: 0 })
+  const result = await lookupBarcode('  7622202268298  ', { fetchImpl })
+  assert.equal(result.barcode, normalizeBarcode('  7622202268298  '))
+  assert.equal(result.barcode, '7622202268298')
+})
 
 test('isPlausibleBarcode: accepts common EAN-8/UPC-A/EAN-13/GTIN-14 lengths', () => {
   assert.equal(isPlausibleBarcode('12345670'), true) // EAN-8

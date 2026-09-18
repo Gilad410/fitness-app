@@ -51,8 +51,24 @@ export const SOURCE_OPEN_FOOD_FACTS = 'open_food_facts'
 export const SOURCE_MANUAL = 'manual'
 export const SOURCE_COACH_SAVED = 'coach_saved'
 
+// The ONE place a barcode is ever coerced to its canonical string form
+// -- every caller that stores, looks up, or sends a barcode anywhere
+// (Open Food Facts, the coach_barcode_products cache, or the
+// eventually-logged trainee_nutrition_logs row) must funnel it through
+// this first. Found via a real investigation: barcode 7622202268298
+// was approved and saved but not reused on the next scan --
+// isPlausibleBarcode/lookupBarcode each re-derived their own trimmed
+// copy independently, and BarcodeFoodEntry.vue's cache lookup used the
+// raw, un-normalized parameter directly. Every call site traced
+// correctly in isolation for the exact scenario tested, but nothing
+// guaranteed it always would -- centralizing removes the possibility
+// entirely, rather than re-auditing every call site by hand again.
+export function normalizeBarcode(value) {
+  return String(value ?? '').trim()
+}
+
 export function isPlausibleBarcode(value) {
-  const trimmed = String(value ?? '').trim()
+  const trimmed = normalizeBarcode(value)
   // EAN-8/EAN-13/UPC-A/UPC-E are all-digit codes of 8, 12, or 13 digits
   // (occasionally 14 for GTIN-14). Deliberately loose (accepts the
   // common lengths, not a checksum validator) -- this only gates
@@ -62,7 +78,7 @@ export function isPlausibleBarcode(value) {
 }
 
 export async function lookupBarcode(barcode, { fetchImpl = fetch } = {}) {
-  const trimmed = String(barcode ?? '').trim()
+  const trimmed = normalizeBarcode(barcode)
   if (!isPlausibleBarcode(trimmed)) {
     return { status: 'invalid_barcode', barcode: trimmed }
   }

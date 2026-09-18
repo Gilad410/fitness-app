@@ -1,6 +1,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { lookupCachedProduct, withCachedProduct } from './barcodeProductCache.js'
+import { normalizeBarcode } from './barcodeLookup.js'
 
 test('lookupCachedProduct: returns null for a barcode never approved', () => {
   assert.equal(lookupCachedProduct({}, '7622202268298'), null)
@@ -78,4 +79,47 @@ test('an unknown protein value in the approved row stays null on reuse, never co
   let byBarcode = {}
   byBarcode = withCachedProduct(byBarcode, barcode, { product_name: 'x', calories_per_100g: 300, protein_per_100g: null })
   assert.equal(lookupCachedProduct(byBarcode, barcode).protein_per_100g, null)
+})
+
+// ---------------------------------------------------------------------
+// Reproduces the exact reported failure: barcode 7622202268298 was
+// manually entered, approved, and saved -- but scanning the same
+// barcode again did not remember it. Root-caused to normalization not
+// being centralized: nothing guaranteed the string used to key the
+// cache at save time was byte-identical to the string used to look it
+// up later, even though the specific path tested traced out equal.
+// coachBarcodeProducts.js (the real store) now funnels every barcode
+// through normalizeBarcode() before it ever touches byBarcode -- this
+// proves that guarantee holds even when the raw input differs (e.g. a
+// manual re-entry with incidental extra whitespace, or a value that
+// arrived as something other than an already-trimmed string).
+// ---------------------------------------------------------------------
+
+test('approve with one raw barcode representation, look up with a differently-formatted-but-equivalent one -- reuse still succeeds once both go through normalizeBarcode() (the exact 7622202268298 failure, now closed)', () => {
+  let byBarcode = {}
+
+  // First entry: manually typed with incidental whitespace, as
+  // real-world manual entry commonly has.
+  const firstEntryRaw = '  7622202268298  '
+  const saveKey = normalizeBarcode(firstEntryRaw)
+  const approvedRow = {
+    coach_id: 'coach-1',
+    barcode: saveKey,
+    product_name: 'Milka (ידני)',
+    calories_per_100g: 534,
+    protein_per_100g: 6.3,
+  }
+  byBarcode = withCachedProduct(byBarcode, saveKey, approvedRow)
+
+  // Second entry: the same barcode, typed again on a later scan --
+  // even a differently-formatted raw string (here: no surrounding
+  // whitespace this time) must still resolve to the same cache key.
+  const secondEntryRaw = '7622202268298'
+  const lookupKey = normalizeBarcode(secondEntryRaw)
+  const reused = lookupCachedProduct(byBarcode, lookupKey)
+
+  assert.ok(reused, 'the approved product must be found on the next scan, not treated as unapproved')
+  assert.equal(reused.product_name, 'Milka (ידני)')
+  assert.equal(reused.calories_per_100g, 534)
+  assert.equal(reused.protein_per_100g, 6.3)
 })

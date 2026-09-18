@@ -3,6 +3,7 @@ import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import {
   lookupBarcode,
   isPlausibleBarcode,
+  normalizeBarcode,
   SOURCE_OPEN_FOOD_FACTS,
   SOURCE_MANUAL,
   SOURCE_COACH_SAVED,
@@ -55,10 +56,11 @@ const step = ref('choose')
 const cameraSupported = supportsCameraBarcodeScanning()
 const coachBarcodeProductsStore = useCoachBarcodeProductsStore()
 
-// Loaded once, in the background, as early as possible -- runLookup()
-// also awaits ensureLoaded() defensively before its first cache check,
-// so a slow load never causes a false "not cached" on a fast scan, it
-// only means that particular lookup waits the extra moment.
+// A background warm-up only -- runLookup() itself always calls
+// refresh() (an unconditional re-fetch, see that function's own
+// comment for why ensureLoaded() alone isn't enough) before trusting
+// the cache, so this mount-time call is purely a head start, never
+// relied on for correctness.
 onMounted(() => {
   coachBarcodeProductsStore.ensureLoaded().catch(() => {})
 })
@@ -296,7 +298,15 @@ async function submitManualBarcode() {
   await runLookup(value)
 }
 
-async function runLookup(barcode) {
+async function runLookup(rawBarcode) {
+  // Normalized ONCE, right here -- lastBarcode.value (used later by
+  // both the cache save and the resolved-log payload), the cache
+  // lookup below, and lookupBarcode() all read from this single
+  // canonical value from this point on, closing the exact gap a real
+  // investigation found: barcode 7622202268298 was approved and saved
+  // but not reused on the next scan, because nothing previously
+  // guaranteed every call site normalized the same way.
+  const barcode = normalizeBarcode(rawBarcode)
   lastBarcode.value = barcode
   step.value = 'looking_up'
   canSaveForFuture.value = false
@@ -306,8 +316,15 @@ async function runLookup(barcode) {
   // exact barcode was already approved on an earlier scan (see
   // confirmManual()'s save-for-future below), reuse it directly and
   // skip Open Food Facts entirely: faster, and the whole point of
-  // "approve once" is not asking again.
-  await coachBarcodeProductsStore.ensureLoaded().catch(() => {})
+  // "approve once" is not asking again. refresh() -- not
+  // ensureLoaded() -- deliberately: ensureLoaded() fetches once and
+  // freezes that promise for the store's whole lifetime, which could
+  // leave THIS lookup looking at a byBarcode snapshot from before an
+  // approval saved in an earlier mount of this flow (closed/reopened,
+  // a backgrounded tab, etc.) ever happened. A scan is infrequent
+  // enough that paying for a fresh read every time is cheap, and it
+  // removes that staleness window entirely.
+  await coachBarcodeProductsStore.refresh().catch(() => {})
   const saved = coachBarcodeProductsStore.lookup(barcode)
   if (saved) {
     product.value = {
