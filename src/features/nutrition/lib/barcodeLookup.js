@@ -20,10 +20,36 @@
 // can switch on `.status` with no try/catch of its own. This also keeps
 // every branch trivially testable with a fake fetchImpl.
 
+import { extractCaloriesPer100g, extractProteinPer100g, extractProductName } from './barcodeNutrientExtraction.js'
+
 const OFF_BASE_URL = 'https://world.openfoodfacts.org/api/v2/product'
 const USER_AGENT = 'FitnessApp-BarcodeLogging/1.0 (nutrition log feature)'
+// Every field extractCaloriesPer100g/extractProteinPer100g/
+// extractProductName know how to fall back through (see that module's
+// own comment for why several variants are tried) -- requested
+// explicitly so OFF's response actually includes them; OFF's `fields`
+// parameter only returns what's asked for.
+const OFF_FIELDS = [
+  'product_name',
+  'product_name_en',
+  'generic_name',
+  'generic_name_en',
+  'nutriments',
+  'serving_quantity',
+  'code',
+].join(',')
 
 export const SOURCE_OPEN_FOOD_FACTS = 'open_food_facts'
+// A coach's own manually-typed values, either just now (this scan) or
+// reused from an earlier approval (see coachBarcodeProducts.js /
+// 046_coach_barcode_products.sql) -- 045's source-check constraint
+// never restricts barcode_source to a specific value, so both are
+// valid, distinct values for audit clarity: SOURCE_MANUAL means "the
+// coach typed this in during the current scan"; SOURCE_COACH_SAVED
+// means "this exact value was approved on an earlier scan and reused
+// automatically this time, without asking again."
+export const SOURCE_MANUAL = 'manual'
+export const SOURCE_COACH_SAVED = 'coach_saved'
 
 export function isPlausibleBarcode(value) {
   const trimmed = String(value ?? '').trim()
@@ -44,7 +70,7 @@ export async function lookupBarcode(barcode, { fetchImpl = fetch } = {}) {
   let response
   try {
     response = await fetchImpl(
-      `${OFF_BASE_URL}/${encodeURIComponent(trimmed)}.json?fields=product_name,nutriments,code`,
+      `${OFF_BASE_URL}/${encodeURIComponent(trimmed)}.json?fields=${OFF_FIELDS}`,
       { headers: { 'User-Agent': USER_AGENT } },
     )
   } catch {
@@ -66,33 +92,37 @@ export async function lookupBarcode(barcode, { fetchImpl = fetch } = {}) {
     return { status: 'not_found', barcode: trimmed }
   }
 
-  const name = typeof data.product.product_name === 'string' ? data.product.product_name.trim() : ''
+  const productName = extractProductName(data.product)
   const nutriments = data.product.nutriments ?? {}
-  const caloriesPer100g = toFiniteOrNull(nutriments['energy-kcal_100g'])
-  const proteinPer100g = toFiniteOrNull(nutriments['proteins_100g'])
+  const servingQuantity = data.product.serving_quantity
+  const caloriesPer100g = extractCaloriesPer100g(nutriments, servingQuantity)
+  const proteinPer100g = extractProteinPer100g(nutriments, servingQuantity)
 
-  if (!name || caloriesPer100g === null) {
-    // A real product was found, but not enough to log against -- surfaced
-    // distinctly from `not_found` so the UI can say "found the product,
-    // but it's missing nutrition data" rather than "couldn't find it at
-    // all" (requirement: a clear message either way, manual entry offered).
-    return { status: 'no_nutrition_data', barcode: trimmed, productName: name || null }
+  if (caloriesPer100g === null) {
+    // A real product was found (its name is reported here whenever one
+    // was extractable, even though calories were not), but no usable
+    // calories figure exists under any of the fields/units
+    // extractCaloriesPer100g tries -- surfaced distinctly from
+    // `not_found` so the UI can say "found the product, but it's
+    // missing nutrition data" rather than "couldn't find it at all",
+    // and can show the product's own name in that message rather than
+    // just its barcode.
+    return { status: 'no_nutrition_data', barcode: trimmed, productName }
   }
 
   return {
     status: 'found',
     barcode: trimmed,
     product: {
-      name,
+      // A calories-bearing product with no name at all in any of the 4
+      // tried fields is rare in practice, but not treated as "missing
+      // nutrition" -- it gets the same neutral placeholder the manual-
+      // entry flow already uses for an unnamed product, not a lost log.
+      name: productName ?? 'מוצר ללא שם',
       caloriesPer100g,
       proteinPer100g, // may be null -- an unknown-protein product, handled the same as everywhere else in this feature
       source: SOURCE_OPEN_FOOD_FACTS,
       sourceUrl: `https://world.openfoodfacts.org/product/${encodeURIComponent(trimmed)}`,
     },
   }
-}
-
-function toFiniteOrNull(value) {
-  const n = Number(value)
-  return Number.isFinite(n) ? n : null
 }

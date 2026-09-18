@@ -81,14 +81,70 @@ test('lookupBarcode: a found product missing calories data resolves to no_nutrit
   assert.equal(result.productName, 'Incomplete Entry')
 })
 
-test('lookupBarcode: a found product missing even a name resolves to no_nutrition_data with productName null', async () => {
+test('lookupBarcode: a product with calories but no name in any of the 4 tried fields still resolves to "found", with a neutral placeholder name -- missing name is not the same problem as missing nutrition', async () => {
   const fetchImpl = fakeFetch({
     status: 1,
     product: { nutriments: { 'energy-kcal_100g': 100 } },
   })
   const result = await lookupBarcode('4006381333931', { fetchImpl })
+  assert.equal(result.status, 'found')
+  assert.equal(result.product.name, 'מוצר ללא שם')
+  assert.equal(result.product.caloriesPer100g, 100)
+})
+
+// ---------------------------------------------------------------------
+// The Milka case this module was built to fix: a product Open Food
+// Facts DOES have a name for, but whose calories aren't under the one
+// field the previous version read -- these must all still resolve to
+// "found" via barcodeNutrientExtraction.js's fallback chain, not
+// "no_nutrition_data", since the data genuinely is there.
+// ---------------------------------------------------------------------
+
+test('lookupBarcode: a product with only energy in kJ (no kcal field) still resolves to "found" via unit conversion', async () => {
+  const fetchImpl = fakeFetch({
+    status: 1,
+    product: { product_name: 'Milka Alpenmilch', nutriments: { energy_100g: 1569, proteins_100g: 6.3 } },
+  })
+  const result = await lookupBarcode('4006381333931', { fetchImpl })
+  assert.equal(result.status, 'found')
+  assert.equal(result.product.name, 'Milka Alpenmilch')
+  assert.equal(result.product.caloriesPer100g, 375) // 1569 / 4.184
+  assert.equal(result.product.proteinPer100g, 6.3)
+})
+
+test('lookupBarcode: a product with only per-serving values and a real serving_quantity still resolves to "found" via per-100g scaling', async () => {
+  const fetchImpl = fakeFetch({
+    status: 1,
+    product: {
+      product_name: 'Milka Small Bar',
+      serving_quantity: 25,
+      nutriments: { 'energy-kcal_serving': 100, proteins_serving: 2 },
+    },
+  })
+  const result = await lookupBarcode('4006381333931', { fetchImpl })
+  assert.equal(result.status, 'found')
+  assert.equal(result.product.caloriesPer100g, 400) // 100 kcal / 25g * 100
+  assert.equal(result.product.proteinPer100g, 8) // 2g / 25g * 100
+})
+
+test('lookupBarcode: falls back to product_name_en when product_name is empty, alongside a kJ-only energy value', async () => {
+  const fetchImpl = fakeFetch({
+    status: 1,
+    product: { product_name: '', product_name_en: 'Milka Alpine Milk', nutriments: { energy_100g: 1569 } },
+  })
+  const result = await lookupBarcode('4006381333931', { fetchImpl })
+  assert.equal(result.status, 'found')
+  assert.equal(result.product.name, 'Milka Alpine Milk')
+})
+
+test('lookupBarcode: a product genuinely missing calories under every fallback (no kcal, no kJ, no per-serving, no serving_quantity) still resolves to no_nutrition_data -- the fallback chain does not manufacture a value where none exists', async () => {
+  const fetchImpl = fakeFetch({
+    status: 1,
+    product: { product_name: 'Milka Something', nutriments: { carbohydrates_100g: 40, 'energy-kcal_serving': 100 } }, // per-serving present but no serving_quantity to scale it with
+  })
+  const result = await lookupBarcode('4006381333931', { fetchImpl })
   assert.equal(result.status, 'no_nutrition_data')
-  assert.equal(result.productName, null)
+  assert.equal(result.productName, 'Milka Something')
 })
 
 test('lookupBarcode: a non-OK HTTP response resolves to status "error" with the status code in the message', async () => {

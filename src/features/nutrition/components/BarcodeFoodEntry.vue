@@ -1,6 +1,12 @@
 <script setup>
-import { computed, onBeforeUnmount, ref } from 'vue'
-import { lookupBarcode, isPlausibleBarcode, SOURCE_OPEN_FOOD_FACTS } from '../lib/barcodeLookup.js'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import {
+  lookupBarcode,
+  isPlausibleBarcode,
+  SOURCE_OPEN_FOOD_FACTS,
+  SOURCE_MANUAL,
+  SOURCE_COACH_SAVED,
+} from '../lib/barcodeLookup.js'
 import { calculateBarcodeNutrition } from '../lib/barcodeCalculation.js'
 import {
   getCameraScanStrategy,
@@ -8,6 +14,7 @@ import {
   CAMERA_STRATEGY_NATIVE,
   CAMERA_STRATEGY_ZXING,
 } from '../lib/barcodeCameraSupport.js'
+import { useCoachBarcodeProductsStore } from '../store/coachBarcodeProducts.js'
 import { formatNutritionAmount } from '../../../lib/formatNumber'
 
 // Self-contained barcode food-entry flow: scan (or type) a barcode ->
@@ -38,6 +45,15 @@ const emit = defineEmits(['resolved', 'cancel'])
 // is NOT offered -- a barcode is always attempted first, per requirement).
 const step = ref('choose')
 const cameraSupported = supportsCameraBarcodeScanning()
+const coachBarcodeProductsStore = useCoachBarcodeProductsStore()
+
+// Loaded once, in the background, as early as possible -- runLookup()
+// also awaits ensureLoaded() defensively before its first cache check,
+// so a slow load never causes a false "not cached" on a fast scan, it
+// only means that particular lookup waits the extra moment.
+onMounted(() => {
+  coachBarcodeProductsStore.ensureLoaded().catch(() => {})
+})
 
 const manualBarcodeInput = ref('')
 const scanError = ref('')
@@ -52,6 +68,16 @@ const grams = ref('')
 const manualName = ref('')
 const manualCalories = ref('')
 const manualProtein = ref('')
+// True only when this manual-entry step was reached via a CONFIRMED
+// Open Food Facts match that had no usable nutrition data (the Milka
+// case) -- approving values here also saves them to
+// coachBarcodeProductsStore for future scans of the same barcode.
+// False for a barcode OFF doesn't recognize at all (not_found):
+// there's no confirmed product/barcode association from OFF in that
+// case, so nothing is cached automatically -- see the component's own
+// top-level comment and the PR report for why this is scoped narrowly.
+const canSaveForFuture = ref(false)
+const saveForFutureError = ref('')
 
 let videoEl = null
 let mediaStream = null
@@ -80,7 +106,9 @@ const preview = computed(() => {
 })
 
 function sourceLabel(source) {
-  return source === SOURCE_OPEN_FOOD_FACTS ? 'Open Food Facts' : source
+  if (source === SOURCE_OPEN_FOOD_FACTS) return 'Open Food Facts'
+  if (source === SOURCE_COACH_SAVED) return 'נשמר בעבר על ידך'
+  return source
 }
 
 const manualPreview = computed(() => {
@@ -263,6 +291,29 @@ async function submitManualBarcode() {
 async function runLookup(barcode) {
   lastBarcode.value = barcode
   step.value = 'looking_up'
+  canSaveForFuture.value = false
+  saveForFutureError.value = ''
+
+  // Check the coach's own previously-approved values FIRST -- if this
+  // exact barcode was already approved on an earlier scan (see
+  // confirmManual()'s save-for-future below), reuse it directly and
+  // skip Open Food Facts entirely: faster, and the whole point of
+  // "approve once" is not asking again.
+  await coachBarcodeProductsStore.ensureLoaded().catch(() => {})
+  const saved = coachBarcodeProductsStore.lookup(barcode)
+  if (saved) {
+    product.value = {
+      name: saved.product_name,
+      caloriesPer100g: saved.calories_per_100g,
+      proteinPer100g: saved.protein_per_100g,
+      source: SOURCE_COACH_SAVED,
+      sourceUrl: null,
+    }
+    grams.value = ''
+    step.value = 'found'
+    return
+  }
+
   const result = await lookupBarcode(barcode)
 
   if (result.status === 'found') {
@@ -275,13 +326,17 @@ async function runLookup(barcode) {
   const messages = {
     not_found: 'המוצר לא נמצא במאגר. ניתן להזין את הפרטים ידנית.',
     no_nutrition_data: result.productName
-      ? `נמצא "${result.productName}", אך ללא נתוני קלוריות. ניתן להזין את הפרטים ידנית.`
-      : 'המוצר נמצא אך ללא נתוני תזונה. ניתן להזין את הפרטים ידנית.',
+      ? `נמצא "${result.productName}" (ברקוד ${barcode}), אך ללא נתוני קלוריות. ניתן להזין ולאשר את הערכים פעם אחת -- הם יישמרו לסריקות הבאות של אותו ברקוד.`
+      : `המוצר נמצא (ברקוד ${barcode}) אך ללא נתוני תזונה. ניתן להזין ולאשר את הערכים פעם אחת -- הם יישמרו לסריקות הבאות של אותו ברקוד.`,
     invalid_barcode: 'הברקוד שנסרק אינו תקין. ניתן לנסות שוב או להזין ידנית.',
     error: result.message || 'אירעה שגיאה בחיפוש. ניתן להזין את הפרטים ידנית.',
   }
   lookupMessage.value = messages[result.status] ?? messages.error
   manualName.value = result.productName ?? ''
+  // Only a confirmed OFF match with missing nutrition offers the
+  // approve-and-remember path -- see the canSaveForFuture ref's own
+  // comment above for why not_found/invalid_barcode/error don't.
+  canSaveForFuture.value = result.status === 'no_nutrition_data'
   step.value = 'lookup_failed'
 }
 
@@ -301,15 +356,37 @@ function confirmFound() {
   })
 }
 
-function confirmManual() {
+async function confirmManual() {
   if (manualPreview.value === null) return
   const proteinRaw = manualProtein.value.trim()
+  const productName = manualName.value.trim() || 'מוצר ללא שם'
+  const caloriesPer100g = Number(manualCalories.value)
+  const proteinPer100g = proteinRaw === '' ? null : Number(manualProtein.value)
+
+  // Approve-and-remember: only when this was reached via a confirmed
+  // OFF match (canSaveForFuture) and there's a real barcode to key the
+  // cache on. A save failure here is a convenience miss, not a reason
+  // to block today's actual log entry -- surfaced quietly, the barcode
+  // just won't be pre-filled next time either.
+  if (canSaveForFuture.value && lastBarcode.value) {
+    try {
+      await coachBarcodeProductsStore.save({
+        barcode: lastBarcode.value,
+        productName,
+        caloriesPer100g,
+        proteinPer100g,
+      })
+    } catch (err) {
+      saveForFutureError.value = err.message
+    }
+  }
+
   emit('resolved', {
     barcode: lastBarcode.value || null,
-    barcode_source: 'manual',
-    barcode_product_name: manualName.value.trim() || 'מוצר ללא שם',
-    barcode_calories_per_100g: Number(manualCalories.value),
-    barcode_protein_per_100g: proteinRaw === '' ? null : Number(manualProtein.value),
+    barcode_source: SOURCE_MANUAL,
+    barcode_product_name: productName,
+    barcode_calories_per_100g: caloriesPer100g,
+    barcode_protein_per_100g: proteinPer100g,
     grams: gramsNumber.value,
   })
 }
@@ -326,6 +403,8 @@ function reset() {
   manualName.value = ''
   manualCalories.value = ''
   manualProtein.value = ''
+  canSaveForFuture.value = false
+  saveForFutureError.value = ''
 }
 
 function cancel() {
@@ -471,8 +550,14 @@ defineExpose({ reset })
     </template>
 
     <template v-else-if="step === 'manual_nutrition'">
-      <p class="text-xs text-neutral-500">
-        הפריט לא נמצא במאגר -- הערכים יישמרו כהזנה ידנית, ולא יתווספו למאגר המאכלים המאומת.
+      <p v-if="canSaveForFuture" class="text-xs text-neutral-500">
+        המוצר נמצא ב-Open Food Facts (ברקוד <bdi dir="ltr">{{ lastBarcode }}</bdi>) אך ללא נתוני קלוריות. הערכים שתזין ותאשר כאן יישמרו עבור הברקוד הזה -- בסריקה הבאה של אותו מוצר לא תצטרך/י להזין אותם שוב. הם לא יתווספו למאגר המאכלים המאומת.
+      </p>
+      <p v-else class="text-xs text-neutral-500">
+        הפריט לא נמצא במאגר -- הערכים יישמרו כהזנה ידנית עבור הרשומה הזו בלבד, ולא יתווספו למאגר המאכלים המאומת.
+      </p>
+      <p v-if="saveForFutureError" class="text-xs text-status-yellow">
+        השמירה לסריקות הבאות נכשלה ({{ saveForFutureError }}) -- הרישום הנוכחי עדיין יישמר כרגיל.
       </p>
       <label class="flex flex-col gap-1">
         <span class="text-sm text-neutral-600">שם המוצר</span>
@@ -506,7 +591,7 @@ defineExpose({ reset })
           class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white disabled:opacity-60"
           @click="confirmManual"
         >
-          המשך לשמירה
+          {{ canSaveForFuture ? 'אשר ושמור לסריקות הבאות' : 'המשך לשמירה' }}
         </button>
         <button type="button" class="text-sm text-neutral-600 underline" @click="cancel">ביטול</button>
       </div>
