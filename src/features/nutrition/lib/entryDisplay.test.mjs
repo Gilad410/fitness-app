@@ -59,6 +59,35 @@ test('restaurant item: a fractional serving count is shown with one decimal, not
 })
 
 // ---------------------------------------------------------------------
+// A barcode-sourced entry (grams-based, log-only -- see the module
+// comment for why this is never a plan-item shape).
+// ---------------------------------------------------------------------
+test('barcode entry: display name is "<product name> (ברקוד)"', () => {
+  const entry = { barcode: '4006381333931', barcode_product_name: 'דגני בוקר לדוגמה', grams: 40 }
+  assert.equal(entryDisplayName(entry), 'דגני בוקר לדוגמה (ברקוד)')
+})
+
+test('barcode entry: quantity label is "<grams> גרם", same format as a regular food', () => {
+  const entry = { barcode: '4006381333931', barcode_product_name: 'דגני בוקר לדוגמה', grams: 40 }
+  assert.equal(entryQuantityLabel(entry), '40 גרם')
+})
+
+test('barcode entry: a missing product-name snapshot falls back to an empty name, not a crash', () => {
+  const entry = { barcode: '4006381333931', barcode_product_name: null, grams: 40 }
+  assert.equal(entryDisplayName(entry), ' (ברקוד)')
+})
+
+test('a barcode entry is checked before the restaurant/food branches -- a malformed row with both never reads as a restaurant item', () => {
+  const entry = {
+    barcode: '4006381333931',
+    barcode_product_name: 'דגני בוקר לדוגמה',
+    grams: 40,
+    restaurant_food_item: { item_name: 'should not be used', chain_name: 'x', serving_description: 'x' },
+  }
+  assert.equal(entryDisplayName(entry), 'דגני בוקר לדוגמה (ברקוד)')
+})
+
+// ---------------------------------------------------------------------
 // Identical behavior regardless of which feature the entry came from --
 // the whole point of sharing this module between the food log and the
 // nutrition plan.

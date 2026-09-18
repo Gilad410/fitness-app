@@ -4,6 +4,7 @@ import { useFoodsStore } from '../store/foods'
 import { useNutritionLogsStore } from '../store/nutritionLogs'
 import { useRestaurantFoodItemsStore } from '../store/restaurantFoodItems'
 import FoodQuantityPicker from './FoodQuantityPicker.vue'
+import BarcodeFoodEntry from './BarcodeFoodEntry.vue'
 import { formatNutritionAmount } from '../../../lib/formatNumber'
 import { entryDisplayName, entryQuantityLabel } from '../lib/entryDisplay'
 import { startRetentionClock, stopRetentionClock } from '../lib/nutritionRetentionClock'
@@ -33,6 +34,44 @@ const pickerRef = useTemplateRef('picker')
 
 const deletingLogId = ref(null)
 const deleteError = ref('')
+
+// Barcode entry is a separate, self-contained flow (BarcodeFoodEntry.vue)
+// rather than a third tab on FoodQuantityPicker -- see that component's
+// own comment for why. It never touches the store itself; it only emits
+// a resolved payload, exactly like pickerRef.value.resolve() does, and
+// this handler adds the date and calls the exact same addLog() the
+// regular/restaurant flow above uses.
+const showBarcodeEntry = ref(false)
+const barcodeRef = useTemplateRef('barcodeEntry')
+const barcodeSaving = ref(false)
+const barcodeSaveError = ref('')
+
+async function handleBarcodeResolved(resolved) {
+  barcodeSaveError.value = ''
+  barcodeSaving.value = true
+  try {
+    // Barcode entries are logged against today's date -- this flow is
+    // inherently "in the moment" (scanning a product as it's eaten), and
+    // keeping its own date field out of BarcodeFoodEntry.vue keeps that
+    // component fully decoupled from the regular-entry form's entryDate
+    // ref above. A past-dated barcode log isn't a use case this minimal
+    // version covers.
+    await nutritionLogsStore.addLog(props.traineeId, {
+      ...resolved,
+      logged_at: todayIsoDate(),
+    })
+    showBarcodeEntry.value = false
+    barcodeRef.value?.reset()
+  } catch (err) {
+    barcodeSaveError.value = err.message
+  } finally {
+    barcodeSaving.value = false
+  }
+}
+
+function handleBarcodeCancel() {
+  showBarcodeEntry.value = false
+}
 
 // Keeps the shared retentionCutoff (nutritionRetentionClock.js) current
 // for as long as this section is mounted -- a periodic re-check plus an
@@ -162,14 +201,28 @@ async function handleDelete(logId) {
           <span v-if="todayProteinUnknown" class="text-xs text-neutral-500">(לא כולל פריט/ים עם חלבון לא ידוע)</span>
         </div>
       </div>
-      <button
-        v-if="!showAddEntry"
-        type="button"
-        class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white"
-        @click="showAddEntry = true"
-      >
-        הוסף מאכל
-      </button>
+      <div v-if="!showAddEntry && !showBarcodeEntry" class="flex flex-wrap gap-2">
+        <button
+          type="button"
+          class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white"
+          @click="showAddEntry = true"
+        >
+          הוסף מאכל
+        </button>
+        <button
+          type="button"
+          class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100"
+          @click="showBarcodeEntry = true"
+        >
+          סרוק ברקוד
+        </button>
+      </div>
+    </div>
+
+    <div v-if="showBarcodeEntry" class="flex flex-col gap-2">
+      <BarcodeFoodEntry ref="barcodeEntry" @resolved="handleBarcodeResolved" @cancel="handleBarcodeCancel" />
+      <p v-if="barcodeSaving" class="text-sm text-neutral-600">שומר...</p>
+      <p v-if="barcodeSaveError" class="text-sm text-status-red">{{ barcodeSaveError }}</p>
     </div>
 
     <form
