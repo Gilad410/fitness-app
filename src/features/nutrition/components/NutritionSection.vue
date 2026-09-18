@@ -46,6 +46,20 @@ const barcodeRef = useTemplateRef('barcodeEntry')
 const barcodeSaving = ref(false)
 const barcodeSaveError = ref('')
 
+// Deliberately its own top-level notice, NOT rendered inside the
+// showBarcodeEntry block below -- BarcodeFoodEntry.vue resets/hides
+// itself right after a successful resolve, so a message shown only
+// inside its own subtree would disappear at the same moment, easy to
+// never actually see (the exact "silently discard an approved
+// product" gap found via barcode 7622202268298: today's log entry
+// saved fine, but the cache-write failure was invisible). Persists
+// until explicitly dismissed, survives the barcode form closing.
+const saveForFutureFailedNotice = ref('')
+
+function handleSaveForFutureFailed({ barcode, message }) {
+  saveForFutureFailedNotice.value = `שמירת המוצר לברקוד ${barcode} לסריקות הבאות נכשלה (${message}). הרישום הנוכחי נשמר כרגיל, אך בסריקה הבאה של אותו ברקוד יהיה צורך להזין את הערכים שוב.`
+}
+
 async function handleBarcodeResolved(resolved) {
   barcodeSaveError.value = ''
   barcodeSaving.value = true
@@ -219,8 +233,27 @@ async function handleDelete(logId) {
       </div>
     </div>
 
+    <div
+      v-if="saveForFutureFailedNotice"
+      class="flex items-start justify-between gap-3 rounded-lg border border-status-yellow/40 bg-status-yellow/5 p-3 text-sm text-brand-black"
+    >
+      <p>{{ saveForFutureFailedNotice }}</p>
+      <button
+        type="button"
+        class="shrink-0 text-xs text-neutral-600 underline"
+        @click="saveForFutureFailedNotice = ''"
+      >
+        הבנתי
+      </button>
+    </div>
+
     <div v-if="showBarcodeEntry" class="flex flex-col gap-2">
-      <BarcodeFoodEntry ref="barcodeEntry" @resolved="handleBarcodeResolved" @cancel="handleBarcodeCancel" />
+      <BarcodeFoodEntry
+        ref="barcodeEntry"
+        @resolved="handleBarcodeResolved"
+        @cancel="handleBarcodeCancel"
+        @save-for-future-failed="handleSaveForFutureFailed"
+      />
       <p v-if="barcodeSaving" class="text-sm text-neutral-600">שומר...</p>
       <p v-if="barcodeSaveError" class="text-sm text-status-red">{{ barcodeSaveError }}</p>
     </div>

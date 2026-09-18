@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { supabase } from '../../../lib/supabaseClient'
 import { useAuthStore } from '../../../stores/auth'
+import { lookupCachedProduct, withCachedProduct } from '../lib/barcodeProductCache.js'
 
 // Per-coach cache of barcode products the coach has manually approved
 // calories/protein for (see 046_coach_barcode_products.sql) -- checked
@@ -32,7 +33,7 @@ export const useCoachBarcodeProductsStore = defineStore('coachBarcodeProducts', 
     },
 
     lookup(barcode) {
-      return this.byBarcode[barcode] ?? null
+      return lookupCachedProduct(this.byBarcode, barcode)
     },
 
     // Approves (or re-approves, on conflict) a barcode's nutrition
@@ -57,7 +58,7 @@ export const useCoachBarcodeProductsStore = defineStore('coachBarcodeProducts', 
         .select()
         .single()
       if (error) throw error
-      this.byBarcode = { ...this.byBarcode, [barcode]: data }
+      this.byBarcode = withCachedProduct(this.byBarcode, barcode, data)
       return data
     },
   },

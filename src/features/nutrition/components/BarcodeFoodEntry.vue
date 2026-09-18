@@ -35,7 +35,15 @@ import { formatNutritionAmount } from '../../../lib/formatNumber'
 // same separation FoodQuantityPicker.vue already has: the caller
 // (NutritionSection.vue) owns persistence.
 
-const emit = defineEmits(['resolved', 'cancel'])
+// 'save-for-future-failed' is separate from 'resolved' specifically so
+// the caller (NutritionSection.vue) can show it as its OWN, persistent
+// message -- this component (and its saveForFutureError display) gets
+// reset/hidden as soon as 'resolved' succeeds, so relying on the local
+// message alone made a real save failure easy to miss entirely (the
+// exact "silently discard an approved product" gap this emit exists to
+// close; see the PR report for the barcode 7622202268298 investigation
+// this was found from).
+const emit = defineEmits(['resolved', 'cancel', 'save-for-future-failed'])
 
 // 'choose' (scan vs manual) -> 'scanning' (camera live) ->
 // 'looking_up' -> 'found' | 'lookup_failed' (not_found/no_nutrition_data/
@@ -378,6 +386,7 @@ async function confirmManual() {
       })
     } catch (err) {
       saveForFutureError.value = err.message
+      emit('save-for-future-failed', { barcode: lastBarcode.value, message: err.message })
     }
   }
 
