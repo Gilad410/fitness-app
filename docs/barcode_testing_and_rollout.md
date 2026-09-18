@@ -89,34 +89,55 @@ Everything through "review" (product found, grams entered, calculated preview sh
 
 ---
 
-## Part 2 — Runbook for after the phone test passes (NOT executed yet)
+## Part 2 — Runbook for after the phone test passes
 
-Only proceed here once you've confirmed Tests A–I above behave as expected. This is the exact sequence I'd follow, laid out for your review and go-ahead at each step — none of it runs automatically.
+**Update:** the phone test has confirmed barcode lookup, product review, grams calculation, and the UI all work correctly. The save step failed exactly as predicted in Test J above — `"Could not find the barcode column"` — because migration `045` has not been applied yet. That confirms the pre-migration behavior is correct (fails cleanly with a real error, not a crash or a silent no-op), not a new bug. **Steps 1–2 below are the exact next actions. Neither has been run yet — I don't have direct Supabase access; you run these yourself in the SQL Editor, in order.**
 
-### Step 1 — Apply migration 045 to Supabase
+### Step 1 — Preflight check (run this FIRST, before 045)
 
 1. Open the Supabase Dashboard → SQL Editor for this project.
-2. Paste the full contents of `supabase/sql/045_trainee_nutrition_logs_barcode_source.sql` (drafted, currently sitting in PR #3, untouched since review).
-3. Run it. Expected result: `Success. No rows returned` for most of it, plus one real result set from the migration's own built-in read-only check — a single row, `rows_failing_source_check = 0`. If that number is anything other than 0, stop and report back before doing anything else; it means some existing row doesn't cleanly satisfy the new 3-way constraint, which shouldn't happen given every current row is food_id- or restaurant_food_item_id-based, but the migration checks for it explicitly rather than assuming.
-4. This only adds nullable columns, replaces one check constraint, and replaces the trigger function body — no data is deleted or rewritten for any existing row.
+2. Paste and run the full contents of `supabase/audits/trainee_nutrition_logs_045_preflight_check.sql` — 4 read-only `select`s, no transaction, safe to run any number of times, references only columns/objects that already exist today (schema-agnostic, can't fail because of anything 045 would add).
+3. **What to check in the results:**
+   - Query 1 (columns): confirm none of `barcode`, `barcode_source`, `barcode_product_name`, `barcode_calories_per_100g`, `barcode_protein_per_100g` already appear in the list — they shouldn't, but this rules out a name collision before 045 tries to add them.
+   - Query 2 (constraint): confirm a row named `trainee_nutrition_logs_source_check` appears — this is the constraint 045 is about to drop and replace; if it's missing or named differently, stop and report back rather than running 045.
+   - Query 3 (row check): confirm `neither_source_rows = 0` and `total_rows = food_id_rows + restaurant_item_rows`. **If `neither_source_rows` is anything but 0, stop — do not run 045** — report the exact numbers back; it would mean a pre-existing gap unrelated to this change, not something 045 should paper over.
+   - Query 4 (trigger function): confirm `set_nutrition_log_calories` appears — the function 045 is about to replace.
+4. All four passing as expected means it's safe to proceed to the actual migration.
 
-### Step 2 — Re-run Test J for real
+### Step 2 — Show and run migration 045
 
-1. On the phone, repeat Test J (get to review, tap "המשך לשמירה").
-2. **Expect now:** it saves successfully, the form/modal closes, and the new entry appears in the log list as `"<product name> (ברקוד)"` with the correct grams and calculated calories/protein — using the exact same display format the existing food/restaurant entries already use.
-3. Delete the test log entry afterward (the existing "מחק" button already works on any entry, including this one — no barcode-specific code needed there).
+1. Full contents to review before running: `supabase/sql/045_trainee_nutrition_logs_barcode_source.sql` (169 lines, unchanged since it was drafted — reproduced here for this review):
+   - Adds 5 nullable columns to `trainee_nutrition_logs`: `barcode`, `barcode_source`, `barcode_product_name`, `barcode_calories_per_100g` (checked `>= 0`), `barcode_protein_per_100g` (checked `>= 0`, nullable — an unknown-protein product is not an error).
+   - Drops and replaces `trainee_nutrition_logs_source_check` with a 3-way version (food_id-only / restaurant_food_item_id-only / barcode-only, each requiring exactly its own fields and nothing from the other two branches).
+   - Replaces `set_nutrition_log_calories()` with a 3-branch version — the food_id and restaurant_food_item_id branches are byte-for-byte unchanged from `011_restaurant_nutrition_logs.sql`; the new barcode branch computes `calories = barcode_calories_per_100g * grams / 100`, `protein = barcode_protein_per_100g * grams / 100` (null-safe), both rounded to 1 decimal.
+   - The barcode branch's constraint requires `barcode_source is not null` but never checks it against a specific value — `'open_food_facts'` and `'manual'` both satisfy it identically, so **the manual nutrition fallback path keeps working after this migration exactly as it does for `'open_food_facts'` matches** — confirmed by a dedicated test (`barcodeMigration.test.mjs`), not just asserted.
+   - Wrapped in `begin;`/`commit;`; ends with its own built-in read-only report (see step 3) as the last statement before `commit;` — it cannot abort the migration, only inform you.
+2. Open the Supabase Dashboard → SQL Editor, paste the full file contents, run it.
 
-### Step 3 — Merge PR #3
+### Step 3 — Verify the result
+
+1. **Expect:** `Success. No rows returned` for the `alter table`/`create or replace function` statements, plus one real result row from the migration's own final `select` — check that it reads **`rows_failing_source_check = 0`**.
+2. If it's anything other than 0, the transaction still committed (this is a report, not a guard — see the migration's own comment on why), so **stop and report the exact number back immediately** rather than continuing to step 4 — don't assume it's fine.
+3. No existing data was deleted or rewritten either way — only nullable columns were added and the constraint/trigger function bodies were replaced.
+
+### Step 4 — Retest saving the basmati product
+
+1. On the phone (same preview URL as before), repeat the barcode flow for the same basmati product that failed to save during the phone test: scan or manually enter its barcode, confirm the product card shows the same name/source/calories/protein per 100g as before, enter the same grams, tap "המשך לשמירה".
+2. **Expect now:** it saves successfully — no `"Could not find the barcode column"` error, the form closes, and the entry appears in the log list as `"<basmati product name> (ברקוד)"` with the correct grams and calculated calories/protein (verify against the `calories_per_100g × grams / 100` / `protein_per_100g × grams / 100` formula by hand, same check as Test F).
+3. Also spot-check the manual-nutrition fallback still works: trigger it on a barcode Open Food Facts doesn't recognize, fill in a name/calories/protein by hand, save, confirm it appears in the list the same way with `(ברקוד)` and `barcode_source = 'manual'` under the hood.
+4. Delete both test log entries afterward (the existing "מחק" button already works on any entry, including these — no barcode-specific code needed there).
+
+### Step 5 — Merge PR #3
 
 1. This requires your explicit go-ahead at the time — merging is treated as a high-risk action I don't take unilaterally even when asked in advance (the same reason PR #2's merge earlier in this session needed you to click merge on GitHub yourself after my attempt was blocked). Most likely path: you merge PR #3 on GitHub directly (https://github.com/Gilad410/fitness-app/pull/3), or explicitly authorize the specific action in the moment and I retry.
 2. PR #3's base is `main` at `cb8e6b2` (still current as of the last audit) — a clean merge is expected, no conflicts, since this branch never touched any file the food-catalog branch/PR #1 touches.
 
-### Step 4 — Deployment
+### Step 6 — Deployment
 
 1. Merging to `main` triggers Vercel's existing GitHub integration automatically (the same mechanism that deployed the food-catalog work previously) — no separate deploy step needed on my end, and none will be taken beyond the merge itself.
 2. I can't directly observe Vercel's build/deploy status from here (no `.vercel` link, no CLI) — confirming the deploy went out is on you, the same limitation noted for prior deployments this session.
 
-### Step 5 — Production smoke test
+### Step 7 — Production smoke test
 
 1. Repeat a short version of Tests A, D, F, H, J against the real production URL, on a real phone, once deployed — confirming the feature works end-to-end in production, not just in the tunnel/preview environment from Part 1.
 

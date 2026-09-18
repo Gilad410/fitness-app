@@ -14,13 +14,22 @@ import path from 'node:path'
 
 const here = path.dirname(fileURLToPath(import.meta.url))
 const sqlDir = path.resolve(here, '../../../../supabase/sql')
+const auditsDir = path.resolve(here, '../../../../supabase/audits')
 
 function read(file) {
   return readFileSync(path.join(sqlDir, file), 'utf8')
 }
 
+function readAudit(file) {
+  return readFileSync(path.join(auditsDir, file), 'utf8')
+}
+
 function migrationText() {
   return read('045_trainee_nutrition_logs_barcode_source.sql')
+}
+
+function preflightText() {
+  return readAudit('trainee_nutrition_logs_045_preflight_check.sql')
 }
 
 test('045 is transaction-safe: opens with begin; and closes with commit;', () => {
@@ -103,4 +112,38 @@ test('045 does not reference restaurant_food_item_id or food_id as columns it mo
   const text = migrationText()
   assert.doesNotMatch(text, /\bdelete\s+from\b/i)
   assert.doesNotMatch(text, /\btruncate\b/i)
+})
+
+test('045\'s barcode branch requires a source and product name but does not restrict barcode_source to a specific value -- both "open_food_facts" and "manual" satisfy it identically', () => {
+  const text = migrationText()
+  const barcodeBranch = text.slice(
+    text.indexOf('food_id is null and restaurant_food_item_id is null and barcode is not null'),
+    text.indexOf('-- 3. Extend'),
+  )
+  assert.match(barcodeBranch, /barcode_source is not null/)
+  assert.doesNotMatch(barcodeBranch, /barcode_source\s*=\s*'/, 'must not hardcode a specific source value -- manual entries need to satisfy this branch too')
+})
+
+// ---------------------------------------------------------------------
+// The standalone preflight check (supabase/audits/), meant to be run in
+// the Supabase SQL Editor BEFORE 045 itself.
+// ---------------------------------------------------------------------
+
+test('the 045 preflight check is schema-agnostic (references only columns/objects that predate 045, so it can never fail regardless of whether 045 has run)', () => {
+  const text = preflightText()
+  const withoutComments = text.replace(/--.*$/gm, '')
+  assert.doesNotMatch(withoutComments, /\bbarcode\b|\bbarcode_source\b|\bbarcode_product_name\b|\bbarcode_calories_per_100g\b|\bbarcode_protein_per_100g\b/)
+})
+
+test('the 045 preflight check is read-only -- no writes, no transaction needed', () => {
+  const withoutComments = preflightText().replace(/--.*$/gm, '')
+  assert.doesNotMatch(withoutComments, /\b(insert|update|delete|alter|drop|truncate|begin|commit)\b/i)
+})
+
+test('the 045 preflight check inspects information_schema.columns, pg_constraint, and pg_proc -- covering columns, the constraint, and the trigger function 045 is about to touch', () => {
+  const text = preflightText()
+  assert.match(text, /information_schema\.columns/)
+  assert.match(text, /pg_constraint/)
+  assert.match(text, /pg_proc/)
+  assert.match(text, /from public\.trainee_nutrition_logs/)
 })
