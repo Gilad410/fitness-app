@@ -1,33 +1,64 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { supportsCameraBarcodeScanning } from './barcodeCameraSupport.js'
+import {
+  getCameraScanStrategy,
+  supportsCameraBarcodeScanning,
+  CAMERA_STRATEGY_NATIVE,
+  CAMERA_STRATEGY_ZXING,
+  CAMERA_STRATEGY_UNSUPPORTED,
+} from './barcodeCameraSupport.js'
 
-test('supportsCameraBarcodeScanning: true when both BarcodeDetector and getUserMedia are present', () => {
+test('getCameraScanStrategy: "native" when both BarcodeDetector and getUserMedia are present (Chrome/Edge)', () => {
+  const windowImpl = { BarcodeDetector: function () {} }
+  const navigatorImpl = { mediaDevices: { getUserMedia: async () => {} } }
+  assert.equal(getCameraScanStrategy({ windowImpl, navigatorImpl }), CAMERA_STRATEGY_NATIVE)
+})
+
+test('getCameraScanStrategy: "zxing" when getUserMedia exists but BarcodeDetector does not (Safari/iOS, Firefox) -- this is the fix, it used to be unsupported', () => {
+  const windowImpl = {}
+  const navigatorImpl = { mediaDevices: { getUserMedia: async () => {} } }
+  assert.equal(getCameraScanStrategy({ windowImpl, navigatorImpl }), CAMERA_STRATEGY_ZXING)
+})
+
+test('getCameraScanStrategy: "unsupported" when getUserMedia is missing, regardless of BarcodeDetector', () => {
+  const withDetector = getCameraScanStrategy({
+    windowImpl: { BarcodeDetector: function () {} },
+    navigatorImpl: { mediaDevices: {} },
+  })
+  const withoutDetector = getCameraScanStrategy({
+    windowImpl: {},
+    navigatorImpl: { mediaDevices: {} },
+  })
+  assert.equal(withDetector, CAMERA_STRATEGY_UNSUPPORTED)
+  assert.equal(withoutDetector, CAMERA_STRATEGY_UNSUPPORTED)
+})
+
+test('getCameraScanStrategy: "unsupported" when mediaDevices itself is entirely absent (older/non-secure-context browsers)', () => {
+  const windowImpl = { BarcodeDetector: function () {} }
+  const navigatorImpl = {}
+  assert.equal(getCameraScanStrategy({ windowImpl, navigatorImpl }), CAMERA_STRATEGY_UNSUPPORTED)
+})
+
+test('getCameraScanStrategy: "zxing" (not "native") when BarcodeDetector exists but is not a constructor function (defensive)', () => {
+  const windowImpl = { BarcodeDetector: 'not-a-function' }
+  const navigatorImpl = { mediaDevices: { getUserMedia: async () => {} } }
+  assert.equal(getCameraScanStrategy({ windowImpl, navigatorImpl }), CAMERA_STRATEGY_ZXING)
+})
+
+test('supportsCameraBarcodeScanning: true for native', () => {
   const windowImpl = { BarcodeDetector: function () {} }
   const navigatorImpl = { mediaDevices: { getUserMedia: async () => {} } }
   assert.equal(supportsCameraBarcodeScanning({ windowImpl, navigatorImpl }), true)
 })
 
-test('supportsCameraBarcodeScanning: false when BarcodeDetector is missing (e.g. Safari/iOS, Firefox)', () => {
+test('supportsCameraBarcodeScanning: true for zxing (the fix -- iOS Safari now offers the camera option)', () => {
   const windowImpl = {}
   const navigatorImpl = { mediaDevices: { getUserMedia: async () => {} } }
-  assert.equal(supportsCameraBarcodeScanning({ windowImpl, navigatorImpl }), false)
+  assert.equal(supportsCameraBarcodeScanning({ windowImpl, navigatorImpl }), true)
 })
 
-test('supportsCameraBarcodeScanning: false when getUserMedia is missing (e.g. no camera hardware, or mediaDevices unavailable)', () => {
-  const windowImpl = { BarcodeDetector: function () {} }
-  const navigatorImpl = { mediaDevices: {} }
-  assert.equal(supportsCameraBarcodeScanning({ windowImpl, navigatorImpl }), false)
-})
-
-test('supportsCameraBarcodeScanning: false when mediaDevices itself is entirely absent (older/non-secure-context browsers)', () => {
-  const windowImpl = { BarcodeDetector: function () {} }
+test('supportsCameraBarcodeScanning: false only when there is no camera API at all', () => {
+  const windowImpl = {}
   const navigatorImpl = {}
-  assert.equal(supportsCameraBarcodeScanning({ windowImpl, navigatorImpl }), false)
-})
-
-test('supportsCameraBarcodeScanning: false when BarcodeDetector exists but is not a constructor function (defensive)', () => {
-  const windowImpl = { BarcodeDetector: 'not-a-function' }
-  const navigatorImpl = { mediaDevices: { getUserMedia: async () => {} } }
   assert.equal(supportsCameraBarcodeScanning({ windowImpl, navigatorImpl }), false)
 })

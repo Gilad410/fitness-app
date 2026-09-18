@@ -2,7 +2,12 @@
 import { computed, onBeforeUnmount, ref } from 'vue'
 import { lookupBarcode, isPlausibleBarcode, SOURCE_OPEN_FOOD_FACTS } from '../lib/barcodeLookup.js'
 import { calculateBarcodeNutrition } from '../lib/barcodeCalculation.js'
-import { supportsCameraBarcodeScanning } from '../lib/barcodeCameraSupport.js'
+import {
+  getCameraScanStrategy,
+  supportsCameraBarcodeScanning,
+  CAMERA_STRATEGY_NATIVE,
+  CAMERA_STRATEGY_ZXING,
+} from '../lib/barcodeCameraSupport.js'
 import { formatNutritionAmount } from '../../../lib/formatNumber'
 
 // Self-contained barcode food-entry flow: scan (or type) a barcode ->
@@ -52,6 +57,9 @@ let videoEl = null
 let mediaStream = null
 let detector = null
 let scanLoopId = null
+let scanStrategy = null // CAMERA_STRATEGY_NATIVE | CAMERA_STRATEGY_ZXING, set for the duration of one scan attempt
+let zxingReader = null
+let zxingControls = null
 
 const gramsNumber = computed(() => {
   const n = Number(grams.value)
@@ -94,9 +102,28 @@ function startManualBarcode() {
   step.value = 'manual_barcode'
 }
 
+// Dispatches to whichever decode engine getCameraScanStrategy() picks --
+// native BarcodeDetector when the browser has it (no extra bundle
+// weight), otherwise the ZXing fallback that makes iOS Safari/Firefox
+// scanning possible at all. cameraSupported (computed once, above)
+// already gated whether the "סרוק עם המצלמה" button is shown in the
+// first place, so CAMERA_STRATEGY_UNSUPPORTED is not expected to reach
+// here in normal use -- the manual-entry branch below is defensive.
 async function startScanning() {
   scanError.value = ''
   step.value = 'scanning'
+  scanStrategy = getCameraScanStrategy()
+
+  if (scanStrategy === CAMERA_STRATEGY_NATIVE) {
+    await startNativeScanning()
+  } else if (scanStrategy === CAMERA_STRATEGY_ZXING) {
+    await startZxingScanning()
+  } else {
+    startManualBarcode()
+  }
+}
+
+async function startNativeScanning() {
   try {
     mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
   } catch {
@@ -118,7 +145,7 @@ async function startScanning() {
   }
 
   // BarcodeDetector: a browser global, only reached when
-  // supportsCameraBarcodeScanning() already confirmed it exists.
+  // getCameraScanStrategy() already confirmed it exists.
   detector = new window.BarcodeDetector({ formats: ['ean_13', 'ean_8', 'upc_a', 'upc_e'] })
   runScanLoop()
 }
@@ -140,6 +167,61 @@ function runScanLoop() {
   })
 }
 
+// ZXing fallback engine (Safari/iOS, Firefox -- anything without
+// BarcodeDetector). Dynamically imported so its bundle cost is only
+// ever paid by browsers that actually need it -- a Chrome/Edge user
+// scanning via the native path never downloads this at all (Vite
+// automatically code-splits a dynamic import into its own chunk).
+async function startZxingScanning() {
+  let BrowserMultiFormatReader, DecodeHintType, BarcodeFormat
+  try {
+    ;[{ BrowserMultiFormatReader }, { DecodeHintType, BarcodeFormat }] = await Promise.all([
+      import('@zxing/browser'),
+      import('@zxing/library'),
+    ])
+  } catch {
+    // The decoder library itself failed to load (e.g. offline) -- same
+    // fallback as any other camera failure, nothing barcode-specific to
+    // say about it.
+    scanError.value = 'לא ניתן לטעון את מנוע הסריקה. ניתן להזין את הברקוד ידנית.'
+    startManualBarcode()
+    return
+  }
+
+  const hints = new Map()
+  hints.set(DecodeHintType.POSSIBLE_FORMATS, [
+    BarcodeFormat.EAN_13,
+    BarcodeFormat.EAN_8,
+    BarcodeFormat.UPC_A,
+    BarcodeFormat.UPC_E,
+  ])
+  zxingReader = new BrowserMultiFormatReader(hints)
+
+  try {
+    // decodeFromConstraints calls getUserMedia internally with these
+    // constraints -- a rejection here (permission denied, no camera)
+    // surfaces the exact same way the native path's own getUserMedia
+    // call does, so one catch block covers both engines identically.
+    zxingControls = await zxingReader.decodeFromConstraints(
+      { video: { facingMode: 'environment' } },
+      videoEl,
+      (result) => {
+        // `result` is undefined on almost every callback invocation --
+        // ZXing calls back on every failed decode attempt too (a
+        // NotFoundException on the `error` argument, ignored here since
+        // it just means "no barcode in view yet on this frame", not a
+        // real failure). Only a defined `result` is a genuine capture.
+        if (result) {
+          handleBarcodeCaptured(result.getText())
+        }
+      },
+    )
+  } catch {
+    scanError.value = 'לא ניתן לגשת למצלמה. ניתן להזין את הברקוד ידנית.'
+    startManualBarcode()
+  }
+}
+
 function stopScanning() {
   if (scanLoopId !== null) {
     cancelAnimationFrame(scanLoopId)
@@ -150,6 +232,15 @@ function stopScanning() {
     mediaStream = null
   }
   detector = null
+  if (zxingControls) {
+    // .stop() also releases the underlying camera stream ZXing opened
+    // via decodeFromConstraints -- no separate track-stopping needed on
+    // this path the way the native branch above needs it.
+    zxingControls.stop()
+    zxingControls = null
+  }
+  zxingReader = null
+  scanStrategy = null
 }
 
 onBeforeUnmount(stopScanning)

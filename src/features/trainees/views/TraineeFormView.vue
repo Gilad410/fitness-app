@@ -121,7 +121,7 @@ async function handleSubmit() {
             v-model="fullName"
             type="text"
             required
-            class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
+            class="rounded-lg border border-neutral-300 bg-brand-white px-3 py-2 text-brand-black focus:border-brand-green focus:outline-none"
           />
         </label>
 
@@ -130,7 +130,7 @@ async function handleSubmit() {
           <input
             v-model="email"
             type="email"
-            class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
+            class="rounded-lg border border-neutral-300 bg-brand-white px-3 py-2 text-brand-black focus:border-brand-green focus:outline-none"
           />
         </label>
 
@@ -139,7 +139,7 @@ async function handleSubmit() {
           <input
             v-model="phone"
             type="tel"
-            class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
+            class="rounded-lg border border-neutral-300 bg-brand-white px-3 py-2 text-brand-black focus:border-brand-green focus:outline-none"
           />
         </label>
 
@@ -148,7 +148,7 @@ async function handleSubmit() {
           <input
             v-model="startDate"
             type="date"
-            class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
+            class="rounded-lg border border-neutral-300 bg-brand-white px-3 py-2 text-brand-black focus:border-brand-green focus:outline-none"
           />
         </label>
 
@@ -156,7 +156,7 @@ async function handleSubmit() {
           <span class="text-sm text-neutral-600">מטרה</span>
           <select
             v-model="goal"
-            class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
+            class="rounded-lg border border-neutral-300 bg-brand-white px-3 py-2 text-brand-black focus:border-brand-green focus:outline-none"
           >
             <option value="">— לא נבחר —</option>
             <option value="fat_loss">ירידה במשקל</option>
@@ -174,7 +174,7 @@ async function handleSubmit() {
             step="0.1"
             min="0"
             dir="ltr"
-            class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+            class="rounded-lg border border-neutral-300 bg-brand-white px-3 py-2 text-left text-brand-black focus:border-brand-green focus:outline-none"
           />
         </label>
 
@@ -186,7 +186,7 @@ async function handleSubmit() {
             step="0.1"
             min="0.1"
             dir="ltr"
-            class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+            class="rounded-lg border border-neutral-300 bg-brand-white px-3 py-2 text-left text-brand-black focus:border-brand-green focus:outline-none"
           />
         </label>
 
@@ -202,7 +202,7 @@ async function handleSubmit() {
                 step="0.1"
                 min="0"
                 dir="ltr"
-                class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+                class="rounded-lg border border-neutral-300 bg-brand-white px-3 py-2 text-left text-brand-black focus:border-brand-green focus:outline-none"
               />
             </label>
 
@@ -214,7 +214,7 @@ async function handleSubmit() {
                 step="0.1"
                 min="0"
                 dir="ltr"
-                class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+                class="rounded-lg border border-neutral-300 bg-brand-white px-3 py-2 text-left text-brand-black focus:border-brand-green focus:outline-none"
               />
             </label>
 
@@ -226,7 +226,7 @@ async function handleSubmit() {
                 step="0.1"
                 min="0"
                 dir="ltr"
-                class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+                class="rounded-lg border border-neutral-300 bg-brand-white px-3 py-2 text-left text-brand-black focus:border-brand-green focus:outline-none"
               />
             </label>
 
@@ -238,7 +238,7 @@ async function handleSubmit() {
                 step="0.1"
                 min="0"
                 dir="ltr"
-                class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+                class="rounded-lg border border-neutral-300 bg-brand-white px-3 py-2 text-left text-brand-black focus:border-brand-green focus:outline-none"
               />
             </label>
 
@@ -250,7 +250,7 @@ async function handleSubmit() {
                 step="0.1"
                 min="0"
                 dir="ltr"
-                class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+                class="rounded-lg border border-neutral-300 bg-brand-white px-3 py-2 text-left text-brand-black focus:border-brand-green focus:outline-none"
               />
             </label>
 
@@ -262,7 +262,7 @@ async function handleSubmit() {
                 step="0.1"
                 min="0"
                 dir="ltr"
-                class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+                class="rounded-lg border border-neutral-300 bg-brand-white px-3 py-2 text-left text-brand-black focus:border-brand-green focus:outline-none"
               />
             </label>
           </div>
@@ -273,7 +273,7 @@ async function handleSubmit() {
           <textarea
             v-model="notes"
             rows="3"
-            class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
+            class="rounded-lg border border-neutral-300 bg-brand-white px-3 py-2 text-brand-black focus:border-brand-green focus:outline-none"
           />
         </label>
 
@@ -282,7 +282,7 @@ async function handleSubmit() {
         <button
           type="submit"
           :disabled="loading"
-          class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white disabled:opacity-60"
+          class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 font-medium text-brand-white hover:bg-brand-green-dark disabled:cursor-not-allowed disabled:opacity-60"
         >
           {{ loading ? 'שומר...' : 'שמירה' }}
         </button>
