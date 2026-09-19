@@ -4,6 +4,7 @@ import {
   nextStepAfterManualApproval,
   productFromManualApproval,
   manualApprovalCacheOutcome,
+  isEligibleForCoachCache,
 } from './barcodeManualApprovalFlow.js'
 
 // ---------------------------------------------------------------------
@@ -70,4 +71,24 @@ test('SCENARIO: manual approval whose cache save fails still reaches the quantit
   assert.equal(outcome, 'failed')
   assert.equal(nextStep, 'found')
   assert.equal(product.caloriesPer100g, 534, 'the values the coach typed must still be usable for quantity/log-save even though caching them failed')
+})
+
+// ---------------------------------------------------------------------
+// isEligibleForCoachCache -- the gate that lets BarcodeFoodEntry.vue be
+// reused UNCHANGED for the trainee-side flow (TraineeNutritionView.vue),
+// which passes enableCoachCache: false since coach_barcode_products' RLS
+// (coach_id = auth.uid()) can never match a trainee's own id.
+// ---------------------------------------------------------------------
+
+test('isEligibleForCoachCache: a coach (enableCoachCache: true) scanning a product OFF found but with no nutrition data IS eligible', () => {
+  assert.equal(isEligibleForCoachCache({ enableCoachCache: true, lookupStatus: 'no_nutrition_data' }), true)
+})
+
+test('isEligibleForCoachCache: a trainee (enableCoachCache: false) is NEVER eligible, even for the exact same no_nutrition_data lookup result a coach would be offered caching for', () => {
+  assert.equal(isEligibleForCoachCache({ enableCoachCache: false, lookupStatus: 'no_nutrition_data' }), false)
+})
+
+test('isEligibleForCoachCache: a genuinely not_found barcode is never eligible, for a coach or a trainee -- nothing was confirmed by Open Food Facts to cache in the first place', () => {
+  assert.equal(isEligibleForCoachCache({ enableCoachCache: true, lookupStatus: 'not_found' }), false)
+  assert.equal(isEligibleForCoachCache({ enableCoachCache: false, lookupStatus: 'not_found' }), false)
 })

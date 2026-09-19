@@ -24,6 +24,7 @@ import {
   nextStepAfterManualApproval,
   productFromManualApproval,
   manualApprovalCacheOutcome,
+  isEligibleForCoachCache,
 } from '../lib/barcodeManualApprovalFlow.js'
 import { isManualNutritionValid, parseManualNutrition } from '../lib/manualNutritionEntry.js'
 
@@ -41,9 +42,32 @@ import { isManualNutritionValid, parseManualNutrition } from '../lib/manualNutri
 // into meal planning too, which was never asked for and would need its
 // own schema/trigger work on a completely different table.
 //
-// This component does not itself call any store or touch Supabase --
-// same separation FoodQuantityPicker.vue already has: the caller
-// (NutritionSection.vue) owns persistence.
+// This component does not itself call any store or touch Supabase for
+// the trainee-log save -- same separation FoodQuantityPicker.vue
+// already has: the caller (NutritionSection.vue for the coach,
+// TraineeNutritionView.vue for the trainee) owns that. It DOES call
+// useCoachBarcodeProductsStore directly, but only when enableCoachCache
+// is true (see that prop's own comment) -- that store's RLS is
+// coach_id = auth.uid() only (046_coach_barcode_products.sql), so this
+// component must never attempt it on the trainee's behalf.
+const props = defineProps({
+  // False for TraineeNutritionView.vue's usage: coach_barcode_products'
+  // "approve once, remember for next scan" cache is a per-COACH
+  // convenience (046_coach_barcode_products.sql, RLS coach_id =
+  // auth.uid()) -- a trainee's own auth.uid() can never satisfy that
+  // policy, so attempting the read/write on their behalf would only
+  // ever produce a permission-denied result. Rather than let RLS be the
+  // only thing stopping a doomed write, this component skips the whole
+  // coach-cache code path entirely when false: no ensureLoaded()
+  // warm-up, no refresh()/lookup() pre-check, no save() attempt --
+  // every barcode scan goes straight to Open Food Facts (or manual
+  // entry), same as any barcode neither a coach nor Open Food Facts has
+  // an answer for. See isEligibleForCoachCache() in
+  // barcodeManualApprovalFlow.js for exactly how this cascades through
+  // the rest of the component's existing logic with no separate
+  // trainee-specific branches needed elsewhere.
+  enableCoachCache: { type: Boolean, default: true },
+})
 
 // 'save-for-future-failed' is separate from 'resolved' specifically so
 // the caller (NutritionSection.vue) can show it as its OWN, persistent
@@ -80,9 +104,12 @@ const router = useRouter()
 // refresh() (an unconditional re-fetch, see that function's own
 // comment for why ensureLoaded() alone isn't enough) before trusting
 // the cache, so this mount-time call is purely a head start, never
-// relied on for correctness.
+// relied on for correctness. Skipped entirely when enableCoachCache is
+// false (see that prop's own comment).
 onMounted(() => {
-  coachBarcodeProductsStore.ensureLoaded().catch(() => {})
+  if (props.enableCoachCache) {
+    coachBarcodeProductsStore.ensureLoaded().catch(() => {})
+  }
 })
 
 const manualBarcodeInput = ref('')
@@ -98,14 +125,23 @@ const grams = ref('')
 const manualName = ref('')
 const manualCalories = ref('')
 const manualProtein = ref('')
+// True only when Open Food Facts confirmed a real product for this
+// barcode but had no usable nutrition data (the Milka case) --
+// independent of enableCoachCache, used only to pick the accurate
+// info message on the 'lookup_failed' step ("found, but no nutrition
+// data" vs. "not found at all"). See canSaveForFuture below for the
+// separate question of whether that also makes this scan eligible for
+// the coach cache.
+const foundButNoNutrition = ref(false)
 // True only when this manual-entry step was reached via a CONFIRMED
-// Open Food Facts match that had no usable nutrition data (the Milka
-// case) -- approving values here also saves them to
-// coachBarcodeProductsStore for future scans of the same barcode.
-// False for a barcode OFF doesn't recognize at all (not_found):
-// there's no confirmed product/barcode association from OFF in that
-// case, so nothing is cached automatically -- see the component's own
-// top-level comment and the PR report for why this is scoped narrowly.
+// Open Food Facts match that had no usable nutrition data AND
+// enableCoachCache is true (isEligibleForCoachCache) -- approving
+// values here also saves them to coachBarcodeProductsStore for future
+// scans of the same barcode. False for a barcode OFF doesn't recognize
+// at all (not_found), or whenever enableCoachCache is false (the
+// trainee-side usage): there's nothing to cache automatically -- see
+// the component's own top-level comment and the PR report for why this
+// is scoped narrowly.
 const canSaveForFuture = ref(false)
 // One of manualApprovalCacheOutcome()'s three values -- decides which
 // note the reused 'found'/quantity step shows about the (separate,
@@ -351,6 +387,7 @@ async function runLookup(rawBarcode) {
   lastBarcode.value = barcode
   step.value = 'looking_up'
   canSaveForFuture.value = false
+  foundButNoNutrition.value = false
   manualApprovalOutcome.value = 'not_applicable'
   saveForFutureError.value = ''
   saveForFutureErrorCategory.value = ''
@@ -378,24 +415,29 @@ async function runLookup(rawBarcode) {
   // Facts as if nothing was ever saved. Recorded here and shown in the
   // template instead, so that fall-through is now visibly explained
   // rather than silently misleading.
-  try {
-    await coachBarcodeProductsStore.refresh()
-  } catch (err) {
-    cacheCheckErrorCategory.value = categorizeSaveFailure(err)
-    cacheCheckError.value = err.message
-  }
-  const saved = coachBarcodeProductsStore.lookup(barcode)
-  if (saved) {
-    product.value = {
-      name: saved.product_name,
-      caloriesPer100g: saved.calories_per_100g,
-      proteinPer100g: saved.protein_per_100g,
-      source: SOURCE_COACH_SAVED,
-      sourceUrl: null,
+  //
+  // Skipped entirely when enableCoachCache is false -- see that prop's
+  // own comment for why a trainee must never even attempt this read.
+  if (props.enableCoachCache) {
+    try {
+      await coachBarcodeProductsStore.refresh()
+    } catch (err) {
+      cacheCheckErrorCategory.value = categorizeSaveFailure(err)
+      cacheCheckError.value = err.message
     }
-    grams.value = ''
-    step.value = 'found'
-    return
+    const saved = coachBarcodeProductsStore.lookup(barcode)
+    if (saved) {
+      product.value = {
+        name: saved.product_name,
+        caloriesPer100g: saved.calories_per_100g,
+        proteinPer100g: saved.protein_per_100g,
+        source: SOURCE_COACH_SAVED,
+        sourceUrl: null,
+      }
+      grams.value = ''
+      step.value = 'found'
+      return
+    }
   }
 
   const result = await lookupBarcode(barcode)
@@ -407,20 +449,32 @@ async function runLookup(rawBarcode) {
     return
   }
 
+  foundButNoNutrition.value = result.status === 'no_nutrition_data'
+  // See isEligibleForCoachCache()'s own comment (barcodeManualApprovalFlow.js)
+  // -- false whenever enableCoachCache is false (the trainee-side usage),
+  // regardless of what Open Food Facts returned.
+  const eligibleForCache = isEligibleForCoachCache({
+    enableCoachCache: props.enableCoachCache,
+    lookupStatus: result.status,
+  })
+  canSaveForFuture.value = eligibleForCache
+
+  const noNutritionMessage = () => {
+    const named = result.productName ? `נמצא "${result.productName}"` : 'המוצר נמצא'
+    const suffix = eligibleForCache
+      ? 'ניתן להזין ולאשר את הערכים פעם אחת -- הם יישמרו לסריקות הבאות של אותו ברקוד.'
+      : 'ניתן להזין את הערכים עבור הרישום הזה.'
+    return `${named} (ברקוד ${barcode}), אך ללא נתוני קלוריות. ${suffix}`
+  }
+
   const messages = {
     not_found: 'המוצר לא נמצא במאגר. ניתן להזין את הפרטים ידנית.',
-    no_nutrition_data: result.productName
-      ? `נמצא "${result.productName}" (ברקוד ${barcode}), אך ללא נתוני קלוריות. ניתן להזין ולאשר את הערכים פעם אחת -- הם יישמרו לסריקות הבאות של אותו ברקוד.`
-      : `המוצר נמצא (ברקוד ${barcode}) אך ללא נתוני תזונה. ניתן להזין ולאשר את הערכים פעם אחת -- הם יישמרו לסריקות הבאות של אותו ברקוד.`,
+    no_nutrition_data: noNutritionMessage(),
     invalid_barcode: 'הברקוד שנסרק אינו תקין. ניתן לנסות שוב או להזין ידנית.',
     error: result.message || 'אירעה שגיאה בחיפוש. ניתן להזין את הפרטים ידנית.',
   }
   lookupMessage.value = messages[result.status] ?? messages.error
   manualName.value = result.productName ?? ''
-  // Only a confirmed OFF match with missing nutrition offers the
-  // approve-and-remember path -- see the canSaveForFuture ref's own
-  // comment above for why not_found/invalid_barcode/error don't.
-  canSaveForFuture.value = result.status === 'no_nutrition_data'
   step.value = 'lookup_failed'
 }
 
@@ -519,6 +573,7 @@ function reset() {
   manualCalories.value = ''
   manualProtein.value = ''
   canSaveForFuture.value = false
+  foundButNoNutrition.value = false
   manualApprovalOutcome.value = 'not_applicable'
   saveForFutureError.value = ''
   saveForFutureErrorCategory.value = ''
@@ -726,8 +781,17 @@ defineExpose({ reset })
     </template>
 
     <template v-else-if="step === 'manual_nutrition'">
+      <!-- Three-way, not two: foundButNoNutrition (was a real OFF match,
+      just missing calories) and canSaveForFuture (also eligible for the
+      coach cache) are separate questions -- a trainee (enableCoachCache
+      false) can have the first true and the second always false, and
+      must still be told accurately that the product WAS found, not that
+      it wasn't. See isEligibleForCoachCache()'s own comment. -->
       <p v-if="canSaveForFuture" class="text-xs text-neutral-500">
         המוצר נמצא ב-Open Food Facts (ברקוד <bdi dir="ltr">{{ lastBarcode }}</bdi>) אך ללא נתוני קלוריות. הערכים שתזין ותאשר כאן יישמרו עבור הברקוד הזה -- בסריקה הבאה של אותו מוצר לא תצטרך/י להזין אותם שוב. הם לא יתווספו למאגר המאכלים המאומת.
+      </p>
+      <p v-else-if="foundButNoNutrition" class="text-xs text-neutral-500">
+        המוצר נמצא ב-Open Food Facts (ברקוד <bdi dir="ltr">{{ lastBarcode }}</bdi>) אך ללא נתוני קלוריות. הערכים שתזין כאן יישמרו עבור הרשומה הזו בלבד.
       </p>
       <p v-else class="text-xs text-neutral-500">
         הפריט לא נמצא במאגר -- הערכים יישמרו כהזנה ידנית עבור הרשומה הזו בלבד, ולא יתווספו למאגר המאכלים המאומת.

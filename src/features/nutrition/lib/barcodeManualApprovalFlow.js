@@ -58,3 +58,21 @@ export function manualApprovalCacheOutcome({ canSaveForFuture, cacheSaveSucceede
   if (!canSaveForFuture) return 'not_applicable'
   return cacheSaveSucceeded ? 'saved' : 'failed'
 }
+
+// Whether THIS scan is eligible for the "approve once, remember for next
+// time" coach cache (coach_barcode_products, 046) at all. Two
+// independent gates, both required:
+// - the lookup itself must have found a real product with no usable
+//   nutrition data (the only case anything is ever offered to approve);
+// - enableCoachCache must be true -- false for BarcodeFoodEntry.vue's
+//   trainee-side usage (TraineeNutritionView.vue), since
+//   coach_barcode_products' RLS (coach_id = auth.uid()) can never match
+//   a trainee's own id: a trainee attempting that save would always be
+//   rejected, so the component must never even attempt it. Forcing this
+//   false for a trainee correctly falls through to the SAME "one-time
+//   manual entry, nothing cached" UI/logic the not_found case already
+//   uses for a coach -- no separate trainee-specific branch needed
+//   anywhere else in the component.
+export function isEligibleForCoachCache({ enableCoachCache, lookupStatus }) {
+  return enableCoachCache && lookupStatus === 'no_nutrition_data'
+}

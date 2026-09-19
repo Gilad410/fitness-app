@@ -7,6 +7,7 @@ import {
   dailyProteinTotal,
   dailyHasUnknownProtein,
 } from '../../nutrition/lib/nutritionLogsCore'
+import { buildTraineeBarcodeLogRpcParams } from '../lib/traineeBarcodeLogParams.js'
 
 // Trainee's own nutrition log -- reads public.trainee_nutrition_logs
 // through the trainee-facing SELECT policy added by
@@ -113,6 +114,37 @@ export const useTraineeNutritionStore = defineStore('traineeNutrition', {
       }
     },
 
+    // resolved: BarcodeFoodEntry.vue's 'resolved' payload (barcode,
+    // barcode_source, barcode_product_name, barcode_calories_per_100g,
+    // barcode_protein_per_100g, grams) -- the SAME emit shape used by
+    // the coach's NutritionSection.vue, unchanged. Maps to the RPC's
+    // barcode parameters via buildTraineeBarcodeLogRpcParams() (pure,
+    // unit-tested) rather than a raw insert -- trainee_nutrition_logs
+    // has no INSERT policy a trainee could ever satisfy
+    // (trainee_nutrition_logs_insert_own, 003_nutrition.sql, is
+    // coach_id = auth.uid() only); trainee_log_nutrition_entry()
+    // (extended for barcode support by
+    // 047_trainee_barcode_nutrition_logging.sql) is the only path, same
+    // as every other source this store already logs through addEntry().
+    async addBarcodeEntry(resolved, loggedAt) {
+      this.adding = true
+      this.addError = null
+      try {
+        const { data, error } = await supabase.rpc(
+          'trainee_log_nutrition_entry',
+          buildTraineeBarcodeLogRpcParams(resolved, loggedAt),
+        )
+        if (error) throw error
+        await this.fetchAll()
+        return Array.isArray(data) ? data[0] : data
+      } catch (err) {
+        this.addError = safeErrorMessage(err)
+        throw err
+      } finally {
+        this.adding = false
+      }
+    },
+
     async deleteEntry(logId) {
       this.deletingId = logId
       this.deleteError = null
@@ -133,19 +165,26 @@ export const useTraineeNutritionStore = defineStore('traineeNutrition', {
 })
 
 // trainee_log_nutrition_entry() / trainee_delete_nutrition_entry() /
-// trainee_get_auth_context() (022_trainee_nutrition_access.sql) raise
-// plain-English `raise exception` messages for expected validation
-// failures -- each one is deliberately short, generic, and already safe
-// to show verbatim (never references internal state beyond what the
-// trainee already sees). Anything NOT in this list (a raw Postgres/
-// network/RLS-denial error) is replaced with a generic Hebrew message so
-// no internal detail ever reaches the UI.
+// trainee_get_auth_context() (022_trainee_nutrition_access.sql,
+// extended for barcode support by
+// 047_trainee_barcode_nutrition_logging.sql) raise plain-English `raise
+// exception` messages for expected validation failures -- each one is
+// deliberately short, generic, and already safe to show verbatim (never
+// references internal state beyond what the trainee already sees).
+// Anything NOT in this list (a raw Postgres/network/RLS-denial error) is
+// replaced with a generic Hebrew message so no internal detail ever
+// reaches the UI. Until 047 is applied, the RPC still raises the OLD
+// (pre-barcode) three-source message below verbatim -- both the old and
+// new exact wording are kept here so this map is correct on either side
+// of that migration.
 const HEBREW_MESSAGES = {
   'Only a trainee may log their own nutrition entry.': 'פעולה זו זמינה למתאמנים בלבד.',
   'Only a trainee may delete their own nutrition entry.': 'פעולה זו זמינה למתאמנים בלבד.',
   'No trainee profile is linked to this account.': 'לא נמצא פרופיל מתאמן המקושר לחשבון זה.',
   'A log date is required.': 'יש לבחור תאריך.',
   'Exactly one of food, reference food, or restaurant item must be provided.':
+    'יש לבחור פריט אחד לרישום.',
+  'Exactly one of food, reference food, restaurant item, or barcode must be provided.':
     'יש לבחור פריט אחד לרישום.',
   'Servings must be a positive number.': 'כמות המנות חייבת להיות מספר חיובי.',
   'Restaurant item not found.': 'הפריט לא נמצא.',
@@ -155,6 +194,9 @@ const HEBREW_MESSAGES = {
   'Reference food not found.': 'הפריט לא נמצא במאגר.',
   'This food is currently unavailable. Please contact your coach.':
     'הפריט אינו זמין כרגע. יש לפנות למאמן/ת.',
+  'Barcode product details are incomplete.': 'פרטי המוצר לא הושלמו. יש להזין שם וקלוריות.',
+  'Calories must not be negative.': 'הקלוריות אינן יכולות להיות שליליות.',
+  'Protein must not be negative.': 'החלבון אינו יכול להיות שלילי.',
   'Nutrition entry not found.': 'הרישום לא נמצא.',
 }
 
