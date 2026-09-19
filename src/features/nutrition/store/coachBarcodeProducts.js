@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
 import { supabase } from '../../../lib/supabaseClient'
-import { useAuthStore } from '../../../stores/auth'
 import { lookupCachedProduct, withCachedProduct } from '../lib/barcodeProductCache.js'
 import { normalizeBarcode } from '../lib/barcodeLookup.js'
+import { resolveCoachId } from '../lib/resolveCoachId.js'
 
 // Per-coach cache of barcode products the coach has manually approved
 // calories/protein for (see 046_coach_barcode_products.sql) -- checked
@@ -74,14 +74,24 @@ export const useCoachBarcodeProductsStore = defineStore('coachBarcodeProducts', 
     // unique index from the migration -- a re-scan-and-re-approve of
     // the same barcode updates the existing row in place rather than
     // erroring or creating a duplicate.
+    //
+    // coach_id is resolved from a FRESH supabase.auth.getUser() call,
+    // not from the auth Pinia store's cached user.id -- found via a real
+    // investigation: the save request was being rejected by RLS (42501,
+    // "new row violates row-level security policy") because the id it
+    // sent as coach_id did not match what auth.uid() resolves to
+    // server-side at the moment the write happens. getUser() re-verifies
+    // the session against Supabase Auth itself instead of trusting
+    // whatever is cached client-side, closing that gap at its source
+    // rather than papering over the resulting RLS error.
     async save({ barcode, productName, caloriesPer100g, proteinPer100g }) {
       const normalizedBarcode = normalizeBarcode(barcode)
-      const authStore = useAuthStore()
+      const coachId = resolveCoachId(await supabase.auth.getUser())
       const { data, error } = await supabase
         .from('coach_barcode_products')
         .upsert(
           {
-            coach_id: authStore.user.id,
+            coach_id: coachId,
             barcode: normalizedBarcode,
             product_name: productName,
             calories_per_100g: caloriesPer100g,
