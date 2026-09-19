@@ -45,6 +45,25 @@ function loadFinalCatalog() {
   return { corrected, inserted, all: [...corrected, ...inserted] }
 }
 
+// The set of names live in the catalog BEFORE 039/040's USDA
+// verification pass -- i.e. what 042/043 actually run against in
+// reality, as opposed to loadFinalCatalog()'s narrower "was this name
+// already part of the 490-row formally-verified set" question. Built
+// from 005 onward, NOT 004 -- 005 TRUNCATEs the table before its own
+// insert (see that migration's own header), so 004's original 137
+// rows are entirely superseded and are not part of the real catalog at
+// any point after 005 runs. 006/007(insert)/008 are purely additive on
+// top of 005's reseed (006/007 use ON CONFLICT DO NOTHING, 008 is
+// UPDATE-only), so unioning their inserted names in is correct and
+// does not double-count or lose anything.
+function preTruncateReseedCatalogNames() {
+  return [
+    ...parseCatalogValues(read('005_food_reference_protein_and_expansion.sql')),
+    ...parseCatalogValues(read('006_food_reference_catalog_expansion.sql')),
+    ...parseCatalogValues(read('007_food_reference_catalog_corrections.sql')),
+  ].map((r) => r.name.toLowerCase())
+}
+
 // 041 is a small, targeted post-deployment correction, drafted but NOT
 // yet applied to Supabase: 3 rows corrected to freshly live-verified
 // USDA values, 2 rows deleted (their only close USDA match named a
@@ -444,9 +463,38 @@ test('042 does not duplicate a name already present in the 039+040 catalog (no a
   assert.ok(!existingNames.has(row.name.toLowerCase()), `"${row.name}" must not already exist in the 039+040 catalog`)
 })
 
-test('042 uses the same ON CONFLICT ((lower(name))) DO NOTHING guard as 040 (idempotent, safe to re-run)', () => {
+// CORRECTED (2026-09-20): 042 originally used
+// ON CONFLICT ((lower(name))) DO NOTHING, matching 040's pattern for a
+// genuinely new row. That was wrong -- see the two tests below.
+test('REGRESSION: falafel already exists in the FULL live catalog (a real, pre-existing, hand-entered row from 006) -- this is exactly why DO NOTHING would have silently discarded 042\'s entire purpose', () => {
+  // Deliberately checked against the fuller 004-040 reconstruction, not
+  // loadFinalCatalog() (which only covers 039's 221 corrected + 040's
+  // 269 inserted rows) -- loadFinalCatalog() alone would have missed
+  // this collision entirely, since falafel was never part of that
+  // narrower, formally-USDA-verified set. This is the real blind spot
+  // that let the original DO NOTHING version through review. Built from
+  // 005 onward (NOT 004) -- 005 TRUNCATEs the table before its own
+  // insert, so 004's original rows are entirely superseded and are not
+  // part of the real pre-039 catalog at all.
+  const existingNames = new Set(preTruncateReseedCatalogNames())
+  assert.ok(existingNames.has('פלאפל'), 'falafel must already exist as a hand-entered row -- proving 042\'s insert is NOT a fresh row')
+})
+
+test('042 uses ON CONFLICT ((lower(name))) DO UPDATE, explicitly setting every column from the new verified values (converges the pre-existing falafel row to the USDA record instead of silently discarding it)', () => {
   const text = read('042_food_reference_catalog_falafel_addition.sql')
-  assert.match(text, /on conflict \(\(lower\(name\)\)\) do nothing;/)
+  assert.doesNotMatch(text, /on conflict \(\(lower\(name\)\)\) do nothing/, '042 must no longer use DO NOTHING -- it would silently no-op against the real pre-existing falafel row')
+  assert.match(text, /on conflict \(\(lower\(name\)\)\) do update set/)
+  for (const col of ['calories_per_100g', 'protein_per_100g', 'category', 'basis', 'source_name', 'source_id', 'source_url', 'source_checked_at']) {
+    assert.match(text, new RegExp(`${col} = excluded\\.${col}`), `042's DO UPDATE must set ${col} from excluded`)
+  }
+})
+
+test('042 is transaction-safe: wrapped in begin;/commit; with a guard verifying the falafel row actually carries the verified source_id afterward', () => {
+  const text = read('042_food_reference_catalog_falafel_addition.sql')
+  const withoutComments = text.replace(/--.*$/gm, '')
+  assert.match(withoutComments.trimStart(), /^\s*begin;/, '042 must open with begin;')
+  assert.match(withoutComments.trimEnd(), /commit;\s*$/, '042 must close with commit;')
+  assert.match(withoutComments, /raise exception/i, '042 must guard its own effect')
 })
 
 // ---------------------------------------------------------------------
@@ -556,9 +604,26 @@ test('043 is transaction-safe: wrapped in begin;/commit; with a guard verifying 
   assert.doesNotMatch(doBlock, /select count\(\*\) into \w+\s*\n\s*from public\.food_reference_catalog;/, 'the guard must not count the whole table')
 })
 
-test('043 uses ON CONFLICT ((lower(name))) DO NOTHING on its insert (idempotent, safe to re-run)', () => {
+// CORRECTED (2026-09-20): 043's Part 2 insert originally used
+// ON CONFLICT ((lower(name))) DO NOTHING, matching 040's pattern for
+// genuinely new rows. That was wrong for 4 of the 6 -- see the two
+// tests below.
+test('REGRESSION: 4 of 043\'s 6 recategorized names (בייגלה, קוקוס, חמאת שקדים, גרנולה) already exist in the FULL live catalog as pre-existing hand-entered rows -- this is exactly why DO NOTHING would have silently discarded most of 043\'s effect', () => {
+  const existingNames = new Set(preTruncateReseedCatalogNames())
+  const { inserted } = load043Fixes()
+  const colliding = inserted.filter((r) => existingNames.has(r.name.toLowerCase())).map((r) => r.name)
+  const notColliding = inserted.filter((r) => !existingNames.has(r.name.toLowerCase())).map((r) => r.name)
+  assert.deepEqual(colliding.sort(), ['בייגלה', 'גרנולה', 'חמאת שקדים', 'קוקוס'].sort())
+  assert.deepEqual(notColliding.sort(), ['ממרח חמאת בוטנים חלק', 'קמח שקדים'].sort())
+})
+
+test('043 uses ON CONFLICT ((lower(name))) DO UPDATE, explicitly setting every column from the new verified values (converges all 4 colliding rows to their corrected category/values instead of silently leaving them unfixed)', () => {
   const text = read('043_food_reference_catalog_category_fixes.sql')
-  assert.match(text, /on conflict \(\(lower\(name\)\)\) do nothing;/)
+  assert.doesNotMatch(text, /on conflict \(\(lower\(name\)\)\) do nothing/, '043 must no longer use DO NOTHING -- it would silently no-op against 4 of its 6 target rows')
+  assert.match(text, /on conflict \(\(lower\(name\)\)\) do update set/)
+  for (const col of ['calories_per_100g', 'protein_per_100g', 'category', 'basis', 'source_name', 'source_id', 'source_url', 'source_checked_at']) {
+    assert.match(text, new RegExp(`${col} = excluded\\.${col}`), `043's DO UPDATE must set ${col} from excluded`)
+  }
 })
 
 test('043 explicitly does NOT touch the 4 bound-tuning items (egg white, oysters, TVP, cornstarch) -- out of scope for this pass', () => {

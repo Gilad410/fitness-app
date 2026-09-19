@@ -35,6 +35,28 @@
 -- settled on after three earlier failures, also used by 041) -- if the
 -- guard at the end doesn't match what's expected, the whole
 -- transaction rolls back with nothing partially applied.
+--
+-- CORRECTED (2026-09-20): Part 2's insert originally used
+-- ON CONFLICT ((lower(name))) DO NOTHING, matching 040's pattern for
+-- genuinely new rows. That was wrong for 4 of these 6 names -- בייגלה,
+-- קוקוס, חמאת שקדים, and גרנולה are all real, pre-existing, hand-entered
+-- rows already live in the catalog (from 004/006, no source citation).
+-- DO NOTHING would have silently discarded the correction for those 4
+-- the moment this ran, while the other 2 (ממרח חמאת בוטנים חלק,
+-- קמח שקדים -- genuinely new names) inserted normally, giving no
+-- indication anything had gone wrong. Found via a live-status audit
+-- (supabase/audits/food_reference_catalog_041_042_043_044_live_status_check.sql)
+-- BEFORE this was ever run against Supabase. Changed to DO UPDATE,
+-- explicitly setting every column this migration cares about from the
+-- new, verified values -- the 2 genuinely-new names simply insert as
+-- before (DO UPDATE never triggers when there is no conflicting row),
+-- and the 4 pre-existing ones now actually get corrected instead of
+-- silently staying on their old, unsourced values. The guard below
+-- already checks source_checked_at = current_date for all 6 names --
+-- that check is unaffected by this fix and needs no change, since it
+-- is true regardless of whether a row arrived via INSERT or an
+-- ON-CONFLICT-triggered UPDATE. Still fully idempotent: a second run
+-- sets the same 6 rows to the same values again, a no-op change.
 
 begin;
 
@@ -88,7 +110,15 @@ values
   ('קמח שקדים', 622.042, 26.24375, 'nuts_seeds_fats', 'raw',
    'USDA FoodData Central (Foundation) -- Flour, almond',
    '2261420', 'https://fdc.nal.usda.gov/food-details/2261420/nutrients', CURRENT_DATE)
-on conflict ((lower(name))) do nothing;
+on conflict ((lower(name))) do update set
+  calories_per_100g = excluded.calories_per_100g,
+  protein_per_100g = excluded.protein_per_100g,
+  category = excluded.category,
+  basis = excluded.basis,
+  source_name = excluded.source_name,
+  source_id = excluded.source_id,
+  source_url = excluded.source_url,
+  source_checked_at = excluded.source_checked_at;
 
 -- Guard: confirms this migration's own intended effect -- narrowly
 -- scoped to the exact rows it touches, not a whole-table assumption
