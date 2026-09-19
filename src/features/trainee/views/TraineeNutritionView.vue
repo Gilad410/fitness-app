@@ -5,22 +5,45 @@ import ExternalChainLink from '../../nutrition/components/ExternalChainLink.vue'
 import { externalChainLinks } from '../../nutrition/config/externalChainLinks'
 import { useTraineeNutritionStore } from '../store/traineeNutrition'
 import TraineeNutritionPlanSection from '../components/TraineeNutritionPlanSection.vue'
+import BarcodeFoodEntry from '../../nutrition/components/BarcodeFoodEntry.vue'
 import { useFoodsStore } from '../../nutrition/store/foods'
 import { useFoodReferenceCatalogStore } from '../../nutrition/store/foodReferenceCatalog'
 import { useRestaurantFoodItemsStore } from '../../nutrition/store/restaurantFoodItems'
 import { formatNutritionAmount } from '../../../lib/formatNumber'
 import { startRetentionClock, stopRetentionClock } from '../../nutrition/lib/nutritionRetentionClock'
+import { israelCalendarDate } from '../../nutrition/lib/nutritionLogRetention.js'
+import { entryDisplayName, entryQuantityLabel } from '../../nutrition/lib/entryDisplay.js'
+import {
+  stateAfterStartBarcodeEntry,
+  stateAfterBarcodeLogSaved,
+  stateAfterScanAnother,
+  stateAfterFinishBarcodeEntry,
+  stateAfterBarcodeCancel,
+} from '../../nutrition/lib/barcodeLogPostSaveFlow.js'
 
 // Trainee-side nutrition: own history + logging a new entry. Reads/writes
 // go exclusively through useTraineeNutritionStore (RLS-scoped SELECT +
 // trainee_log_nutrition_entry()/trainee_delete_nutrition_entry(),
-// 022_trainee_nutrition_access.sql). foodsStore / foodReferenceCatalogStore /
+// 022_trainee_nutrition_access.sql, extended for barcode support by
+// 047_trainee_barcode_nutrition_logging.sql). foodsStore / foodReferenceCatalogStore /
 // restaurantFoodItemsStore are the EXACT SAME stores the coach's
 // NutritionSection.vue uses -- reused unchanged, read-only (fetchAll/
 // ensureLoaded/search/ensureItemsLoaded + the `active` getter), never
 // create/update/archive. RLS alone is what narrows what each of them
 // returns to the caller -- nothing coach-specific is duplicated here, and
 // nothing here can change coach behavior.
+//
+// Barcode entry reuses BarcodeFoodEntry.vue (the coach's own scan/Open
+// Food Facts/manual-entry component) UNCHANGED except for one prop:
+// :enable-coach-cache="false" -- coach_barcode_products' RLS is
+// coach_id = auth.uid() only (046_coach_barcode_products.sql), so a
+// trainee's own auth.uid() could never satisfy it; that prop makes the
+// component skip the whole "approve once, remember" cache path entirely
+// rather than let it fail against RLS (see BarcodeFoodEntry.vue's own
+// comment on the prop). The post-save "stay open, scan another" state
+// machine (barcodeLogPostSaveFlow.js) is reused verbatim from the
+// coach's NutritionSection.vue -- it is already fully generic, not
+// coach-specific in any way.
 const NAME_SEARCH_DEBOUNCE_MS = 300
 const NAME_SEARCH_MIN_LENGTH = 2
 
@@ -80,6 +103,56 @@ const entriesForDate = computed(() => nutritionStore.forDate(selectedDate.value)
 const dailyTotal = computed(() => nutritionStore.dailyTotalFor(selectedDate.value))
 const dailyProteinTotal = computed(() => nutritionStore.dailyProteinTotalFor(selectedDate.value))
 const dailyProteinUnknown = computed(() => nutritionStore.dailyProteinUnknownFor(selectedDate.value))
+
+// ---- Barcode entry -- mirrors NutritionSection.vue's (the coach's)
+// barcode wiring exactly, reusing the same BarcodeFoodEntry.vue
+// component and the same barcodeLogPostSaveFlow.js state machine, only
+// the persistence call differs (nutritionStore.addBarcodeEntry(), the
+// trainee's own RPC-backed write path, vs. the coach's direct insert).
+const showBarcodeEntry = ref(false)
+// True only right after a successful barcode log save -- swaps the
+// block, IN PLACE, to a small success panel with explicit "scan
+// another" / "done" actions instead of collapsing back to the header
+// buttons (see barcodeLogPostSaveFlow.js).
+const barcodeJustSaved = ref(false)
+const barcodeSaveError = ref('')
+
+function applyBarcodeFlowState(state) {
+  showBarcodeEntry.value = state.showBarcodeEntry
+  barcodeJustSaved.value = state.barcodeJustSaved
+}
+
+function startBarcodeEntry() {
+  barcodeSaveError.value = ''
+  applyBarcodeFlowState(stateAfterStartBarcodeEntry())
+}
+
+async function handleBarcodeResolved(resolved) {
+  barcodeSaveError.value = ''
+  try {
+    await nutritionStore.addBarcodeEntry(resolved, israelCalendarDate())
+    selectedDate.value = israelCalendarDate()
+    // Stays open, showing the success panel -- never collapses back to
+    // the header buttons on its own (the exact fix for "must press
+    // Back to scan another barcode" on the coach side, reused here
+    // verbatim).
+    applyBarcodeFlowState(stateAfterBarcodeLogSaved())
+  } catch (err) {
+    barcodeSaveError.value = nutritionStore.addError ?? err.message
+  }
+}
+
+function scanAnotherBarcode() {
+  applyBarcodeFlowState(stateAfterScanAnother())
+}
+
+function finishBarcodeEntry() {
+  applyBarcodeFlowState(stateAfterFinishBarcodeEntry())
+}
+
+function handleBarcodeCancel() {
+  applyBarcodeFlowState(stateAfterBarcodeCancel())
+}
 
 // ---- Add entry form ----
 const showAddEntry = ref(false)
@@ -296,23 +369,6 @@ async function confirmDelete(logId) {
 }
 
 const dateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
-
-function entryDisplayName(log) {
-  if (log.restaurant_food_item) {
-    return `${log.restaurant_food_item.item_name} (${log.restaurant_food_item.chain_name})`
-  }
-  return log.food?.name ?? ''
-}
-
-function entryQuantityLabel(log) {
-  if (log.restaurant_food_item) {
-    const servings = Number(log.servings)
-    const servingsText = Number.isInteger(servings) ? String(servings) : servings.toFixed(1)
-    const servingsWord = servings === 1 ? 'מנה' : 'מנות'
-    return `${servingsText} ${servingsWord} · ${log.restaurant_food_item.serving_description}`
-  }
-  return `${log.grams} גרם`
-}
 </script>
 
 <template>
@@ -349,14 +405,60 @@ function entryQuantityLabel(log) {
                 class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
               />
             </label>
-            <button
-              v-if="!showAddEntry"
-              type="button"
-              class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark"
-              @click="showAddEntry = true"
+            <div v-if="!showAddEntry && !showBarcodeEntry" class="flex flex-wrap gap-2">
+              <button
+                type="button"
+                class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark"
+                @click="showAddEntry = true"
+              >
+                הוסף מאכל
+              </button>
+              <button
+                type="button"
+                class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100"
+                @click="startBarcodeEntry"
+              >
+                סרוק ברקוד
+              </button>
+            </div>
+          </div>
+
+          <div v-if="showBarcodeEntry" class="flex flex-col gap-2">
+            <!-- Shown IN PLACE of the form right after a successful save
+            -- same DOM position, no scroll jump. Mirrors
+            NutritionSection.vue's (the coach's) identical success-panel
+            pattern. -->
+            <div
+              v-if="barcodeJustSaved"
+              class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-brand-green/40 bg-brand-green/5 p-4"
             >
-              הוסף מאכל
-            </button>
+              <p class="text-sm text-brand-black">✅ נשמר ביומן התזונה.</p>
+              <div class="flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark"
+                  @click="scanAnotherBarcode"
+                >
+                  סרוק ברקוד נוסף
+                </button>
+                <button
+                  type="button"
+                  class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100"
+                  @click="finishBarcodeEntry"
+                >
+                  סיום
+                </button>
+              </div>
+            </div>
+            <template v-else>
+              <BarcodeFoodEntry
+                :enable-coach-cache="false"
+                @resolved="handleBarcodeResolved"
+                @cancel="handleBarcodeCancel"
+              />
+              <p v-if="nutritionStore.adding" class="text-sm text-neutral-600">שומר ביומן התזונה...</p>
+              <p v-if="barcodeSaveError" class="text-sm text-status-red">{{ barcodeSaveError }}</p>
+            </template>
           </div>
 
           <!-- Two color-coded stat pairs instead of a middot-joined line --

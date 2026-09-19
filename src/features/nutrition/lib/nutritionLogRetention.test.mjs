@@ -104,3 +104,31 @@ test('the same cutoff/expiry functions apply uniformly regardless of caller -- n
   const traineeView = { loggedAt: '2026-01-10', expired: isExpired('2026-01-10', now) }
   assert.deepEqual(coachView, traineeView)
 })
+
+// ---------------------------------------------------------------------
+// israelCalendarDate() as the single canonical "what day is it" source
+// for a NEW log entry's date, not just for the retention cutoff above.
+// Found necessary during a real investigation: NutritionSection.vue
+// previously computed "today" for a barcode/manual log's logged_at via
+// its own separately-defined todayIsoDate() -- using the DEVICE'S local
+// timezone (new Date().getFullYear()/getMonth()/getDate()) rather than
+// the fixed Asia/Jerusalem zone this function uses. For a coach whose
+// phone is actually set to Israel time (the expected case for this
+// app), the two agree; if a device's clock/timezone were ever
+// misconfigured or a coach were travelling, they would NOT necessarily
+// agree. NutritionSection.vue now calls THIS function directly for
+// every "today" it needs (the barcode log's date, the manual-entry
+// form's default date, and the "today" totals), removing that
+// possible divergence entirely rather than trusting two independently
+// -written pieces of date logic to stay in sync.
+// ---------------------------------------------------------------------
+
+test('israelCalendarDate: a fixed instant well within a single Israel-Daylight-Time day resolves to that exact calendar date -- the same guarantee a new barcode/manual log entry\'s date now relies on', () => {
+  const noonIsrael = new Date('2026-09-19T09:00:00+03:00') // noon Israel Daylight Time (September = DST)
+  assert.equal(israelCalendarDate(noonIsrael), '2026-09-19')
+})
+
+test('israelCalendarDate: late evening Israel time still resolves to the SAME calendar day, not the next UTC day -- the exact class of off-by-one a naive UTC-based "today" would get wrong for an evening barcode scan', () => {
+  const lateEveningIsrael = new Date('2026-09-19T22:30:00+03:00') // 22:30 Israel Daylight Time = 19:30 UTC, still the 19th locally
+  assert.equal(israelCalendarDate(lateEveningIsrael), '2026-09-19')
+})

@@ -1,12 +1,24 @@
 <script setup>
 import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
+import { useRouter } from 'vue-router'
 import { useFoodsStore } from '../store/foods'
 import { useNutritionLogsStore } from '../store/nutritionLogs'
 import { useRestaurantFoodItemsStore } from '../store/restaurantFoodItems'
+import { useAuthStore } from '../../../stores/auth'
 import FoodQuantityPicker from './FoodQuantityPicker.vue'
+import BarcodeFoodEntry from './BarcodeFoodEntry.vue'
 import { formatNutritionAmount } from '../../../lib/formatNumber'
 import { entryDisplayName, entryQuantityLabel } from '../lib/entryDisplay'
 import { startRetentionClock, stopRetentionClock } from '../lib/nutritionRetentionClock'
+import { israelCalendarDate } from '../lib/nutritionLogRetention.js'
+import { SAVE_FAILURE_LABELS, SAVE_FAILURE_NOT_SIGNED_IN } from '../lib/categorizeSaveFailure.js'
+import {
+  stateAfterStartBarcodeEntry,
+  stateAfterBarcodeLogSaved,
+  stateAfterScanAnother,
+  stateAfterFinishBarcodeEntry,
+  stateAfterBarcodeCancel,
+} from '../lib/barcodeLogPostSaveFlow.js'
 
 const props = defineProps({
   traineeId: { type: String, required: true },
@@ -15,6 +27,8 @@ const props = defineProps({
 const foodsStore = useFoodsStore()
 const nutritionLogsStore = useNutritionLogsStore()
 const restaurantFoodItemsStore = useRestaurantFoodItemsStore()
+const authStore = useAuthStore()
+const router = useRouter()
 
 const checking = ref(true)
 const loadError = ref('')
@@ -22,7 +36,7 @@ const loadError = ref('')
 const showAddEntry = ref(false)
 const addingEntry = ref(false)
 const addEntryError = ref('')
-const entryDate = ref(todayIsoDate())
+const entryDate = ref(israelCalendarDate())
 
 // Food-source/quantity selection itself lives entirely in
 // FoodQuantityPicker.vue (shared with the coach's nutrition-PLAN
@@ -33,6 +47,102 @@ const pickerRef = useTemplateRef('picker')
 
 const deletingLogId = ref(null)
 const deleteError = ref('')
+
+// Barcode entry is a separate, self-contained flow (BarcodeFoodEntry.vue)
+// rather than a third tab on FoodQuantityPicker -- see that component's
+// own comment for why. It never touches the store itself; it only emits
+// a resolved payload, exactly like pickerRef.value.resolve() does, and
+// this handler adds the date and calls the exact same addLog() the
+// regular/restaurant flow above uses.
+const showBarcodeEntry = ref(false)
+// True only right after a successful barcode log save -- swaps the
+// block, IN PLACE, to a small success panel with explicit "scan
+// another" / "done" actions instead of silently collapsing back to the
+// header buttons (see barcodeLogPostSaveFlow.js for why this exists:
+// the coach's scroll position stays wherever the form was, usually well
+// below those header buttons, so nothing wrong was happening, but there
+// was no visible next action from where they were actually looking).
+const barcodeJustSaved = ref(false)
+const barcodeRef = useTemplateRef('barcodeEntry')
+const barcodeSaving = ref(false)
+const barcodeSaveError = ref('')
+
+function applyBarcodeFlowState(state) {
+  showBarcodeEntry.value = state.showBarcodeEntry
+  barcodeJustSaved.value = state.barcodeJustSaved
+}
+
+function startBarcodeEntry() {
+  applyBarcodeFlowState(stateAfterStartBarcodeEntry())
+}
+
+// Deliberately its own top-level notice, NOT rendered inside the
+// showBarcodeEntry block below -- BarcodeFoodEntry.vue resets/hides
+// itself right after a successful resolve, so a message shown only
+// inside its own subtree would disappear at the same moment, easy to
+// never actually see (the exact "silently discard an approved
+// product" gap found via barcode 7622202268298: today's log entry
+// saved fine, but the cache-write failure was invisible). Persists
+// until explicitly dismissed, survives the barcode form closing.
+const saveForFutureFailedNotice = ref('')
+// Set instead of (never alongside) saveForFutureFailedNotice specifically
+// for SAVE_FAILURE_NOT_SIGNED_IN -- a generic "saving failed" message with
+// no action isn't useful when the real, fixable cause is "you're signed
+// out"; this renders as its own distinct block with a real sign-in
+// button, not just different wording in the same yellow box.
+const sessionExpiredNotice = ref(false)
+
+function handleSaveForFutureFailed({ barcode, category, message }) {
+  if (category === SAVE_FAILURE_NOT_SIGNED_IN) {
+    sessionExpiredNotice.value = true
+    return
+  }
+  const categoryLabel = SAVE_FAILURE_LABELS[category] ?? SAVE_FAILURE_LABELS.other
+  saveForFutureFailedNotice.value = `שמירת המוצר לברקוד ${barcode} לסריקות הבאות נכשלה -- ${categoryLabel} (${message}). הרישום הנוכחי נשמר כרגיל, אך בסריקה הבאה של אותו ברקוד יהיה צורך להזין את הערכים שוב.`
+}
+
+async function signInAgainFromNotice() {
+  await authStore.signOut().catch(() => {})
+  router.push({ name: 'login' })
+}
+
+async function handleBarcodeResolved(resolved) {
+  barcodeSaveError.value = ''
+  barcodeSaving.value = true
+  try {
+    // Barcode entries are logged against today's date -- this flow is
+    // inherently "in the moment" (scanning a product as it's eaten), and
+    // keeping its own date field out of BarcodeFoodEntry.vue keeps that
+    // component fully decoupled from the regular-entry form's entryDate
+    // ref above. A past-dated barcode log isn't a use case this minimal
+    // version covers.
+    await nutritionLogsStore.addLog(props.traineeId, {
+      ...resolved,
+      logged_at: israelCalendarDate(),
+    })
+    barcodeRef.value?.reset()
+    // Stays open, showing the success panel -- NOT showBarcodeEntry =
+    // false. This is the actual fix for "must press Back to scan
+    // another barcode": the block never silently collapses on its own.
+    applyBarcodeFlowState(stateAfterBarcodeLogSaved())
+  } catch (err) {
+    barcodeSaveError.value = err.message
+  } finally {
+    barcodeSaving.value = false
+  }
+}
+
+function scanAnotherBarcode() {
+  applyBarcodeFlowState(stateAfterScanAnother())
+}
+
+function finishBarcodeEntry() {
+  applyBarcodeFlowState(stateAfterFinishBarcodeEntry())
+}
+
+function handleBarcodeCancel() {
+  applyBarcodeFlowState(stateAfterBarcodeCancel())
+}
 
 // Keeps the shared retentionCutoff (nutritionRetentionClock.js) current
 // for as long as this section is mounted -- a periodic re-check plus an
@@ -66,12 +176,12 @@ onMounted(async () => {
 
 const logs = computed(() => nutritionLogsStore.logsFor(props.traineeId))
 
-const todayTotal = computed(() => nutritionLogsStore.dailyTotalFor(props.traineeId, todayIsoDate()))
+const todayTotal = computed(() => nutritionLogsStore.dailyTotalFor(props.traineeId, israelCalendarDate()))
 const todayProteinTotal = computed(() =>
-  nutritionLogsStore.dailyProteinTotalFor(props.traineeId, todayIsoDate()),
+  nutritionLogsStore.dailyProteinTotalFor(props.traineeId, israelCalendarDate()),
 )
 const todayProteinUnknown = computed(() =>
-  nutritionLogsStore.dailyHasUnknownProteinFor(props.traineeId, todayIsoDate()),
+  nutritionLogsStore.dailyHasUnknownProteinFor(props.traineeId, israelCalendarDate()),
 )
 
 const groupedLogs = computed(() => {
@@ -97,20 +207,8 @@ const groupedLogs = computed(() => {
 
 const dateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
 
-// Local calendar date (not UTC -- toISOString().slice(0, 10) reads the
-// UTC date, which is a day behind local time for part of the evening in
-// timezones ahead of UTC). Same approach as
-// TraineeMeasurementsView.vue / TraineeProgressView.vue.
-function todayIsoDate() {
-  const now = new Date()
-  const year = now.getFullYear()
-  const month = String(now.getMonth() + 1).padStart(2, '0')
-  const day = String(now.getDate()).padStart(2, '0')
-  return `${year}-${month}-${day}`
-}
-
 function resetForm() {
-  entryDate.value = todayIsoDate()
+  entryDate.value = israelCalendarDate()
   pickerRef.value?.reset()
 }
 
@@ -162,14 +260,89 @@ async function handleDelete(logId) {
           <span v-if="todayProteinUnknown" class="text-xs text-neutral-500">(לא כולל פריט/ים עם חלבון לא ידוע)</span>
         </div>
       </div>
+      <div v-if="!showAddEntry && !showBarcodeEntry" class="flex flex-wrap gap-2">
+        <button
+          type="button"
+          class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white"
+          @click="showAddEntry = true"
+        >
+          הוסף מאכל
+        </button>
+        <button
+          type="button"
+          class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100"
+          @click="startBarcodeEntry"
+        >
+          סרוק ברקוד
+        </button>
+      </div>
+    </div>
+
+    <div
+      v-if="sessionExpiredNotice"
+      class="flex items-center justify-between gap-3 rounded-lg border border-status-red/40 bg-status-red/5 p-3 text-sm text-brand-black"
+    >
+      <p>ההתחברות שלך פגה, ולכן השמירה לא הושלמה. יש להתחבר מחדש ולנסות שוב.</p>
       <button
-        v-if="!showAddEntry"
         type="button"
-        class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white"
-        @click="showAddEntry = true"
+        class="shrink-0 rounded-lg bg-status-red px-3 py-1.5 text-xs font-medium text-brand-white"
+        @click="signInAgainFromNotice"
       >
-        הוסף מאכל
+        התחבר/י מחדש
       </button>
+    </div>
+
+    <div
+      v-else-if="saveForFutureFailedNotice"
+      class="flex items-start justify-between gap-3 rounded-lg border border-status-yellow/40 bg-status-yellow/5 p-3 text-sm text-brand-black"
+    >
+      <p>{{ saveForFutureFailedNotice }}</p>
+      <button
+        type="button"
+        class="shrink-0 text-xs text-neutral-600 underline"
+        @click="saveForFutureFailedNotice = ''"
+      >
+        הבנתי
+      </button>
+    </div>
+
+    <div v-if="showBarcodeEntry" class="flex flex-col gap-2">
+      <!-- Shown IN PLACE of the form right after a successful save --
+      same DOM position, so there is no scroll jump: whatever the coach
+      was already looking at (mid-form, on a phone) is exactly where
+      this panel's two explicit actions now appear. -->
+      <div
+        v-if="barcodeJustSaved"
+        class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-brand-green/40 bg-brand-green/5 p-4"
+      >
+        <p class="text-sm text-brand-black">✅ נשמר ביומן התזונה.</p>
+        <div class="flex flex-wrap gap-3">
+          <button
+            type="button"
+            class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white"
+            @click="scanAnotherBarcode"
+          >
+            סרוק ברקוד נוסף
+          </button>
+          <button
+            type="button"
+            class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100"
+            @click="finishBarcodeEntry"
+          >
+            סיום
+          </button>
+        </div>
+      </div>
+      <template v-else>
+        <BarcodeFoodEntry
+          ref="barcodeEntry"
+          @resolved="handleBarcodeResolved"
+          @cancel="handleBarcodeCancel"
+          @save-for-future-failed="handleSaveForFutureFailed"
+        />
+        <p v-if="barcodeSaving" class="text-sm text-neutral-600">שומר ביומן התזונה...</p>
+        <p v-if="barcodeSaveError" class="text-sm text-status-red">{{ barcodeSaveError }}</p>
+      </template>
     </div>
 
     <form
