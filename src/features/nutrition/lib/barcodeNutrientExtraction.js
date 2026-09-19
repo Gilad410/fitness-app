@@ -49,6 +49,53 @@ export function extractProteinPer100g(nutriments = {}, servingQuantity = null) {
   return null
 }
 
+// "Prepared" (as-eaten, after cooking/rehydration/brewing) basis --
+// Open Food Facts' own `_prepared` field suffix, distinct from the
+// as-sold basis extractCaloriesPer100g/extractProteinPer100g above.
+// Verified against real, live OFF data before writing this (barcode
+// 8852018101024, "Yum Yum Chicken Flavour" instant noodles: real
+// nutriments object carries energy-kcal_prepared_100g = 76 and
+// proteins_prepared_100g = 1.3, with NO energy-kcal_100g/proteins_100g
+// at all for that product -- i.e. this is a genuine, populated OFF
+// convention, not a guessed field name). Dry pasta products checked the
+// same way (several real barcodes) came back with as-sold data only and
+// no `_prepared` fields whatsoever -- consistent with plain dry pasta
+// not having an OFF-tracked "add water" recipe the way instant
+// noodles/soups do. This function returns null in exactly that
+// (expected, common) case -- callers must never invent a dry-to-cooked
+// conversion factor when it does.
+export function extractPreparedCaloriesPer100g(nutriments = {}, servingQuantity = null) {
+  const direct = toFiniteOrNull(nutriments['energy-kcal_prepared_100g'])
+  if (direct !== null) return direct
+
+  const kjPer100g = toFiniteOrNull(nutriments['energy_prepared_100g'])
+  if (kjPer100g !== null) return round2(kjPer100g * KCAL_PER_KJ)
+
+  const servingQty = toFiniteOrNull(servingQuantity)
+  if (servingQty !== null && servingQty > 0) {
+    const kcalPerServing = toFiniteOrNull(nutriments['energy-kcal_prepared_serving'])
+    if (kcalPerServing !== null) return round2((kcalPerServing / servingQty) * 100)
+
+    const kjPerServing = toFiniteOrNull(nutriments['energy_prepared_serving'])
+    if (kjPerServing !== null) return round2(((kjPerServing * KCAL_PER_KJ) / servingQty) * 100)
+  }
+
+  return null
+}
+
+export function extractPreparedProteinPer100g(nutriments = {}, servingQuantity = null) {
+  const direct = toFiniteOrNull(nutriments['proteins_prepared_100g'])
+  if (direct !== null) return direct
+
+  const servingQty = toFiniteOrNull(servingQuantity)
+  if (servingQty !== null && servingQty > 0) {
+    const perServing = toFiniteOrNull(nutriments['proteins_prepared_serving'])
+    if (perServing !== null) return round2((perServing / servingQty) * 100)
+  }
+
+  return null
+}
+
 // Priority order: the product's own primary name field first, then the
 // English variant (most consistently populated second language on
 // OFF), then the generic-name equivalents of both. Not exhaustive of

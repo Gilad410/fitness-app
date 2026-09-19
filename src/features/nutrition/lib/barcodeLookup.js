@@ -20,7 +20,13 @@
 // can switch on `.status` with no try/catch of its own. This also keeps
 // every branch trivially testable with a fake fetchImpl.
 
-import { extractCaloriesPer100g, extractProteinPer100g, extractProductName } from './barcodeNutrientExtraction.js'
+import {
+  extractCaloriesPer100g,
+  extractProteinPer100g,
+  extractProductName,
+  extractPreparedCaloriesPer100g,
+  extractPreparedProteinPer100g,
+} from './barcodeNutrientExtraction.js'
 
 const OFF_BASE_URL = 'https://world.openfoodfacts.org/api/v2/product'
 const USER_AGENT = 'FitnessApp-BarcodeLogging/1.0 (nutrition log feature)'
@@ -113,16 +119,24 @@ export async function lookupBarcode(barcode, { fetchImpl = fetch } = {}) {
   const servingQuantity = data.product.serving_quantity
   const caloriesPer100g = extractCaloriesPer100g(nutriments, servingQuantity)
   const proteinPer100g = extractProteinPer100g(nutriments, servingQuantity)
+  // "Prepared" (as-eaten, after cooking/rehydration/brewing) basis --
+  // see barcodeNutrientExtraction.js and barcodeNutritionBasis.js for
+  // the full pasta-nutrition-basis investigation this closes. Extracted
+  // unconditionally (cheap, and needed regardless of whether an
+  // as-sold figure exists -- some real OFF products carry ONLY prepared
+  // data, see extractPreparedCaloriesPer100g's own comment).
+  const preparedCaloriesPer100g = extractPreparedCaloriesPer100g(nutriments, servingQuantity)
+  const preparedProteinPer100g = extractPreparedProteinPer100g(nutriments, servingQuantity)
 
-  if (caloriesPer100g === null) {
+  if (caloriesPer100g === null && preparedCaloriesPer100g === null) {
     // A real product was found (its name is reported here whenever one
     // was extractable, even though calories were not), but no usable
-    // calories figure exists under any of the fields/units
-    // extractCaloriesPer100g tries -- surfaced distinctly from
-    // `not_found` so the UI can say "found the product, but it's
-    // missing nutrition data" rather than "couldn't find it at all",
-    // and can show the product's own name in that message rather than
-    // just its barcode.
+    // calories figure exists under any of the fields/units either
+    // extraction function tries (as-sold OR prepared) -- surfaced
+    // distinctly from `not_found` so the UI can say "found the
+    // product, but it's missing nutrition data" rather than "couldn't
+    // find it at all", and can show the product's own name in that
+    // message rather than just its barcode.
     return { status: 'no_nutrition_data', barcode: trimmed, productName }
   }
 
@@ -135,8 +149,10 @@ export async function lookupBarcode(barcode, { fetchImpl = fetch } = {}) {
       // nutrition" -- it gets the same neutral placeholder the manual-
       // entry flow already uses for an unnamed product, not a lost log.
       name: productName ?? 'מוצר ללא שם',
-      caloriesPer100g,
+      caloriesPer100g, // may be null -- see preparedCaloriesPer100g below; barcodeNutritionBasis.js decides what this means for the UI
       proteinPer100g, // may be null -- an unknown-protein product, handled the same as everywhere else in this feature
+      preparedCaloriesPer100g, // null when Open Food Facts has no prepared-basis data for this product (the common case for plain dry pasta)
+      preparedProteinPer100g,
       source: SOURCE_OPEN_FOOD_FACTS,
       sourceUrl: `https://world.openfoodfacts.org/product/${encodeURIComponent(trimmed)}`,
     },

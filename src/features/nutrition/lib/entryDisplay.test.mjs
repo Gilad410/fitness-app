@@ -114,3 +114,47 @@ test('a log-shaped entry and a plan-item-shaped entry with the same data produce
   assert.equal(entryDisplayName(logEntry), entryDisplayName(planItemEntry))
   assert.equal(entryQuantityLabel(logEntry), entryQuantityLabel(planItemEntry))
 })
+
+// ---------------------------------------------------------------------
+// REGRESSION -- real trainee-side bug: a trainee's barcode-sourced log
+// row showed grams/calories/protein correctly but the product name was
+// blank. Root cause: the name WAS written (trainee_log_nutrition_entry's
+// barcode branch inserts barcode_product_name), WAS returned (RPC's
+// `returning *`), and WAS present in the read query
+// (traineeNutrition.js's fetchAll() selects '*') -- but
+// TraineeNutritionView.vue had its OWN local entryDisplayName()/
+// entryQuantityLabel(), a stale pre-barcode duplicate of THIS shared
+// module that never gained a barcode branch, so it always fell through
+// to `log.food?.name ?? ''` (null for a barcode row, which has no
+// food_id) -- a rendering bug, not a write/read bug. Fixed by having
+// TraineeNutritionView.vue import and use this shared module directly
+// instead of its own copy. This test exercises the EXACT row shape
+// traineeNutrition.js's fetchAll() actually returns for a trainee's
+// barcode entry (the `food`/`restaurant_food_item` embed keys PostgREST
+// includes as null when neither food_id nor restaurant_food_item_id is
+// set), proving the shared function -- now the only implementation --
+// handles it correctly.
+// ---------------------------------------------------------------------
+test('REGRESSION: a trainee-shaped barcode log row (as actually returned by traineeNutrition.js fetchAll(), including the null food/restaurant_food_item embeds) shows the real product name, not a blank', () => {
+  const traineeBarcodeLogRow = {
+    id: 'log-9',
+    trainee_id: 't1',
+    coach_id: 'c1',
+    food_id: null,
+    restaurant_food_item_id: null,
+    barcode: '7622202268298',
+    barcode_source: 'open_food_facts',
+    barcode_product_name: 'Milka Alpenmilch',
+    barcode_calories_per_100g: 534,
+    barcode_protein_per_100g: 6.3,
+    grams: 40,
+    servings: null,
+    calories: 213.6,
+    protein: 2.5,
+    logged_at: '2026-09-19',
+    food: null,
+    restaurant_food_item: null,
+  }
+  assert.equal(entryDisplayName(traineeBarcodeLogRow), 'Milka Alpenmilch (ברקוד)')
+  assert.equal(entryQuantityLabel(traineeBarcodeLogRow), '40 גרם')
+})

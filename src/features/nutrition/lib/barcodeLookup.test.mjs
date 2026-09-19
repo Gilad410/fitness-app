@@ -82,6 +82,8 @@ test('lookupBarcode: a found product with full nutrition data resolves to status
     name: 'Test Cereal',
     caloriesPer100g: 375,
     proteinPer100g: 8.2,
+    preparedCaloriesPer100g: null,
+    preparedProteinPer100g: null,
     source: SOURCE_OPEN_FOOD_FACTS,
     sourceUrl: 'https://world.openfoodfacts.org/product/4006381333931',
   })
@@ -208,4 +210,61 @@ test('lookupBarcode: trims whitespace from manually-typed input before validatin
   const result = await lookupBarcode('  4006381333931  ', { fetchImpl })
   assert.equal(result.status, 'found')
   assert.equal(result.barcode, '4006381333931')
+})
+
+// ---------------------------------------------------------------------
+// Prepared (as-eaten/cooked) basis -- the pasta-nutrition-basis
+// investigation. product.preparedCaloriesPer100g/preparedProteinPer100g
+// are extracted alongside the as-sold figures on every 'found' result;
+// barcodeNutritionBasis.js decides what to do with them. Real field
+// shapes verified against live Open Food Facts data before writing
+// these (see barcodeNutrientExtraction.js's own comment).
+// ---------------------------------------------------------------------
+
+test('lookupBarcode: dry pasta (as-sold data only, no `_prepared` fields) -- the real, common shape for plain dry pasta -- resolves preparedCaloriesPer100g/preparedProteinPer100g to null, never inventing them', async () => {
+  const fetchImpl = fakeFetch({
+    status: 1,
+    product: { product_name: 'Penne Rigate', nutriments: { 'energy-kcal_100g': 360, proteins_100g: 12 } },
+  })
+  const result = await lookupBarcode('8076800195057', { fetchImpl })
+  assert.equal(result.status, 'found')
+  assert.equal(result.product.caloriesPer100g, 360)
+  assert.equal(result.product.preparedCaloriesPer100g, null)
+  assert.equal(result.product.preparedProteinPer100g, null)
+})
+
+test('lookupBarcode: a product with ONLY prepared-basis data (the real barcode 8852018101024 shape, "Yum Yum Chicken Flavour" instant noodles -- no as-sold energy-kcal_100g/proteins_100g at all) resolves to "found", not "no_nutrition_data"', async () => {
+  const fetchImpl = fakeFetch({
+    status: 1,
+    product: {
+      product_name: 'Yum Yum Chicken Flavour',
+      nutriments: { 'energy-kcal_prepared_100g': 76, proteins_prepared_100g: 1.3 },
+    },
+  })
+  const result = await lookupBarcode('8852018101024', { fetchImpl })
+  assert.equal(result.status, 'found', 'real prepared-basis data exists -- must not be reported as missing nutrition data')
+  assert.equal(result.product.caloriesPer100g, null)
+  assert.equal(result.product.preparedCaloriesPer100g, 76)
+  assert.equal(result.product.preparedProteinPer100g, 1.3)
+})
+
+test('lookupBarcode: a product with BOTH as-sold and prepared-basis data resolves "found" with both sets of real figures populated', async () => {
+  const fetchImpl = fakeFetch({
+    status: 1,
+    product: {
+      product_name: 'Instant Rice',
+      nutriments: {
+        'energy-kcal_100g': 360,
+        proteins_100g: 7,
+        'energy-kcal_prepared_100g': 130,
+        proteins_prepared_100g: 2.5,
+      },
+    },
+  })
+  const result = await lookupBarcode('4006381333931', { fetchImpl })
+  assert.equal(result.status, 'found')
+  assert.equal(result.product.caloriesPer100g, 360)
+  assert.equal(result.product.preparedCaloriesPer100g, 130)
+  assert.equal(result.product.proteinPer100g, 7)
+  assert.equal(result.product.preparedProteinPer100g, 2.5)
 })

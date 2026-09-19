@@ -12,6 +12,7 @@ import { useRestaurantFoodItemsStore } from '../../nutrition/store/restaurantFoo
 import { formatNutritionAmount } from '../../../lib/formatNumber'
 import { startRetentionClock, stopRetentionClock } from '../../nutrition/lib/nutritionRetentionClock'
 import { israelCalendarDate } from '../../nutrition/lib/nutritionLogRetention.js'
+import { entryDisplayName, entryQuantityLabel } from '../../nutrition/lib/entryDisplay.js'
 import {
   stateAfterStartBarcodeEntry,
   stateAfterBarcodeLogSaved,
@@ -368,23 +369,6 @@ async function confirmDelete(logId) {
 }
 
 const dateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
-
-function entryDisplayName(log) {
-  if (log.restaurant_food_item) {
-    return `${log.restaurant_food_item.item_name} (${log.restaurant_food_item.chain_name})`
-  }
-  return log.food?.name ?? ''
-}
-
-function entryQuantityLabel(log) {
-  if (log.restaurant_food_item) {
-    const servings = Number(log.servings)
-    const servingsText = Number.isInteger(servings) ? String(servings) : servings.toFixed(1)
-    const servingsWord = servings === 1 ? 'מנה' : 'מנות'
-    return `${servingsText} ${servingsWord} · ${log.restaurant_food_item.serving_description}`
-  }
-  return `${log.grams} גרם`
-}
 </script>
 
 <template>

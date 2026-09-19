@@ -1,6 +1,12 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { extractCaloriesPer100g, extractProteinPer100g, extractProductName } from './barcodeNutrientExtraction.js'
+import {
+  extractCaloriesPer100g,
+  extractProteinPer100g,
+  extractProductName,
+  extractPreparedCaloriesPer100g,
+  extractPreparedProteinPer100g,
+} from './barcodeNutrientExtraction.js'
 
 // ---------------------------------------------------------------------
 // Calories
@@ -66,6 +72,47 @@ test('extractProteinPer100g: ignores proteins_serving when serving_quantity is m
 
 test('extractProteinPer100g: returns null when genuinely nothing is available -- never invents a value', () => {
   assert.equal(extractProteinPer100g({}, 25), null)
+})
+
+// ---------------------------------------------------------------------
+// Prepared (as-eaten/cooked) basis -- the pasta-nutrition-basis
+// investigation. Real data verified live against Open Food Facts before
+// writing this module: barcode 8852018101024 ("Yum Yum Chicken
+// Flavour" instant noodles) genuinely carries
+// energy-kcal_prepared_100g: 76 and proteins_prepared_100g: 1.3, with
+// NO as-sold energy-kcal_100g/proteins_100g at all for that product --
+// proving Open Food Facts' `_prepared` field convention is real and
+// populated on real products, not a guessed field name. Several real
+// dry-pasta barcodes checked the same way carried only as-sold data
+// with no `_prepared` fields whatsoever -- extractPreparedCaloriesPer100g
+// correctly returns null in that case rather than fabricating a
+// dry-to-cooked conversion.
+// ---------------------------------------------------------------------
+
+test('extractPreparedCaloriesPer100g: reads energy-kcal_prepared_100g directly -- the real field/value from barcode 8852018101024', () => {
+  assert.equal(extractPreparedCaloriesPer100g({ 'energy-kcal_prepared_100g': 76 }), 76)
+})
+
+test('extractPreparedCaloriesPer100g: converts energy_prepared_100g (kJ) to kcal when the kcal field is absent', () => {
+  // 332 kJ, the real energy_prepared_100g value for barcode 8852018101024 -- 332 / 4.184 = 79.35..., matching (within rounding) the product's own directly-reported 76 kcal figure
+  assert.equal(extractPreparedCaloriesPer100g({ energy_prepared_100g: 332 }), 79.35)
+})
+
+test('extractPreparedCaloriesPer100g: scales energy-kcal_prepared_serving to per-100g using a real serving_quantity', () => {
+  // 45.6 kcal per 60g prepared serving -> 76 kcal/100g (the real barcode 8852018101024 figures)
+  assert.equal(extractPreparedCaloriesPer100g({ 'energy-kcal_prepared_serving': 45.6 }, 60), 76)
+})
+
+test('extractPreparedCaloriesPer100g: returns null when Open Food Facts has no prepared-basis data at all -- the common, expected case for plain dry pasta; never invents a dry-to-cooked conversion factor', () => {
+  assert.equal(extractPreparedCaloriesPer100g({ 'energy-kcal_100g': 360 }), null)
+})
+
+test('extractPreparedProteinPer100g: reads proteins_prepared_100g directly -- the real field/value from barcode 8852018101024', () => {
+  assert.equal(extractPreparedProteinPer100g({ proteins_prepared_100g: 1.3 }), 1.3)
+})
+
+test('extractPreparedProteinPer100g: returns null when no prepared-basis protein data exists', () => {
+  assert.equal(extractPreparedProteinPer100g({ proteins_100g: 12 }), null)
 })
 
 // ---------------------------------------------------------------------

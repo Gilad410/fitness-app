@@ -27,6 +27,15 @@ import {
   isEligibleForCoachCache,
 } from '../lib/barcodeManualApprovalFlow.js'
 import { isManualNutritionValid, parseManualNutrition } from '../lib/manualNutritionEntry.js'
+import {
+  BASIS_AS_SOLD,
+  BASIS_PREPARED,
+  BASIS_LABELS,
+  hasDistinctPreparedBasis,
+  nutritionForBasis,
+  initialBasisFor,
+  productNameWithBasis,
+} from '../lib/barcodeNutritionBasis.js'
 
 // Self-contained barcode food-entry flow: scan (or type) a barcode ->
 // look it up against Open Food Facts -> show the matched product ->
@@ -117,8 +126,22 @@ const scanError = ref('')
 const lookupMessage = ref('')
 const lastBarcode = ref('')
 
-const product = ref(null) // { name, caloriesPer100g, proteinPer100g, source, sourceUrl }
+const product = ref(null) // { name, caloriesPer100g, proteinPer100g, preparedCaloriesPer100g, preparedProteinPer100g, source, sourceUrl }
 const grams = ref('')
+// One of BASIS_AS_SOLD/BASIS_PREPARED, or null -- the pasta-nutrition-
+// basis investigation (see barcodeNutritionBasis.js). null means either
+// "not applicable" (a manual entry / coach-saved reuse -- no OFF as-sold
+// vs. prepared distinction exists there) or "a real choice exists and
+// hasn't been made yet," which is exactly what keeps confirmFound()'s
+// button disabled below (nutritionForBasis(product, null) resolves to
+// null calories) until the coach/trainee explicitly picks one.
+const nutritionBasis = ref(null)
+// True only when product.value genuinely has two different real numbers
+// to choose between (see hasDistinctPreparedBasis's own comment) --
+// gates whether the basis-choice UI renders at all.
+const productHasDistinctPreparedBasis = computed(
+  () => product.value?.source === SOURCE_OPEN_FOOD_FACTS && hasDistinctPreparedBasis(product.value),
+)
 
 // Manual-nutrition fallback fields (requirement 8: a clear message plus
 // manual entry when nothing usable was found).
@@ -182,12 +205,30 @@ const gramsNumber = computed(() => {
   return Number.isFinite(n) && n > 0 ? n : null
 })
 
+// The actual per-100g figures the preview/save use -- for a manual
+// entry or a coach-saved reuse (no as-sold-vs-prepared distinction),
+// simply the product's own values. For an Open Food Facts match,
+// resolved through nutritionBasis: a required-but-unmade choice
+// (productHasDistinctPreparedBasis true, nutritionBasis still null)
+// correctly resolves to null calories, keeping the button disabled --
+// this is the pasta-nutrition-basis fix (see barcodeNutritionBasis.js):
+// never falls back to either basis silently.
+const resolvedNutrition = computed(() => {
+  if (!product.value) return null
+  if (product.value.source !== SOURCE_OPEN_FOOD_FACTS) {
+    return { caloriesPer100g: product.value.caloriesPer100g, proteinPer100g: product.value.proteinPer100g }
+  }
+  return nutritionForBasis(product.value, nutritionBasis.value)
+})
+
 const preview = computed(() => {
-  if (!product.value || gramsNumber.value === null) return null
+  if (!resolvedNutrition.value || resolvedNutrition.value.caloriesPer100g === null || gramsNumber.value === null) {
+    return null
+  }
   try {
     return calculateBarcodeNutrition({
-      caloriesPer100g: product.value.caloriesPer100g,
-      proteinPer100g: product.value.proteinPer100g,
+      caloriesPer100g: resolvedNutrition.value.caloriesPer100g,
+      proteinPer100g: resolvedNutrition.value.proteinPer100g,
       grams: gramsNumber.value,
     })
   } catch {
@@ -388,6 +429,7 @@ async function runLookup(rawBarcode) {
   step.value = 'looking_up'
   canSaveForFuture.value = false
   foundButNoNutrition.value = false
+  nutritionBasis.value = null
   manualApprovalOutcome.value = 'not_applicable'
   saveForFutureError.value = ''
   saveForFutureErrorCategory.value = ''
@@ -434,6 +476,10 @@ async function runLookup(rawBarcode) {
         source: SOURCE_COACH_SAVED,
         sourceUrl: null,
       }
+      // A coach-cache reuse is a single, already-resolved manual value
+      // -- no as-sold-vs-prepared distinction ever applies to it (that
+      // distinction only exists for a fresh Open Food Facts match).
+      nutritionBasis.value = BASIS_AS_SOLD
       grams.value = ''
       step.value = 'found'
       return
@@ -444,6 +490,11 @@ async function runLookup(rawBarcode) {
 
   if (result.status === 'found') {
     product.value = result.product
+    // Pasta-nutrition-basis fix: auto-resolves when there's only one
+    // real number (as-sold only, or prepared only), or null (forcing an
+    // explicit choice in the template below) when Open Food Facts
+    // genuinely provides both -- see barcodeNutritionBasis.js.
+    nutritionBasis.value = initialBasisFor(result.product)
     grams.value = ''
     step.value = 'found'
     return
@@ -494,13 +545,22 @@ async function signInAgain() {
 }
 
 function confirmFound() {
-  if (!product.value || preview.value === null) return
+  if (!product.value || preview.value === null || !resolvedNutrition.value) return
+  // "The saved item must show the chosen basis" -- appended directly to
+  // barcode_product_name (a free-text snapshot column, 045) rather than
+  // a new column, so this needs no schema change at all. Only applies
+  // to a genuine Open Food Facts match (SOURCE_OPEN_FOOD_FACTS) -- a
+  // manual entry or coach-cache reuse has no as-sold-vs-prepared
+  // concept to label.
+  const savedName = product.value.source === SOURCE_OPEN_FOOD_FACTS
+    ? productNameWithBasis(product.value.name, nutritionBasis.value)
+    : product.value.name
   emit('resolved', {
     barcode: lastBarcode.value,
     barcode_source: product.value.source,
-    barcode_product_name: product.value.name,
-    barcode_calories_per_100g: product.value.caloriesPer100g,
-    barcode_protein_per_100g: product.value.proteinPer100g,
+    barcode_product_name: savedName,
+    barcode_calories_per_100g: resolvedNutrition.value.caloriesPer100g,
+    barcode_protein_per_100g: resolvedNutrition.value.proteinPer100g,
     grams: gramsNumber.value,
   })
 }
@@ -556,6 +616,11 @@ async function approveManual() {
   // ability to log today's consumption must never depend on whether
   // today's cache-save convenience happened to work.
   product.value = productFromManualApproval({ productName, caloriesPer100g, proteinPer100g })
+  // A manual entry has one resolved value, not an as-sold-vs-prepared
+  // choice -- resolvedNutrition already bypasses nutritionBasis for any
+  // non-SOURCE_OPEN_FOOD_FACTS product, so this is set only so no stale
+  // value from an earlier OFF lookup lingers in state.
+  nutritionBasis.value = BASIS_AS_SOLD
   grams.value = ''
   step.value = nextStepAfterManualApproval()
 }
@@ -568,6 +633,7 @@ function reset() {
   lookupMessage.value = ''
   lastBarcode.value = ''
   product.value = null
+  nutritionBasis.value = null
   grams.value = ''
   manualName.value = ''
   manualCalories.value = ''
@@ -705,11 +771,54 @@ defineExpose({ reset })
       <div class="rounded-lg bg-neutral-100 p-3">
         <p class="font-medium text-brand-black">{{ product.name }}</p>
         <p class="text-xs text-neutral-500">מקור: {{ sourceLabel(product.source) }}</p>
-        <p class="mt-1 text-sm text-neutral-600">
-          {{ formatNutritionAmount(product.caloriesPer100g) }} קק"ל,
-          {{ product.proteinPer100g === null ? 'חלבון לא ידוע' : `${formatNutritionAmount(product.proteinPer100g)} ג' חלבון` }}
-          ל-100 גרם
-        </p>
+
+        <!-- Pasta-nutrition-basis fix: a genuine Open Food Facts match
+        with only ONE real number (as-sold or prepared) shows it plainly,
+        labeled; a match with a required-but-unmade choice
+        (productHasDistinctPreparedBasis, nutritionBasis still null)
+        shows BOTH real options as an explicit pick -- never a single
+        number the reader might assume is correct for whatever they
+        actually weighed. -->
+        <template v-if="product.source === SOURCE_OPEN_FOOD_FACTS && productHasDistinctPreparedBasis">
+          <p class="mt-1 text-sm font-medium text-brand-black">מה שקלת?</p>
+          <div class="mt-1 flex flex-wrap gap-2">
+            <button
+              type="button"
+              :class="[
+                'rounded-lg border px-3 py-2 text-start text-sm',
+                nutritionBasis === BASIS_AS_SOLD ? 'border-brand-green bg-brand-green/10 font-medium text-brand-black' : 'border-neutral-300 text-brand-black hover:bg-neutral-100',
+              ]"
+              @click="nutritionBasis = BASIS_AS_SOLD"
+            >
+              {{ BASIS_LABELS[BASIS_AS_SOLD] }}
+              <span class="block text-xs text-neutral-500">{{ formatNutritionAmount(product.caloriesPer100g) }} קק"ל ל-100 גרם</span>
+            </button>
+            <button
+              type="button"
+              :class="[
+                'rounded-lg border px-3 py-2 text-start text-sm',
+                nutritionBasis === BASIS_PREPARED ? 'border-brand-green bg-brand-green/10 font-medium text-brand-black' : 'border-neutral-300 text-brand-black hover:bg-neutral-100',
+              ]"
+              @click="nutritionBasis = BASIS_PREPARED"
+            >
+              {{ BASIS_LABELS[BASIS_PREPARED] }}
+              <span class="block text-xs text-neutral-500">{{ formatNutritionAmount(product.preparedCaloriesPer100g) }} קק"ל ל-100 גרם</span>
+            </button>
+          </div>
+          <p class="mt-1 text-xs text-neutral-500">
+            למוצר זה יש נתוני תזונה גם לפני וגם אחרי הכנה (כגון פסטה יבשה מול מבושלת) -- יש לבחור לפי מה ששקלת בפועל, אחרת החישוב לא יהיה נכון.
+          </p>
+        </template>
+        <template v-else>
+          <p class="mt-1 text-sm text-neutral-600">
+            {{ formatNutritionAmount(resolvedNutrition?.caloriesPer100g ?? null) }} קק"ל,
+            {{ resolvedNutrition?.proteinPer100g === null || resolvedNutrition?.proteinPer100g === undefined ? 'חלבון לא ידוע' : `${formatNutritionAmount(resolvedNutrition.proteinPer100g)} ג' חלבון` }}
+            ל-100 גרם
+          </p>
+          <p v-if="product.source === SOURCE_OPEN_FOOD_FACTS" class="text-xs text-neutral-500">
+            הערכים הם {{ BASIS_LABELS[nutritionBasis] }} (Open Food Facts לא סיפק נתונים לבסיס האחר עבור מוצר זה).
+          </p>
+        </template>
       </div>
 
       <!-- Only relevant right after a manual approval (product.source ===
