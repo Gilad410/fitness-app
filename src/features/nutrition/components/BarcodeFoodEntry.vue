@@ -25,6 +25,7 @@ import {
   productFromManualApproval,
   manualApprovalCacheOutcome,
 } from '../lib/barcodeManualApprovalFlow.js'
+import { isManualNutritionValid, parseManualNutrition } from '../lib/manualNutritionEntry.js'
 
 // Self-contained barcode food-entry flow: scan (or type) a barcode ->
 // look it up against Open Food Facts -> show the matched product ->
@@ -168,15 +169,12 @@ function sourceLabel(source) {
 // Gates the 'manual_nutrition' step's approve button -- grams is
 // deliberately NOT part of this check (or this step at all): quantity is
 // entered on the reused 'found' step afterward, not here. Only name/
-// calories/protein need to be valid to approve.
-const manualNutritionValid = computed(() => {
-  const cal = Number(manualCalories.value)
-  if (!Number.isFinite(cal) || cal < 0) return false
-  const proteinRaw = manualProtein.value.trim()
-  if (proteinRaw === '') return true
-  const protein = Number(manualProtein.value)
-  return Number.isFinite(protein) && protein >= 0
-})
+// calories/protein need to be valid to approve. Delegates to
+// manualNutritionEntry.js -- see that module's header for why: this is
+// purely a read of the current strings, never a side effect of typing.
+const manualNutritionValid = computed(() =>
+  isManualNutritionValid({ caloriesRaw: manualCalories.value, proteinRaw: manualProtein.value }),
+)
 
 function startManualBarcode() {
   stopScanning()
@@ -465,10 +463,11 @@ function confirmFound() {
 // stuck with no visible next step other than backing out entirely.
 async function approveManual() {
   if (!manualNutritionValid.value) return
-  const proteinRaw = manualProtein.value.trim()
   const productName = manualName.value.trim() || 'מוצר ללא שם'
-  const caloriesPer100g = Number(manualCalories.value)
-  const proteinPer100g = proteinRaw === '' ? null : Number(manualProtein.value)
+  const { caloriesPer100g, proteinPer100g } = parseManualNutrition({
+    caloriesRaw: manualCalories.value,
+    proteinRaw: manualProtein.value,
+  })
 
   // Approve-and-remember: only when this was reached via a confirmed
   // OFF match (canSaveForFuture) and there's a real barcode to key the
@@ -628,6 +627,7 @@ defineExpose({ reset })
           dir="ltr"
           placeholder="לדוגמה: 7290000000000"
           class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+          @keydown.enter.prevent
         />
       </label>
       <div class="flex flex-wrap gap-3">
@@ -675,11 +675,11 @@ defineExpose({ reset })
         <span class="text-sm text-neutral-600">כמות (גרם)</span>
         <input
           v-model="grams"
-          type="number"
-          step="0.1"
-          min="0.1"
+          type="text"
+          inputmode="decimal"
           dir="ltr"
           class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+          @keydown.enter.prevent
         />
       </label>
 
@@ -734,15 +734,24 @@ defineExpose({ reset })
       </p>
       <label class="flex flex-col gap-1">
         <span class="text-sm text-neutral-600">שם המוצר</span>
-        <input v-model="manualName" type="text" class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none" />
+        <input v-model="manualName" type="text" class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none" @keydown.enter.prevent />
       </label>
       <label class="flex flex-col gap-1">
         <span class="text-sm text-neutral-600">קלוריות ל-100 גרם</span>
-        <input v-model="manualCalories" type="number" step="0.1" min="0" dir="ltr" class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none" />
+        <!-- type="text" + inputmode="decimal" -- NOT type="number":
+        a real regression found here. A native number input can mangle
+        an in-progress decimal on certain mobile keyboards (typing
+        "6.5" ending up saved as "6"), and v-model's own value never
+        gets a chance to hold the full typed string at any point in
+        between. A text input's v-model keeps exactly what was typed,
+        character by character, with the same numeric keyboard via
+        inputmode -- see manualNutritionEntry.js for the parsing this
+        was split out to. -->
+        <input v-model="manualCalories" type="text" inputmode="decimal" dir="ltr" class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none" @keydown.enter.prevent />
       </label>
       <label class="flex flex-col gap-1">
         <span class="text-sm text-neutral-600">חלבון (גרם) ל-100 גרם -- אופציונלי</span>
-        <input v-model="manualProtein" type="number" step="0.1" min="0" dir="ltr" class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none" />
+        <input v-model="manualProtein" type="text" inputmode="decimal" dir="ltr" class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none" @keydown.enter.prevent />
       </label>
 
       <!-- Quantity is deliberately NOT entered here -- approveManual()
