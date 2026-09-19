@@ -102,6 +102,18 @@ const saveForFutureError = ref('')
 const saveForFutureErrorCategory = ref('')
 const saveForFutureErrorLabel = computed(() => SAVE_FAILURE_LABELS[saveForFutureErrorCategory.value] ?? '')
 
+// Set when runLookup()'s pre-lookup coachBarcodeProductsStore.refresh()
+// itself fails -- previously swallowed completely (`.catch(() => {})`),
+// which made a real read failure (signed out, RLS, network) look
+// IDENTICAL to "this barcode was never approved": the coach would see the
+// exact same "no nutrition data, please approve again" screen either way,
+// with zero way to tell a genuine first-time scan apart from an approval
+// that exists in the database but couldn't be checked this time. Surfaced
+// distinctly, BEFORE falling through to Open Food Facts, closing that gap.
+const cacheCheckError = ref('')
+const cacheCheckErrorCategory = ref('')
+const cacheCheckErrorLabel = computed(() => SAVE_FAILURE_LABELS[cacheCheckErrorCategory.value] ?? '')
+
 let videoEl = null
 let mediaStream = null
 let detector = null
@@ -324,6 +336,9 @@ async function runLookup(rawBarcode) {
   step.value = 'looking_up'
   canSaveForFuture.value = false
   saveForFutureError.value = ''
+  saveForFutureErrorCategory.value = ''
+  cacheCheckError.value = ''
+  cacheCheckErrorCategory.value = ''
 
   // Check the coach's own previously-approved values FIRST -- if this
   // exact barcode was already approved on an earlier scan (see
@@ -337,7 +352,21 @@ async function runLookup(rawBarcode) {
   // a backgrounded tab, etc.) ever happened. A scan is infrequent
   // enough that paying for a fresh read every time is cheap, and it
   // removes that staleness window entirely.
-  await coachBarcodeProductsStore.refresh().catch(() => {})
+  //
+  // A failure here is NOT swallowed (previously was, via
+  // `.catch(() => {})`) -- doing so made a genuine read failure
+  // (signed out, RLS, network) indistinguishable from "this barcode was
+  // never approved," since either way coachBarcodeProductsStore.lookup()
+  // below simply returns null and the flow falls through to Open Food
+  // Facts as if nothing was ever saved. Recorded here and shown in the
+  // template instead, so that fall-through is now visibly explained
+  // rather than silently misleading.
+  try {
+    await coachBarcodeProductsStore.refresh()
+  } catch (err) {
+    cacheCheckErrorCategory.value = categorizeSaveFailure(err)
+    cacheCheckError.value = err.message
+  }
   const saved = coachBarcodeProductsStore.lookup(barcode)
   if (saved) {
     product.value = {
@@ -458,6 +487,8 @@ function reset() {
   canSaveForFuture.value = false
   saveForFutureError.value = ''
   saveForFutureErrorCategory.value = ''
+  cacheCheckError.value = ''
+  cacheCheckErrorCategory.value = ''
 }
 
 function cancel() {
@@ -470,6 +501,26 @@ defineExpose({ reset })
 
 <template>
   <div class="flex flex-col gap-4 rounded-xl border border-neutral-300 p-4">
+    <div
+      v-if="cacheCheckError && cacheCheckErrorCategory === SAVE_FAILURE_NOT_SIGNED_IN"
+      class="flex flex-col gap-2 rounded-lg border border-status-red/40 bg-status-red/5 p-3"
+    >
+      <p class="text-sm text-status-red">
+        ההתחברות שלך פגה -- לא ניתן היה לבדוק אם המוצר כבר אושר בעבר. יש להתחבר מחדש ולנסות שוב.
+      </p>
+      <button
+        type="button"
+        class="self-start rounded-lg bg-status-red px-3 py-1.5 text-xs font-medium text-brand-white"
+        @click="signInAgain"
+      >
+        התחבר/י מחדש
+      </button>
+    </div>
+    <p v-else-if="cacheCheckError" class="text-xs text-status-yellow">
+      לא ניתן היה לבדוק אם המוצר כבר אושר בעבר על ידך -- {{ cacheCheckErrorLabel }}
+      (<bdi dir="ltr">{{ cacheCheckError }}</bdi>). ממשיכים לחפש ב-Open Food Facts כרגיל -- אם המוצר כבר אושר בעבר, ייתכן שיהיה צורך לאשר את הערכים שוב הפעם.
+    </p>
+
     <template v-if="step === 'choose'">
       <p class="text-sm text-neutral-600">סרוק ברקוד של מוצר ארוז, או הזן אותו ידנית.</p>
       <div class="flex flex-wrap gap-3">

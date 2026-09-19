@@ -1,12 +1,20 @@
-// Turns a raw coachBarcodeProductsStore.save() failure into one of a small,
-// fixed set of categories -- so a real save failure is never just an
-// opaque, possibly-English exception string shown to the coach and
-// otherwise lost. Found necessary during a real investigation: a save
+// Turns a raw coachBarcodeProductsStore failure -- save() OR refresh()/
+// fetchAll() (the cache-check a lookup does before asking the coach
+// again) -- into one of a small, fixed set of categories, so a real
+// failure is never just an opaque, possibly-English exception string
+// shown to the coach (or, worse, silently swallowed and indistinguishable
+// from "not found"). Found necessary during a real investigation: a save
 // failure was reported only as "Server error (404)" with no way to tell,
 // from the coach's own description alone, whether the actual cause was an
 // expired session, an RLS/permissions problem, a network failure, or
-// something else entirely -- every one of those would previously have
-// rendered as an undifferentiated raw err.message.
+// something else entirely. A second, distinct gap found in the SAME
+// investigation: runLookup()'s pre-lookup refresh() call swallowed its
+// own error completely (`.catch(() => {})`), so a coach who WAS signed
+// out (or hit any other read failure) at the moment of a re-scan saw no
+// error at all -- just the exact same "not found, please approve again"
+// screen a genuinely-new barcode would show, with zero way to tell those
+// two situations apart. Every category below applies equally to both
+// call sites.
 //
 // Pure/DI: takes the error object itself, no I/O, so every category is
 // directly unit-testable without a real Supabase client or session.
@@ -18,9 +26,12 @@ export const SAVE_FAILURE_OTHER = 'other'
 // Hebrew label per category, for direct use in the UI -- kept alongside
 // the categorizer itself so a category value and its user-facing wording
 // can never drift apart or be defined twice.
+// Deliberately worded to make sense for BOTH a save and a read/cache-check
+// failure (never "...לשמור" / "...to save" specifically) -- the same label
+// is used in both places in the UI.
 export const SAVE_FAILURE_LABELS = {
   [SAVE_FAILURE_NOT_SIGNED_IN]: 'ההתחברות פגה -- יש להתחבר מחדש ולנסות שוב',
-  [SAVE_FAILURE_PERMISSION_DENIED]: 'אין הרשאה לשמור (בדיקת הרשאות נכשלה)',
+  [SAVE_FAILURE_PERMISSION_DENIED]: 'אין הרשאה (בדיקת הרשאות נכשלה)',
   [SAVE_FAILURE_NETWORK]: 'שגיאת רשת',
   [SAVE_FAILURE_OTHER]: 'שגיאה לא צפויה',
 }
