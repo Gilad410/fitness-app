@@ -77,3 +77,29 @@ test('parseManualNutrition: surrounding whitespace in a typed value does not aff
   const result = parseManualNutrition({ caloriesRaw: '300', proteinRaw: '  6.5  ' })
   assert.equal(result.proteinPer100g, 6.5)
 })
+
+// ---------------------------------------------------------------------
+// requireProtein -- added for BarcodeFoodEntry.vue's "מבושל לפי האריזה"
+// (cooked, per package) flow: transcribing BOTH figures directly off a
+// physical package's printed nutrition table means there is no excuse
+// for a missing protein value the way an unlabeled food might have one
+// -- the whole point of that flow is never inventing or estimating
+// protein, so it must be required, not silently treated as "unknown."
+// ---------------------------------------------------------------------
+
+test('isManualNutritionValid: requireProtein defaults to false -- every existing caller (the regular manual-entry flow) is unaffected by this addition', () => {
+  assert.equal(isManualNutritionValid({ caloriesRaw: '158', proteinRaw: '' }), true)
+})
+
+test('REGRESSION: cooked protein is required -- isManualNutritionValid({ requireProtein: true }) rejects an empty protein even though calories alone would otherwise pass', () => {
+  assert.equal(isManualNutritionValid({ caloriesRaw: '158', proteinRaw: '', requireProtein: true }), false)
+})
+
+test('isManualNutritionValid: requireProtein: true accepts a real typed protein value alongside the real package calories figure (158 kcal/100g)', () => {
+  assert.equal(isManualNutritionValid({ caloriesRaw: '158', proteinRaw: '5.8', requireProtein: true }), true)
+})
+
+test('isManualNutritionValid: requireProtein: true still rejects a negative or non-numeric protein, same as the optional case', () => {
+  assert.equal(isManualNutritionValid({ caloriesRaw: '158', proteinRaw: '-1', requireProtein: true }), false)
+  assert.equal(isManualNutritionValid({ caloriesRaw: '158', proteinRaw: 'abc', requireProtein: true }), false)
+})

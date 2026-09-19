@@ -24,11 +24,21 @@
 //    testable: see manualNutritionEntry.test.mjs for a character-by-
 //    character simulation of typing "6.5" that asserts exactly this.
 
-export function isManualNutritionValid({ caloriesRaw, proteinRaw }) {
+// requireProtein: false (default, every existing caller) -- protein is
+// optional, matching the "not found, enter details manually" flow where
+// a coach/trainee may genuinely not know the protein figure. true --
+// added for BarcodeFoodEntry.vue's "מבושל לפי האריזה" (cooked, per
+// package) flow: a coach/trainee transcribing BOTH figures directly off
+// a physical package's printed nutrition table has no excuse for a
+// missing protein value the way an unlabeled/estimated food might, and
+// the whole point of that flow is never inventing or estimating protein
+// -- so it must be typed, not left blank and silently treated as
+// "unknown."
+export function isManualNutritionValid({ caloriesRaw, proteinRaw, requireProtein = false }) {
   const cal = Number(caloriesRaw)
   if (!Number.isFinite(cal) || cal < 0) return false
   const trimmedProtein = String(proteinRaw ?? '').trim()
-  if (trimmedProtein === '') return true
+  if (trimmedProtein === '') return !requireProtein
   const protein = Number(proteinRaw)
   return Number.isFinite(protein) && protein >= 0
 }

@@ -31,10 +31,27 @@
 
 export const BASIS_AS_SOLD = 'as_sold'
 export const BASIS_PREPARED = 'prepared'
+// A THIRD basis, distinct from the two above: manually typed by the
+// coach/trainee from the exact physical package's own printed nutrition
+// table, used ONLY when Open Food Facts provides no prepared-basis data
+// at all for this exact barcode (needsManualCookedPackageEntry below).
+// Explicitly NOT a mapping to any generic or branded-different catalog
+// entry -- a real correction made during this investigation: an earlier
+// draft of this feature proposed resolving to a generic USDA "cooked
+// pasta" reference-catalog row, which was rejected because a specific
+// branded product (e.g. an Osem pasta) can have real cooked-package
+// values that differ from that generic figure. The values for this
+// basis never come from anywhere but what the coach/trainee themselves
+// typed -- see BarcodeFoodEntry.vue's cookedPackageCalories/
+// cookedPackageProtein refs and manualNutritionEntry.js's
+// requireProtein option (protein is REQUIRED here, never left to
+// resolve to "unknown" the way an unlabeled food's might).
+export const BASIS_COOKED_PACKAGE = 'cooked_package'
 
 export const BASIS_LABELS = {
   [BASIS_AS_SOLD]: 'כפי שנמכר / יבש',
   [BASIS_PREPARED]: 'לאחר הכנה / מבושל',
+  [BASIS_COOKED_PACKAGE]: 'מבושל לפי האריזה',
 }
 
 function isRealNumber(value) {
@@ -99,6 +116,23 @@ export function initialBasisFor(product) {
   if (hasDistinctPreparedBasis(product)) return null
   if (isRealNumber(product?.preparedCaloriesPer100g)) return BASIS_PREPARED
   return BASIS_AS_SOLD
+}
+
+// True when Open Food Facts genuinely provides no prepared-basis data
+// at all for this exact barcode -- the case that offers "מבושל לפי
+// האריזה" (cooked, per package). Deliberately does NOT look at product
+// category/name to decide "this looks like pasta" -- offering a manual
+// cooked-entry option is harmless and useful for any as-sold-only
+// product (rice, legumes, oats -- anything a coach/trainee might weigh
+// after cooking), and avoiding a category heuristic here is also what
+// keeps this from ever being tempted to auto-fill a category-based
+// guess. When Open Food Facts DOES provide real prepared data
+// (hasDistinctPreparedBasis, or the "prepared only" shape
+// initialBasisFor already auto-resolves), this stays false -- a real
+// number from Open Food Facts itself is preferred over a manual
+// re-entry of the same information.
+export function needsManualCookedPackageEntry({ preparedCaloriesPer100g } = {}) {
+  return !isRealNumber(preparedCaloriesPer100g)
 }
 
 // The label appended to the saved barcode_product_name so "the saved

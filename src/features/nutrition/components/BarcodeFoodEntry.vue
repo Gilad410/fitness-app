@@ -30,10 +30,12 @@ import { isManualNutritionValid, parseManualNutrition } from '../lib/manualNutri
 import {
   BASIS_AS_SOLD,
   BASIS_PREPARED,
+  BASIS_COOKED_PACKAGE,
   BASIS_LABELS,
   hasDistinctPreparedBasis,
   nutritionForBasis,
   initialBasisFor,
+  needsManualCookedPackageEntry,
   productNameWithBasis,
 } from '../lib/barcodeNutritionBasis.js'
 
@@ -142,6 +144,25 @@ const nutritionBasis = ref(null)
 const productHasDistinctPreparedBasis = computed(
   () => product.value?.source === SOURCE_OPEN_FOOD_FACTS && hasDistinctPreparedBasis(product.value),
 )
+// True only when Open Food Facts provides no prepared-basis data at all
+// for this exact barcode -- gates whether "שקלת לאחר בישול? הזן/י ערכים
+// לפי האריזה" (cooked, per package) is offered. See
+// needsManualCookedPackageEntry's own comment (barcodeNutritionBasis.js)
+// for why this never falls back to a generic/branded-mismatched catalog
+// value -- the correction that replaced an earlier, rejected design.
+const canEnterCookedPackage = computed(
+  () => product.value?.source === SOURCE_OPEN_FOOD_FACTS && needsManualCookedPackageEntry(product.value),
+)
+// The coach/trainee's own typed transcription of the physical package's
+// printed "cooked" nutrition figures -- used ONLY when nutritionBasis
+// is BASIS_COOKED_PACKAGE, and ONLY ever these exact typed values (see
+// resolvedNutrition below): never auto-filled, never converted, never a
+// generic substitute for a specific branded product.
+const cookedPackageCalories = ref('')
+const cookedPackageProtein = ref('')
+const cookedPackageValid = computed(() =>
+  isManualNutritionValid({ caloriesRaw: cookedPackageCalories.value, proteinRaw: cookedPackageProtein.value, requireProtein: true }),
+)
 
 // Manual-nutrition fallback fields (requirement 8: a clear message plus
 // manual entry when nothing usable was found).
@@ -217,6 +238,16 @@ const resolvedNutrition = computed(() => {
   if (!product.value) return null
   if (product.value.source !== SOURCE_OPEN_FOOD_FACTS) {
     return { caloriesPer100g: product.value.caloriesPer100g, proteinPer100g: product.value.proteinPer100g }
+  }
+  if (nutritionBasis.value === BASIS_COOKED_PACKAGE) {
+    // Never resolved from product data (nutritionForBasis deliberately
+    // returns null for this basis, see its own comment) -- only ever
+    // from what was actually typed, and only once both required fields
+    // are valid (cookedPackageValid). This is the exact fix for "do not
+    // invent or estimate the cooked protein value": no fallback to a
+    // catalog figure, no partial-data guess.
+    if (!cookedPackageValid.value) return { caloriesPer100g: null, proteinPer100g: null }
+    return parseManualNutrition({ caloriesRaw: cookedPackageCalories.value, proteinRaw: cookedPackageProtein.value })
   }
   return nutritionForBasis(product.value, nutritionBasis.value)
 })
@@ -430,6 +461,8 @@ async function runLookup(rawBarcode) {
   canSaveForFuture.value = false
   foundButNoNutrition.value = false
   nutritionBasis.value = null
+  cookedPackageCalories.value = ''
+  cookedPackageProtein.value = ''
   manualApprovalOutcome.value = 'not_applicable'
   saveForFutureError.value = ''
   saveForFutureErrorCategory.value = ''
@@ -533,6 +566,16 @@ function goToManualNutrition() {
   step.value = 'manual_nutrition'
 }
 
+// "חזרה לערכים כפי שנמכר" -- leaves the cooked-per-package entry
+// without discarding the OFF match itself; clears any typed cooked
+// values so they can never linger and be silently reused if the
+// coach/trainee re-enters this basis later for a DIFFERENT reason.
+function backToAsSoldFromCookedPackage() {
+  nutritionBasis.value = initialBasisFor(product.value)
+  cookedPackageCalories.value = ''
+  cookedPackageProtein.value = ''
+}
+
 // Shown only for SAVE_FAILURE_NOT_SIGNED_IN -- a real getUser() call
 // (inside resolveCoachId(), see coachBarcodeProducts.js's save()) found
 // no valid session at the moment of the save. Signs out first so any
@@ -634,6 +677,8 @@ function reset() {
   lastBarcode.value = ''
   product.value = null
   nutritionBasis.value = null
+  cookedPackageCalories.value = ''
+  cookedPackageProtein.value = ''
   grams.value = ''
   manualName.value = ''
   manualCalories.value = ''
@@ -809,6 +854,45 @@ defineExpose({ reset })
             למוצר זה יש נתוני תזונה גם לפני וגם אחרי הכנה (כגון פסטה יבשה מול מבושלת) -- יש לבחור לפי מה ששקלת בפועל, אחרת החישוב לא יהיה נכון.
           </p>
         </template>
+        <!-- "מבושל לפי האריזה" (cooked, per package) -- correction to an
+        earlier, rejected design that would have resolved to a generic
+        USDA cooked-pasta catalog value: a barcode product must stay
+        tied to its OWN package, so this is manual entry ONLY, never
+        auto-filled. Shown instead of the resolvedNutrition display
+        below while the coach/trainee is entering these values (which,
+        until both are valid, resolve to null -- see resolvedNutrition's
+        own comment). -->
+        <template v-else-if="nutritionBasis === BASIS_COOKED_PACKAGE">
+          <p class="mt-1 text-sm font-medium text-brand-black">מבושל לפי האריזה</p>
+          <p class="text-xs text-neutral-500">
+            יש להזין את הערכים המבושלים המודפסים על האריזה (ל-100 גרם מבושל). הערכים הללו לא יומרו או יוערכו -- יש להזין בדיוק את מה שכתוב על האריזה.
+          </p>
+          <label class="mt-1 flex flex-col gap-1">
+            <span class="text-sm text-neutral-600">קלוריות ל-100 גרם (מבושל, לפי האריזה)</span>
+            <input
+              v-model="cookedPackageCalories"
+              type="text"
+              inputmode="decimal"
+              dir="ltr"
+              class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+              @keydown.enter.prevent
+            />
+          </label>
+          <label class="flex flex-col gap-1">
+            <span class="text-sm text-neutral-600">חלבון ל-100 גרם (מבושל, לפי האריזה)</span>
+            <input
+              v-model="cookedPackageProtein"
+              type="text"
+              inputmode="decimal"
+              dir="ltr"
+              class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+              @keydown.enter.prevent
+            />
+          </label>
+          <button type="button" class="mt-1 self-start text-xs text-neutral-600 underline" @click="backToAsSoldFromCookedPackage">
+            חזרה לערכים כפי שנמכר (Open Food Facts)
+          </button>
+        </template>
         <template v-else>
           <p class="mt-1 text-sm text-neutral-600">
             {{ formatNutritionAmount(resolvedNutrition?.caloriesPer100g ?? null) }} קק"ל,
@@ -818,6 +902,14 @@ defineExpose({ reset })
           <p v-if="product.source === SOURCE_OPEN_FOOD_FACTS" class="text-xs text-neutral-500">
             הערכים הם {{ BASIS_LABELS[nutritionBasis] }} (Open Food Facts לא סיפק נתונים לבסיס האחר עבור מוצר זה).
           </p>
+          <button
+            v-if="canEnterCookedPackage"
+            type="button"
+            class="mt-1 self-start text-sm text-brand-green underline"
+            @click="nutritionBasis = BASIS_COOKED_PACKAGE"
+          >
+            שקלת לאחר בישול? הזן/י ערכים לפי האריזה
+          </button>
         </template>
       </div>
 

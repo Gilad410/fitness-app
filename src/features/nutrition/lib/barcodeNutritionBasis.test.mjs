@@ -3,12 +3,15 @@ import assert from 'node:assert/strict'
 import {
   BASIS_AS_SOLD,
   BASIS_PREPARED,
+  BASIS_COOKED_PACKAGE,
   BASIS_LABELS,
   hasDistinctPreparedBasis,
   nutritionForBasis,
   initialBasisFor,
+  needsManualCookedPackageEntry,
   productNameWithBasis,
 } from './barcodeNutritionBasis.js'
+import { isManualNutritionValid, parseManualNutrition } from './manualNutritionEntry.js'
 
 // ---------------------------------------------------------------------
 // hasDistinctPreparedBasis / initialBasisFor -- deciding whether a real
@@ -162,4 +165,65 @@ test('SCENARIO: a product with BOTH real as-sold AND real prepared data -- a gen
   const prepared = nutritionForBasis(bothBasesProduct, BASIS_PREPARED)
   assert.equal(prepared.caloriesPer100g, 130)
   assert.equal(productNameWithBasis(bothBasesProduct.name, BASIS_PREPARED), 'Instant Rice (לאחר הכנה / מבושל)')
+})
+
+// ---------------------------------------------------------------------
+// "מבושל לפי האריזה" (cooked, per package) -- the correction to the
+// earlier design: a barcode product must stay tied to its OWN package
+// data, never a generic or branded-mismatched catalog entry (an Osem
+// pasta's real cooked figures can differ from a generic USDA "cooked
+// pasta" row). These values are NEVER auto-filled or looked up --
+// needsManualCookedPackageEntry only decides whether the option is
+// OFFERED; the actual numbers always come from
+// isManualNutritionValid/parseManualNutrition (manualNutritionEntry.js)
+// with requireProtein: true, i.e. from what the coach/trainee typed.
+// ---------------------------------------------------------------------
+
+// 1. Branded pasta with OFF dry data only.
+test('needsManualCookedPackageEntry: true for branded pasta with only as-sold (dry) Open Food Facts data -- the real, common shape confirmed live for plain dry pasta, and equally true for a specific branded product like an Osem pasta', () => {
+  const osemPastaAsSoldOnly = { caloriesPer100g: 371, proteinPer100g: 13, preparedCaloriesPer100g: null, preparedProteinPer100g: null }
+  assert.equal(needsManualCookedPackageEntry(osemPastaAsSoldOnly), true)
+})
+
+test('needsManualCookedPackageEntry: false when Open Food Facts already provides real prepared-basis data -- a manual re-entry is never offered when a real OFF number already exists', () => {
+  const productWithRealPreparedData = { caloriesPer100g: 371, preparedCaloriesPer100g: 130 }
+  assert.equal(needsManualCookedPackageEntry(productWithRealPreparedData), false)
+})
+
+// 2. Manual cooked package values such as 158 kcal/100g -- the exact
+// example given: the app must use precisely what was typed, never a
+// converted or generic substitute.
+test('SCENARIO: Osem pasta, OFF dry data only -- coach/trainee types the package\'s real cooked values (158 kcal/100g, 5.8g protein/100g) -- those EXACT figures are what resolve, never the OFF dry figures and never any generic/converted number', () => {
+  const osemPastaAsSoldOnly = { name: 'Osem Pasta No.5', caloriesPer100g: 371, proteinPer100g: 13, preparedCaloriesPer100g: null, preparedProteinPer100g: null }
+  assert.equal(needsManualCookedPackageEntry(osemPastaAsSoldOnly), true)
+
+  const cookedPackageRaw = { caloriesRaw: '158', proteinRaw: '5.8' }
+  assert.equal(isManualNutritionValid({ ...cookedPackageRaw, requireProtein: true }), true)
+
+  const resolved = parseManualNutrition(cookedPackageRaw)
+  assert.equal(resolved.caloriesPer100g, 158, 'must be exactly the typed package figure, not the OFF dry value (371) and not any converted/generic number')
+  assert.equal(resolved.proteinPer100g, 5.8)
+
+  // 4. The saved log shows the product name and the selected package basis.
+  const savedName = productNameWithBasis(osemPastaAsSoldOnly.name, BASIS_COOKED_PACKAGE)
+  assert.equal(savedName, 'Osem Pasta No.5 (מבושל לפי האריזה)')
+})
+
+// 3. Cooked protein is required.
+test('REGRESSION: cooked-per-package protein is required -- typing only the package calories (158) without protein must not resolve to a usable/savable result', () => {
+  const caloriesOnly = { caloriesRaw: '158', proteinRaw: '' }
+  assert.equal(isManualNutritionValid({ ...caloriesOnly, requireProtein: true }), false, 'must be blocked -- protein is required for the cooked-per-package basis, never left as "unknown"')
+})
+
+// 4. The saved log shows the product name and the selected package basis
+// (BASIS_LABELS coverage, standalone from the SCENARIO test above).
+test('BASIS_COOKED_PACKAGE has its own distinct Hebrew label, different from both other bases', () => {
+  assert.equal(BASIS_LABELS[BASIS_COOKED_PACKAGE], 'מבושל לפי האריזה')
+  assert.notEqual(BASIS_LABELS[BASIS_COOKED_PACKAGE], BASIS_LABELS[BASIS_AS_SOLD])
+  assert.notEqual(BASIS_LABELS[BASIS_COOKED_PACKAGE], BASIS_LABELS[BASIS_PREPARED])
+})
+
+test('nutritionForBasis: BASIS_COOKED_PACKAGE is not one of the two bases this function resolves from product data -- it deliberately falls through to null, since cooked-per-package values live only in the caller\'s own manual-entry state (BarcodeFoodEntry.vue\'s cookedPackageCalories/cookedPackageProtein refs), never in the product object itself', () => {
+  const product = { caloriesPer100g: 371, proteinPer100g: 13 }
+  assert.deepEqual(nutritionForBasis(product, BASIS_COOKED_PACKAGE), { caloriesPer100g: null, proteinPer100g: null })
 })
