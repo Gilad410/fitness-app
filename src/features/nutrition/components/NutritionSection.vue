@@ -1,14 +1,16 @@
 <script setup>
 import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
+import { useRouter } from 'vue-router'
 import { useFoodsStore } from '../store/foods'
 import { useNutritionLogsStore } from '../store/nutritionLogs'
 import { useRestaurantFoodItemsStore } from '../store/restaurantFoodItems'
+import { useAuthStore } from '../../../stores/auth'
 import FoodQuantityPicker from './FoodQuantityPicker.vue'
 import BarcodeFoodEntry from './BarcodeFoodEntry.vue'
 import { formatNutritionAmount } from '../../../lib/formatNumber'
 import { entryDisplayName, entryQuantityLabel } from '../lib/entryDisplay'
 import { startRetentionClock, stopRetentionClock } from '../lib/nutritionRetentionClock'
-import { SAVE_FAILURE_LABELS } from '../lib/categorizeSaveFailure.js'
+import { SAVE_FAILURE_LABELS, SAVE_FAILURE_NOT_SIGNED_IN } from '../lib/categorizeSaveFailure.js'
 
 const props = defineProps({
   traineeId: { type: String, required: true },
@@ -17,6 +19,8 @@ const props = defineProps({
 const foodsStore = useFoodsStore()
 const nutritionLogsStore = useNutritionLogsStore()
 const restaurantFoodItemsStore = useRestaurantFoodItemsStore()
+const authStore = useAuthStore()
+const router = useRouter()
 
 const checking = ref(true)
 const loadError = ref('')
@@ -56,10 +60,25 @@ const barcodeSaveError = ref('')
 // saved fine, but the cache-write failure was invisible). Persists
 // until explicitly dismissed, survives the barcode form closing.
 const saveForFutureFailedNotice = ref('')
+// Set instead of (never alongside) saveForFutureFailedNotice specifically
+// for SAVE_FAILURE_NOT_SIGNED_IN -- a generic "saving failed" message with
+// no action isn't useful when the real, fixable cause is "you're signed
+// out"; this renders as its own distinct block with a real sign-in
+// button, not just different wording in the same yellow box.
+const sessionExpiredNotice = ref(false)
 
 function handleSaveForFutureFailed({ barcode, category, message }) {
+  if (category === SAVE_FAILURE_NOT_SIGNED_IN) {
+    sessionExpiredNotice.value = true
+    return
+  }
   const categoryLabel = SAVE_FAILURE_LABELS[category] ?? SAVE_FAILURE_LABELS.other
   saveForFutureFailedNotice.value = `שמירת המוצר לברקוד ${barcode} לסריקות הבאות נכשלה -- ${categoryLabel} (${message}). הרישום הנוכחי נשמר כרגיל, אך בסריקה הבאה של אותו ברקוד יהיה צורך להזין את הערכים שוב.`
+}
+
+async function signInAgainFromNotice() {
+  await authStore.signOut().catch(() => {})
+  router.push({ name: 'login' })
 }
 
 async function handleBarcodeResolved(resolved) {
@@ -236,7 +255,21 @@ async function handleDelete(logId) {
     </div>
 
     <div
-      v-if="saveForFutureFailedNotice"
+      v-if="sessionExpiredNotice"
+      class="flex items-center justify-between gap-3 rounded-lg border border-status-red/40 bg-status-red/5 p-3 text-sm text-brand-black"
+    >
+      <p>ההתחברות שלך פגה, ולכן השמירה לא הושלמה. יש להתחבר מחדש ולנסות שוב.</p>
+      <button
+        type="button"
+        class="shrink-0 rounded-lg bg-status-red px-3 py-1.5 text-xs font-medium text-brand-white"
+        @click="signInAgainFromNotice"
+      >
+        התחבר/י מחדש
+      </button>
+    </div>
+
+    <div
+      v-else-if="saveForFutureFailedNotice"
       class="flex items-start justify-between gap-3 rounded-lg border border-status-yellow/40 bg-status-yellow/5 p-3 text-sm text-brand-black"
     >
       <p>{{ saveForFutureFailedNotice }}</p>

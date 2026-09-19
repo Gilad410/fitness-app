@@ -1,5 +1,6 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import {
   lookupBarcode,
   isPlausibleBarcode,
@@ -16,8 +17,9 @@ import {
   CAMERA_STRATEGY_ZXING,
 } from '../lib/barcodeCameraSupport.js'
 import { useCoachBarcodeProductsStore } from '../store/coachBarcodeProducts.js'
+import { useAuthStore } from '../../../stores/auth'
 import { formatNutritionAmount } from '../../../lib/formatNumber'
-import { categorizeSaveFailure, SAVE_FAILURE_LABELS } from '../lib/categorizeSaveFailure.js'
+import { categorizeSaveFailure, SAVE_FAILURE_LABELS, SAVE_FAILURE_NOT_SIGNED_IN } from '../lib/categorizeSaveFailure.js'
 
 // Self-contained barcode food-entry flow: scan (or type) a barcode ->
 // look it up against Open Food Facts -> show the matched product ->
@@ -58,6 +60,8 @@ const emit = defineEmits(['resolved', 'cancel', 'save-for-future-failed'])
 const step = ref('choose')
 const cameraSupported = supportsCameraBarcodeScanning()
 const coachBarcodeProductsStore = useCoachBarcodeProductsStore()
+const authStore = useAuthStore()
+const router = useRouter()
 
 // A background warm-up only -- runLookup() itself always calls
 // refresh() (an unconditional re-fetch, see that function's own
@@ -378,6 +382,17 @@ function goToManualNutrition() {
   step.value = 'manual_nutrition'
 }
 
+// Shown only for SAVE_FAILURE_NOT_SIGNED_IN -- a real getUser() call
+// (inside resolveCoachId(), see coachBarcodeProducts.js's save()) found
+// no valid session at the moment of the save. Signs out first so any
+// stale/broken local session data is cleared before the coach lands on
+// the login screen -- otherwise a leftover invalid token could make the
+// very next attempt look "already signed in" when it isn't.
+async function signInAgain() {
+  await authStore.signOut().catch(() => {})
+  router.push({ name: 'login' })
+}
+
 function confirmFound() {
   if (!product.value || preview.value === null) return
   emit('resolved', {
@@ -594,7 +609,20 @@ defineExpose({ reset })
       <p v-else class="text-xs text-neutral-500">
         הפריט לא נמצא במאגר -- הערכים יישמרו כהזנה ידנית עבור הרשומה הזו בלבד, ולא יתווספו למאגר המאכלים המאומת.
       </p>
-      <p v-if="saveForFutureError" class="text-xs text-status-yellow">
+      <div
+        v-if="saveForFutureError && saveForFutureErrorCategory === SAVE_FAILURE_NOT_SIGNED_IN"
+        class="flex flex-col gap-2 rounded-lg border border-status-red/40 bg-status-red/5 p-3"
+      >
+        <p class="text-sm text-status-red">ההתחברות שלך פגה. יש להתחבר מחדש כדי שהשמירה לסריקות הבאות תעבוד.</p>
+        <button
+          type="button"
+          class="self-start rounded-lg bg-status-red px-3 py-1.5 text-xs font-medium text-brand-white"
+          @click="signInAgain"
+        >
+          התחבר/י מחדש
+        </button>
+      </div>
+      <p v-else-if="saveForFutureError" class="text-xs text-status-yellow">
         השמירה לסריקות הבאות נכשלה -- {{ saveForFutureErrorLabel }}
         (<bdi dir="ltr">{{ saveForFutureError }}</bdi>) -- הרישום הנוכחי עדיין יישמר כרגיל.
       </p>
