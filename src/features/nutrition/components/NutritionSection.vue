@@ -289,7 +289,7 @@ async function handleDelete(logId) {
         @cancel="handleBarcodeCancel"
         @save-for-future-failed="handleSaveForFutureFailed"
       />
-      <p v-if="barcodeSaving" class="text-sm text-neutral-600">שומר...</p>
+      <p v-if="barcodeSaving" class="text-sm text-neutral-600">שומר ביומן התזונה...</p>
       <p v-if="barcodeSaveError" class="text-sm text-status-red">{{ barcodeSaveError }}</p>
     </div>
 

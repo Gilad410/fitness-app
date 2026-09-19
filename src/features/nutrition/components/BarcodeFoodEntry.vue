@@ -20,6 +20,11 @@ import { useCoachBarcodeProductsStore } from '../store/coachBarcodeProducts.js'
 import { useAuthStore } from '../../../stores/auth'
 import { formatNutritionAmount } from '../../../lib/formatNumber'
 import { categorizeSaveFailure, SAVE_FAILURE_LABELS, SAVE_FAILURE_NOT_SIGNED_IN } from '../lib/categorizeSaveFailure.js'
+import {
+  nextStepAfterManualApproval,
+  productFromManualApproval,
+  manualApprovalCacheOutcome,
+} from '../lib/barcodeManualApprovalFlow.js'
 
 // Self-contained barcode food-entry flow: scan (or type) a barcode ->
 // look it up against Open Food Facts -> show the matched product ->
@@ -54,9 +59,16 @@ const emit = defineEmits(['resolved', 'cancel', 'save-for-future-failed'])
 // 'choose' (scan vs manual) -> 'scanning' (camera live) ->
 // 'looking_up' -> 'found' | 'lookup_failed' (not_found/no_nutrition_data/
 // invalid_barcode/error, collapsed to one UI state with a per-case
-// message) -> 'manual_nutrition' (typed-in fallback, reachable from
-// 'lookup_failed' or directly if the barcode step is skipped entirely
-// is NOT offered -- a barcode is always attempted first, per requirement).
+// message) -> 'manual_nutrition' (typed-in fallback: name/calories/
+// protein ONLY, reachable from 'lookup_failed') -> approveManual()
+// attempts the coach-cache save (a separate, explicit step from the log
+// save -- see manualApprovalCacheOutcome) and ALWAYS transitions back to
+// 'found' regardless of whether that save succeeded, now holding the
+// just-approved values as product.value -- 'found' is reused as the one
+// and only quantity + log-save step for every source (a fresh OFF match,
+// a previously coach-saved reuse, or a just-now manual approval), so
+// there is exactly one path from "values approved" to "logged," taken
+// unconditionally: never a forced step back through re-scanning.
 const step = ref('choose')
 const cameraSupported = supportsCameraBarcodeScanning()
 const coachBarcodeProductsStore = useCoachBarcodeProductsStore()
@@ -94,6 +106,12 @@ const manualProtein = ref('')
 // case, so nothing is cached automatically -- see the component's own
 // top-level comment and the PR report for why this is scoped narrowly.
 const canSaveForFuture = ref(false)
+// One of manualApprovalCacheOutcome()'s three values -- decides which
+// note the reused 'found'/quantity step shows about the (separate,
+// already-settled-by-then) coach-cache save. Reset alongside
+// canSaveForFuture so a stale outcome from a PREVIOUS barcode can never
+// leak into the next one's quantity step.
+const manualApprovalOutcome = ref('not_applicable')
 const saveForFutureError = ref('')
 // One of categorizeSaveFailure.js's fixed categories -- set alongside
 // saveForFutureError so a real failure always shows as "which of these
@@ -143,21 +161,21 @@ const preview = computed(() => {
 function sourceLabel(source) {
   if (source === SOURCE_OPEN_FOOD_FACTS) return 'Open Food Facts'
   if (source === SOURCE_COACH_SAVED) return 'נשמר בעבר על ידך'
+  if (source === SOURCE_MANUAL) return 'הוזן ידנית'
   return source
 }
 
-const manualPreview = computed(() => {
+// Gates the 'manual_nutrition' step's approve button -- grams is
+// deliberately NOT part of this check (or this step at all): quantity is
+// entered on the reused 'found' step afterward, not here. Only name/
+// calories/protein need to be valid to approve.
+const manualNutritionValid = computed(() => {
   const cal = Number(manualCalories.value)
-  const grm = gramsNumber.value
-  if (!Number.isFinite(cal) || cal < 0 || grm === null) return null
+  if (!Number.isFinite(cal) || cal < 0) return false
   const proteinRaw = manualProtein.value.trim()
-  const protein = proteinRaw === '' ? null : Number(manualProtein.value)
-  if (protein !== null && (!Number.isFinite(protein) || protein < 0)) return null
-  try {
-    return calculateBarcodeNutrition({ caloriesPer100g: cal, proteinPer100g: protein, grams: grm })
-  } catch {
-    return null
-  }
+  if (proteinRaw === '') return true
+  const protein = Number(manualProtein.value)
+  return Number.isFinite(protein) && protein >= 0
 })
 
 function startManualBarcode() {
@@ -335,6 +353,7 @@ async function runLookup(rawBarcode) {
   lastBarcode.value = barcode
   step.value = 'looking_up'
   canSaveForFuture.value = false
+  manualApprovalOutcome.value = 'not_applicable'
   saveForFutureError.value = ''
   saveForFutureErrorCategory.value = ''
   cacheCheckError.value = ''
@@ -342,7 +361,7 @@ async function runLookup(rawBarcode) {
 
   // Check the coach's own previously-approved values FIRST -- if this
   // exact barcode was already approved on an earlier scan (see
-  // confirmManual()'s save-for-future below), reuse it directly and
+  // approveManual()'s save-for-future below), reuse it directly and
   // skip Open Food Facts entirely: faster, and the whole point of
   // "approve once" is not asking again. refresh() -- not
   // ensureLoaded() -- deliberately: ensureLoaded() fetches once and
@@ -434,8 +453,18 @@ function confirmFound() {
   })
 }
 
-async function confirmManual() {
-  if (manualPreview.value === null) return
+// Step 1 of the two now-explicit steps: approve the typed-in nutrition
+// values and (when eligible) save them to the coach's cache. Deliberately
+// does NOT emit 'resolved' (the trainee-log save) itself -- that only
+// happens later, from confirmFound(), once the coach has also entered a
+// quantity on the reused 'found' step this always transitions to. This
+// split is exactly what closes the reported gap: previously, this single
+// function both attempted the cache save AND emitted 'resolved' (using
+// whatever grams happened to be filled into the SAME screen), so a
+// coach who hadn't realized grams belonged on this screen too could get
+// stuck with no visible next step other than backing out entirely.
+async function approveManual() {
+  if (!manualNutritionValid.value) return
   const proteinRaw = manualProtein.value.trim()
   const productName = manualName.value.trim() || 'מוצר ללא שם'
   const caloriesPer100g = Number(manualCalories.value)
@@ -444,8 +473,10 @@ async function confirmManual() {
   // Approve-and-remember: only when this was reached via a confirmed
   // OFF match (canSaveForFuture) and there's a real barcode to key the
   // cache on. A save failure here is a convenience miss, not a reason
-  // to block today's actual log entry -- surfaced quietly, the barcode
-  // just won't be pre-filled next time either.
+  // to block today's actual log entry -- surfaced clearly (both inline,
+  // via manualApprovalOutcome below, and as the caller's persistent
+  // 'save-for-future-failed' notice), but never blocking.
+  let cacheSaveSucceeded = true
   if (canSaveForFuture.value && lastBarcode.value) {
     try {
       await coachBarcodeProductsStore.save({
@@ -455,21 +486,25 @@ async function confirmManual() {
         proteinPer100g,
       })
     } catch (err) {
+      cacheSaveSucceeded = false
       const category = categorizeSaveFailure(err)
       saveForFutureErrorCategory.value = category
       saveForFutureError.value = err.message
       emit('save-for-future-failed', { barcode: lastBarcode.value, category, message: err.message })
     }
   }
-
-  emit('resolved', {
-    barcode: lastBarcode.value || null,
-    barcode_source: SOURCE_MANUAL,
-    barcode_product_name: productName,
-    barcode_calories_per_100g: caloriesPer100g,
-    barcode_protein_per_100g: proteinPer100g,
-    grams: gramsNumber.value,
+  manualApprovalOutcome.value = manualApprovalCacheOutcome({
+    canSaveForFuture: canSaveForFuture.value,
+    cacheSaveSucceeded,
   })
+
+  // Proceeds to quantity/log-save UNCONDITIONALLY -- regardless of
+  // cacheSaveSucceeded above. This is the actual fix: reaching the
+  // ability to log today's consumption must never depend on whether
+  // today's cache-save convenience happened to work.
+  product.value = productFromManualApproval({ productName, caloriesPer100g, proteinPer100g })
+  grams.value = ''
+  step.value = nextStepAfterManualApproval()
 }
 
 function reset() {
@@ -485,6 +520,7 @@ function reset() {
   manualCalories.value = ''
   manualProtein.value = ''
   canSaveForFuture.value = false
+  manualApprovalOutcome.value = 'not_applicable'
   saveForFutureError.value = ''
   saveForFutureErrorCategory.value = ''
   cacheCheckError.value = ''
@@ -519,6 +555,28 @@ defineExpose({ reset })
     <p v-else-if="cacheCheckError" class="text-xs text-status-yellow">
       לא ניתן היה לבדוק אם המוצר כבר אושר בעבר על ידך -- {{ cacheCheckErrorLabel }}
       (<bdi dir="ltr">{{ cacheCheckError }}</bdi>). ממשיכים לחפש ב-Open Food Facts כרגיל -- אם המוצר כבר אושר בעבר, ייתכן שיהיה צורך לאשר את הערכים שוב הפעם.
+    </p>
+
+    <!-- Kept visible regardless of step -- approveManual() attempts this
+    save and then ALWAYS moves on to 'found' (see that function's own
+    comment), so a failure here must stay visible past that transition,
+    not disappear the moment the quantity step replaces manual_nutrition. -->
+    <div
+      v-if="saveForFutureError && saveForFutureErrorCategory === SAVE_FAILURE_NOT_SIGNED_IN"
+      class="flex flex-col gap-2 rounded-lg border border-status-red/40 bg-status-red/5 p-3"
+    >
+      <p class="text-sm text-status-red">ההתחברות שלך פגה, ולכן השמירה למאגר לסריקות הבאות נכשלה. ניתן להתחבר מחדש -- הרישום הנוכחי ביומן התזונה עדיין ניתן להשלמה.</p>
+      <button
+        type="button"
+        class="self-start rounded-lg bg-status-red px-3 py-1.5 text-xs font-medium text-brand-white"
+        @click="signInAgain"
+      >
+        התחבר/י מחדש
+      </button>
+    </div>
+    <p v-else-if="saveForFutureError" class="text-xs text-status-yellow">
+      השמירה למאגר לסריקות הבאות נכשלה -- {{ saveForFutureErrorLabel }}
+      (<bdi dir="ltr">{{ saveForFutureError }}</bdi>). ניתן להמשיך ולשמור את הרישום הנוכחי ביומן התזונה כרגיל.
     </p>
 
     <template v-if="step === 'choose'">
@@ -599,6 +657,20 @@ defineExpose({ reset })
         </p>
       </div>
 
+      <!-- Only relevant right after a manual approval (product.source ===
+      SOURCE_MANUAL) -- explicitly confirms what step 1 (the cache save)
+      actually did, since this step now happens unconditionally regardless
+      of whether that save succeeded (see approveManual()'s own comment). -->
+      <p v-if="product.source === SOURCE_MANUAL && manualApprovalOutcome === 'saved'" class="text-xs text-neutral-500">
+        הערכים אושרו ונשמרו במאגר שלך -- בסריקה הבאה של אותו ברקוד לא יהיה צורך להזין אותם שוב. נותר להזין כמות ולשמור ביומן התזונה.
+      </p>
+      <p v-else-if="product.source === SOURCE_MANUAL && manualApprovalOutcome === 'failed'" class="text-xs text-neutral-500">
+        הערכים יישמרו כהזנה חד-פעמית עבור הרשומה הזו בלבד -- השמירה למאגר לסריקות הבאות נכשלה (פירוט למעלה). נותר להזין כמות ולשמור ביומן התזונה.
+      </p>
+      <p v-else-if="product.source === SOURCE_MANUAL" class="text-xs text-neutral-500">
+        הערכים יישמרו כהזנה חד-פעמית עבור הרשומה הזו בלבד, ולא יתווספו למאגר המאכלים המאומת. נותר להזין כמות ולשמור ביומן התזונה.
+      </p>
+
       <label class="flex flex-col gap-1">
         <span class="text-sm text-neutral-600">כמות (גרם)</span>
         <input
@@ -626,7 +698,7 @@ defineExpose({ reset })
           class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white disabled:opacity-60"
           @click="confirmFound"
         >
-          המשך לשמירה
+          שמור ביומן התזונה
         </button>
         <button type="button" class="text-sm text-neutral-600 underline" @click="cancel">ביטול</button>
       </div>
@@ -660,23 +732,6 @@ defineExpose({ reset })
       <p v-else class="text-xs text-neutral-500">
         הפריט לא נמצא במאגר -- הערכים יישמרו כהזנה ידנית עבור הרשומה הזו בלבד, ולא יתווספו למאגר המאכלים המאומת.
       </p>
-      <div
-        v-if="saveForFutureError && saveForFutureErrorCategory === SAVE_FAILURE_NOT_SIGNED_IN"
-        class="flex flex-col gap-2 rounded-lg border border-status-red/40 bg-status-red/5 p-3"
-      >
-        <p class="text-sm text-status-red">ההתחברות שלך פגה. יש להתחבר מחדש כדי שהשמירה לסריקות הבאות תעבוד.</p>
-        <button
-          type="button"
-          class="self-start rounded-lg bg-status-red px-3 py-1.5 text-xs font-medium text-brand-white"
-          @click="signInAgain"
-        >
-          התחבר/י מחדש
-        </button>
-      </div>
-      <p v-else-if="saveForFutureError" class="text-xs text-status-yellow">
-        השמירה לסריקות הבאות נכשלה -- {{ saveForFutureErrorLabel }}
-        (<bdi dir="ltr">{{ saveForFutureError }}</bdi>) -- הרישום הנוכחי עדיין יישמר כרגיל.
-      </p>
       <label class="flex flex-col gap-1">
         <span class="text-sm text-neutral-600">שם המוצר</span>
         <input v-model="manualName" type="text" class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none" />
@@ -689,27 +744,20 @@ defineExpose({ reset })
         <span class="text-sm text-neutral-600">חלבון (גרם) ל-100 גרם -- אופציונלי</span>
         <input v-model="manualProtein" type="number" step="0.1" min="0" dir="ltr" class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none" />
       </label>
-      <label class="flex flex-col gap-1">
-        <span class="text-sm text-neutral-600">כמות (גרם)</span>
-        <input v-model="grams" type="number" step="0.1" min="0.1" dir="ltr" class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none" />
-      </label>
 
-      <p v-if="manualPreview" class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <span class="text-sm text-neutral-600">סה"כ לבדיקה:</span>
-        <span class="ec-num text-sm" style="color: var(--color-brand-green)">{{ formatNutritionAmount(manualPreview.calories) }} קק"ל</span>
-        <span v-if="manualPreview.protein !== null" class="ec-num text-sm" style="color: var(--ec-violet)">
-          {{ formatNutritionAmount(manualPreview.protein) }} ג' חלבון
-        </span>
-      </p>
-
+      <!-- Quantity is deliberately NOT entered here -- approveManual()
+      always transitions to the reused 'found' step next, which is where
+      grams and the final log-save button live (identically to every
+      other source). Splitting these into two explicit steps/buttons is
+      the fix for the reported "forced back, log stays empty" flow bug. -->
       <div class="flex flex-wrap gap-3">
         <button
           type="button"
-          :disabled="manualPreview === null"
+          :disabled="!manualNutritionValid"
           class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white disabled:opacity-60"
-          @click="confirmManual"
+          @click="approveManual"
         >
-          {{ canSaveForFuture ? 'אשר ושמור לסריקות הבאות' : 'המשך לשמירה' }}
+          {{ canSaveForFuture ? 'אשר ושמור למאגר' : 'המשך לכמות' }}
         </button>
         <button type="button" class="text-sm text-neutral-600 underline" @click="cancel">ביטול</button>
       </div>
