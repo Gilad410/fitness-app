@@ -17,6 +17,7 @@ import {
   CAMERA_STRATEGY_ZXING,
 } from '../lib/barcodeCameraSupport.js'
 import { useCoachBarcodeProductsStore } from '../store/coachBarcodeProducts.js'
+import { useBarcodeNutritionBasisPreferencesStore } from '../store/barcodeNutritionBasisPreferences.js'
 import { useAuthStore } from '../../../stores/auth'
 import { formatNutritionAmount } from '../../../lib/formatNumber'
 import { categorizeSaveFailure, SAVE_FAILURE_LABELS, SAVE_FAILURE_NOT_SIGNED_IN } from '../lib/categorizeSaveFailure.js'
@@ -32,10 +33,15 @@ import {
   BASIS_PREPARED,
   BASIS_COOKED_PACKAGE,
   BASIS_LABELS,
+  PREFERENCE_ACTION_USE_SAVED,
+  PREFERENCE_ACTION_USE_AS_SOLD,
+  PREFERENCE_ACTION_EDIT_PACKAGE,
   hasDistinctPreparedBasis,
   nutritionForBasis,
   initialBasisFor,
   needsManualCookedPackageEntry,
+  nutritionBasisForPreferenceAction,
+  cookedPackageFieldsFromPreference,
   productNameWithBasis,
 } from '../lib/barcodeNutritionBasis.js'
 
@@ -93,21 +99,36 @@ const props = defineProps({
 const emit = defineEmits(['resolved', 'cancel', 'save-for-future-failed'])
 
 // 'choose' (scan vs manual) -> 'scanning' (camera live) ->
-// 'looking_up' -> 'found' | 'lookup_failed' (not_found/no_nutrition_data/
-// invalid_barcode/error, collapsed to one UI state with a per-case
-// message) -> 'manual_nutrition' (typed-in fallback: name/calories/
-// protein ONLY, reachable from 'lookup_failed') -> approveManual()
-// attempts the coach-cache save (a separate, explicit step from the log
-// save -- see manualApprovalCacheOutcome) and ALWAYS transitions back to
-// 'found' regardless of whether that save succeeded, now holding the
+// 'looking_up' -> 'found' | 'basis_preference_confirm' |
+// 'lookup_failed' (not_found/no_nutrition_data/invalid_barcode/error,
+// collapsed to one UI state with a per-case message) ->
+// 'manual_nutrition' (typed-in fallback: name/calories/protein ONLY,
+// reachable from 'lookup_failed') -> approveManual() attempts the
+// coach-cache save (a separate, explicit step from the log save -- see
+// manualApprovalCacheOutcome) and ALWAYS transitions back to 'found'
+// regardless of whether that save succeeded, now holding the
 // just-approved values as product.value -- 'found' is reused as the one
 // and only quantity + log-save step for every source (a fresh OFF match,
 // a previously coach-saved reuse, or a just-now manual approval), so
 // there is exactly one path from "values approved" to "logged," taken
 // unconditionally: never a forced step back through re-scanning.
+//
+// 'basis_preference_confirm' (barcodeNutritionBasisPreferences.js) sits
+// between 'looking_up' and 'found' ONLY when this user has a saved
+// as-sold-vs-cooked-package basis preference for this exact barcode --
+// ALWAYS shown in that case (never skipped, regardless of which basis
+// was saved last), with three explicit actions
+// (chooseBasisPreferenceAction) that all resolve to 'found', pre-filled
+// per the saved preference so nothing needs retyping.
 const step = ref('choose')
 const cameraSupported = supportsCameraBarcodeScanning()
 const coachBarcodeProductsStore = useCoachBarcodeProductsStore()
+// Per-USER (coach or trainee alike, unlike coachBarcodeProductsStore
+// above) -- see barcodeNutritionBasisPreferences.js's own comment.
+// Never gated by enableCoachCache: this concern applies identically to
+// both flows, and its RLS (user_id = auth.uid()) isolates them on its
+// own with no role-based branching needed here.
+const basisPreferencesStore = useBarcodeNutritionBasisPreferencesStore()
 const authStore = useAuthStore()
 const router = useRouter()
 
@@ -121,6 +142,7 @@ onMounted(() => {
   if (props.enableCoachCache) {
     coachBarcodeProductsStore.ensureLoaded().catch(() => {})
   }
+  basisPreferencesStore.ensureLoaded().catch(() => {})
 })
 
 const manualBarcodeInput = ref('')
@@ -163,6 +185,16 @@ const cookedPackageProtein = ref('')
 const cookedPackageValid = computed(() =>
   isManualNutritionValid({ caloriesRaw: cookedPackageCalories.value, proteinRaw: cookedPackageProtein.value, requireProtein: true }),
 )
+// This user's saved basis preference for the current barcode, if any
+// (barcodeNutritionBasisPreferences.js) -- set by runLookup() when the
+// scan is cooked-package-eligible. Non-null is what puts the flow on
+// the 'basis_preference_confirm' step INSTEAD of going straight to
+// 'found': the confirmation ("Use saved cooked/package values?" / "Use
+// dry/as-sold?" / "Edit package values") is ALWAYS shown when this is
+// set, regardless of which basis it holds -- see this ref's own use in
+// the template and PREFERENCE_ACTION_*'s own comment for why a saved
+// as_sold choice is never silently reapplied.
+const savedBasisPreference = ref(null)
 
 // Manual-nutrition fallback fields (requirement 8: a clear message plus
 // manual entry when nothing usable was found).
@@ -463,6 +495,7 @@ async function runLookup(rawBarcode) {
   nutritionBasis.value = null
   cookedPackageCalories.value = ''
   cookedPackageProtein.value = ''
+  savedBasisPreference.value = null
   manualApprovalOutcome.value = 'not_applicable'
   saveForFutureError.value = ''
   saveForFutureErrorCategory.value = ''
@@ -523,12 +556,43 @@ async function runLookup(rawBarcode) {
 
   if (result.status === 'found') {
     product.value = result.product
-    // Pasta-nutrition-basis fix: auto-resolves when there's only one
-    // real number (as-sold only, or prepared only), or null (forcing an
-    // explicit choice in the template below) when Open Food Facts
-    // genuinely provides both -- see barcodeNutritionBasis.js.
-    nutritionBasis.value = initialBasisFor(result.product)
     grams.value = ''
+
+    // Persistent per-user basis preference: only relevant when this
+    // scan is cooked-package-eligible at all (needsManualCookedPackageEntry)
+    // -- when Open Food Facts' own dual-basis choice or single-basis
+    // auto-resolve already applies, there is nothing this user could
+    // have "saved" for this barcode in the first place (the store below
+    // is never even checked in that case). refresh() -- not
+    // ensureLoaded() -- for the same staleness reason as
+    // coachBarcodeProductsStore's own refresh() above: a preference
+    // saved in an earlier mount of this flow must be visible here.
+    if (needsManualCookedPackageEntry(result.product)) {
+      try {
+        await basisPreferencesStore.refresh()
+      } catch (err) {
+        cacheCheckErrorCategory.value = categorizeSaveFailure(err)
+        cacheCheckError.value = err.message
+      }
+      const saved = basisPreferencesStore.lookup(barcode)
+      if (saved) {
+        // The confirmation is ALWAYS shown here -- never skipped, and
+        // never silently reapplying a saved as_sold choice (the exact
+        // correction requested: the user wants to be asked "cooked or
+        // not" every time). nutritionBasis stays null (not yet chosen)
+        // until one of the three explicit actions on that step sets it.
+        savedBasisPreference.value = saved
+        step.value = 'basis_preference_confirm'
+        return
+      }
+    }
+
+    // No saved preference (or not applicable) -- unchanged from before:
+    // auto-resolves when there's only one real number (as-sold only, or
+    // prepared only), or null (forcing an explicit choice in the
+    // template below) when Open Food Facts genuinely provides both --
+    // see barcodeNutritionBasis.js.
+    nutritionBasis.value = initialBasisFor(result.product)
     step.value = 'found'
     return
   }
@@ -566,6 +630,24 @@ function goToManualNutrition() {
   step.value = 'manual_nutrition'
 }
 
+// Handles the three explicit actions on 'basis_preference_confirm' --
+// "Use saved cooked/package values" / "Use dry/as-sold values" / "Edit
+// package values". Always reached via an actual click (this step is
+// never skipped, see runLookup()'s own comment); the resulting basis
+// and, when relevant, the pre-filled cooked-package fields both come
+// from nutritionBasisForPreferenceAction/cookedPackageFieldsFromPreference
+// (barcodeNutritionBasis.js) -- never invented or converted here.
+function chooseBasisPreferenceAction(action) {
+  const basis = nutritionBasisForPreferenceAction(action, savedBasisPreference.value)
+  nutritionBasis.value = basis
+  const prefilled = basis === BASIS_COOKED_PACKAGE
+    ? cookedPackageFieldsFromPreference(savedBasisPreference.value)
+    : { caloriesRaw: '', proteinRaw: '' }
+  cookedPackageCalories.value = prefilled.caloriesRaw
+  cookedPackageProtein.value = prefilled.proteinRaw
+  step.value = 'found'
+}
+
 // "חזרה לערכים כפי שנמכר" -- leaves the cooked-per-package entry
 // without discarding the OFF match itself; clears any typed cooked
 // values so they can never linger and be silently reused if the
@@ -587,7 +669,7 @@ async function signInAgain() {
   router.push({ name: 'login' })
 }
 
-function confirmFound() {
+async function confirmFound() {
   if (!product.value || preview.value === null || !resolvedNutrition.value) return
   // "The saved item must show the chosen basis" -- appended directly to
   // barcode_product_name (a free-text snapshot column, 045) rather than
@@ -598,6 +680,32 @@ function confirmFound() {
   const savedName = product.value.source === SOURCE_OPEN_FOOD_FACTS
     ? productNameWithBasis(product.value.name, nutritionBasis.value)
     : product.value.name
+
+  // Persist this basis choice for next time (048_barcode_nutrition_
+  // basis_preferences.sql) -- only when this scan was cooked-package-
+  // eligible at all (canEnterCookedPackage); Open Food Facts' own
+  // dual-basis/single-basis cases and non-OFF sources have nothing to
+  // remember here. A save failure is a convenience miss, never a
+  // reason to block today's actual log entry -- same "never blocks the
+  // log" philosophy coach_barcode_products already uses, surfaced the
+  // same way (saveForFutureError/-Category, the existing
+  // step-independent banner).
+  if (canEnterCookedPackage.value) {
+    try {
+      await basisPreferencesStore.save({
+        barcode: lastBarcode.value,
+        basis: nutritionBasis.value,
+        cookedCaloriesPer100g: nutritionBasis.value === BASIS_COOKED_PACKAGE ? resolvedNutrition.value.caloriesPer100g : null,
+        cookedProteinPer100g: nutritionBasis.value === BASIS_COOKED_PACKAGE ? resolvedNutrition.value.proteinPer100g : null,
+      })
+    } catch (err) {
+      const category = categorizeSaveFailure(err)
+      saveForFutureErrorCategory.value = category
+      saveForFutureError.value = err.message
+      emit('save-for-future-failed', { barcode: lastBarcode.value, category, message: err.message })
+    }
+  }
+
   emit('resolved', {
     barcode: lastBarcode.value,
     barcode_source: product.value.source,
@@ -679,6 +787,7 @@ function reset() {
   nutritionBasis.value = null
   cookedPackageCalories.value = ''
   cookedPackageProtein.value = ''
+  savedBasisPreference.value = null
   grams.value = ''
   manualName.value = ''
   manualCalories.value = ''
@@ -810,6 +919,47 @@ defineExpose({ reset })
 
     <template v-else-if="step === 'looking_up'">
       <p class="text-sm text-neutral-600">מחפש...</p>
+    </template>
+
+    <!-- Persistent per-user basis preference: ALWAYS shown when a saved
+    preference exists for this barcode -- never a silent default, even
+    for a previously-saved as_sold choice (the user explicitly wants to
+    be asked "cooked or not" every time). See
+    barcodeNutritionBasisPreferences.js and chooseBasisPreferenceAction's
+    own comment. -->
+    <template v-else-if="step === 'basis_preference_confirm'">
+      <p class="text-sm text-neutral-600">
+        נמצאו ערכים שמורים עבורך לברקוד זה (<bdi dir="ltr">{{ lastBarcode }}</bdi>):
+        <template v-if="savedBasisPreference?.basis === BASIS_COOKED_PACKAGE">
+          מבושל לפי האריזה -- {{ formatNutritionAmount(savedBasisPreference.cooked_calories_per_100g) }} קק"ל,
+          {{ formatNutritionAmount(savedBasisPreference.cooked_protein_per_100g) }} ג' חלבון ל-100 גרם.
+        </template>
+        <template v-else>כפי שנמכר / יבש (הערכים מ-Open Food Facts).</template>
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <button
+          type="button"
+          class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green-dark hover:text-brand-white"
+          @click="chooseBasisPreferenceAction(PREFERENCE_ACTION_USE_SAVED)"
+        >
+          השתמש בערכים השמורים
+        </button>
+        <button
+          type="button"
+          class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100"
+          @click="chooseBasisPreferenceAction(PREFERENCE_ACTION_USE_AS_SOLD)"
+        >
+          בחר/י יבש / כפי שנמכר
+        </button>
+        <button
+          type="button"
+          class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100"
+          @click="chooseBasisPreferenceAction(PREFERENCE_ACTION_EDIT_PACKAGE)"
+        >
+          ערוך/י ערכי אריזה
+        </button>
+        <button type="button" class="text-sm text-neutral-600 underline" @click="cancel">ביטול</button>
+      </div>
     </template>
 
     <template v-else-if="step === 'found'">

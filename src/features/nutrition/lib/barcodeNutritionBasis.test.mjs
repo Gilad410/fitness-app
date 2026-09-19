@@ -5,10 +5,15 @@ import {
   BASIS_PREPARED,
   BASIS_COOKED_PACKAGE,
   BASIS_LABELS,
+  PREFERENCE_ACTION_USE_SAVED,
+  PREFERENCE_ACTION_USE_AS_SOLD,
+  PREFERENCE_ACTION_EDIT_PACKAGE,
   hasDistinctPreparedBasis,
   nutritionForBasis,
   initialBasisFor,
   needsManualCookedPackageEntry,
+  nutritionBasisForPreferenceAction,
+  cookedPackageFieldsFromPreference,
   productNameWithBasis,
 } from './barcodeNutritionBasis.js'
 import { isManualNutritionValid, parseManualNutrition } from './manualNutritionEntry.js'
@@ -226,4 +231,78 @@ test('BASIS_COOKED_PACKAGE has its own distinct Hebrew label, different from bot
 test('nutritionForBasis: BASIS_COOKED_PACKAGE is not one of the two bases this function resolves from product data -- it deliberately falls through to null, since cooked-per-package values live only in the caller\'s own manual-entry state (BarcodeFoodEntry.vue\'s cookedPackageCalories/cookedPackageProtein refs), never in the product object itself', () => {
   const product = { caloriesPer100g: 371, proteinPer100g: 13 }
   assert.deepEqual(nutritionForBasis(product, BASIS_COOKED_PACKAGE), { caloriesPer100g: null, proteinPer100g: null })
+})
+
+// ---------------------------------------------------------------------
+// Persistent per-user preference: nutritionBasisForPreferenceAction /
+// cookedPackageFieldsFromPreference -- the repeat-scan confirmation
+// ("Use saved cooked/package values" / "Use dry/as-sold values" /
+// "Edit package values"), always shown when a preference row exists,
+// never a silent default even for a saved as_sold choice.
+// ---------------------------------------------------------------------
+
+test('nutritionBasisForPreferenceAction: "use saved" resolves to whatever basis the saved preference actually holds -- cooked_package', () => {
+  const savedCooked = { basis: BASIS_COOKED_PACKAGE, cooked_calories_per_100g: 158, cooked_protein_per_100g: 5.8 }
+  assert.equal(nutritionBasisForPreferenceAction(PREFERENCE_ACTION_USE_SAVED, savedCooked), BASIS_COOKED_PACKAGE)
+})
+
+test('nutritionBasisForPreferenceAction: "use saved" resolves to as_sold when the saved preference was as_sold', () => {
+  const savedAsSold = { basis: BASIS_AS_SOLD, cooked_calories_per_100g: null, cooked_protein_per_100g: null }
+  assert.equal(nutritionBasisForPreferenceAction(PREFERENCE_ACTION_USE_SAVED, savedAsSold), BASIS_AS_SOLD)
+})
+
+test('nutritionBasisForPreferenceAction: "use dry/as-sold" always resolves to as_sold, regardless of what was saved -- the user can always override a saved cooked preference', () => {
+  const savedCooked = { basis: BASIS_COOKED_PACKAGE, cooked_calories_per_100g: 158, cooked_protein_per_100g: 5.8 }
+  assert.equal(nutritionBasisForPreferenceAction(PREFERENCE_ACTION_USE_AS_SOLD, savedCooked), BASIS_AS_SOLD)
+})
+
+test('nutritionBasisForPreferenceAction: "edit package values" always resolves to cooked_package, regardless of what was saved -- lets a user switch INTO editing cooked values even if as_sold was saved last', () => {
+  const savedAsSold = { basis: BASIS_AS_SOLD, cooked_calories_per_100g: null, cooked_protein_per_100g: null }
+  assert.equal(nutritionBasisForPreferenceAction(PREFERENCE_ACTION_EDIT_PACKAGE, savedAsSold), BASIS_COOKED_PACKAGE)
+})
+
+test('nutritionBasisForPreferenceAction: an unrecognized action resolves to null, never a silent default', () => {
+  const savedCooked = { basis: BASIS_COOKED_PACKAGE, cooked_calories_per_100g: 158, cooked_protein_per_100g: 5.8 }
+  assert.equal(nutritionBasisForPreferenceAction('not_a_real_action', savedCooked), null)
+})
+
+test('cookedPackageFieldsFromPreference: converts a saved cooked_package row\'s real numbers (158 kcal/100g, 5.8g protein) to strings for pre-filling the form, exactly as saved -- no retyping needed', () => {
+  const savedCooked = { basis: BASIS_COOKED_PACKAGE, cooked_calories_per_100g: 158, cooked_protein_per_100g: 5.8 }
+  assert.deepEqual(cookedPackageFieldsFromPreference(savedCooked), { caloriesRaw: '158', proteinRaw: '5.8' })
+})
+
+test('cookedPackageFieldsFromPreference: an as_sold preference (no cooked figures to pre-fill) resolves to empty strings, not "null" text or 0', () => {
+  const savedAsSold = { basis: BASIS_AS_SOLD, cooked_calories_per_100g: null, cooked_protein_per_100g: null }
+  assert.deepEqual(cookedPackageFieldsFromPreference(savedAsSold), { caloriesRaw: '', proteinRaw: '' })
+})
+
+test('cookedPackageFieldsFromPreference: no saved preference at all resolves to empty strings, does not throw', () => {
+  assert.deepEqual(cookedPackageFieldsFromPreference(null), { caloriesRaw: '', proteinRaw: '' })
+  assert.deepEqual(cookedPackageFieldsFromPreference(undefined), { caloriesRaw: '', proteinRaw: '' })
+})
+
+// SCENARIO: the exact reported correction, end to end -- a saved
+// as_sold preference does NOT silently apply; the coach/trainee can
+// still choose "edit package values" and the confirmation always shows
+// all three real options.
+test('SCENARIO: Osem pasta, a saved as_sold preference from last time -- the repeat scan still offers "edit package values", and choosing it starts from a real, empty (never guessed) cooked-entry form', () => {
+  const savedAsSold = { basis: BASIS_AS_SOLD, cooked_calories_per_100g: null, cooked_protein_per_100g: null }
+
+  const resultingBasis = nutritionBasisForPreferenceAction(PREFERENCE_ACTION_EDIT_PACKAGE, savedAsSold)
+  assert.equal(resultingBasis, BASIS_COOKED_PACKAGE)
+
+  const prefilled = cookedPackageFieldsFromPreference(savedAsSold)
+  assert.deepEqual(prefilled, { caloriesRaw: '', proteinRaw: '' }, 'nothing to pre-fill from an as_sold preference -- the coach/trainee types real package values fresh, never a guess')
+})
+
+// SCENARIO: a saved cooked_package preference from last time -- "use
+// saved" reuses the exact typed figures with zero retyping.
+test('SCENARIO: Osem pasta, a saved cooked_package preference (158 kcal/100g, 5.8g protein) from last time -- "use saved" resolves to the exact same figures, pre-filled, no retyping', () => {
+  const savedCooked = { basis: BASIS_COOKED_PACKAGE, cooked_calories_per_100g: 158, cooked_protein_per_100g: 5.8 }
+
+  const resultingBasis = nutritionBasisForPreferenceAction(PREFERENCE_ACTION_USE_SAVED, savedCooked)
+  assert.equal(resultingBasis, BASIS_COOKED_PACKAGE)
+
+  const prefilled = cookedPackageFieldsFromPreference(savedCooked)
+  assert.deepEqual(prefilled, { caloriesRaw: '158', proteinRaw: '5.8' })
 })

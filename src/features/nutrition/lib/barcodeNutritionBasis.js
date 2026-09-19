@@ -135,6 +135,57 @@ export function needsManualCookedPackageEntry({ preparedCaloriesPer100g } = {}) 
   return !isRealNumber(preparedCaloriesPer100g)
 }
 
+// ---------------------------------------------------------------------
+// Persistent per-user basis PREFERENCE (048_barcode_nutrition_basis_
+// preferences.sql, barcodeNutritionBasisPreferences.js) -- remembers
+// which basis a coach/trainee picked last for a barcode, so a repeat
+// scan can PRE-FILL an explicit confirmation instead of asking them to
+// retype the same package figures. The confirmation is ALWAYS shown
+// when a saved preference exists, regardless of which basis it holds
+// -- an explicit correction made during this investigation: the user
+// wants to be asked "cooked or not" every time, never a silent default
+// even for a previously-saved as_sold choice.
+// ---------------------------------------------------------------------
+
+// The repeat-scan confirmation's three explicit actions.
+export const PREFERENCE_ACTION_USE_SAVED = 'use_saved'
+export const PREFERENCE_ACTION_USE_AS_SOLD = 'use_as_sold'
+export const PREFERENCE_ACTION_EDIT_PACKAGE = 'edit_package'
+
+// Resolves which basis results from each of the three actions. Never
+// skips the confirmation itself (that's a template/step concern in
+// BarcodeFoodEntry.vue, not this function's job) -- this only decides
+// the outcome once one of the three has actually been clicked.
+export function nutritionBasisForPreferenceAction(action, preference) {
+  if (action === PREFERENCE_ACTION_USE_AS_SOLD) return BASIS_AS_SOLD
+  if (action === PREFERENCE_ACTION_EDIT_PACKAGE) return BASIS_COOKED_PACKAGE
+  if (action === PREFERENCE_ACTION_USE_SAVED) {
+    return preference?.basis === BASIS_COOKED_PACKAGE ? BASIS_COOKED_PACKAGE : BASIS_AS_SOLD
+  }
+  return null
+}
+
+// Converts a stored preference row's numeric cooked_calories_per_100g/
+// cooked_protein_per_100g into the STRING values BarcodeFoodEntry.vue's
+// text inputs (cookedPackageCalories/cookedPackageProtein) pre-fill
+// with -- "so no retyping is needed" for both "use saved" (values used
+// as-is) and "edit package values" (values pre-filled, still editable).
+// Empty strings (not the number 0, not "null") for anything not
+// applicable, so v-model has a well-defined starting point either way.
+export function cookedPackageFieldsFromPreference(preference) {
+  if (!preference || preference.basis !== BASIS_COOKED_PACKAGE) {
+    return { caloriesRaw: '', proteinRaw: '' }
+  }
+  return {
+    caloriesRaw: numberToRawString(preference.cooked_calories_per_100g),
+    proteinRaw: numberToRawString(preference.cooked_protein_per_100g),
+  }
+}
+
+function numberToRawString(value) {
+  return value === null || value === undefined ? '' : String(value)
+}
+
 // The label appended to the saved barcode_product_name so "the saved
 // item shows the chosen basis" durably, without any new database column
 // -- barcode_product_name is already a free-text snapshot (045), so
