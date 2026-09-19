@@ -17,6 +17,7 @@ import {
 } from '../lib/barcodeCameraSupport.js'
 import { useCoachBarcodeProductsStore } from '../store/coachBarcodeProducts.js'
 import { formatNutritionAmount } from '../../../lib/formatNumber'
+import { categorizeSaveFailure, SAVE_FAILURE_LABELS } from '../lib/categorizeSaveFailure.js'
 
 // Self-contained barcode food-entry flow: scan (or type) a barcode ->
 // look it up against Open Food Facts -> show the matched product ->
@@ -43,7 +44,9 @@ import { formatNutritionAmount } from '../../../lib/formatNumber'
 // message alone made a real save failure easy to miss entirely (the
 // exact "silently discard an approved product" gap this emit exists to
 // close; see the PR report for the barcode 7622202268298 investigation
-// this was found from).
+// this was found from). Payload: { barcode, category, message } --
+// category is one of categorizeSaveFailure.js's fixed values, so a real
+// failure is never just an opaque raw message on its own.
 const emit = defineEmits(['resolved', 'cancel', 'save-for-future-failed'])
 
 // 'choose' (scan vs manual) -> 'scanning' (camera live) ->
@@ -88,6 +91,12 @@ const manualProtein = ref('')
 // top-level comment and the PR report for why this is scoped narrowly.
 const canSaveForFuture = ref(false)
 const saveForFutureError = ref('')
+// One of categorizeSaveFailure.js's fixed categories -- set alongside
+// saveForFutureError so a real failure always shows as "which of these
+// known things went wrong" (not signed in / permission denied / network /
+// other), never just an opaque raw message on its own.
+const saveForFutureErrorCategory = ref('')
+const saveForFutureErrorLabel = computed(() => SAVE_FAILURE_LABELS[saveForFutureErrorCategory.value] ?? '')
 
 let videoEl = null
 let mediaStream = null
@@ -402,8 +411,10 @@ async function confirmManual() {
         proteinPer100g,
       })
     } catch (err) {
+      const category = categorizeSaveFailure(err)
+      saveForFutureErrorCategory.value = category
       saveForFutureError.value = err.message
-      emit('save-for-future-failed', { barcode: lastBarcode.value, message: err.message })
+      emit('save-for-future-failed', { barcode: lastBarcode.value, category, message: err.message })
     }
   }
 
@@ -431,6 +442,7 @@ function reset() {
   manualProtein.value = ''
   canSaveForFuture.value = false
   saveForFutureError.value = ''
+  saveForFutureErrorCategory.value = ''
 }
 
 function cancel() {
@@ -583,7 +595,8 @@ defineExpose({ reset })
         הפריט לא נמצא במאגר -- הערכים יישמרו כהזנה ידנית עבור הרשומה הזו בלבד, ולא יתווספו למאגר המאכלים המאומת.
       </p>
       <p v-if="saveForFutureError" class="text-xs text-status-yellow">
-        השמירה לסריקות הבאות נכשלה ({{ saveForFutureError }}) -- הרישום הנוכחי עדיין יישמר כרגיל.
+        השמירה לסריקות הבאות נכשלה -- {{ saveForFutureErrorLabel }}
+        (<bdi dir="ltr">{{ saveForFutureError }}</bdi>) -- הרישום הנוכחי עדיין יישמר כרגיל.
       </p>
       <label class="flex flex-col gap-1">
         <span class="text-sm text-neutral-600">שם המוצר</span>

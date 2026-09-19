@@ -8,6 +8,7 @@ import BarcodeFoodEntry from './BarcodeFoodEntry.vue'
 import { formatNutritionAmount } from '../../../lib/formatNumber'
 import { entryDisplayName, entryQuantityLabel } from '../lib/entryDisplay'
 import { startRetentionClock, stopRetentionClock } from '../lib/nutritionRetentionClock'
+import { SAVE_FAILURE_LABELS } from '../lib/categorizeSaveFailure.js'
 
 const props = defineProps({
   traineeId: { type: String, required: true },
@@ -56,8 +57,9 @@ const barcodeSaveError = ref('')
 // until explicitly dismissed, survives the barcode form closing.
 const saveForFutureFailedNotice = ref('')
 
-function handleSaveForFutureFailed({ barcode, message }) {
-  saveForFutureFailedNotice.value = `שמירת המוצר לברקוד ${barcode} לסריקות הבאות נכשלה (${message}). הרישום הנוכחי נשמר כרגיל, אך בסריקה הבאה של אותו ברקוד יהיה צורך להזין את הערכים שוב.`
+function handleSaveForFutureFailed({ barcode, category, message }) {
+  const categoryLabel = SAVE_FAILURE_LABELS[category] ?? SAVE_FAILURE_LABELS.other
+  saveForFutureFailedNotice.value = `שמירת המוצר לברקוד ${barcode} לסריקות הבאות נכשלה -- ${categoryLabel} (${message}). הרישום הנוכחי נשמר כרגיל, אך בסריקה הבאה של אותו ברקוד יהיה צורך להזין את הערכים שוב.`
 }
 
 async function handleBarcodeResolved(resolved) {
