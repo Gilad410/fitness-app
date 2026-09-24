@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "7290014628564",
+    "name": "Granola pomme",
+    "brand": null,
+    "storedCalories": 297,
+    "storedProtein": 8
+  },
+  {
+    "barcode": "7290014749726",
+    "name": "שניצל קרעספי",
+    "brand": "עוף טוב",
+    "storedCalories": 211,
+    "storedProtein": 15
+  },
+  {
+    "barcode": "7290014758124",
+    "name": "Yogurt",
+    "brand": "Tnuva",
+    "storedCalories": 64,
+    "storedProtein": 5.33333333333333
+  },
+  {
+    "barcode": "7290014759534",
+    "name": "בולגרית למריחה 5%",
+    "brand": "פיראוס",
+    "storedCalories": 111,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290014761285",
+    "name": "0% yogurt",
+    "brand": "Yoplait",
+    "storedCalories": 40,
+    "storedProtein": 4.20000012715658
+  },
+  {
+    "barcode": "7290014763395",
+    "name": "Hard Cheese, 28% Fat",
+    "brand": "Tnuva Emek",
+    "storedCalories": 344,
+    "storedProtein": 23
+  },
+  {
+    "barcode": "7290014785564",
+    "name": "אטריות אודון",
+    "brand": "Taste of Asia",
+    "storedCalories": 122.7,
+    "storedProtein": 3
+  },
+  {
+    "barcode": "7290014981546",
+    "name": "Gainer",
+    "brand": "Gs Sport",
+    "storedCalories": 397,
+    "storedProtein": 14.4
+  },
+  {
+    "barcode": "7290015129732",
+    "name": "ג׳ל קונג׳ק",
+    "brand": "Skinny Pasta",
+    "storedCalories": 7,
+    "storedProtein": 0.100000001490116
+  },
+  {
+    "barcode": "7290015130035",
+    "name": "Winners Protein Bar כתום",
+    "brand": "Win",
+    "storedCalories": 372.307692307692,
+    "storedProtein": 30.7692307692308
+  },
+  {
+    "barcode": "7290015161848",
+    "name": "Organic biscuit",
+    "brand": "Nutrazen",
+    "storedCalories": 341,
+    "storedProtein": 8.80000019073486
+  },
+  {
+    "barcode": "7290015161862",
+    "name": "פת ערמונים אורגנית",
+    "brand": "Nutrazen",
+    "storedCalories": 373,
+    "storedProtein": 7.4
+  },
+  {
+    "barcode": "7290015172097",
+    "name": "Gyoza Beef",
+    "brand": "Dim Sam",
+    "storedCalories": 209,
+    "storedProtein": 8.1
+  },
+  {
+    "barcode": "7290015437479",
+    "name": "עגבניות חתוכות קוביות במיץ",
+    "brand": "La Pasta",
+    "storedCalories": 23,
+    "storedProtein": 1.3
+  },
+  {
+    "barcode": "7290015493215",
+    "name": "נביעות בטעם אפרסק עדין",
+    "brand": null,
+    "storedCalories": 0,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290015597548",
+    "name": "קרמיסימו",
+    "brand": "שטראוס",
+    "storedCalories": 224,
+    "storedProtein": 4
+  },
+  {
+    "barcode": "7290015673204",
+    "name": "BBQ KEBAB",
+    "brand": "Teva Deli",
+    "storedCalories": 203,
+    "storedProtein": 13.7
+  },
+  {
+    "barcode": "7290015738286",
+    "name": "Винегрет",
+    "brand": null,
+    "storedCalories": 139,
+    "storedProtein": 1
+  },
+  {
+    "barcode": "7290015858106",
+    "name": "פסטו",
+    "brand": "עללחם",
+    "storedCalories": 302,
+    "storedProtein": 3
+  },
+  {
+    "barcode": "7290016077759",
+    "name": "Classic Barbecue Sauce",
+    "brand": "Heinz",
+    "storedCalories": 138,
+    "storedProtein": 0.9
+  },
+  {
+    "barcode": "7290016096811",
+    "name": "ממרח טונה",
+    "brand": "פילטונה",
+    "storedCalories": 207,
+    "storedProtein": 7.80000019073486
+  },
+  {
+    "barcode": "7290016217728",
+    "name": "Red Fish Egg Salad",
+    "brand": "Pal Dagim",
+    "storedCalories": 411,
+    "storedProtein": 3.1
+  },
+  {
+    "barcode": "7290016390896",
+    "name": "Pan low carb",
+    "brand": "Granoletta",
+    "storedCalories": 159.600006103516,
+    "storedProtein": 11
+  },
+  {
+    "barcode": "7290016392388",
+    "name": "Whey protein powder Dutch wafer flavor",
+    "brand": "SE",
+    "storedCalories": 406.060606060606,
+    "storedProtein": 72.7272727272727
+  }
+]

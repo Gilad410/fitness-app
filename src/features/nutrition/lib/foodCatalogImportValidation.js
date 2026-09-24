@@ -20,6 +20,58 @@ export const CALORIE_MAX = 900
 export const PROTEIN_MIN = 0
 export const PROTEIN_MAX = 100
 
+// The exact, internationally standard thermochemical conversion factor
+// between kilojoules and kilocalories -- a unit conversion of a real,
+// explicitly-reported number, not an estimate or invented value. Some
+// sources (Open Food Facts in particular) report energy only in kJ for
+// a given record; this lets a real kJ figure become a real kcal figure
+// without ever guessing.
+export const KJ_PER_KCAL = 4.184
+
+// Only "100g" is accepted as a normalizable measurement basis. A
+// per-100ml value is NOT the same as per-100g for any but a
+// density-1 liquid (a guess this module refuses to make); a per-serving
+// value is handled separately (see perServingToPer100g, which requires
+// an explicit gram weight). Anything else (missing, "100ml", "serving",
+// an unrecognized string) is rejected outright, never silently treated
+// as per-100g.
+export const ACCEPTED_MEASUREMENT_BASIS = '100g'
+
+// basis === undefined/null means the caller hasn't stated one -- true
+// and fine for USDA FDC, whose per-100g reporting is unambiguous and
+// unconditional (see foodCatalogRealData.test.mjs's own basis check).
+// A source that DOES report an explicit basis (Open Food Facts' own
+// nutrition_data_per field) must pass it through here rather than omit
+// it, so a "100ml" or "serving" record is actually caught.
+export function validateMeasurementBasis(basis) {
+  if (basis === undefined || basis === null) return { valid: true }
+  if (basis !== ACCEPTED_MEASUREMENT_BASIS) {
+    return {
+      valid: false,
+      reason: `measurement basis is '${basis}', not per-100g -- refusing to treat this as per-100g without a reliable, product-specific conversion`,
+    }
+  }
+  return { valid: true }
+}
+
+// Resolves a real reported energy value to kcal, preferring an explicit
+// kcal figure when present and falling back to a documented kJ->kcal
+// conversion only when kcal itself is absent. Returns null (nothing to
+// resolve, not a fabricated 0) when neither is a finite number. The
+// `converted` flag lets a caller record, per requirement 2 ("document
+// any exact unit conversion"), whether this candidate's calories came
+// from a real reported kcal value or were derived via the exact kJ
+// conversion factor above.
+export function resolveCaloriesFromEnergyFields({ kcal, kj } = {}) {
+  if (typeof kcal === 'number' && Number.isFinite(kcal)) {
+    return { value: kcal, unit: 'kcal', converted: false }
+  }
+  if (typeof kj === 'number' && Number.isFinite(kj)) {
+    return { value: Math.round((kj / KJ_PER_KCAL) * 10) / 10, unit: 'kj', converted: true }
+  }
+  return null
+}
+
 // Rejects NULL, NaN, non-numeric, negative, or out-of-bounds values --
 // the exact same 0-900 / 0-100 bounds 049's own database CHECK
 // constraints enforce, checked here too so a bad candidate is caught
@@ -148,6 +200,9 @@ export function validateImportCandidate(candidate) {
   if (candidate?.per === 'serving' && (candidate?.servingWeightGrams === null || candidate?.servingWeightGrams === undefined)) {
     errors.push('per-serving value with no explicit serving weight in grams -- cannot convert to per-100g without guessing, refusing to import')
   }
+
+  const basisCheck = validateMeasurementBasis(candidate?.measurementBasis)
+  if (!basisCheck.valid) errors.push(basisCheck.reason)
 
   const macroCheck = checkCalorieMacroConsistency({
     calories: candidate?.caloriesPer100g,

@@ -1,0 +1,242 @@
+[
+  {
+    "barcode": "7290112340122",
+    "identityMatch": "unclear",
+    "evidenceCalories": 388,
+    "evidenceProtein": 7.5,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Table gives per-unit(~6.13g) and per-100g columns; used per-100g. No product name/brand visible in this crop to confirm identity."
+  },
+  {
+    "barcode": "7290000591643",
+    "identityMatch": "yes",
+    "evidenceCalories": 383,
+    "evidenceProtein": 9.6,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Package clearly shows 'מצות' (matzot); bilingual table used per-100g column (also gives per-32g serving: 122kcal/3.1g protein)."
+  },
+  {
+    "barcode": "0038000138430",
+    "identityMatch": "unclear",
+    "evidenceCalories": 150,
+    "evidenceProtein": 1,
+    "basis": "serving",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Serving size 1oz(28g)/about 14 crisps, ~6 servings/container; no per-100g column and no product/brand name visible in this crop."
+  },
+  {
+    "barcode": "00700139",
+    "identityMatch": "yes",
+    "evidenceCalories": 133,
+    "evidenceProtein": 3.2,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Label reads 'אורז עגול' (Round Rice), brand Hamama. Small printed table per-100g: energy 133kcal, protein 3.2g, carbs 28.3g, fat 0.7g, sodium 5.8mg."
+  },
+  {
+    "barcode": "0096086001659",
+    "identityMatch": "unclear",
+    "evidenceCalories": 588,
+    "evidenceProtein": 16.1,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Table gives per-100g and per-30g-serving columns; used per-100g (serving values: 176kcal/5g protein). No product name visible in this crop."
+  },
+  {
+    "barcode": "0608614343065",
+    "identityMatch": "unclear",
+    "evidenceCalories": 263,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Partial product description visible ('...יפון בציפוי גרעינים - לחם מיוחד') consistent with a rye/seeded bread but 'מחמצת' (sourdough) not confirmable, text cut off. Net weight 30g noted separately. Per-100g: energy 263kcal, fat 6.3g, saturated 1g, trans <0.5g, cholesterol 0mg, sodium 477mg, carbs 40g, sugars 4.6g, fiber 9.3g. Protein row is cut off/not visible in this photo."
+  },
+  {
+    "barcode": "0632432922225",
+    "identityMatch": "unclear",
+    "evidenceCalories": 40,
+    "evidenceProtein": null,
+    "basis": "serving",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "This is a Supplement Facts panel for an herbal/juice blend ('Contains 11% Juice') listing organic yerba mate as one ingredient among several, not a standalone 'Yerba Mate' product name. Serving size 8fl oz(240mL), ~2 servings/container. No protein row present on label."
+  },
+  {
+    "barcode": "00776783",
+    "identityMatch": "yes",
+    "evidenceCalories": 250,
+    "evidenceProtein": 7,
+    "basis": "serving",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Packaging shows naan bread photography and Indian-food context (coriander, heating instructions) consistent with garlic naan. Serving size 1 piece (85g), 4 servings/container. No per-100g column shown."
+  },
+  {
+    "barcode": "1770072209807",
+    "identityMatch": "unclear",
+    "evidenceCalories": 398,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Curved can label, small blurry text with 4 value columns (33g scoop, 100g powder, 100ml diluted per instructions, 100ml diluted per 33g-serving). Energy per 100g powder read as 398kcal (131kcal per 33g scoop) with reasonable confidence, but could not reliably identify/read the protein row value at this resolution - reporting null rather than guessing. No brand/product name visible."
+  },
+  {
+    "barcode": "0038000232152",
+    "identityMatch": "unclear",
+    "evidenceCalories": 150,
+    "evidenceProtein": 1,
+    "basis": "serving",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Serving size 1oz(28g)/about 15 crisps, ~6 servings/container (same panel layout as other chip items in this batch). No flavor/brand name or per-100g column visible."
+  },
+  {
+    "barcode": "4750616001989",
+    "identityMatch": "yes",
+    "evidenceCalories": 195,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "English text 'sprats paste' printed on can, matching given name. Per-100g: energy 195kcal, fat 14g, saturated fat 2.8g, trans fat 0.5g, cholesterol 350mg. Photo is cropped/curved and protein row is not visible/below frame."
+  },
+  {
+    "barcode": "5202302020020",
+    "identityMatch": "yes",
+    "evidenceCalories": 184,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Label reads 'ממרח זיתי קלמטה - טפנד' (Kalamata olive spread/tapenade), matching given name. Per-100g: energy 184kcal, fat 1.9g, saturated 0.7g, carbohydrate 18.6g, fiber 2.2g, sodium ~1400mg. No protein row appears on this label."
+  },
+  {
+    "barcode": "0065633280267",
+    "identityMatch": "unclear",
+    "evidenceCalories": 190,
+    "evidenceProtein": 3,
+    "basis": "serving",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Bilingual (FR/EN) Nutrition Facts panel only; no product/brand name visible. Serving size 'per 2 bars (42g)': Calories 190, Fat 7g, Carb 29g, Fiber 2g, Sugars 12g, Protein 3g. No per-100g column given."
+  },
+  {
+    "barcode": "7290000051758",
+    "identityMatch": "unclear",
+    "evidenceCalories": 84,
+    "evidenceProtein": 3.1,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Small, low-contrast red-on-red print on yogurt cup lid; no product name/brand text legible. Per-100g column read as energy 84kcal, protein 3.1g; other values (fat, etc.) less certain due to image quality."
+  },
+  {
+    "barcode": "7290110328580",
+    "identityMatch": "unclear",
+    "evidenceCalories": 85,
+    "evidenceProtein": 5.3,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Table gives per-100g and per-unit(container) columns; used per-100g: 85kcal, protein 5.3g (per-unit values: 165kcal, 10.6g protein). No product name visible in this crop."
+  },
+  {
+    "barcode": "7290016246445",
+    "identityMatch": "yes",
+    "evidenceCalories": 647,
+    "evidenceProtein": 11.2,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Ingredient list shows 'שומשום' (sesame), consistent with tahini. Table gives per-100g and per-1 tbsp(15g) columns; per-100g energy clearly 647kcal (99kcal/15g, consistent scaling). Protein value read as 11.2g/100g based on ratio-matching to the serving column, but exact row label was hard to confirm at this resolution - moderate confidence."
+  },
+  {
+    "barcode": "0729012494351",
+    "identityMatch": "unclear",
+    "evidenceCalories": 375,
+    "evidenceProtein": 7,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Clear, well-lit bilingual table with per-100g and per-30g columns; per-100g: energy 375kcal, protein 7g (30g serving: 113kcal, 2.1g protein). No product/brand name visible in this crop."
+  },
+  {
+    "barcode": "0038000138607",
+    "identityMatch": "unclear",
+    "evidenceCalories": 150,
+    "evidenceProtein": 1,
+    "basis": "serving",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Serving size 1oz(28g)/about 14 crisps, ~6 servings/container (same panel layout as other chip items in this batch). No flavor/brand name or per-100g column visible."
+  },
+  {
+    "barcode": "3560070240258",
+    "identityMatch": "unclear",
+    "evidenceCalories": 506,
+    "evidenceProtein": 4.4,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Generic multilingual nutrition table, no product/brand name visible. Per-100g: 2116kJ/506kcal, fat 26g (sat 2.1g), carbs 62g (sugars 4.1g), fiber 4.2g, protein 4.4g, salt 1.2g."
+  },
+  {
+    "barcode": "7290000185224",
+    "identityMatch": "yes",
+    "evidenceCalories": 64,
+    "evidenceProtein": 0,
+    "basis": "serving",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "No brand text visible, but servings-per-container math (32.5 servings x 20g = 650g) exactly matches '650 GR' in product name; nutrient profile (pure sugar syrup, 0 protein/fat) is also consistent with silan/date syrup. Serving size 1 Tbs (20g): Calories 64, Total carb 16g, Sugars 15g, Protein 0g. No per-100g column given."
+  },
+  {
+    "barcode": "7290101551263",
+    "identityMatch": "yes",
+    "evidenceCalories": 304,
+    "evidenceProtein": 0,
+    "basis": "100ml",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Manufacturer (Yad Mordechai) webpage confirms product 'סילאן טבעי' (Natural Silan), matching given name. Page gives per-100ml (304kcal, 0g protein) and per-serving ~8ml/1 tbsp (21kcal, 0g protein); used per-100ml as primary basis."
+  },
+  {
+    "barcode": "2445800003628",
+    "identityMatch": "unclear",
+    "evidenceCalories": 402,
+    "evidenceProtein": 32,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Nutrition table only; no brand/product text visible in this crop (a red sticker partially obscures the saturated-fat value but not calories/protein). Per-100g: energy 402kcal, protein 32g, carbs/sugars 0g, sodium 640mg, cholesterol 83mg - values strongly consistent with a hard cheese like Parmigiano Reggiano."
+  },
+  {
+    "barcode": "7290110113469",
+    "identityMatch": "yes",
+    "evidenceCalories": 0.5,
+    "evidenceProtein": 0,
+    "basis": "100ml",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Clear, high-resolution photo of can clearly labeled 'Coca-Cola Zero Mango' with barcode 7290110113469 printed and matching exactly. Per-100ml: energy 0.5kcal, fat 0g, sodium 5mg, carbs 0.0g, sugars 0.0g, protein 0g (330ml can)."
+  },
+  {
+    "barcode": "7290000137513",
+    "identityMatch": "unclear",
+    "evidenceCalories": 345,
+    "evidenceProtein": 3.8,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Clear, high-resolution table with per-unit and per-100g columns; no product/brand name visible in this crop, but nutrient profile is consistent with a frozen dessert item. Per-100g: energy 345kcal, protein 3.8g (per-unit: 36kcal, 0.4g protein)."
+  }
+]

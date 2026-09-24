@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "7290019932185",
+    "name": "Natural Piatachio Spread",
+    "brand": "תבואות",
+    "storedCalories": 578,
+    "storedProtein": 25
+  },
+  {
+    "barcode": "7290011131968",
+    "name": "גרנולה פלוס אגוזים ושקדים",
+    "brand": "Green",
+    "storedCalories": 415,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290106577480",
+    "name": "חציל על האש בטחינה",
+    "brand": "צבר",
+    "storedCalories": 222,
+    "storedProtein": 4
+  },
+  {
+    "barcode": "7290102395101",
+    "name": "ממרח גבינה ושוקולד",
+    "brand": "טרה",
+    "storedCalories": 247,
+    "storedProtein": 7
+  },
+  {
+    "barcode": "7290004033750",
+    "name": "Cloud Buns",
+    "brand": "Bremen",
+    "storedCalories": 265,
+    "storedProtein": 10.1
+  },
+  {
+    "barcode": "5061013944991",
+    "name": "Juiced Monster Aussie Lemonade - משקה אנרגיה מוגז עם 2% מיץ לימון מרכז, טאורין, קפאין, ל-קרניטין ל-טרטראט, ויטמינים מקבוצת B עם סוכרים וממתיק",
+    "brand": "Monster",
+    "storedCalories": 42,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290014471443",
+    "name": "גרנולה אגוזין",
+    "brand": "שקדיה",
+    "storedCalories": 383,
+    "storedProtein": 9
+  },
+  {
+    "barcode": "7290016096927",
+    "name": "בלט טונה",
+    "brand": "פילטונה",
+    "storedCalories": 179,
+    "storedProtein": 9
+  },
+  {
+    "barcode": "7290112126320",
+    "name": "Yellow Sliced Cheese",
+    "brand": "The White Village",
+    "storedCalories": 340,
+    "storedProtein": 22
+  },
+  {
+    "barcode": "7290019816126",
+    "name": "קראנץ' שקדי מרק",
+    "brand": "נסטלה",
+    "storedCalories": 370,
+    "storedProtein": 4
+  },
+  {
+    "barcode": "7290016392531",
+    "name": "Vegan Protein Complex",
+    "brand": "Alfa Vegan",
+    "storedCalories": 384.375,
+    "storedProtein": 75.3125
+  },
+  {
+    "barcode": "7290000334684",
+    "name": "טבעות בצל",
+    "brand": "תפוגן",
+    "storedCalories": 221,
+    "storedProtein": 3.2
+  },
+  {
+    "barcode": "7290010154012",
+    "name": "לימון בלאדי",
+    "brand": "ביטון יוחאי",
+    "storedCalories": 141,
+    "storedProtein": 1.4
+  },
+  {
+    "barcode": "7290100857045",
+    "name": "70% Cocoa Dark Chocolate",
+    "brand": "Splendid",
+    "storedCalories": 568.862275449102,
+    "storedProtein": 7.18562874251497
+  },
+  {
+    "barcode": "7290001436790",
+    "name": "נקניקיות מיני מרגז",
+    "brand": "בלדי",
+    "storedCalories": 250,
+    "storedProtein": 14.4
+  },
+  {
+    "barcode": "7290106572959",
+    "name": "Apropo 25g",
+    "brand": "Osem",
+    "storedCalories": 536,
+    "storedProtein": 4.4
+  },
+  {
+    "barcode": "7290016505177",
+    "name": "Nut Cream",
+    "brand": "Panda",
+    "storedCalories": 584,
+    "storedProtein": 5.9
+  },
+  {
+    "barcode": "7290112499936",
+    "name": "מגנום שקדים מובחרים",
+    "brand": "Magnum, מגנום",
+    "storedCalories": 322,
+    "storedProtein": 5.2
+  },
+  {
+    "barcode": "7290011378028",
+    "name": "Classic Halva No Added Sugar",
+    "brand": "כארכה",
+    "storedCalories": 550,
+    "storedProtein": 11
+  },
+  {
+    "barcode": "7622202269738",
+    "name": "Milk Chocolate With Raisins And Chopped Hazelnuts",
+    "brand": "Milka",
+    "storedCalories": 508,
+    "storedProtein": 6.2
+  },
+  {
+    "barcode": "7290002769347",
+    "name": "Kaak",
+    "brand": "Ugiot HaZahav",
+    "storedCalories": 505,
+    "storedProtein": 9.7
+  },
+  {
+    "barcode": "7290118425731",
+    "name": "פתיבר שוקו",
+    "brand": "אסם",
+    "storedCalories": 487,
+    "storedProtein": 6
+  },
+  {
+    "barcode": "0642135553046",
+    "name": "Tofu Fang",
+    "brand": "Fang",
+    "storedCalories": 90,
+    "storedProtein": 10.1
+  },
+  {
+    "barcode": "7290111357923",
+    "name": "Penuatpeanut butter",
+    "brand": "קליית גת",
+    "storedCalories": 603,
+    "storedProtein": 27
+  }
+]

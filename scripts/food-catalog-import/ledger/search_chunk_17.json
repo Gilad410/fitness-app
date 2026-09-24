@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "7290110328580",
+    "name": "יוגורט ביו 5%",
+    "brand": "תנובה",
+    "storedCalories": 85,
+    "storedProtein": 5.3
+  },
+  {
+    "barcode": "7613034792785",
+    "name": "Cheerios Multi - דגנים מלאים",
+    "brand": "Cheerios",
+    "storedCalories": 364,
+    "storedProtein": 9.4
+  },
+  {
+    "barcode": "7290016246445",
+    "name": "טחינה גולמית מלאה",
+    "brand": "בארכה",
+    "storedCalories": 647,
+    "storedProtein": 24
+  },
+  {
+    "barcode": "0729012494351",
+    "name": "קורנפלקס של אלופים",
+    "brand": "תלמה",
+    "storedCalories": 375,
+    "storedProtein": 7
+  },
+  {
+    "barcode": "0038000138607",
+    "name": "Salt & Vinegar",
+    "brand": "Pringles",
+    "storedCalories": 535.714285714286,
+    "storedProtein": 3.57142857142857
+  },
+  {
+    "barcode": "3560070240258",
+    "name": "Classic",
+    "brand": "Carrefour, Carrefour Sensation",
+    "storedCalories": 506,
+    "storedProtein": 4.4
+  },
+  {
+    "barcode": "7290000185224",
+    "name": "Kineret Silan Squeeze 650 GR",
+    "brand": "Silan, תמר כינרת",
+    "storedCalories": 320,
+    "storedProtein": 1
+  },
+  {
+    "barcode": "7290101551263",
+    "name": "סילאן טבעי - יד מרדכי",
+    "brand": "יד מרדכי",
+    "storedCalories": 304,
+    "storedProtein": 0.012
+  },
+  {
+    "barcode": "7290000311425",
+    "name": "ופלים מצופים",
+    "brand": "מן",
+    "storedCalories": 526,
+    "storedProtein": 4
+  },
+  {
+    "barcode": "7290004125776",
+    "name": "עמק קלאסית",
+    "brand": "עמק, תנובה",
+    "storedCalories": 344,
+    "storedProtein": 23
+  },
+  {
+    "barcode": "7290014758131",
+    "name": "יוגורט תנובה BIO 1.5%",
+    "brand": "תנובה",
+    "storedCalories": 55.3333333333333,
+    "storedProtein": 5.2
+  },
+  {
+    "barcode": "7290012737534",
+    "name": "זרעי צ'יאה אורגניים",
+    "brand": "ניצת הדובדבן",
+    "storedCalories": 483,
+    "storedProtein": 20
+  },
+  {
+    "barcode": "7290013453891",
+    "name": "קמח חומוס מלא אורגני",
+    "brand": "מנחת הארץ",
+    "storedCalories": 364,
+    "storedProtein": 19.3
+  },
+  {
+    "barcode": "7290017888026",
+    "name": "Pineapple Apple Carrot",
+    "brand": "Jafora Tabori",
+    "storedCalories": 40,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "2445800003628",
+    "name": "Parmigiano Reggiano",
+    "brand": "Agriform",
+    "storedCalories": 402,
+    "storedProtein": 32
+  },
+  {
+    "barcode": "7792860006218",
+    "name": "בייבי דול",
+    "brand": "Lheritier",
+    "storedCalories": 398,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290110113469",
+    "name": "קוקה קולה מנגו",
+    "brand": "קוקה קולה",
+    "storedCalories": 0.5,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290005509445",
+    "name": "מיני קוקיס חמאה",
+    "brand": "כרמית",
+    "storedCalories": 513,
+    "storedProtein": 4.8
+  },
+  {
+    "barcode": "7290112348548",
+    "name": "שוקולד לבן מעולה",
+    "brand": "עלית",
+    "storedCalories": 561,
+    "storedProtein": 6.1
+  },
+  {
+    "barcode": "7290017406367",
+    "name": "אורז פרסי מבושל",
+    "brand": "רמי לוי שיווק השקמה",
+    "storedCalories": 121,
+    "storedProtein": 2.5
+  },
+  {
+    "barcode": "7290000137513",
+    "name": "גלידונית",
+    "brand": "שטראוס",
+    "storedCalories": 345,
+    "storedProtein": 3.8
+  },
+  {
+    "barcode": "7290014525337",
+    "name": "חתיך עם מילוי בטעם אוכמנית",
+    "brand": "Slipdelis",
+    "storedCalories": 100,
+    "storedProtein": 1.3
+  },
+  {
+    "barcode": "7290000051376",
+    "name": "Yaourt",
+    "brand": "Yoplait",
+    "storedCalories": 40,
+    "storedProtein": 4.33333333333333
+  },
+  {
+    "barcode": "7290016233711",
+    "name": "לינגווני",
+    "brand": "La Pasta",
+    "storedCalories": 144,
+    "storedProtein": 4.4
+  }
+]

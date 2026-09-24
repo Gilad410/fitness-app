@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "7290110557102",
+    "name": "Pro 11 שוקולד",
+    "brand": "מאדן",
+    "storedCalories": 100,
+    "storedProtein": 8.66666666666667
+  },
+  {
+    "barcode": "7290000208022",
+    "name": "עגבניות מרוסקות ברסק עגבניות",
+    "brand": "יכין",
+    "storedCalories": 26,
+    "storedProtein": 1.3
+  },
+  {
+    "barcode": "7290106526822",
+    "name": "פריכיות עם שוקולד",
+    "brand": "Energy",
+    "storedCalories": 453,
+    "storedProtein": 7.6
+  },
+  {
+    "barcode": "7290000055336",
+    "name": "Peach Yogurt Drink",
+    "brand": "Tnuva",
+    "storedCalories": 67,
+    "storedProtein": 2.5
+  },
+  {
+    "barcode": "7290000047621",
+    "name": "גבינה לבנה",
+    "brand": "תנובה",
+    "storedCalories": 98,
+    "storedProtein": 9
+  },
+  {
+    "barcode": "7290112357113",
+    "name": "Houmous",
+    "brand": "Shtrauss",
+    "storedCalories": 127,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290003989539",
+    "name": "Cheese ravioli",
+    "brand": "Strauss שטראוס",
+    "storedCalories": 209,
+    "storedProtein": 8.3
+  },
+  {
+    "barcode": "7290000041445",
+    "name": "קוטג' 5% By תנובה",
+    "brand": "תנובה",
+    "storedCalories": 95,
+    "storedProtein": 11
+  },
+  {
+    "barcode": "7290116932484",
+    "name": "Yoplait go",
+    "brand": "Go",
+    "storedCalories": 61.5,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290112492982",
+    "name": "אבקת מרק פטריות",
+    "brand": "Knorr",
+    "storedCalories": 383,
+    "storedProtein": 12.8
+  },
+  {
+    "barcode": "7290004584528",
+    "name": "Yogurt Nature Bio 1.7%",
+    "brand": "Danone",
+    "storedCalories": 56,
+    "storedProtein": 5.3
+  },
+  {
+    "barcode": "7296073274957",
+    "name": "Peanut butter",
+    "brand": "Green",
+    "storedCalories": 684,
+    "storedProtein": 27
+  },
+  {
+    "barcode": "7290004122270",
+    "name": "גבינת עמק",
+    "brand": "תנובה",
+    "storedCalories": 344,
+    "storedProtein": 23
+  },
+  {
+    "barcode": "7290003550753",
+    "name": "light tuna chunks in oil",
+    "brand": "POSEIDON",
+    "storedCalories": 190,
+    "storedProtein": 25
+  },
+  {
+    "barcode": "7290000169538",
+    "name": "Instant Tomato Soup With Croutons מרק עגבניות עם קרוטונים",
+    "brand": "Knorr קנור נמס בכוס",
+    "storedCalories": 405,
+    "storedProtein": 9.5
+  },
+  {
+    "barcode": "7290112346087",
+    "name": "ציטוס שמנת בצל",
+    "brand": "עלית",
+    "storedCalories": 553,
+    "storedProtein": 5.7
+  },
+  {
+    "barcode": "7290004129118",
+    "name": "גבינת שמנת עם זיתים ירוקים",
+    "brand": "נפוליאון",
+    "storedCalories": 237,
+    "storedProtein": 3.8
+  },
+  {
+    "barcode": "7290111593697",
+    "name": "דבש טהור מפרחי בר",
+    "brand": "Life Wellness",
+    "storedCalories": 320,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290106771161",
+    "name": "גרנולה מייפל פקאן",
+    "brand": "שקד תבור",
+    "storedCalories": 451,
+    "storedProtein": 10.4
+  },
+  {
+    "barcode": "7290006983176",
+    "name": "לחמית חיטה מלאה ושיפון",
+    "brand": "אוסם",
+    "storedCalories": 410.526315789474,
+    "storedProtein": 13.6842105263158
+  },
+  {
+    "barcode": "7290119384242",
+    "name": "Yogurt Pro, Lemon Flavour",
+    "brand": "דנונה פרו",
+    "storedCalories": 55.5,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "4751017403419",
+    "name": "כבד דג שיבוט",
+    "brand": "Golden Fish",
+    "storedCalories": 596,
+    "storedProtein": 4.6
+  },
+  {
+    "barcode": "7290005287206",
+    "name": "טונה בהירה בשמן",
+    "brand": "Starkist",
+    "storedCalories": 194,
+    "storedProtein": 26
+  },
+  {
+    "barcode": "5000159561976",
+    "name": "חטיף במילוי רך עם קוקוס בציפוי בטעם שוקולד חלב",
+    "brand": "Bounty",
+    "storedCalories": 487,
+    "storedProtein": 3.8
+  }
+]

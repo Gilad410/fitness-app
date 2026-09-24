@@ -8,6 +8,9 @@ import {
   candidateDedupeKey,
   perServingToPer100g,
   validateImportCandidate,
+  validateMeasurementBasis,
+  resolveCaloriesFromEnergyFields,
+  KJ_PER_KCAL,
 } from './foodCatalogImportValidation.js'
 
 // ---------------------------------------------------------------------
@@ -208,6 +211,71 @@ test('validateImportCandidate: a structurally valid candidate with an inconsiste
   assert.equal(result.valid, true, 'a macro inconsistency alone does not fail hard validation')
   assert.equal(result.needsReview, true, 'but it must be flagged for manual review, never auto-imported silently')
   assert.equal(result.macroCheck.consistent, false)
+})
+
+// ---------------------------------------------------------------------
+// Open Food Facts import: measurement-basis (per-100g vs per-100ml vs
+// per-serving) and kcal/kJ handling.
+// ---------------------------------------------------------------------
+
+test('validateMeasurementBasis: accepts "100g" and accepts an unstated basis (USDA never states one -- always per-100g by convention)', () => {
+  assert.equal(validateMeasurementBasis('100g').valid, true)
+  assert.equal(validateMeasurementBasis(undefined).valid, true)
+  assert.equal(validateMeasurementBasis(null).valid, true)
+})
+
+test('REGRESSION: validateMeasurementBasis rejects "100ml" -- never silently treated as per-100g for a liquid product', () => {
+  const result = validateMeasurementBasis('100ml')
+  assert.equal(result.valid, false)
+  assert.match(result.reason, /100ml/)
+})
+
+test('validateMeasurementBasis: rejects "serving" and any other non-100g basis string', () => {
+  assert.equal(validateMeasurementBasis('serving').valid, false)
+  assert.equal(validateMeasurementBasis('unknown').valid, false)
+})
+
+test('resolveCaloriesFromEnergyFields: prefers a real reported kcal value, never converts when kcal itself is already present', () => {
+  const result = resolveCaloriesFromEnergyFields({ kcal: 60, kj: 251.25 })
+  assert.equal(result.value, 60)
+  assert.equal(result.converted, false)
+  assert.equal(result.unit, 'kcal')
+})
+
+test('resolveCaloriesFromEnergyFields: converts from kJ using the exact standard factor only when kcal is absent, and documents the conversion', () => {
+  const result = resolveCaloriesFromEnergyFields({ kj: 251.25 })
+  assert.equal(result.converted, true)
+  assert.equal(result.unit, 'kj')
+  assert.equal(result.value, Math.round((251.25 / KJ_PER_KCAL) * 10) / 10)
+  // Sanity check only, not exact-round-trip -- 251.25 kJ is itself
+  // OFF's own rounded figure for a real 60 kcal product, so converting
+  // it back lands close to but not always bit-for-bit at 60 (60.1 here,
+  // a 0.1 kcal/100g rounding artifact of the source data, not this
+  // module's conversion).
+  assert.ok(Math.abs(result.value - 60) <= 0.5, 'converting back from OFF\'s own kJ figure should land close to the real 60 kcal value')
+})
+
+test('REGRESSION: resolveCaloriesFromEnergyFields returns null (never a fabricated number) when neither kcal nor kJ is a finite number', () => {
+  assert.equal(resolveCaloriesFromEnergyFields({}), null)
+  assert.equal(resolveCaloriesFromEnergyFields({ kcal: null, kj: undefined }), null)
+  assert.equal(resolveCaloriesFromEnergyFields({ kcal: NaN }), null)
+})
+
+test('validateImportCandidate: rejects a candidate whose measurement basis is per-100ml, not per-100g', () => {
+  const result = validateImportCandidate({
+    name: 'Milk 3%', caloriesPer100g: 60, proteinPer100g: 3.3,
+    source: 'openfoodfacts', externalId: '7290004131074', measurementBasis: '100ml',
+  })
+  assert.equal(result.valid, false)
+  assert.ok(result.errors.some((e) => e.includes('100ml')))
+})
+
+test('validateImportCandidate: accepts a candidate with an explicit "100g" measurement basis', () => {
+  const result = validateImportCandidate({
+    name: 'Cottage Cheese 5%', caloriesPer100g: 106, proteinPer100g: 11,
+    source: 'openfoodfacts', externalId: '7290000000001', measurementBasis: '100g',
+  })
+  assert.equal(result.valid, true)
 })
 
 test('REGRESSION: raw and cooked variants of the same-named food both pass and get distinct dedupe keys -- neither is rejected as a "duplicate" of the other', () => {

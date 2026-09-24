@@ -1,0 +1,27 @@
+[
+  {
+    "barcode": "7290003075102",
+    "name": "לבנה טמרה",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290003075102.jpg"
+  },
+  {
+    "barcode": "7290112494221",
+    "name": "ביסקויט מצופה שוקולד חלב ושוקולד לבן",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290112494221.jpg"
+  },
+  {
+    "barcode": "7290110565527",
+    "name": "דנונה PRO יוגורט 20 גר׳ חלבון 1.5% שומן",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290110565527.jpg"
+  },
+  {
+    "barcode": "7613037686906",
+    "name": "Fitness almond honey",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7613037686906.jpg"
+  },
+  {
+    "barcode": "7290104508943",
+    "name": "بمبا اوسم بالفول السوداني 200gm",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290104508943.jpg"
+  }
+]

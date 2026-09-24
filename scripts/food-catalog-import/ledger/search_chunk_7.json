@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "7290019635031",
+    "name": "Buratta",
+    "brand": "Gad",
+    "storedCalories": 296,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290013472892",
+    "name": "Bulgarian cheese",
+    "brand": "Kolios",
+    "storedCalories": 246,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290018703304",
+    "name": "חטיף חלבון קרם עוגיות",
+    "brand": "Allin, allin",
+    "storedCalories": 348.333333333333,
+    "storedProtein": 28.3333333333333
+  },
+  {
+    "barcode": "7290000068084",
+    "name": "פתיבר",
+    "brand": "תלמה",
+    "storedCalories": 108,
+    "storedProtein": 1.6
+  },
+  {
+    "barcode": "7290117384596",
+    "name": "חטיף חלבון בטעם פאי קינמון",
+    "brand": "Protein  Today, Today",
+    "storedCalories": 315,
+    "storedProtein": 33.8
+  },
+  {
+    "barcode": "7290118201052",
+    "name": "All In Cookie",
+    "brand": "All In",
+    "storedCalories": 368.333333333333,
+    "storedProtein": 25
+  },
+  {
+    "barcode": "7290000497112",
+    "name": "Bread",
+    "brand": "Berman Bakery",
+    "storedCalories": 248,
+    "storedProtein": 9.8
+  },
+  {
+    "barcode": "7290019310051",
+    "name": "Protein Shake Cookie Cream",
+    "brand": "Allin",
+    "storedCalories": 381.818181818182,
+    "storedProtein": 75.7575757575758
+  },
+  {
+    "barcode": "7290119370177",
+    "name": "יוגורט בטעם בננה טופי",
+    "brand": "דנונה",
+    "storedCalories": 56,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290017850733",
+    "name": "חטיף חלבון בטעם שוקולד לבן ופטל אדום",
+    "brand": "ProteinPro",
+    "storedCalories": 276.25,
+    "storedProtein": 26.25
+  },
+  {
+    "barcode": "7290014692565",
+    "name": "גרעיני תירס מתוק",
+    "brand": "Sweet",
+    "storedCalories": 95,
+    "storedProtein": 3.5
+  },
+  {
+    "barcode": "7290003029433",
+    "name": "Shoko chocolate",
+    "brand": "יטבתה",
+    "storedCalories": 48,
+    "storedProtein": 3.2
+  },
+  {
+    "barcode": "7290100701126",
+    "name": "שעועית מש",
+    "brand": "סוגת",
+    "storedCalories": 114,
+    "storedProtein": 8.2
+  },
+  {
+    "barcode": "7290017947105",
+    "name": "לחם אמריקה",
+    "brand": "מאפיית אנג'ל",
+    "storedCalories": 264,
+    "storedProtein": 8.1
+  },
+  {
+    "barcode": "7290000117720",
+    "name": "Mushroom Soup",
+    "brand": null,
+    "storedCalories": 419,
+    "storedProtein": 4.8
+  },
+  {
+    "barcode": "7290002331155",
+    "name": "מי נביעות בטעם אפרסק",
+    "brand": null,
+    "storedCalories": 15,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290019056355",
+    "name": "Limonana",
+    "brand": null,
+    "storedCalories": 39,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290106668577",
+    "name": "Lemon juice",
+    "brand": "Yad Mordechai",
+    "storedCalories": 26,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290110558284",
+    "name": "MULTI Yogurt 3% fat",
+    "brand": "דנונה",
+    "storedCalories": 71.5,
+    "storedProtein": 6.5
+  },
+  {
+    "barcode": "7290015009393",
+    "name": "Pitted Kalamata olives",
+    "brand": "Daniel",
+    "storedCalories": 233,
+    "storedProtein": 2
+  },
+  {
+    "barcode": "7290114969284",
+    "name": "אבקת חלבון בטעם וניל",
+    "brand": "אול אין",
+    "storedCalories": 376.470588235294,
+    "storedProtein": 73.5294117647059
+  },
+  {
+    "barcode": "7290118422501",
+    "name": "Chips Classic",
+    "brand": "Osem",
+    "storedCalories": 542,
+    "storedProtein": 6
+  },
+  {
+    "barcode": "7296073553304",
+    "name": "Tortilla Wheat",
+    "brand": "Sufersal",
+    "storedCalories": 312,
+    "storedProtein": 8
+  },
+  {
+    "barcode": "7290016106664",
+    "name": "טונה במים מלח",
+    "brand": "טעמן",
+    "storedCalories": 104,
+    "storedProtein": 24
+  }
+]

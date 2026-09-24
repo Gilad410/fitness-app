@@ -25,3 +25,26 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Food catalog import: raw fetched API pages and generated intermediate
+# files are working data. Preserve the final reviewed source snapshots and
+# workbook so migration 055 can always be audited and regenerated exactly.
+scripts/food-catalog-import/raw/
+scripts/food-catalog-import/out/*
+!scripts/food-catalog-import/out/FINAL_SQL_ROWS.json
+!scripts/food-catalog-import/out/HEBREW_FINAL_PRESERVED.json
+!scripts/food-catalog-import/out/HEBREW_FINAL_SOURCE_PROVIDED.json
+!scripts/food-catalog-import/out/HEBREW_NAMING_EXCLUSIONS.json
+!scripts/food-catalog-import/out/טבלת_ייבוא_קטלוג_מזון.xlsx
+
+# Individual-product fetch cache, label-photo evidence downloads, and
+# the local PGlite schema-test scratch package -- all working data for
+# the OFF import, not committed (see the dry-run report for the
+# attribution/redistribution reasoning).
+scripts/food-catalog-import/raw_individual/
+scripts/food-catalog-import/label_photos/
+scripts/food-catalog-import/schema-test/node_modules/
+scripts/food-catalog-import/schema-test/package-lock.json
+scripts/food-catalog-import/out_all_israel_barcodes.json
+scripts/food-catalog-import/out_barcodes_to_fetch.json
+scripts/food-catalog-import/raw_sal_barcodes/

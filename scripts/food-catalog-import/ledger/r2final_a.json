@@ -1,0 +1,27 @@
+[
+  {
+    "barcode": "7290004125417",
+    "name": "גיל",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290004125417.jpg"
+  },
+  {
+    "barcode": "7290000120874",
+    "name": "Light Mayonnaise",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000120874.jpg"
+  },
+  {
+    "barcode": "7290105431516",
+    "name": "חטיף תמרים ושברי בוטנים",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290105431516.jpg"
+  },
+  {
+    "barcode": "7290000574141",
+    "name": "Whole Wheat Bread",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000574141.jpg"
+  },
+  {
+    "barcode": "7622201401900",
+    "name": "Sensations cookies Oreo cream",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7622201401900.jpg"
+  }
+]

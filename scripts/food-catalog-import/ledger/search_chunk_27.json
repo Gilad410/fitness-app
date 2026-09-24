@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "7290016594003",
+    "name": "מסיבת אגוזים",
+    "brand": "Shelly",
+    "storedCalories": 567,
+    "storedProtein": 11
+  },
+  {
+    "barcode": "7290016609165",
+    "name": "Pol",
+    "brand": "Rami levy",
+    "storedCalories": 63,
+    "storedProtein": 6
+  },
+  {
+    "barcode": "7290016609349",
+    "name": "עגבניות מרוסקות בזיליקום עשבי תיבול",
+    "brand": "רמי לוי",
+    "storedCalories": 26,
+    "storedProtein": 1.4
+  },
+  {
+    "barcode": "7290017065007",
+    "name": "Mozzarella slices",
+    "brand": "Gad",
+    "storedCalories": 284,
+    "storedProtein": 21.5
+  },
+  {
+    "barcode": "7290017065526",
+    "name": "קוואטרו פורמג׳י",
+    "brand": "גד",
+    "storedCalories": 322,
+    "storedProtein": 22
+  },
+  {
+    "barcode": "7290017142159",
+    "name": "Tuna In Oil",
+    "brand": "עץ הזית",
+    "storedCalories": 209,
+    "storedProtein": 26
+  },
+  {
+    "barcode": "7290017142203",
+    "name": "Tuna filet in oil",
+    "brand": "הץ הזית",
+    "storedCalories": 160,
+    "storedProtein": 27
+  },
+  {
+    "barcode": "7290017142395",
+    "name": "Lunch To Go - Tuna with pasta",
+    "brand": "עץ הזית",
+    "storedCalories": 219,
+    "storedProtein": 9
+  },
+  {
+    "barcode": "7290017218755",
+    "name": "Proteina Shape",
+    "brand": null,
+    "storedCalories": 120,
+    "storedProtein": 20
+  },
+  {
+    "barcode": "7290017275291",
+    "name": "Bio Tagon",
+    "brand": null,
+    "storedCalories": 667,
+    "storedProtein": 24
+  },
+  {
+    "barcode": "7290017406374",
+    "name": "Jasmin rice",
+    "brand": "Rami Levy, רמי לוי",
+    "storedCalories": 369,
+    "storedProtein": 6.8
+  },
+  {
+    "barcode": "7290017516820",
+    "name": "Hazelnut Yoga Bar",
+    "brand": "Pangea",
+    "storedCalories": 369,
+    "storedProtein": 24
+  },
+  {
+    "barcode": "7290017617107",
+    "name": "מיקס 4 דגנים וירקות עם טונה",
+    "brand": "Starkist",
+    "storedCalories": 217,
+    "storedProtein": 10.2
+  },
+  {
+    "barcode": "7290017696393",
+    "name": "Mushroom burger",
+    "brand": "Marina",
+    "storedCalories": 73,
+    "storedProtein": 7.19999980926514
+  },
+  {
+    "barcode": "7290017850726",
+    "name": "חטיף חלבון בטעם קרם עוגיות",
+    "brand": null,
+    "storedCalories": 365,
+    "storedProtein": 34.8333333333333
+  },
+  {
+    "barcode": "7290017894119",
+    "name": "Fusilli Gluten Free Corn Rice",
+    "brand": "DAG",
+    "storedCalories": 355,
+    "storedProtein": 6.8
+  },
+  {
+    "barcode": "7290017928685",
+    "name": "Bagels",
+    "brand": null,
+    "storedCalories": 387,
+    "storedProtein": 9.8
+  },
+  {
+    "barcode": "7290017947464",
+    "name": "פיצה פיתה כוסמין",
+    "brand": "אנג׳ל",
+    "storedCalories": 225,
+    "storedProtein": 9.60000038146973
+  },
+  {
+    "barcode": "7290018043134",
+    "name": "Protein Bar White Chocolate Cookie",
+    "brand": "Allin",
+    "storedCalories": 346.666666666667,
+    "storedProtein": 29.1666666666667
+  },
+  {
+    "barcode": "7290018043189",
+    "name": "Proud",
+    "brand": "Protéine bar",
+    "storedCalories": 211,
+    "storedProtein": 17.5
+  },
+  {
+    "barcode": "7290018043899",
+    "name": "Protein Bar Peanut Caramel Flavor",
+    "brand": "Allin",
+    "storedCalories": 390,
+    "storedProtein": 33.3333333333333
+  },
+  {
+    "barcode": "7290018198148",
+    "name": "קיספי ציפס לתנור",
+    "brand": "תפוגן",
+    "storedCalories": 139,
+    "storedProtein": 2.5
+  },
+  {
+    "barcode": "7290018237373",
+    "name": "פסטרמה עוף טוב גריל",
+    "brand": "עוף טוב",
+    "storedCalories": 99,
+    "storedProtein": 18
+  },
+  {
+    "barcode": "7290018249154",
+    "name": "ממרח קקאו עם אגוזי לוז",
+    "brand": null,
+    "storedCalories": 371,
+    "storedProtein": 3.7
+  }
+]

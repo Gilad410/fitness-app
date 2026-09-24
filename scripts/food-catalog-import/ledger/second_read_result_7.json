@@ -1,0 +1,242 @@
+[
+  {
+    "barcode": "7290101551584",
+    "identityMatch": "yes",
+    "evidenceCalories": 501,
+    "evidenceProtein": 9.0,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Back-of-pack table (Hebrew/Arabic), potato-based baked kids' chip. Two columns: per 100g and per 20g bag (=28g per Arabic text). Per 100g: 501kcal, fat 24g, sat 2.5g, trans <0.5g, sodium 350mg, carbs 60g, sugars 1.6g, protein 9.0g. Per 20g bag: 100kcal, protein 1.8g (consistent with 100g figure at 0.2 ratio)."
+  },
+  {
+    "barcode": "7290105366047",
+    "identityMatch": "unclear",
+    "evidenceCalories": 321,
+    "evidenceProtein": 10.6,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Tub label crop shows only the nutrition table and manufacturer (Strauss) info - no product name/brand visible in frame to confirm 'white tahini' identity, though contents appear to be a beige tahini-like paste/sauce. Two columns: per 100g and per tablespoon (~15g). Per 100g: 321kcal, fat 29g, saturated <0.5g, sodium 391mg, carbs 10.6g, sugars 1.9g, fiber 10.6g(printed as such), protein 10.6g. Values noticeably lower-calorie/lower-fat than typical raw tahini paste, suggesting this may be a diluted tahini sauce rather than pure paste, but reported as printed."
+  },
+  {
+    "barcode": "7290018703076",
+    "identityMatch": "yes",
+    "evidenceCalories": 350,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Low-resolution (590x1280) tilted photo of a twin-stick chocolate-coated protein bar ('milk and dark chocolate' per visible pink/white text, matching 'double chocolate protein bar'). Table has 4 numeric columns (two sub-tables side by side, likely for the two different coated sticks) using a stylized/blocky font that was very hard to resolve at this resolution. Energy row was legible and internally consistent: 100g=350kcal, per-2-sticks/60g-bag=211kcal (ratio 0.60, matches printed net weight 60g). Fat/saturated-fat/carb/sugar rows were located but digit readings were inconsistent with the 0.60 scale factor across repeated crops (likely misread stylized digits), so they are not reported. A row labeled 'חלבונים (גרם)' (protein) was located but its printed values could not be reliably resolved (candidate reads were internally inconsistent) - recommend re-checking against a higher-resolution source image."
+  },
+  {
+    "barcode": "7290018703489",
+    "identityMatch": "yes",
+    "evidenceCalories": 348,
+    "evidenceProtein": 30,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Sharp, fully legible allinpro-style label ('banana toffee' protein bar). Two columns: per 100g and per 60g bar. Per 100g: 348kcal, fat 13.3g, sat 6g, trans <0.5g, cholesterol 11.7mg, sodium 235mg, carbs 28.9g, sugars 3.7g, polyols 23.8g, fiber 16.5g, protein 30g, leucine 2.2g, isoleucine 1.2g, valine 1.3g. Per 60g bar: 209kcal, protein 18g."
+  },
+  {
+    "barcode": "7290019204800",
+    "identityMatch": "unclear",
+    "evidenceCalories": 210,
+    "evidenceProtein": 14,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Tight crop of only the nutrition table (Hebrew), no brand/product name visible to confirm 'Chongo Super Crunch'. Single column, per 100g: energy 210kcal, fat 8g, saturated 1.8g, trans 0.5g, cholesterol 40mg, sodium 400mg, carbs 20g, sugars 1.8g, protein 14g."
+  },
+  {
+    "barcode": "7290019310006",
+    "identityMatch": "yes",
+    "evidenceCalories": 380,
+    "evidenceProtein": 73,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "sourceUrl is a retailer product page (allinpro.co.il), not a direct image, so no photographed label exists; data extracted from an HTML nutrition-facts table embedded on the page (not an OCR'd photo). Front-of-jar product images on the page confirm 'Belgian Chocolate Flavor' (עם טעם שוקולד בלגי). Table columns: per 100g powder and per 33g serving. Per 100g: 380kcal, fat 5g, sat 2.5g, trans <0.5g, cholesterol 172mg, sodium 443mg, carbs 9.3g, sugars 3.8g, fiber 2.3g, protein 73g. Per 33g serving: 125kcal, protein 24g, BCAA 5.3g (also stated on front label)."
+  },
+  {
+    "barcode": "7290019310686",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "serving",
+    "prepState": "as_sold",
+    "legible": false,
+    "notes": "sourceUrl is a front-of-package image only (no nutrition-facts table visible). Front label confirms product identity: 'allin EXTRA SOFT' - 'חטיף חלבון בטעם שוקולד לבן בוטנים קרמל' (white chocolate peanut caramel protein bar), matching the given name. Partial per-bar panel visible: 'Per Bar: PROTEIN [digit cut off]5g | SUGAR 2.1g | BCAA 2.4g' - the tens digit of protein-per-bar is cropped off the image edge and unreadable, and no calorie value is printed anywhere in this image, so no calorie/protein figures can be reported without guessing."
+  },
+  {
+    "barcode": "7290019310990",
+    "identityMatch": "yes",
+    "evidenceCalories": 392,
+    "evidenceProtein": 79,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "sourceUrl is a retailer product page (allinpro.co.il), not a direct image; data extracted from an HTML nutrition-facts table embedded on the page. Page title and product images explicitly say 'ללא תוספת טעם' (unflavored), matching 'Whey Protein Unflavored'. Table columns: per 100g powder and per 33g serving. Per 100g: 392kcal, fat 4.7g, sat 2.5g, trans <0.5g, cholesterol 190mg, sodium 150mg, carbs 8.3g, sugars 4.1g, protein 79g. Per 33g serving: 129kcal, protein 26g, BCAA 5.8g (also on front label)."
+  },
+  {
+    "barcode": "7290107649681",
+    "identityMatch": "yes",
+    "evidenceCalories": 347,
+    "evidenceProtein": 4.3,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Ice-cream cone (Unilever, כשר חלבי) photographed in hand; barcode printed on pack (7290107649681) matches the given barcode exactly, confirming identity even though the front product name is not in frame. Table columns: 'ל-100 גרם' and 'ליחידה' (per unit). Per 100g: energy 347kcal, fat 15.1g, sat 10.3g, trans <0.5g, cholesterol 8mg, sodium 60mg, carbs 48.4g, protein 4.3g. Per unit: 222kcal, protein 2.8g. All rows scale consistently at a ~0.64 ratio, supporting reading confidence."
+  },
+  {
+    "barcode": "7290109358260",
+    "identityMatch": "unclear",
+    "evidenceCalories": 232,
+    "evidenceProtein": 19,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Green package, nutrition table only in frame (no product name/brand visible) to directly confirm 'Saucisses Tivol'. Columns: per 100g and 'למנה (2 יח'=66 גרם)' (per 2-unit/66g serving). Per 100g: energy 232kcal, protein 19g, carbs/fiber rows ~3g each (label order for these two rows uncertain), fat 15.9g, sat 1.8g, trans <0.5g, cholesterol 6.7mg, sodium 580mg, salt 4.1g. Per 66g serving: 153kcal, protein 12g."
+  },
+  {
+    "barcode": "7290110323585",
+    "identityMatch": "yes",
+    "evidenceCalories": 62,
+    "evidenceProtein": 10,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Cherry dairy dessert cup; ingredient list explicitly includes 'דובדבן מבושל' (cooked cherry, 6%), matching 'Go Light דובדבן'. Columns: per 100g and 'כללי' (whole container, =200g, values exactly 2x the 100g column throughout). Per 100g: energy 62kcal, fat 0.4g, sodium 62mg, carbs 4.6g, sugars 4.3g, protein 10g, calcium 163mg. Whole container: 124kcal, protein 20g."
+  },
+  {
+    "barcode": "7290110554460",
+    "identityMatch": "yes",
+    "evidenceCalories": 544,
+    "evidenceProtein": 5.8,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Sharp photo. Front reads \"צ'יטוס Crunchy\" cheddar & jalapeno corn snack, and printed barcode 7290110554460 matches the given barcode exactly, matching 'Chitos crunchy cheder jalapinio'. Columns: per 100g and per 65g bag. Per 100g: 544kcal, fat 33g, sat 3.4g, trans <0.5g, sodium 1022mg, carbs 54g, sugars 2.5g, sugar-cubes 0.5, protein 5.8g. Per 65g bag: 354kcal, protein 3.8g."
+  },
+  {
+    "barcode": "7290110564339",
+    "identityMatch": "yes",
+    "evidenceCalories": 263,
+    "evidenceProtein": 10.0,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Jar viewed at an angle; ingredient list includes 'חומוס מבושל 44%' and 'טחינה גולמית 30%' (raw tahini), matching 'חומוס עשיר בטחינה גולמית'. Single column, per 100g: energy 263kcal, fat 19.6g, saturated 2.8g, trans <0.5g, cholesterol 0, sodium 400mg, carbs 8.0g, sugars 1.1g, protein 10.0g."
+  },
+  {
+    "barcode": "7290111566103",
+    "identityMatch": "yes",
+    "evidenceCalories": 220,
+    "evidenceProtein": 7.8,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Ingredients list 'חומוס מושרה (51%), חומוס, מים, קישואים...' (soaked chickpeas, chickpeas, water, zucchini) consistent with falafel; product is vegan per ingredient list (no animal products). Columns: per 100g and 'למנה (84 גרם, כ-4 יחידות)' (per 84g/4-unit serving). Per 100g: energy 220kcal, fat 11.6g, sat 1.2g, trans <0.5g, cholesterol 0, sodium 400mg, carbs 18.5g, sugars 0.4g, fiber 5g, protein 7.8g (last row partially cropped but value/ratio consistent with the 0.84 scaling seen in every other row). Per 84g serving: 184kcal, protein 6.6g."
+  },
+  {
+    "barcode": "7290112197191",
+    "identityMatch": "yes",
+    "evidenceCalories": 464,
+    "evidenceProtein": 4.6,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Ingredient list explicitly describes 'קרם בטעם וניל (48%)' (vanilla-flavor cream filling) inside a rice/corn-flour based shell, matching 'Dark Choc Vanilla Filled Cereal'. Single column, per 100g: energy 464kcal, fat 17.1g, sat 4g, trans <0.5g, cholesterol 0, sodium 113mg, carbs 70.1g, sugars 38g, fiber 5g, protein 4.6g."
+  },
+  {
+    "barcode": "7290112351067",
+    "identityMatch": "yes",
+    "evidenceCalories": 304,
+    "evidenceProtein": 0,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Ingredients state 'תמרים מזן מג'הול' (Majhoul dates) and label text elsewhere reads 'סילאן טבעי עשוי...', directly matching 'סילאן טבעי' (natural date syrup). Two columns: per 100g and per ~7g tablespoon. Per 100g: energy 304kcal, fat 0g, sodium 11mg, carbs 76g, sugars 64g, protein 0g. Per tablespoon: 21kcal, protein 0g."
+  },
+  {
+    "barcode": "7290114604901",
+    "identityMatch": "yes",
+    "evidenceCalories": 487,
+    "evidenceProtein": 1.0,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Bottle reads 'מאסטר שף ממרח מתובל שום' (Master Chef garlic-seasoned spread/sauce), matching 'רוטב שום מאסטר שף'; printed barcode 7290114604901 matches the given barcode exactly. Single column, per 100g: energy 487kcal, fat 50g, sat 3.6g, trans <0.5g, cholesterol 16mg, sodium 398mg, carbs 7.6g, sugars 3.6g, protein 1.0g."
+  },
+  {
+    "barcode": "7290114969307",
+    "identityMatch": "yes",
+    "evidenceCalories": 385,
+    "evidenceProtein": 78,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Label reads 'Whey Protein Drink Mix Powder White Chocolate Flavor' / 'אבקה להכנת משקה ע\"ב חלבון מי גבינה בטעם שוקולד לבן', matching 'Whey, White Chocolate'. Three columns (label unclear for exact left header, likely per-1000g scoop count; main two are per 100g and per 33g serving). Per 100g: energy 385kcal, fat 3.5g, sat 1.8g, trans <0.5g, sodium 184mg, carbs 10.4g, sugars 4.2g, protein ~78g (last digit had minor residual uncertainty, range 76-79, but 78 is most consistent with the printed 33g-serving value of 26g protein at the established ~0.33 scaling factor). Per 33g serving: 127kcal, protein 26g."
+  },
+  {
+    "barcode": "7290115203844",
+    "identityMatch": "yes",
+    "evidenceCalories": 240,
+    "evidenceProtein": 12.3,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Swedish/Finnish label: 'En portion innehåller 1 vegansk schnitzel (90 g)' = 'contains 1 vegan schnitzel', matching 'Plant-based schnitzel'. Columns: per 100g and per 90g portion. Per 100g: 1002kJ/240kcal, fat 12.2g, carbs 1.0g, sugars 0.5g, fiber 5.3g, protein 12.3g, salt 0.83g. Per 90g portion: 903kJ/216kcal, protein 11.1g."
+  },
+  {
+    "barcode": "7290115208245",
+    "identityMatch": "yes",
+    "evidenceCalories": 369,
+    "evidenceProtein": 11.3,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Pink/beet-colored bag with Osem/Nestlé branding visible (logo circle, 'www.osem-...'), consistent with an Osem 'בייגלה סלק' (beet bagel snack) product line; exact product-name text not fully in frame due to glare/curvature, so identity is inferred from branding plus package color rather than a directly read name. Trilingual (Hebrew/Arabic) table, columns per 100g and per ~31g serving (scale factor ~0.31 consistent across fat/saturated-fat/protein rows). Per 100g: energy 369kcal, fat 6.2g, sat 2.6g, trans <0.5g, cholesterol 0, protein 11.3g. Per serving: 120kcal, fat 1.9g, sat 0.8g, protein 3.4g. Sodium/carbohydrate row values were visually inconsistent between crops (glare on plastic) and are not reported."
+  },
+  {
+    "barcode": "7296073274964",
+    "identityMatch": "yes",
+    "evidenceCalories": 676,
+    "evidenceProtein": 27,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Tight crop of only the nutrition table (no product name visible), but the macro profile (very high fat 53.4g/100g, high protein 27g/100g, low carb) is characteristic of peanut butter, consistent with 'חמאת בוטנים טבעית עם שבבי בוטנים'. Single column, per 100g: energy 676kcal, fat 53.4g, sat 10g, trans <0.5g, cholesterol 0, sodium 6mg, carbs 16.6g, sugars 4.1g, fiber 10.7g, protein 27g."
+  },
+  {
+    "barcode": "7296150000011",
+    "identityMatch": "unclear",
+    "evidenceCalories": 170,
+    "evidenceProtein": 1.6,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Very tight crop of only the nutrition table, no product name/brand visible to directly confirm 'stuffed grape leaves with rice'. Single column, per 100g: energy 170kcal, protein 1.6g, carbs 19g, fat 9.6g, saturated 0.8g, cholesterol 0, sodium 475mg. Profile (low protein, moderate carb/fat) is plausible for rice-stuffed grape leaves in oil but not confirmed by any visible product text."
+  },
+  {
+    "barcode": "8005110002533",
+    "identityMatch": "yes",
+    "evidenceCalories": 49,
+    "evidenceProtein": 1.7,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Partial description text above the table reads '...מעגבניות ... מתקתקות' and '...תוספת בצלי שאלוט ובזיליקום' (with added shallot and basil), consistent with a tomato pasta sauce, matching 'רוטב עגבניות לפסטה'. Single column, per 100g: energy 49kcal, fat 0.9g, sodium 176mg, carbs 7.8g, sugars 6.1g, fiber 1.5g, protein 1.7g."
+  },
+  {
+    "barcode": "8723400782100",
+    "identityMatch": "unclear",
+    "evidenceCalories": 388,
+    "evidenceProtein": 0,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Trilingual (English/German/Estonian) nutrition table only in frame, no product name/brand visible to directly confirm 'Chewy dragees'. Single column, per 100g: 1647kJ/388kcal, fat 1.9g, saturated 1.7g, carbs 92g, sugars 69g, protein 0g, salt 0.1g - a pure-sugar candy profile consistent with a chewy dragee/candy product."
+  }
+]

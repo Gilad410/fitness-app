@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "0096086001659",
+    "name": "Keto Granola",
+    "brand": "Keto Chef",
+    "storedCalories": 588,
+    "storedProtein": 16.1
+  },
+  {
+    "barcode": "0608614343065",
+    "name": "לחם מחמצת שיפון גרעינים",
+    "brand": "שמרים טל",
+    "storedCalories": 263,
+    "storedProtein": 9.3
+  },
+  {
+    "barcode": "0632432922225",
+    "name": "Yerba Mate",
+    "brand": null,
+    "storedCalories": 40,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "0693493134736",
+    "name": "Burger Buns",
+    "brand": "Galila",
+    "storedCalories": 297,
+    "storedProtein": 7.5
+  },
+  {
+    "barcode": "0710497631488",
+    "name": "תות שדה מצופה בשוקולד לבן ובשוקולד חלב",
+    "brand": "Gio",
+    "storedCalories": 264,
+    "storedProtein": 2.8
+  },
+  {
+    "barcode": "0729054002241",
+    "name": "Keto bar pulsin",
+    "brand": "Pulsin",
+    "storedCalories": 494,
+    "storedProtein": 25.2000007629395
+  },
+  {
+    "barcode": "0729056420654",
+    "name": "T-bone steak",
+    "brand": null,
+    "storedCalories": 162,
+    "storedProtein": 21
+  },
+  {
+    "barcode": "0729722526109",
+    "name": "Chardonnay",
+    "brand": "Fountain Grove",
+    "storedCalories": 300,
+    "storedProtein": 0.200000002980232
+  },
+  {
+    "barcode": "0729730069032",
+    "name": "Strawberry protein shake",
+    "brand": "Ena",
+    "storedCalories": 396.774193548387,
+    "storedProtein": 80.6451612903226
+  },
+  {
+    "barcode": "00776783",
+    "name": "Garlic Naan",
+    "brand": "Trader Joe's",
+    "storedCalories": 294.117647058824,
+    "storedProtein": 7
+  },
+  {
+    "barcode": "0796520228245",
+    "name": "פילה אמנון",
+    "brand": "ויקטורי",
+    "storedCalories": 103,
+    "storedProtein": 20
+  },
+  {
+    "barcode": "0811961021177",
+    "name": "Coconut palm sugar",
+    "brand": null,
+    "storedCalories": 375,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "1770072209784",
+    "name": "Chocolate And Hazelnut Vegan Gainer",
+    "brand": "Alfa Vegan",
+    "storedCalories": 389,
+    "storedProtein": 16
+  },
+  {
+    "barcode": "1770072209807",
+    "name": "חלבון קוקוס שוקולד",
+    "brand": "אלפא",
+    "storedCalories": 390,
+    "storedProtein": 72
+  },
+  {
+    "barcode": "1770072211930",
+    "name": "Alpha Whey Gold Chocolate Caramel & Pretzel Flavor",
+    "brand": "Alfa",
+    "storedCalories": 391,
+    "storedProtein": 71
+  },
+  {
+    "barcode": "2632197004394",
+    "name": "Bife Vazia",
+    "brand": "Continente",
+    "storedCalories": 214,
+    "storedProtein": 19.92
+  },
+  {
+    "barcode": "3073781190618",
+    "name": "Cheese Wedge 18.5%",
+    "brand": "La Vache qui rit",
+    "storedCalories": 239,
+    "storedProtein": 11.5
+  },
+  {
+    "barcode": "3324321282639",
+    "name": "Bouscoutou",
+    "brand": "Mémé Hélène",
+    "storedCalories": 433,
+    "storedProtein": 5.6
+  },
+  {
+    "barcode": "0038000232152",
+    "name": "BBQ CHIPS",
+    "brand": "Pringles",
+    "storedCalories": 150,
+    "storedProtein": 1
+  },
+  {
+    "barcode": "4316268681391",
+    "name": "Grill- und Pfannenkäse Classic",
+    "brand": "Barbeque",
+    "storedCalories": 319,
+    "storedProtein": 23
+  },
+  {
+    "barcode": "4750616001989",
+    "name": "Sprats Paste",
+    "brand": "Brivais Vilnis",
+    "storedCalories": 195,
+    "storedProtein": 12
+  },
+  {
+    "barcode": "4770275049603",
+    "name": "Литовский творог классический",
+    "brand": "Svalya",
+    "storedCalories": 160,
+    "storedProtein": 16
+  },
+  {
+    "barcode": "4770275051101",
+    "name": "Farmer's cheese",
+    "brand": "Svalya",
+    "storedCalories": 125,
+    "storedProtein": 16.5
+  },
+  {
+    "barcode": "4778003303669",
+    "name": "Snoked Salmon Fillet Sliced Raw",
+    "brand": "Latfood",
+    "storedCalories": 175,
+    "storedProtein": 20
+  }
+]

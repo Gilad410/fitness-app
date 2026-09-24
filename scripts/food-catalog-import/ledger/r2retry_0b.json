@@ -1,0 +1,27 @@
+[
+  {
+    "barcode": "7290008752244",
+    "name": "טפוצ׳יפס קראנץ׳ גריל",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290008752244.jpg"
+  },
+  {
+    "barcode": "7290112330352",
+    "name": "Yogurt Pro 20",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290112330352.jpg"
+  },
+  {
+    "barcode": "7290004129101",
+    "name": "גבינת שמנת בטעם טבעי 25% שומן",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290004129101.jpg"
+  },
+  {
+    "barcode": "7290000136684",
+    "name": "7290000136684",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000136684.jpg"
+  },
+  {
+    "barcode": "7290110115623",
+    "name": "Fuce tea",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290110115623.jpg"
+  }
+]

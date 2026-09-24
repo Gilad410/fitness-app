@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "7290019293606",
+    "name": "קוקוקס ואננס השלגון המקורי",
+    "brand": "La Frutta",
+    "storedCalories": 120,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290118422723",
+    "name": "ערגליות מיני'ס",
+    "brand": "אוסם",
+    "storedCalories": 415,
+    "storedProtein": 4
+  },
+  {
+    "barcode": "7290002603016",
+    "name": "נתחי טונה בהירה במי מלח",
+    "brand": "ויליגר",
+    "storedCalories": 94,
+    "storedProtein": 22
+  },
+  {
+    "barcode": "7290000178707",
+    "name": "tapouchips",
+    "brand": "עלית",
+    "storedCalories": 549,
+    "storedProtein": 6
+  },
+  {
+    "barcode": "7290110327514",
+    "name": "אלטרנטיב שיבולת שועל עם אגוזי לוז",
+    "brand": "Tnuva",
+    "storedCalories": 54,
+    "storedProtein": 1.1
+  },
+  {
+    "barcode": "7290003029815",
+    "name": "חלב",
+    "brand": "יוטבתה",
+    "storedCalories": 60,
+    "storedProtein": 3.4
+  },
+  {
+    "barcode": "0038000232183",
+    "name": "Pringles",
+    "brand": "Pringles",
+    "storedCalories": 531,
+    "storedProtein": 4
+  },
+  {
+    "barcode": "7290015150200",
+    "name": "Chopped tomatoes",
+    "brand": "Bella Italia",
+    "storedCalories": 24,
+    "storedProtein": 1.2
+  },
+  {
+    "barcode": "7290000070308",
+    "name": "Chicken Soup Powder",
+    "brand": "Osem",
+    "storedCalories": 317,
+    "storedProtein": 14
+  },
+  {
+    "barcode": "7290008909853",
+    "name": "קולה זירו",
+    "brand": "Coca-Cola, Coca-Cola Zero",
+    "storedCalories": 0,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290005838002",
+    "name": "Danielle Yogurt",
+    "brand": "דניאל'ה",
+    "storedCalories": 113.636363636364,
+    "storedProtein": 5.45454545454545
+  },
+  {
+    "barcode": "7290006498052",
+    "name": "Yogurt bio",
+    "brand": "Danone",
+    "storedCalories": 70,
+    "storedProtein": 5.26666666666667
+  },
+  {
+    "barcode": "7290104722530",
+    "name": "Cream and onion flavored fries",
+    "brand": "עלית",
+    "storedCalories": 543,
+    "storedProtein": 5.90000009536743
+  },
+  {
+    "barcode": "7290112497994",
+    "name": "Protein granola",
+    "brand": "Telma",
+    "storedCalories": 431,
+    "storedProtein": 23.7
+  },
+  {
+    "barcode": "7290117261569",
+    "name": "סלמון אטלנטי מעושן בשמן קנולה",
+    "brand": "ויליפוד",
+    "storedCalories": 398,
+    "storedProtein": 14
+  },
+  {
+    "barcode": "7290004584351",
+    "name": "סימפוניה במרקם שמנת 5%",
+    "brand": "Strauss",
+    "storedCalories": 108,
+    "storedProtein": 9.8
+  },
+  {
+    "barcode": "7290100240656",
+    "name": "פתית שיפון",
+    "brand": "קרקר פריך משיפון",
+    "storedCalories": 100,
+    "storedProtein": 3
+  },
+  {
+    "barcode": "7296073530381",
+    "name": "טחינה אורגנית משומשום מלא",
+    "brand": "שופרסל green",
+    "storedCalories": 634,
+    "storedProtein": 22
+  },
+  {
+    "barcode": "7290012004506",
+    "name": "אורז לבן ארוך",
+    "brand": "סוגת",
+    "storedCalories": 347,
+    "storedProtein": 7
+  },
+  {
+    "barcode": "7290110577261",
+    "name": "משקה חלבון - שוקולד אגוזים (0% שומן)",
+    "brand": "Yotveta",
+    "storedCalories": 40,
+    "storedProtein": 7.2
+  },
+  {
+    "barcode": "7290107936309",
+    "name": "Greek yogurt",
+    "brand": "Danone",
+    "storedCalories": 101.538461538462,
+    "storedProtein": 5.53846153846154
+  },
+  {
+    "barcode": "7290018091708",
+    "name": "פיצה מרגריטה",
+    "brand": "מעדנות",
+    "storedCalories": 238,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290110564919",
+    "name": "Danone yogurt",
+    "brand": "Danone",
+    "storedCalories": 64,
+    "storedProtein": 4.66666666666667
+  },
+  {
+    "barcode": "7290014762800",
+    "name": "מעדן סויה שוקולד",
+    "brand": "תנובה",
+    "storedCalories": 96,
+    "storedProtein": 3
+  }
+]
