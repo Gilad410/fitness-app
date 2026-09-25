@@ -186,13 +186,13 @@ onMounted(() => {
         <p class="mt-1 text-sm text-neutral-600">התרגילים, הסטים והחזרות שהמאמן/ת הגדיר/ה עבורך</p>
       </section>
 
-      <p v-if="programStore.loading && !programStore.loaded" class="text-neutral-600">טוען...</p>
+      <p v-if="programStore.loading && !programStore.loaded" role="status" class="text-neutral-600">טוען...</p>
 
       <div
         v-else-if="programStore.error"
         class="flex flex-col items-start gap-3 rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm"
       >
-        <p class="text-sm text-status-red">{{ programStore.error }}</p>
+        <p role="alert" class="text-sm text-status-red">{{ programStore.error }}</p>
         <button
           type="button"
           class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100"
@@ -422,7 +422,7 @@ onMounted(() => {
                     </button>
                   </div>
 
-                  <p v-if="submissionErrorByExerciseId[exercise.id]" class="mt-2 text-xs text-status-red">
+                  <p v-if="submissionErrorByExerciseId[exercise.id]" role="alert" class="mt-2 text-xs text-status-red">
                     {{ submissionErrorByExerciseId[exercise.id] }}
                   </p>
                 </div>

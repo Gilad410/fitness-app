@@ -153,7 +153,7 @@ async function handleAdd() {
               />
             </label>
 
-            <p v-if="addError" class="text-sm text-status-red">{{ addError }}</p>
+            <p v-if="addError" role="alert" class="text-sm text-status-red">{{ addError }}</p>
 
             <div class="flex flex-wrap gap-3">
               <button
@@ -175,7 +175,7 @@ async function handleAdd() {
           </form>
 
           <p v-if="checkingPrograms" class="text-sm text-neutral-600">טוען תוכניות...</p>
-          <p v-else-if="loadError" class="text-sm text-status-red">{{ loadError }}</p>
+          <p v-else-if="loadError" role="alert" class="text-sm text-status-red">{{ loadError }}</p>
           <p v-else-if="programs.length === 0" class="text-sm text-neutral-600">
             עדיין לא נוצרה תוכנית אימון למתאמן הזה.
           </p>

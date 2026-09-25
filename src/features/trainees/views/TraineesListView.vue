@@ -74,6 +74,7 @@ const filteredTrainees = computed(() => {
             v-for="option in filterOptions"
             :key="option.value"
             type="button"
+            :aria-pressed="statusFilter === option.value ? 'true' : 'false'"
             class="inline-flex min-h-11 items-center justify-center rounded-full border px-3 py-1 text-sm font-medium"
             :class="
               statusFilter === option.value

@@ -13,6 +13,6 @@ defineProps({
 
 <template>
   <RouterLink :to="to" class="mb-4 inline-block text-sm text-neutral-600 hover:text-brand-black">
-    &larr; חזור
+    &rarr; חזור
   </RouterLink>
 </template>

@@ -204,13 +204,13 @@ async function confirmDelete(photo) {
             @change="handleFileChange(angle.key, $event)"
           />
 
-          <p v-if="angleErrors[angle.key]" class="text-xs text-status-red">
+          <p v-if="angleErrors[angle.key]" role="alert" class="text-xs text-status-red">
             {{ angleErrors[angle.key] }}
           </p>
         </div>
       </div>
 
-      <p v-if="addPhotosError" class="text-sm text-status-red">{{ addPhotosError }}</p>
+      <p v-if="addPhotosError" role="alert" class="text-sm text-status-red">{{ addPhotosError }}</p>
 
       <div class="flex flex-wrap gap-3">
         <button
@@ -233,7 +233,7 @@ async function confirmDelete(photo) {
 
     <p v-if="photosChecking" class="text-sm text-neutral-600">טוען...</p>
 
-    <p v-else-if="photosError" class="text-sm text-status-red">{{ photosError }}</p>
+    <p v-else-if="photosError" role="alert" class="text-sm text-status-red">{{ photosError }}</p>
 
     <button
       v-else
@@ -244,7 +244,7 @@ async function confirmDelete(photo) {
       {{ photosRevealed ? 'הסתר תמונות' : 'הצג תמונות' }}
     </button>
 
-    <p v-if="deleteError" class="text-sm text-status-red">{{ deleteError }}</p>
+    <p v-if="deleteError" role="alert" class="text-sm text-status-red">{{ deleteError }}</p>
 
     <p
       v-if="photosRevealed && !photosChecking && !photosError && groupedByDate.length === 0"

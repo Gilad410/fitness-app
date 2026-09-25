@@ -172,7 +172,7 @@ async function confirmArchive() {
           </div>
         </dl>
 
-        <p v-if="error" class="mt-4 text-sm text-status-red">{{ error }}</p>
+        <p v-if="error" role="alert" class="mt-4 text-sm text-status-red">{{ error }}</p>
 
         <div
           v-if="showArchiveConfirm"

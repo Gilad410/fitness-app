@@ -193,6 +193,7 @@ async function handleSubmit() {
           <input
             v-model="startingWeight"
             type="number"
+            inputmode="decimal"
             step="0.1"
             min="0"
             dir="ltr"
@@ -205,6 +206,7 @@ async function handleSubmit() {
           <input
             v-model="targetWeight"
             type="number"
+            inputmode="decimal"
             step="0.1"
             min="0.1"
             dir="ltr"
@@ -221,6 +223,7 @@ async function handleSubmit() {
               <input
                 v-model="startingAbdomen"
                 type="number"
+                inputmode="decimal"
                 step="0.1"
                 min="0"
                 dir="ltr"
@@ -233,6 +236,7 @@ async function handleSubmit() {
               <input
                 v-model="startingNeck"
                 type="number"
+                inputmode="decimal"
                 step="0.1"
                 min="0"
                 dir="ltr"
@@ -245,6 +249,7 @@ async function handleSubmit() {
               <input
                 v-model="startingRightArm"
                 type="number"
+                inputmode="decimal"
                 step="0.1"
                 min="0"
                 dir="ltr"
@@ -257,6 +262,7 @@ async function handleSubmit() {
               <input
                 v-model="startingLeftArm"
                 type="number"
+                inputmode="decimal"
                 step="0.1"
                 min="0"
                 dir="ltr"
@@ -269,6 +275,7 @@ async function handleSubmit() {
               <input
                 v-model="startingRightLeg"
                 type="number"
+                inputmode="decimal"
                 step="0.1"
                 min="0"
                 dir="ltr"
@@ -281,6 +288,7 @@ async function handleSubmit() {
               <input
                 v-model="startingLeftLeg"
                 type="number"
+                inputmode="decimal"
                 step="0.1"
                 min="0"
                 dir="ltr"
@@ -299,7 +307,7 @@ async function handleSubmit() {
           />
         </label>
 
-        <p v-if="error" class="text-sm text-status-red">{{ error }}</p>
+        <p v-if="error" role="alert" class="text-sm text-status-red">{{ error }}</p>
 
         <button
           type="submit"
