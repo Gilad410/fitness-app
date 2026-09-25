@@ -9,7 +9,13 @@ import { useAuthStore } from '../../../stores/auth'
 // the ONLY place that talks to Storage or writes the three video_* columns
 // for a coach; ExercisesSection.vue only ever calls these actions.
 const VIDEO_BUCKET = 'exercise-videos'
-const VIDEO_SIGNED_URL_TTL_SECONDS = 60 * 60 // 1 hour -- regenerated on demand, never persisted (matches progressPhotos.js's convention).
+// 5 minutes -- coach-facing signed URL, shortened for the same reason as
+// progressPhotos.js (a suspended coach's already-issued URL cannot be
+// revoked by RLS; a short TTL bounds the exposure window). The trainee's
+// OWN signed URL for the same video (traineeTrainingProgram.js) is a
+// separate call with its own TTL and is deliberately NOT changed here --
+// trainee access must not be weakened by a coach-suspension mitigation.
+const VIDEO_SIGNED_URL_TTL_SECONDS = 5 * 60
 const VIDEO_MAX_SIZE_BYTES = 50 * 1024 * 1024 // 50 MB, matches the bucket's file_size_limit (027).
 const VIDEO_EXTENSION_BY_MIME_TYPE = {
   'video/mp4': 'mp4',

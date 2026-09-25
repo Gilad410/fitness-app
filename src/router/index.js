@@ -28,7 +28,11 @@ import TraineeMeasurementsView from '../features/trainee/views/TraineeMeasuremen
 import NoAccessView from '../features/trainee/views/NoAccessView.vue'
 import DesignPreviewHome from '../features/designPreview/DesignPreviewHome.vue'
 import DesignPreviewNutrition from '../features/designPreview/DesignPreviewNutrition.vue'
+import CoachJoinView from '../features/auth/views/CoachJoinView.vue'
+import CoachSuspendedView from '../features/auth/views/CoachSuspendedView.vue'
+import OwnerCoachesView from '../features/owner/views/OwnerCoachesView.vue'
 import { useAuthStore } from '../stores/auth'
+import { clearCoachDataCaches } from '../features/owner/lib/clearCoachDataCaches'
 
 // NOTE on /signup: public coach self-signup (src/features/auth/views/SignupView.vue)
 // is intentionally NOT registered as a route. 021_trainee_auth_and_roles.sql
@@ -145,6 +149,24 @@ const router = createRouter({
       name: 'alerts',
       component: AlertsView,
       meta: { requiresAuth: true, requiresRole: 'coach' },
+    },
+
+    // Coach onboarding (owner-issued invitation only -- see
+    // CoachJoinView.vue's own header comment for why there is no
+    // self-serve form here) and the suspension landing page. Both public
+    // (no requiresAuth) for the same reason /trainee/join is: the join
+    // link authenticates the browser itself via Supabase's own invite
+    // flow, and the suspended screen must be reachable by an account the
+    // router guard has already signed out.
+    { path: '/coach/join', name: 'coach-join', component: CoachJoinView },
+    { path: '/coach/suspended', name: 'coach-suspended', component: CoachSuspendedView },
+
+    // Owner administration area (056_owner_coach_administration.sql).
+    {
+      path: '/owner/coaches',
+      name: 'owner-coaches',
+      component: OwnerCoachesView,
+      meta: { requiresAuth: true, requiresRole: 'owner' },
     },
 
     // Trainee side. /trainee/join is deliberately public (no requiresAuth/
@@ -277,6 +299,7 @@ router.beforeEach(async (to) => {
   // resolved role, the access-denied screen if they genuinely have none.
   // Anonymous users never reach this helper (handled above).
   function ownAreaRoute() {
+    if (authStore.isOwner) return { name: 'owner-coaches' }
     if (authStore.isCoach) return { name: 'home' }
     if (authStore.isTrainee) return { name: 'trainee-home' }
     return { name: 'no-access' }
@@ -288,8 +311,45 @@ router.beforeEach(async (to) => {
     return ownAreaRoute()
   }
 
-  if (to.meta.requiresRole === 'coach' && !authStore.isCoach) {
+  if (to.meta.requiresRole === 'owner' && !authStore.isOwner) {
     return ownAreaRoute()
+  }
+  if (to.meta.requiresRole === 'coach') {
+    if (!authStore.isCoach) {
+      return ownAreaRoute()
+    }
+
+    // Role alone isn't enough here either: user_roles and
+    // public.coaches.access_status are separate tables
+    // (056_owner_coach_administration.sql), so a suspended coach still
+    // passes the isCoach check above -- exactly the same split, and the
+    // same reason, as the trainee re-check just below. Re-verified live
+    // on every coach-route navigation (not cached), via the same RPC
+    // (coach_get_own_status) is_coach() itself is built on, so a coach
+    // being suspended mid-session is caught on their very next
+    // navigation, not just at their next login.
+    let isActive
+    try {
+      isActive = await authStore.checkCoachActiveStatus()
+    } catch {
+      // Fail closed, same reasoning as the trainee branch: an unverifiable
+      // status is treated as "cannot currently vouch for this session",
+      // not as "still active".
+      clearCoachDataCaches()
+      await authStore.signOut()
+      return { name: 'login', query: { suspended: 'error' } }
+    }
+    if (!isActive) {
+      // Clear every coach-facing cache (including the three stores
+      // holding signed Storage URLs) BEFORE signing out and navigating
+      // away -- see clearCoachDataCaches.js. This cannot revoke a URL
+      // already open in another tab, only remove it from this session's
+      // own state; the database is still the real boundary (is_coach()
+      // now returns false for every further request regardless).
+      clearCoachDataCaches()
+      await authStore.signOut()
+      return { name: 'coach-suspended' }
+    }
   }
   if (to.meta.requiresRole === 'trainee') {
     if (!authStore.isTrainee) {
