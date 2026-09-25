@@ -14,6 +14,7 @@ import { startRetentionClock, stopRetentionClock } from '../../nutrition/lib/nut
 import { israelCalendarDate } from '../../nutrition/lib/nutritionLogRetention.js'
 import { entryDisplayName, entryQuantityLabel } from '../../nutrition/lib/entryDisplay.js'
 import { searchPanelState } from '../../../lib/searchPanelState.js'
+import { createSearchGuard, isApplicableSearchResponse } from '../../../lib/debouncedSearchGuard.js'
 import {
   stateAfterStartBarcodeEntry,
   stateAfterBarcodeLogSaved,
@@ -184,6 +185,11 @@ const referenceSearchPanel = computed(() =>
 )
 const selectedReference = ref(null)
 let referenceSearchTimer = null
+// Guards the debounced reference-catalog search (U5's async lookup)
+// against a slower older request overwriting a faster newer one's
+// results, error, or loading state -- see debouncedSearchGuard.js (unit
+// tested there) for the actual id/term matching rules.
+const referenceSearchGuard = createSearchGuard()
 
 const selectedChain = ref('')
 const restaurantSearchTerm = ref('')
@@ -215,27 +221,56 @@ function proteinLabel(proteinPer100g) {
   return proteinPer100g === null ? 'חלבון לא ידוע' : `${proteinPer100g} ג' חלבון ל-100 גרם`
 }
 
+// Cancels whatever the debounced search is currently doing -- a pending
+// timer, and (via the guard) any in-flight request -- and resets the
+// loading flag immediately, synchronously, rather than waiting for that
+// in-flight request to eventually resolve and discover it's stale. Called
+// whenever the search must stop being "live": the term changing (below),
+// the entry source switching or the form resetting, and picking a result
+// (setEntrySource/pickReference).
+function invalidateReferenceSearch() {
+  referenceSearchGuard.invalidate()
+  clearTimeout(referenceSearchTimer)
+  referenceSearching.value = false
+}
+
 // Distinguishes "no results" from a failed request (U5) -- a network/
 // server error must not be presented to the trainee as if the food
 // simply isn't in the reference catalog. runReferenceSearch is also
 // called directly by the retry button, bypassing the debounce so a
 // retry is immediate.
 async function runReferenceSearch(trimmed) {
+  const token = referenceSearchGuard.start()
   referenceSearching.value = true
   referenceSearchFailed.value = false
+  let results = null
+  let failed = false
   try {
-    referenceResults.value = await referenceCatalogStore.search(trimmed)
-    referenceSearched.value = true
+    results = await referenceCatalogStore.search(trimmed)
   } catch {
+    failed = true
+  }
+  // Discarded if a newer search has since started (or invalidated), or
+  // the field no longer holds the term this response is for.
+  const applicable = isApplicableSearchResponse({
+    guard: referenceSearchGuard,
+    token,
+    requestTerm: trimmed,
+    currentTerm: referenceSearchTerm.value.trim(),
+  })
+  if (!applicable) return
+  if (failed) {
     referenceResults.value = []
     referenceSearchFailed.value = true
-  } finally {
-    referenceSearching.value = false
+  } else {
+    referenceResults.value = results
+    referenceSearched.value = true
   }
+  referenceSearching.value = false
 }
 
 watch(referenceSearchTerm, (term) => {
-  clearTimeout(referenceSearchTimer)
+  invalidateReferenceSearch()
   selectedReference.value = null
   referenceSearchFailed.value = false
   const trimmed = term.trim()
@@ -255,6 +290,11 @@ function retryReferenceSearch() {
 }
 
 function pickReference(item) {
+  // Discards any still-in-flight response for the term that was just
+  // searched -- otherwise a late success arriving after the pick would
+  // repopulate referenceResults and reopen the result list underneath the
+  // "נבחר: ..." confirmation.
+  invalidateReferenceSearch()
   selectedReference.value = item
   referenceResults.value = []
 }
@@ -310,9 +350,9 @@ function setEntrySource(source) {
   foodSearchTerm.value = ''
   entryGrams.value = ''
   referenceSearchTerm.value = ''
+  invalidateReferenceSearch()
   referenceResults.value = []
   referenceSearched.value = false
-  referenceSearching.value = false
   referenceSearchFailed.value = false
   selectedReference.value = null
   selectedChain.value = ''
