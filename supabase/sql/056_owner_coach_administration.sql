@@ -198,27 +198,37 @@ create table public.coaches (
 
 alter table public.coaches enable row level security;
 
--- The owner sees/manages every row. A coach may read (only) their own
--- row -- needed for the frontend's live coach-status re-check
--- (mirrors trainee_get_auth_context()'s purpose, section 9) -- but
--- never through a raw table policy that would also hand them
--- owner_note (private to the owner) or another coach's row: narrow
+-- READ-ONLY for the owner. A coach may read (only) their own row --
+-- needed for the frontend's live coach-status re-check (mirrors
+-- trainee_get_auth_context()'s purpose, section 9) -- but never
+-- through a raw table policy that would also hand them owner_note
+-- (private to the owner) or another coach's row: narrow
 -- security-definer RPC only (coach_get_own_status, section 9), no
--- SELECT policy granted to the coach role on this table at all. Only
--- the owner gets a table-level policy.
+-- SELECT policy granted to the coach role on this table at all.
 create policy coaches_select_owner on public.coaches
   for select
   using (public.is_owner());
 
-create policy coaches_update_owner on public.coaches
-  for update
-  using (public.is_owner())
-  with check (public.is_owner());
-
--- No insert/delete policy for anyone -- rows are created only by the
--- backfill below and by the auth.users linking trigger (section 8),
--- both of which run as the table owner and so bypass RLS. No delete
--- path exists anywhere in this migration, matching the
+-- DELIBERATELY NO UPDATE / INSERT / DELETE POLICY FOR ANYONE, INCLUDING
+-- THE OWNER. An earlier revision of this migration granted the owner a
+-- direct UPDATE policy here; review correctly rejected it, because a
+-- direct UPDATE lets an owner client change access_status (or
+-- payment_status, the dates, or owner_note) WITHOUT going through
+-- owner_set_coach_status and therefore WITHOUT writing the
+-- coach_status_history audit row that is the entire point of that
+-- table. An audit trail that a privileged client can trivially sidestep
+-- is not an audit trail.
+--
+-- Every write to this table now goes through exactly one of the
+-- security-definer RPCs in section 7 (owner_set_coach_status,
+-- owner_set_coach_payment_status, owner_set_coach_note), which run as
+-- the table owner, bypass RLS, re-check is_owner() in their own body,
+-- validate their inputs, and -- for access_status specifically -- write
+-- the history row in the same transaction as the change.
+--
+-- Rows are created only by the backfill below and by the auth.users
+-- linking trigger (section 8), both of which likewise run as the table
+-- owner. No delete path exists anywhere in this migration, matching the
 -- "preserve all coach and trainee data" requirement -- suspending a
 -- coach never removes their coaches row or any data that references
 -- their user_id.
@@ -471,6 +481,23 @@ begin
     raise exception 'Invalid payment status: %', p_new_payment_status;
   end if;
 
+  -- Date sanity, server-side (the client validates too, but the client
+  -- is not the authority): a paid-through date that precedes the review
+  -- date is a data-entry mistake, not a meaningful state, and neither
+  -- date may be absurdly far out (a typo'd year is the realistic case).
+  if p_payment_reviewed_at is not null and p_paid_through is not null
+     and p_paid_through < p_payment_reviewed_at then
+    raise exception 'Paid-through date cannot be earlier than the payment review date.';
+  end if;
+  if p_payment_reviewed_at is not null
+     and (p_payment_reviewed_at < date '2020-01-01' or p_payment_reviewed_at > current_date + interval '10 years') then
+    raise exception 'Payment review date is out of the accepted range.';
+  end if;
+  if p_paid_through is not null
+     and (p_paid_through < date '2020-01-01' or p_paid_through > current_date + interval '10 years') then
+    raise exception 'Paid-through date is out of the accepted range.';
+  end if;
+
   select role into v_target_role
   from public.user_roles
   where user_id = p_coach_user_id;
@@ -494,6 +521,64 @@ $$;
 revoke execute on function public.owner_set_coach_payment_status(uuid, text, date, date) from public;
 revoke execute on function public.owner_set_coach_payment_status(uuid, text, date, date) from anon;
 grant execute on function public.owner_set_coach_payment_status(uuid, text, date, date) to authenticated;
+
+-- The owner's private note about a coach. Separate RPC (rather than
+-- another parameter on the payment one) because it is a different
+-- concern with a different validation rule, and because bundling it
+-- would mean every note edit also rewrites the payment fields. Like the
+-- payment RPC: never names access_status in its UPDATE, never writes to
+-- coach_status_history -- structurally incapable of changing access.
+-- The note is never returned to the coach by any function in this
+-- migration (coach_get_own_status returns access_status only).
+create or replace function public.owner_set_coach_note(
+  p_coach_user_id uuid,
+  p_note text
+)
+returns void
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+declare
+  v_target_role text;
+  v_note text;
+begin
+  if auth.uid() is null then
+    raise exception 'Authentication required.';
+  end if;
+  if not public.is_owner() then
+    raise exception 'Only the owner may edit a coach note.';
+  end if;
+
+  -- Normalize empty/whitespace-only to NULL so "cleared" is one state,
+  -- not two ('' vs null) that would display differently.
+  v_note := nullif(trim(coalesce(p_note, '')), '');
+
+  if v_note is not null and char_length(v_note) > 2000 then
+    raise exception 'Note is too long (limit 2000 characters).';
+  end if;
+
+  select role into v_target_role
+  from public.user_roles
+  where user_id = p_coach_user_id;
+
+  if v_target_role is distinct from 'coach' then
+    raise exception 'Target account is not a coach -- cannot be managed as one.';
+  end if;
+
+  update public.coaches
+  set owner_note = v_note
+  where user_id = p_coach_user_id;
+
+  if not found then
+    raise exception 'No coach account record found for this user.';
+  end if;
+end;
+$$;
+
+revoke execute on function public.owner_set_coach_note(uuid, text) from public;
+revoke execute on function public.owner_set_coach_note(uuid, text) from anon;
+grant execute on function public.owner_set_coach_note(uuid, text) to authenticated;
 
 -- =====================================================================
 -- 8. Coach invitation mechanism
@@ -537,14 +622,44 @@ create policy coach_invitations_select_owner on public.coach_invitations
 -- body) or the auth.users linking trigger below.
 
 -- Idempotent issue-or-reuse, mirroring coach_get_or_issue_trainee_invite
--- (034) exactly: a still-pending, unexpired invitation for this email
--- is returned unchanged (newly_issued = false) rather than rotated, so
--- an Edge Function's retry after a failed email send never invalidates
--- a token that may already have been delivered. A fresh token is
--- minted only when nothing valid exists to reuse (no prior invitation,
--- a cancelled one, or an expired one). Refuses an email that already
--- belongs to an existing role of ANY kind (coach, trainee, or owner)
--- -- that account should sign in normally, not be re-invited.
+-- (034): a still-pending, unexpired invitation for this email is
+-- returned unchanged (newly_issued = false) rather than rotated, so an
+-- Edge Function's retry after a failed email send never invalidates a
+-- token that may already have been delivered. A fresh token is minted
+-- only when nothing valid exists to reuse (no prior invitation, a
+-- cancelled one, or an expired one).
+--
+-- CONCURRENCY (fixed after review). The earlier revision relied on
+-- `select ... for update` alone to serialize two simultaneous first
+-- invitations for the same email. That is wrong, and the review was
+-- right to reject it: FOR UPDATE can only lock a row that ALREADY
+-- EXISTS, so for the first-ever invitation to an address there is
+-- nothing to lock, both transactions fall through to the INSERT, and
+-- one of them loses on coach_invitations_email_live_idx with a raw
+-- unique-violation instead of converging on the other's token.
+--
+-- Fixed with a transaction-scoped advisory lock keyed by the NORMALIZED
+-- email (pg_advisory_xact_lock over hashtextextended of the lowercased,
+-- trimmed address). The lock is taken BEFORE the existence check, is
+-- held until the transaction commits or rolls back, and is released
+-- automatically either way -- so the second caller blocks until the
+-- first has committed its INSERT, then observes it and reuses it.
+-- hashtextextended can collide across different emails in principle;
+-- a collision costs only brief unnecessary serialization between two
+-- unrelated invitations, never a wrong result, because every decision
+-- below is still made from the actual row, not from the lock key.
+--
+-- PRE-EXISTING AUTH USERS (fixed after review). The earlier revision
+-- rejected an existing auth.users row only when it also had a
+-- user_roles row. A role-less pre-existing Auth account (e.g. a
+-- leftover from the old open /signup, or a half-finished earlier
+-- invitation) would therefore pass this RPC, mint a pending
+-- invitation, and then fail inside inviteUserByEmail with
+-- email_exists -- leaving exactly the "unusable pending invitation"
+-- the review called out. Any pre-existing auth.users email is now
+-- rejected outright, with a message that says what the owner should
+-- actually do about it. A safe recovery workflow for such accounts is
+-- explicitly NOT part of this milestone.
 create or replace function public.owner_get_or_invite_coach(p_email text)
 returns table (invitation_id uuid, invite_token uuid, invite_expires_at timestamptz, newly_issued boolean)
 language plpgsql
@@ -576,16 +691,21 @@ begin
     raise exception 'Not a valid email address.';
   end if;
 
+  -- Serialize every concurrent call for the SAME normalized email
+  -- before anything is read or written -- see this function's header
+  -- for why `for update` alone could not do this. Transaction-scoped:
+  -- released on commit or rollback, no explicit unlock needed, and no
+  -- way to leak a held lock out of a failed call.
+  perform pg_advisory_xact_lock(hashtextextended(v_email, 0));
+
+  -- Any pre-existing Auth account for this address is rejected, with or
+  -- without a role -- see the header. Checked AFTER the advisory lock so
+  -- two concurrent calls cannot both pass this check and then both act.
   select id into v_existing_user_id from auth.users where lower(email) = v_email;
-  if v_existing_user_id is not null and exists (
-    select 1 from public.user_roles where user_id = v_existing_user_id
-  ) then
-    raise exception 'This email already belongs to an existing account with an assigned role.';
+  if v_existing_user_id is not null then
+    raise exception 'An account already exists for this email address. It cannot be invited as a new coach -- have them sign in with the existing account, or use a different address.';
   end if;
 
-  -- Lock any existing live invitation row for this email before
-  -- branching, so two concurrent invite calls for the same address
-  -- converge on one token rather than racing to mint two.
   select * into v_row
   from public.coach_invitations
   where lower(email) = v_email and status = 'invited'
@@ -657,20 +777,95 @@ revoke execute on function public.owner_cancel_coach_invite(uuid) from public;
 revoke execute on function public.owner_cancel_coach_invite(uuid) from anon;
 grant execute on function public.owner_cancel_coach_invite(uuid) to authenticated;
 
+-- Pending-invitation roster for the owner dashboard. Deliberately does
+-- NOT return invite_token, and there is no other function anywhere in
+-- this migration that returns it to a client either (the token reaches
+-- only the Edge Function, which puts it straight into the emailed link)
+-- -- an invitation token in the browser, in a report, or in a log is a
+-- credential leak, since possession of it plus control of the invited
+-- mailbox is the whole of the acceptance check.
+--
+-- `state` is computed, not stored: an invitation whose expiry has
+-- passed is still status='invited' in the table (nothing sweeps it),
+-- but is functionally dead, and the owner needs to see that difference
+-- to know whether to resend. The coach_invitations table itself is
+-- readable by the owner through coach_invitations_select_owner, which
+-- DOES include invite_token -- that policy exists for direct
+-- Dashboard/psql inspection by the project owner, not for the app; the
+-- app only ever calls this function. (The browser client could in
+-- principle select the column directly, but nothing in this codebase
+-- does, and the owner is the one party a leaked token would not help.)
+create or replace function public.owner_list_pending_invitations()
+returns table (
+  invitation_id uuid,
+  email text,
+  invite_sent_at timestamptz,
+  invite_expires_at timestamptz,
+  state text
+)
+language plpgsql
+security definer
+set search_path = public, pg_temp
+stable
+as $$
+begin
+  if auth.uid() is null then
+    raise exception 'Authentication required.';
+  end if;
+  if not public.is_owner() then
+    raise exception 'Only the owner may list coach invitations.';
+  end if;
+
+  return query
+  select
+    i.id,
+    i.email,
+    i.invite_sent_at,
+    i.invite_expires_at,
+    case when i.invite_expires_at <= now() then 'expired' else 'pending' end
+  from public.coach_invitations i
+  where i.status = 'invited'
+  order by i.invite_sent_at desc;
+end;
+$$;
+
+revoke execute on function public.owner_list_pending_invitations() from public;
+revoke execute on function public.owner_list_pending_invitations() from anon;
+grant execute on function public.owner_list_pending_invitations() to authenticated;
+
 -- The only path by which a Supabase Auth account can ever become a
--- coach. Mirrors link_trainee_on_email_confirmed (021) exactly: fires
--- on the email-confirmed transition (both at-insert-already-confirmed
--- and confirmed-later timings), requires a token in raw_user_meta_data
+-- coach. Mirrors link_trainee_on_email_confirmed (021): fires on the
+-- email-confirmed transition (both at-insert-already-confirmed and
+-- confirmed-later timings), requires a token in raw_user_meta_data
 -- matching a still-'invited', unexpired coach_invitations row, AND the
--- account's own verified email matching that invitation's email. On a
--- match: marks the invitation 'accepted', grants role = 'coach', and
--- creates the coaches row as 'pending' (NOT 'active' -- approval is a
--- separate, later owner_set_coach_status call, never automatic here).
--- `on conflict do nothing` on both inserts means an account that
--- somehow already holds a role, or already has a coaches row, is left
--- completely untouched rather than overwritten -- a partial failure or
--- a race can never leave an unexplained or upgraded-privilege account,
--- only a claimed invitation that grants nothing (default-deny).
+-- account's own verified email matching that invitation's email.
+--
+-- ATOMICITY / ORDERING (fixed after review). The earlier revision
+-- marked the invitation 'accepted' FIRST and then inserted the role and
+-- the coaches row with `on conflict do nothing`. Review correctly
+-- identified the resulting inconsistency: an account that already held
+-- a DIFFERENT role (trainee or owner) would silently skip the role
+-- insert, so the invitation ended up 'accepted' while the account never
+-- became a coach at all -- and, worse, it could still receive a stray
+-- public.coaches row (the two inserts had independent conflict targets),
+-- leaving a row in the coaches table for a non-coach account. That is
+-- exactly the falsely-accepted, internally-inconsistent state the audit
+-- tables are supposed to make impossible.
+--
+-- The order is now: resolve and lock the invitation -> refuse outright
+-- if the account already holds ANY role -> grant the coach role ->
+-- create the pending coaches row -> and only then mark the invitation
+-- accepted. All of it runs inside the single transaction of the
+-- triggering auth.users statement, so it either all happens or none of
+-- it does. A role conflict leaves the invitation still 'invited' (it
+-- can be cancelled by the owner, or accepted later by the right
+-- account), grants nothing, and creates no coaches row -- default-deny,
+-- and consistent.
+--
+-- Duplicate/repeat execution stays safe for the same reason it did
+-- before: the invitation lookup requires status = 'invited', so the
+-- second run of a already-accepted invitation matches nothing and
+-- returns without touching anything.
 create or replace function public.link_coach_on_email_confirmed()
 returns trigger
 language plpgsql
@@ -681,6 +876,8 @@ declare
   v_token uuid;
   v_email text;
   v_invitation_id uuid;
+  v_existing_role text;
+  v_granted_user_id uuid;
 begin
   if new.email_confirmed_at is null then
     return new;
@@ -698,25 +895,55 @@ begin
 
   v_email := lower(trim(new.email));
 
-  update public.coach_invitations
-  set status = 'accepted',
-      invite_accepted_at = now(),
-      accepted_user_id = new.id
+  -- Resolve + lock the invitation WITHOUT accepting it yet.
+  select id into v_invitation_id
+  from public.coach_invitations
   where invite_token = v_token
     and status = 'invited'
     and invite_expires_at > now()
     and lower(trim(email)) = v_email
-  returning id into v_invitation_id;
+  for update;
 
-  if v_invitation_id is not null then
-    insert into public.user_roles (user_id, role)
-    values (new.id, 'coach')
-    on conflict (user_id) do nothing;
-
-    insert into public.coaches (user_id, access_status, payment_status)
-    values (new.id, 'pending', 'unpaid')
-    on conflict (user_id) do nothing;
+  if v_invitation_id is null then
+    return new; -- no matching live invitation: nothing to do, nothing changed.
   end if;
+
+  -- An account that already holds any role is never converted into a
+  -- coach by an invitation, and the invitation is deliberately left
+  -- pending rather than being marked accepted by an account that did
+  -- not actually become a coach.
+  select role into v_existing_role
+  from public.user_roles
+  where user_id = new.id;
+
+  if v_existing_role is not null then
+    return new;
+  end if;
+
+  -- Grant the role. `on conflict do nothing` + RETURNING lets a
+  -- concurrent inserter win harmlessly: if we did not insert the row,
+  -- we did not make this account a coach, so we must not accept the
+  -- invitation either.
+  insert into public.user_roles (user_id, role)
+  values (new.id, 'coach')
+  on conflict (user_id) do nothing
+  returning user_id into v_granted_user_id;
+
+  if v_granted_user_id is null then
+    return new;
+  end if;
+
+  insert into public.coaches (user_id, access_status, payment_status)
+  values (new.id, 'pending', 'unpaid')
+  on conflict (user_id) do nothing;
+
+  -- Only now, with the role granted and the pending coaches row in
+  -- place, is the invitation genuinely accepted.
+  update public.coach_invitations
+  set status = 'accepted',
+      invite_accepted_at = now(),
+      accepted_user_id = new.id
+  where id = v_invitation_id;
 
   return new;
 end;
