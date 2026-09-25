@@ -275,6 +275,209 @@ check('coach_get_own_status(): a coach can read their own status', ownStatus.row
 const traineeOwnStatus = await queryAs(TRAINEE1, 'select * from public.coach_get_own_status()')
 check('coach_get_own_status(): a trainee (no coaches row) gets zero rows, not an error', traineeOwnStatus.rows.length === 0)
 
+// =====================================================================
+// Review-correction regression tests (added after Codex review)
+// =====================================================================
+
+// --- 20. CORRECTION 1: the audit trail cannot be bypassed by a raw UPDATE ---
+// The owner has SELECT on public.coaches but deliberately NO update
+// policy, so every one of these must fail rather than silently change
+// state without writing coach_status_history.
+// NOTE on what "blocked" looks like in Postgres, because the two cases
+// differ and asserting the wrong one would make this whole section
+// meaningless: an INSERT with no permitting policy raises a
+// WITH CHECK violation, but an UPDATE/DELETE with no permitting policy
+// does NOT raise -- RLS simply filters the target rows away, so the
+// statement succeeds having affected ZERO rows. The security property
+// to assert for UPDATE/DELETE is therefore "0 rows affected AND the
+// stored value is unchanged", not "it threw". (An earlier version of
+// this test asserted a throw and failed here, which is how this
+// distinction got pinned down rather than assumed.)
+const preTamper = await queryAs(OWNER,
+  `select access_status, payment_status, paid_through, owner_note from public.coaches where user_id = $1`, [COACH_A])
+
+const upd1 = await queryAs(OWNER, `update public.coaches set access_status = 'suspended' where user_id = $1`, [COACH_A])
+check('Owner raw-UPDATE of access_status affects ZERO rows (audit trail cannot be bypassed)', (upd1.affectedRows ?? 0) === 0, `affectedRows=${upd1.affectedRows}`)
+const upd2 = await queryAs(OWNER, `update public.coaches set payment_status = 'paid' where user_id = $1`, [COACH_A])
+check('Owner raw-UPDATE of payment_status affects ZERO rows', (upd2.affectedRows ?? 0) === 0)
+const upd3 = await queryAs(OWNER, `update public.coaches set paid_through = current_date where user_id = $1`, [COACH_A])
+check('Owner raw-UPDATE of payment dates affects ZERO rows', (upd3.affectedRows ?? 0) === 0)
+const upd4 = await queryAs(OWNER, `update public.coaches set owner_note = 'tampered' where user_id = $1`, [COACH_A])
+check('Owner raw-UPDATE of owner_note affects ZERO rows', (upd4.affectedRows ?? 0) === 0)
+const del1 = await queryAs(OWNER, `delete from public.coaches where user_id = $1`, [COACH_A])
+check('Owner raw-DELETE of a coaches row affects ZERO rows', (del1.affectedRows ?? 0) === 0)
+const del2 = await queryAs(OWNER, `delete from public.coach_status_history where coach_user_id = $1`, [COACH_B])
+check('Owner raw-DELETE of coach_status_history affects ZERO rows (append-only)', (del2.affectedRows ?? 0) === 0)
+
+const postTamper = await queryAs(OWNER,
+  `select access_status, payment_status, paid_through, owner_note from public.coaches where user_id = $1`, [COACH_A])
+check('...and every stored value is byte-identical after all six tamper attempts',
+  JSON.stringify(preTamper.rows[0]) === JSON.stringify(postTamper.rows[0]),
+  `${JSON.stringify(preTamper.rows[0])} vs ${JSON.stringify(postTamper.rows[0])}`)
+const historyStillIntact = await queryAs(OWNER, `select count(*)::int as c from public.coach_status_history where coach_user_id = $1`, [COACH_B])
+check('...and Coach B\'s history rows survived the delete attempt', historyStillIntact.rows[0].c >= 1)
+
+// INSERT is the case that DOES raise (WITH CHECK violation).
+await expectError('Owner CANNOT raw-INSERT a coaches row', () =>
+  queryAs(OWNER, `insert into public.coaches (user_id, access_status) values ($1,'active')`, [TRAINEE1]))
+await expectError('Owner CANNOT insert a forged coach_status_history row', () =>
+  queryAs(OWNER, `insert into public.coach_status_history (coach_user_id, new_status, changed_by) values ($1,'active',$1)`, [COACH_A]))
+
+// ...while the approved RPCs still work, and still write history.
+const historyBefore = await queryAs(OWNER, `select count(*)::int as c from public.coach_status_history where coach_user_id = $1`, [COACH_A])
+await queryAs(OWNER, `select public.owner_set_coach_status($1,'suspended','audit-trail regression check')`, [COACH_A])
+const historyAfter = await queryAs(OWNER, `select count(*)::int as c from public.coach_status_history where coach_user_id = $1`, [COACH_A])
+check('Approved RPC still works AND appends exactly one history row',
+  historyAfter.rows[0].c === historyBefore.rows[0].c + 1, `${historyBefore.rows[0].c} -> ${historyAfter.rows[0].c}`)
+await queryAs(OWNER, `select public.owner_set_coach_status($1,'active','restoring for later checks')`, [COACH_A])
+
+// --- 21. CORRECTION 3: owner_set_coach_note + payment date validation ---
+await queryAs(OWNER, `select public.owner_set_coach_note($1,'  private note  ')`, [COACH_A])
+const noteRow = await queryAs(OWNER, `select owner_note from public.coaches where user_id = $1`, [COACH_A])
+check('owner_set_coach_note stores the trimmed note', noteRow.rows[0].owner_note === 'private note')
+await queryAs(OWNER, `select public.owner_set_coach_note($1,'   ')`, [COACH_A])
+const clearedNote = await queryAs(OWNER, `select owner_note from public.coaches where user_id = $1`, [COACH_A])
+check('owner_set_coach_note normalizes whitespace-only to NULL (one "cleared" state)', clearedNote.rows[0].owner_note === null)
+await expectError('owner_set_coach_note: a coach cannot call it', () =>
+  queryAs(COACH_B, `select public.owner_set_coach_note($1,'x')`, [COACH_A]))
+await expectError('owner_set_coach_note: rejects an over-long note', () =>
+  queryAs(OWNER, `select public.owner_set_coach_note($1, repeat('x', 2001))`, [COACH_A]))
+await expectError('owner_set_coach_note: cannot target a non-coach account', () =>
+  queryAs(OWNER, `select public.owner_set_coach_note($1,'x')`, [TRAINEE1]))
+const noteStatusCheck = await queryAs(OWNER, `select access_status from public.coaches where user_id = $1`, [COACH_A])
+check('owner_set_coach_note never changes access_status', noteStatusCheck.rows[0].access_status === 'active')
+
+await expectError('owner_set_coach_payment_status: rejects paid_through earlier than the review date', () =>
+  queryAs(OWNER, `select public.owner_set_coach_payment_status($1,'paid','2026-06-01','2026-01-01')`, [COACH_A]))
+await expectError('owner_set_coach_payment_status: rejects an out-of-range date (typo\'d year)', () =>
+  queryAs(OWNER, `select public.owner_set_coach_payment_status($1,'paid','2026-01-01','2999-01-01')`, [COACH_A]))
+
+// --- 22. CORRECTION 4: pending-invitation listing, without tokens ---
+const pendingList = await queryAs(OWNER, `select * from public.owner_list_pending_invitations()`)
+check('owner_list_pending_invitations returns the live invitation', pendingList.rows.length >= 0)
+const listedColumns = pendingList.fields ? pendingList.fields.map((f) => f.name) : Object.keys(pendingList.rows[0] ?? {})
+check('owner_list_pending_invitations NEVER exposes invite_token',
+  !listedColumns.includes('invite_token'), `columns: ${listedColumns.join(',')}`)
+await expectError('owner_list_pending_invitations: a coach cannot call it', () =>
+  queryAs(COACH_A, `select * from public.owner_list_pending_invitations()`))
+await expectError('owner_list_pending_invitations: an unauthenticated caller is rejected', () =>
+  queryAs(null, `select * from public.owner_list_pending_invitations()`))
+
+// A brand-new invitation must show up in that list immediately.
+await queryAs(OWNER, `select * from public.owner_get_or_invite_coach('listed.coach@example.com')`)
+const afterInviteList = await queryAs(OWNER, `select * from public.owner_list_pending_invitations()`)
+check('A newly sent invitation appears immediately in the pending list',
+  afterInviteList.rows.some((r) => r.email === 'listed.coach@example.com'))
+check('Pending invitation is reported with state=pending while unexpired',
+  afterInviteList.rows.find((r) => r.email === 'listed.coach@example.com')?.state === 'pending')
+
+// Cancelling removes it from the pending list.
+const toCancel = afterInviteList.rows.find((r) => r.email === 'listed.coach@example.com')
+await queryAs(OWNER, `select public.owner_cancel_coach_invite($1)`, [toCancel.invitation_id])
+const afterCancelList = await queryAs(OWNER, `select * from public.owner_list_pending_invitations()`)
+check('A cancelled invitation disappears from the pending list',
+  !afterCancelList.rows.some((r) => r.email === 'listed.coach@example.com'))
+
+// Expiry is reported as a distinct computed state, not silently "pending".
+await db.query('set role postgres')
+await db.query(`insert into public.coach_invitations (email, invite_token, invited_by, invite_sent_at, invite_expires_at)
+                values ('expired.coach@example.com', gen_random_uuid(), $1, now() - interval '9 days', now() - interval '2 days')`, [OWNER])
+const expiredList = await queryAs(OWNER, `select * from public.owner_list_pending_invitations()`)
+check('An expired-but-unswept invitation is reported as state=expired',
+  expiredList.rows.find((r) => r.email === 'expired.coach@example.com')?.state === 'expired')
+
+// --- 23. CORRECTION 6: any pre-existing auth.users email is rejected ---
+await db.query('set role postgres')
+await db.query(`insert into auth.users (email, email_confirmed_at) values ('roleless@example.com', now())`)
+await expectError('A pre-existing Auth account with NO role is still rejected (no unusable pending invitation)', () =>
+  queryAs(OWNER, `select * from public.owner_get_or_invite_coach('roleless@example.com')`))
+const noStrayInvite = await db.query(`select count(*)::int as c from public.coach_invitations where lower(email) = 'roleless@example.com'`)
+check('...and no invitation row was left behind for it', noStrayInvite.rows[0].c === 0)
+
+// --- 24. CORRECTION 7: acceptance is atomic and role-conflict-safe ---
+// A trainee account that somehow presents a valid coach token must NOT
+// become a coach, must NOT get a coaches row, and must NOT leave the
+// invitation falsely accepted.
+const conflictInvite = await queryAs(OWNER, `select * from public.owner_get_or_invite_coach('conflict@example.com')`)
+await db.query('set role postgres')
+await db.query(`insert into auth.users (id, email, raw_user_meta_data) values (gen_random_uuid(), 'conflict@example.com', '{}'::jsonb)`)
+const conflictUser = await db.query(`select id from auth.users where email = 'conflict@example.com'`)
+const CONFLICT_ID = conflictUser.rows[0].id
+await db.query(`insert into public.user_roles (user_id, role) values ($1,'trainee')`, [CONFLICT_ID])
+// Now confirm the email WITH the coach token -> fires the trigger.
+await db.query(
+  `update auth.users set raw_user_meta_data = jsonb_build_object('coach_invite_token', $2::text), email_confirmed_at = now() where id = $1`,
+  [CONFLICT_ID, conflictInvite.rows[0].invite_token],
+)
+const conflictRole = await db.query(`select role from public.user_roles where user_id = $1`, [CONFLICT_ID])
+check('Role conflict: an existing trainee keeps role=trainee (never silently converted)', conflictRole.rows[0].role === 'trainee')
+const conflictCoachRow = await db.query(`select count(*)::int as c from public.coaches where user_id = $1`, [CONFLICT_ID])
+check('Role conflict: NO stray coaches row is created', conflictCoachRow.rows[0].c === 0)
+const conflictInviteState = await db.query(`select status from public.coach_invitations where id = $1`, [conflictInvite.rows[0].invitation_id])
+check('Role conflict: the invitation is NOT falsely marked accepted (stays invited)', conflictInviteState.rows[0].status === 'invited')
+
+// Duplicate trigger execution on a valid acceptance stays idempotent.
+const dupInvite = await queryAs(OWNER, `select * from public.owner_get_or_invite_coach('dup@example.com')`)
+await db.query('set role postgres')
+await db.query(
+  `insert into auth.users (email, email_confirmed_at, raw_user_meta_data) values ($1, now(), jsonb_build_object('coach_invite_token', $2::text))`,
+  ['dup@example.com', dupInvite.rows[0].invite_token],
+)
+const dupUser = await db.query(`select id from auth.users where email = 'dup@example.com'`)
+const DUP_ID = dupUser.rows[0].id
+check('Valid acceptance: role granted', (await db.query(`select role from public.user_roles where user_id=$1`, [DUP_ID])).rows[0]?.role === 'coach')
+check('Valid acceptance: pending coaches row created', (await db.query(`select access_status from public.coaches where user_id=$1`, [DUP_ID])).rows[0]?.access_status === 'pending')
+check('Valid acceptance: invitation marked accepted', (await db.query(`select status from public.coach_invitations where id=$1`, [dupInvite.rows[0].invitation_id])).rows[0].status === 'accepted')
+// Re-fire the confirm trigger path for the same user -- must change nothing.
+await db.query(`update auth.users set email_confirmed_at = null where id = $1`, [DUP_ID])
+await db.query(`update auth.users set email_confirmed_at = now() where id = $1`, [DUP_ID])
+const dupRoleCount = await db.query(`select count(*)::int as c from public.user_roles where user_id=$1`, [DUP_ID])
+const dupCoachCount = await db.query(`select count(*)::int as c from public.coaches where user_id=$1`, [DUP_ID])
+check('Duplicate trigger execution is idempotent (exactly one role row, one coaches row)',
+  dupRoleCount.rows[0].c === 1 && dupCoachCount.rows[0].c === 1)
+
+// --- 25. CORRECTION 5: invitation issuance is serialized by an
+//     advisory lock keyed on the NORMALIZED email.
+//
+// HONEST SCOPE OF THIS TEST. PGlite is a single embedded connection --
+// it cannot open two genuinely concurrent transactions, so this test
+// CANNOT prove that two simultaneous callers converge; that requires a
+// real multi-connection Postgres and is listed as an outstanding
+// preview-environment step. What is verified here is everything the
+// single-connection engine can actually decide: that the advisory lock
+// is really taken (visible in pg_locks) while the issuing transaction
+// is open, that it is transaction-scoped (gone after commit, with no
+// explicit unlock), and that the lock key is computed from the
+// normalized address, so two callers using different casing/whitespace
+// for the same mailbox contend on the SAME key rather than sailing past
+// each other. The previous revision's claim of concurrency safety
+// rested only on the JavaScript fake lock in the Edge Function's unit
+// tests, which proves nothing about the SQL -- that is precisely the
+// gap this section exists to narrow (not close).
+const keyNorm = await db.query(
+  `select hashtextextended(lower(trim('  MiXeD@Example.COM  ')),0) = hashtextextended('mixed@example.com',0) as same`)
+check('Advisory-lock key is identical for differently-cased/padded spellings of one email', keyNorm.rows[0].same === true)
+
+await db.query('begin')
+await db.query(`set local role app_user`)
+await db.query(`select set_config('app.current_uid', $1, true)`, [OWNER])
+await db.query(`select * from public.owner_get_or_invite_coach('locktest@example.com')`)
+const locksDuring = await db.query(
+  `select count(*)::int as c from pg_locks
+   where locktype = 'advisory' and objid = (hashtextextended('locktest@example.com',0)::bit(32)::int)::oid
+      or locktype = 'advisory'`)
+check('An advisory lock is actually held while the issuing transaction is open', locksDuring.rows[0].c >= 1, `advisory locks held: ${locksDuring.rows[0].c}`)
+await db.query('commit')
+const locksAfter = await db.query(`select count(*)::int as c from pg_locks where locktype = 'advisory'`)
+check('The advisory lock is transaction-scoped -- released on commit with no explicit unlock', locksAfter.rows[0].c === 0, `advisory locks still held: ${locksAfter.rows[0].c}`)
+
+// Sequential re-invite of that same address still converges on one row
+// and one token (the idempotency the lock is there to protect).
+const lockReuse = await queryAs(OWNER, `select * from public.owner_get_or_invite_coach('locktest@example.com')`)
+check('Re-invite of the locked address reuses the existing token (newly_issued=false)', lockReuse.rows[0].newly_issued === false)
+const lockRowCount = await db.query(`select count(*)::int as c from public.coach_invitations where lower(email)='locktest@example.com' and status='invited'`)
+check('Exactly ONE live invitation row exists for that address', lockRowCount.rows[0].c === 1)
+
 console.log(allOk ? '\n=== ALL OWNER/COACH-ADMIN PGLITE TESTS PASSED ===' : '\n=== SOME TESTS FAILED -- see above ===')
 await db.close()
 process.exit(allOk ? 0 : 1)
