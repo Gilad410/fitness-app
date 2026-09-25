@@ -31,8 +31,33 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { handleInviteCoachRequest } from './handler.js'
 
-function fakeSupabase({ invitations = {}, isOwner = true, inviteEmailImpl } = {}) {
-  const store = { ...invitations } // email -> {token, expiresAt, status}
+// The fake models TWO stores, because the real system has two and the
+// interaction between them is where the interesting bug lived:
+//
+//   store     -- public.coach_invitations rows
+//   authUsers -- auth.users rows
+//
+// An earlier version of this fake had no authUsers at all: its
+// inviteUserByEmail reported success and recorded nothing. That made a
+// "resend" look like it worked, because the RPC fake only ever consulted
+// the invitation store and happily returned the existing token. Real
+// GoTrue creates an UNCONFIRMED auth.users row on a successful invite,
+// and owner_get_or_invite_coach rejects any address that already has an
+// auth.users row (056, the pre-existing-account check). Modeling only the
+// invitation store hid a contradiction that fails 100% of the time in
+// production. It is modeled now.
+function fakeSupabase({
+  invitations = {},
+  authUsers = {},
+  isOwner = true,
+  inviteEmailImpl,
+  // Whether a successful inviteUserByEmail creates the Auth user, as real
+  // GoTrue does. Only a test that is deliberately modeling a send which
+  // failed BEFORE user creation sets this false.
+  sendCreatesAuthUser = true,
+} = {}) {
+  const store = { ...invitations } // email -> {id, token, expiresAt, status}
+  const users = { ...authUsers } // email -> {id, confirmed}
   let lock = Promise.resolve()
   function withRowLock(fn) {
     const run = lock.then(fn, fn)
@@ -49,15 +74,26 @@ function fakeSupabase({ invitations = {}, isOwner = true, inviteEmailImpl } = {}
       }
       return withRowLock(async () => {
         const email = args.p_email.toLowerCase().trim()
+
+        // Mirrors the real RPC's ordering: the pre-existing-Auth-account
+        // check runs BEFORE the invitation lookup, so it shadows both the
+        // token-reuse branch and the expired-row replacement branch.
+        if (users[email]) {
+          return {
+            data: null,
+            error: {
+              message:
+                'An account already exists for this email address. It cannot be invited as a new coach -- have them sign in with the existing account, or use a different address.',
+            },
+          }
+        }
+
         const existing = store[email]
         if (existing && existing.status === 'invited' && existing.expiresAt > Date.now()) {
           return {
             data: [{ invitation_id: existing.id, invite_token: existing.token, invite_expires_at: new Date(existing.expiresAt).toISOString(), newly_issued: false }],
             error: null,
           }
-        }
-        if (existing?.status === 'accepted') {
-          return { data: null, error: { message: 'This email already belongs to an existing account with an assigned role.' } }
         }
         tokenCounter += 1
         const token = `token-${tokenCounter}`
@@ -71,18 +107,28 @@ function fakeSupabase({ invitations = {}, isOwner = true, inviteEmailImpl } = {}
     },
   }
 
+  let userCounter = 0
   const admin = {
     auth: {
       admin: {
         inviteUserByEmail: async (email, opts) => {
-          if (inviteEmailImpl) return inviteEmailImpl(email, opts)
-          return { data: { user: { id: 'new-user' } }, error: null }
+          const result = inviteEmailImpl
+            ? await inviteEmailImpl(email, opts)
+            : { data: { user: { id: 'new-user' } }, error: null }
+          if (!result.error && sendCreatesAuthUser) {
+            const key = email.toLowerCase().trim()
+            if (!users[key]) {
+              userCounter += 1
+              users[key] = { id: `auth-user-${userCounter}`, confirmed: false }
+            }
+          }
+          return result
         },
       },
     },
   }
 
-  return { asUser, admin, store }
+  return { asUser, admin, store, users }
 }
 
 test('first invitation: issues a fresh token and sends successfully', async () => {
@@ -94,24 +140,77 @@ test('first invitation: issues a fresh token and sends successfully', async () =
   assert.equal(result.body.email, 'new.coach@example.com')
 })
 
-test('resend of a still-pending invite reuses the same token (no rotation)', async () => {
-  // The token is asserted where it actually travels -- the emailed link's
-  // metadata -- because the response body no longer carries it (see the
-  // token-exposure test below). A rotation here would silently invalidate
-  // a link the invitee may already have received.
-  const sentTokens = []
+test('a successful first invitation creates an unconfirmed Auth user (what real GoTrue does)', async () => {
+  const { asUser, admin, users } = fakeSupabase()
+  const result = await handleInviteCoachRequest({ asUser, admin, email: 'x@example.com', siteUrl: 'https://example.com' })
+
+  assert.equal(result.status, 200)
+  assert.ok(users['x@example.com'], 'inviteUserByEmail must have created an auth.users row')
+  assert.equal(users['x@example.com'].confirmed, false, 'and it is unconfirmed until they accept')
+})
+
+test('RESEND CONTRADICTION: a second invitation to the same address is rejected, because the first one created the Auth user', async () => {
+  // This is the whole reason the dashboard has no resend button. The
+  // second call never reaches the token-reuse branch: the RPC's
+  // pre-existing-account check fires first and rejects it outright.
+  const { asUser, admin } = fakeSupabase()
+  const first = await handleInviteCoachRequest({ asUser, admin, email: 'x@example.com', siteUrl: 'https://example.com' })
+  assert.equal(first.status, 200)
+
+  const second = await handleInviteCoachRequest({ asUser, admin, email: 'x@example.com', siteUrl: 'https://example.com' })
+  assert.equal(second.status, 400, 'a resend fails -- it does not quietly reuse the token')
+  assert.match(second.body.error.message, /account already exists/i)
+})
+
+test('RESEND CONTRADICTION: an EXPIRED application invitation cannot be re-issued either, for the same reason', async () => {
+  // The expired-row replacement branch is equally shadowed by the
+  // pre-existing-account check, so an invitation that timed out is a
+  // dead end through this path rather than something the owner can
+  // refresh.
   const { asUser, admin } = fakeSupabase({
+    invitations: {
+      'stale@example.com': {
+        id: 'inv-old',
+        token: 'token-old',
+        expiresAt: Date.now() - 1000, // already expired
+        status: 'invited',
+      },
+    },
+    authUsers: { 'stale@example.com': { id: 'auth-old', confirmed: false } },
+  })
+
+  const result = await handleInviteCoachRequest({ asUser, admin, email: 'stale@example.com', siteUrl: 'https://example.com' })
+  assert.equal(result.status, 400)
+  assert.match(result.body.error.message, /account already exists/i)
+})
+
+test('retry after a send that failed BEFORE user creation still reuses the same token', async () => {
+  // The legitimate idempotency the RPC was designed for, and the only
+  // case that still reaches the reuse branch. The token is asserted where
+  // it actually travels -- the emailed link's metadata -- because the
+  // response body no longer carries it.
+  const sentTokens = []
+  let failFirst = true
+  const { asUser, admin } = fakeSupabase({
+    sendCreatesAuthUser: false, // modeling a failure before GoTrue created the user
     inviteEmailImpl: async (_email, opts) => {
       sentTokens.push(opts.data.coach_invite_token)
+      if (failFirst) {
+        failFirst = false
+        return { data: null, error: { message: 'SMTP temporarily unavailable' } }
+      }
       return { data: {}, error: null }
     },
   })
-  await handleInviteCoachRequest({ asUser, admin, email: 'x@example.com', siteUrl: 'https://example.com' })
-  const second = await handleInviteCoachRequest({ asUser, admin, email: 'x@example.com', siteUrl: 'https://example.com' })
+
+  const first = await handleInviteCoachRequest({ asUser, admin, email: 'y@example.com', siteUrl: 'https://example.com' })
+  assert.equal(first.status, 502, 'the failed send is reported')
+
+  const retry = await handleInviteCoachRequest({ asUser, admin, email: 'y@example.com', siteUrl: 'https://example.com' })
+  assert.equal(retry.status, 200)
+  assert.equal(retry.body.newly_issued, false, 'the retry reuses rather than rotates')
   assert.equal(sentTokens.length, 2)
-  assert.equal(sentTokens[1], sentTokens[0])
-  assert.ok(sentTokens[0], 'a token must actually have been sent')
-  assert.equal(second.body.newly_issued, false)
+  assert.equal(sentTokens[1], sentTokens[0], 'a link already delivered must keep working')
 })
 
 test('the response body never carries the invitation token back to the browser', async () => {
@@ -144,11 +243,19 @@ test('a non-owner caller is rejected with 400, before any email is sent', async 
 })
 
 test('an email already belonging to an existing account is rejected clearly', async () => {
-  const { asUser, admin, store } = fakeSupabase()
-  store['taken@example.com'] = { id: 'inv-x', token: 't', expiresAt: Date.now() + 1000, status: 'accepted' }
+  // An accepted invitation means the invitee confirmed their email, so
+  // the Auth account exists and is confirmed. That -- not the invitation
+  // row's status -- is what the real RPC keys off, so it is what the fake
+  // models.
+  const { asUser, admin } = fakeSupabase({
+    invitations: {
+      'taken@example.com': { id: 'inv-x', token: 't', expiresAt: Date.now() + 1000, status: 'accepted' },
+    },
+    authUsers: { 'taken@example.com': { id: 'auth-taken', confirmed: true } },
+  })
   const result = await handleInviteCoachRequest({ asUser, admin, email: 'taken@example.com', siteUrl: 'https://example.com' })
   assert.equal(result.status, 400)
-  assert.match(result.body.error.message, /already belongs/i)
+  assert.match(result.body.error.message, /account already exists/i)
 })
 
 test('delivery failure on a fresh issue does NOT cancel -- the token stays pending for retry', async () => {

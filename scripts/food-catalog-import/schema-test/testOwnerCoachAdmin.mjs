@@ -244,6 +244,12 @@ check('First invite: newly_issued = true', invite1.rows[0].newly_issued === true
 const invite2 = await queryAs(OWNER, `select * from public.owner_get_or_invite_coach('new.coach@example.com')`)
 check('Duplicate invite to the same still-pending email: reuses the SAME token (newly_issued=false)',
   invite2.rows[0].newly_issued === false && invite2.rows[0].invite_token === invite1.rows[0].invite_token)
+// IMPORTANT: that reuse is reachable here ONLY because no auth.users row
+// exists for this address yet -- i.e. it models a retry after a send that
+// never reached GoTrue. It is NOT resend support. Once a real invite
+// email goes out, GoTrue creates an unconfirmed auth.users row and the
+// pre-existing-account check rejects this same call. Section 27 below
+// proves exactly that, so this check cannot be mistaken for resend.
 
 await expectError('Inviting an email that already belongs to an existing coach is rejected', () =>
   queryAs(OWNER, `select * from public.owner_get_or_invite_coach('coach.a@example.com')`))
@@ -477,6 +483,168 @@ const lockReuse = await queryAs(OWNER, `select * from public.owner_get_or_invite
 check('Re-invite of the locked address reuses the existing token (newly_issued=false)', lockReuse.rows[0].newly_issued === false)
 const lockRowCount = await db.query(`select count(*)::int as c from public.coach_invitations where lower(email)='locktest@example.com' and status='invited'`)
 check('Exactly ONE live invitation row exists for that address', lockRowCount.rows[0].c === 1)
+
+
+// =====================================================================
+// 26. Raw invitation rows and tokens are unreachable from ANY client
+// =====================================================================
+// The invite_token column is a bearer credential. An earlier revision had
+// a `coach_invitations_select_owner` SELECT policy, which meant the
+// owner's browser -- an anon-key client running whatever the page's JS,
+// an extension, or an injected payload asks -- could read every live
+// token in one request. The policy is gone; these checks prove the table
+// is now unreachable through RLS for every client role, while the narrow
+// RPC still works.
+await db.query('set role postgres')
+// Grant the table privilege explicitly to anon/authenticated first, so a
+// denial below can only be RLS -- not a missing GRANT that might be added
+// later by an unrelated change.
+await db.exec(`grant select on public.coach_invitations to anon, authenticated, app_user;`)
+
+// Make sure there IS something to leak, so a 0-row result means "denied",
+// not "empty table".
+const liveInvites = await db.query(`select count(*)::int as c from public.coach_invitations where status = 'invited'`)
+check('Precondition: live invitation rows exist for these read attempts to be meaningful',
+  liveInvites.rows[0].c >= 1, `live invitations: ${liveInvites.rows[0].c}`)
+
+const ownerRawRows = await queryAs(OWNER, `select count(*)::int as c from public.coach_invitations`)
+check('OWNER cannot select invitation rows directly (RLS denies -- no policy exists)',
+  ownerRawRows.rows[0].c === 0, `owner saw ${ownerRawRows.rows[0].c} rows`)
+
+const ownerRawTokens = await queryAs(OWNER, `select count(invite_token)::int as c from public.coach_invitations`)
+check('OWNER cannot read invite_token directly', ownerRawTokens.rows[0].c === 0)
+
+const coachRawRows = await queryAs(COACH_A, `select count(*)::int as c from public.coach_invitations`)
+check('A COACH cannot read invitations', coachRawRows.rows[0].c === 0)
+
+const traineeRawRows = await queryAs(TRAINEE1, `select count(*)::int as c from public.coach_invitations`)
+check('A TRAINEE cannot read invitations', traineeRawRows.rows[0].c === 0)
+
+// A signed-in account holding no application role at all.
+await db.query('set role postgres')
+const strangerRow = await db.query(
+  `insert into auth.users (email, email_confirmed_at) values ('stranger@example.com', now()) returning id`)
+const STRANGER = strangerRow.rows[0].id
+const strangerRawRows = await queryAs(STRANGER, `select count(*)::int as c from public.coach_invitations`)
+check('A normal authenticated user with no role cannot read invitations', strangerRawRows.rows[0].c === 0)
+
+// Anonymous: no auth.uid() at all, running as the `anon` role.
+await db.query('begin')
+await db.query(`set local role anon`)
+await db.query(`select set_config('app.current_uid', '', true)`)
+let anonCount = null
+let anonDenied = false
+try {
+  const r = await db.query(`select count(*)::int as c from public.coach_invitations`)
+  anonCount = r.rows[0].c
+} catch {
+  anonDenied = true // a hard privilege error is an even stronger denial
+} finally {
+  await db.query('commit')
+}
+check('An ANONYMOUS caller cannot read invitations', anonDenied || anonCount === 0,
+  anonDenied ? 'denied at privilege level' : `anon saw ${anonCount} rows`)
+
+// The narrow RPC still works and still returns only safe fields.
+const safeList = await queryAs(OWNER, `select * from public.owner_list_pending_invitations()`)
+check('owner_list_pending_invitations() still returns rows for the owner', safeList.rows.length >= 1,
+  `${safeList.rows.length} pending invitation(s)`)
+const safeCols = Object.keys(safeList.rows[0] ?? {})
+check('...and exposes exactly the safe fields',
+  ['invitation_id', 'email', 'invite_sent_at', 'invite_expires_at', 'state'].every((c) => safeCols.includes(c)),
+  safeCols.join(', '))
+check('...and exposes NO token column under any spelling',
+  !safeCols.some((c) => /token/i.test(c)), safeCols.join(', '))
+check('...and every returned value is free of the real token strings',
+  !safeList.rows.some((r) => Object.values(r).some((v) => typeof v === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-/i.test(v) && v === invite1.rows[0].invite_token)))
+
+const nonOwnerRpc = await queryAs(COACH_A, `select 1 as ok`) // sanity: harness still alive
+check('Sanity: harness still functioning after role switches', nonOwnerRpc.rows[0].ok === 1)
+await expectError('A non-owner calling owner_list_pending_invitations() is rejected', () =>
+  queryAs(COACH_A, `select * from public.owner_list_pending_invitations()`))
+
+// The trusted server flow (SECURITY DEFINER, as the Edge Function's
+// as-user client reaches it) can still issue an invitation end to end.
+const serverIssue = await queryAs(OWNER, `select * from public.owner_get_or_invite_coach('server.flow@example.com')`)
+check('Trusted server flow can still ISSUE an invitation despite the removed policy',
+  serverIssue.rows[0].newly_issued === true && !!serverIssue.rows[0].invite_token)
+const serverVisible = await queryAs(OWNER, `select count(*)::int as c from public.owner_list_pending_invitations() where email = 'server.flow@example.com'`)
+check('...and it is immediately visible through the narrow RPC', serverVisible.rows[0].c === 1)
+
+// =====================================================================
+// 27. The Auth user created by a successful invite -- and what it means
+// =====================================================================
+// Codex's finding: admin.auth.admin.inviteUserByEmail() creates an
+// UNCONFIRMED auth.users row. owner_get_or_invite_coach rejects any
+// address that already has an auth.users row. Therefore a "resend" of an
+// invitation that was actually delivered can never succeed. This section
+// reproduces that at the database level, where the JS fake could not.
+await db.query('set role postgres')
+
+const resendIssue = await queryAs(OWNER, `select * from public.owner_get_or_invite_coach('resend.case@example.com')`)
+check('Resend case, step 1: the first invitation is issued', resendIssue.rows[0].newly_issued === true)
+
+// Step 2: model exactly what GoTrue does on a successful invite send --
+// create the account, unconfirmed, with the token in user metadata.
+await db.query('set role postgres')
+await db.query(
+  `insert into auth.users (email, email_confirmed_at, raw_user_meta_data)
+   values ($1, null, jsonb_build_object('coach_invite_token', $2::text))`,
+  ['resend.case@example.com', resendIssue.rows[0].invite_token],
+)
+const unconfirmed = await db.query(
+  `select email_confirmed_at from auth.users where email = 'resend.case@example.com'`)
+check('Resend case, step 2: an UNCONFIRMED auth.users row now exists (as GoTrue creates)',
+  unconfirmed.rows.length === 1 && unconfirmed.rows[0].email_confirmed_at === null)
+const stillInvited = await db.query(
+  `select status from public.coach_invitations where lower(email)='resend.case@example.com'`)
+check('...and the invitation is still merely invited (nothing accepted it yet)',
+  stillInvited.rows[0].status === 'invited')
+
+// Step 3: the resend. This is the contradiction.
+await expectError(
+  'Resend case, step 3: a RESEND is rejected -- the address now has an Auth account (resend is impossible by construction)',
+  () => queryAs(OWNER, `select * from public.owner_get_or_invite_coach('resend.case@example.com')`))
+
+// Step 4: an EXPIRED application invitation is no better off.
+await db.query('set role postgres')
+// invite_sent_at moves back too -- the table's own
+// `check (invite_expires_at > invite_sent_at)` refuses an expiry that
+// precedes the send, which is the correct constraint and caught this
+// test expressing an impossible row rather than a real expired one.
+await db.query(
+  `update public.coach_invitations
+   set invite_sent_at = now() - interval '8 days',
+       invite_expires_at = now() - interval '1 day'
+   where lower(email) = 'resend.case@example.com'`)
+const expiredState = await queryAs(OWNER,
+  `select state from public.owner_list_pending_invitations() where email = 'resend.case@example.com'`)
+check('Resend case, step 4: the invitation is reported as expired', expiredState.rows[0].state === 'expired')
+await expectError(
+  '...and re-issuing an EXPIRED invitation is rejected too (the replacement branch is shadowed as well)',
+  () => queryAs(OWNER, `select * from public.owner_get_or_invite_coach('resend.case@example.com')`))
+
+// Step 5: acceptance of the ORIGINAL token still works. The one thing
+// that must not regress: the invitation that really was delivered is
+// still redeemable, expiry permitting.
+await db.query('set role postgres')
+await db.query(
+  `update public.coach_invitations set invite_expires_at = now() + interval '7 days'
+   where lower(email) = 'resend.case@example.com'`)
+await db.query(
+  `update auth.users set email_confirmed_at = now() where email = 'resend.case@example.com'`)
+const acceptedRow = await db.query(
+  `select id from auth.users where email = 'resend.case@example.com'`)
+const RESEND_USER = acceptedRow.rows[0].id
+const acceptedRole = await db.query(`select role from public.user_roles where user_id = $1`, [RESEND_USER])
+check('Resend case, step 5: accepting the ORIGINAL emailed token still works (role granted)',
+  acceptedRole.rows[0]?.role === 'coach')
+const acceptedInvite = await db.query(
+  `select status from public.coach_invitations where lower(email)='resend.case@example.com'`)
+check('...and the invitation is marked accepted exactly once', acceptedInvite.rows[0].status === 'accepted')
+const acceptedCoach = await db.query(`select access_status from public.coaches where user_id = $1`, [RESEND_USER])
+check('...and the account begins as a PENDING coach', acceptedCoach.rows[0]?.access_status === 'pending')
+
 
 console.log(allOk ? '\n=== ALL OWNER/COACH-ADMIN PGLITE TESTS PASSED ===' : '\n=== SOME TESTS FAILED -- see above ===')
 await db.close()

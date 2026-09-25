@@ -612,22 +612,46 @@ create unique index coach_invitations_email_live_idx
 
 alter table public.coach_invitations enable row level security;
 
-create policy coach_invitations_select_owner on public.coach_invitations
-  for select
-  using (public.is_owner());
-
--- No insert/update/delete policy for anyone -- every write goes
--- through owner_get_or_invite_coach / owner_cancel_coach_invite
--- (security definer, bypass RLS, re-check is_owner() in their own
+-- NO policy of any kind on this table, for anyone -- not even the owner.
+--
+-- An earlier revision had a `coach_invitations_select_owner` SELECT
+-- policy for is_owner(). Review removed it, correctly. invite_token is a
+-- bearer credential: possession of it plus control of the invited mailbox
+-- is the entire acceptance check. A SELECT policy means the owner's
+-- BROWSER -- an anon-key client running whatever the page's JavaScript,
+-- an extension, or an XSS payload asks it to -- can read every live token
+-- with one PostgREST request. "The owner is the one party a leaked token
+-- would not help" was the old justification, and it was wrong twice: it
+-- confuses the human owner with the untrusted client acting under their
+-- JWT, and it ignores that a token leaked from that client is useful to
+-- whoever takes it, not to the owner.
+--
+-- Nothing needs the raw rows. Every legitimate reader is SECURITY
+-- DEFINER and bypasses RLS on its own:
+--   * owner_list_pending_invitations() -- the app's only read path;
+--     returns email/dates/state and deliberately no token
+--   * owner_get_or_invite_coach(), owner_cancel_coach_invite()
+--   * link_coach_on_email_confirmed() -- the acceptance trigger
+-- A project owner inspecting the table by hand in the Supabase Dashboard
+-- or psql connects as a privileged Postgres role, which is not subject to
+-- RLS, so that path is unaffected by removing this policy.
+--
+-- No insert/update/delete policy either -- every write goes through the
+-- same security-definer functions (which re-check is_owner() in their own
 -- body) or the auth.users linking trigger below.
 
 -- Idempotent issue-or-reuse, mirroring coach_get_or_issue_trainee_invite
 -- (034): a still-pending, unexpired invitation for this email is
 -- returned unchanged (newly_issued = false) rather than rotated, so an
--- Edge Function's retry after a failed email send never invalidates a
+-- Edge Function's retry after a FAILED email send never invalidates a
 -- token that may already have been delivered. A fresh token is minted
 -- only when nothing valid exists to reuse (no prior invitation, a
 -- cancelled one, or an expired one).
+--
+-- That idempotency covers retry-after-failure ONLY. It is NOT a resend
+-- mechanism, and it must not be described as one: after a SUCCESSFUL
+-- send the pre-existing-Auth-account check below rejects the call before
+-- the reuse branch is ever reached. The full reasoning is at that check.
 --
 -- CONCURRENCY (fixed after review). The earlier revision relied on
 -- `select ... for update` alone to serialize two simultaneous first
@@ -701,6 +725,26 @@ begin
   -- Any pre-existing Auth account for this address is rejected, with or
   -- without a role -- see the header. Checked AFTER the advisory lock so
   -- two concurrent calls cannot both pass this check and then both act.
+  --
+  -- CONSEQUENCE FOR RESEND (do not remove this note without reading it).
+  -- A successful admin.auth.admin.inviteUserByEmail() creates an
+  -- UNCONFIRMED auth.users row for the invited address. From that moment
+  -- on, this check matches that row and every later call for the same
+  -- address raises -- including a legitimate resend, and including
+  -- re-issuing an invitation whose application record has expired. The
+  -- reuse branch below and the expired-row replacement branch below are
+  -- therefore unreachable for any address whose first invitation email
+  -- was actually delivered; they remain reachable only when the send
+  -- itself failed before GoTrue created the user.
+  --
+  -- This is why the dashboard has no resend control: an "idempotent token
+  -- reuse" resend looks correct in an application-only test that never
+  -- creates the Auth user, and always fails against real GoTrue. Making
+  -- resend work needs a supported GoTrue mechanism (and a decision about
+  -- the unconfirmed-user lifecycle) verified against a real instance --
+  -- not a relaxation of this check, which is the only thing standing
+  -- between an owner and silently re-inviting an address that already
+  -- belongs to a real account.
   select id into v_existing_user_id from auth.users where lower(email) = v_email;
   if v_existing_user_id is not null then
     raise exception 'An account already exists for this email address. It cannot be invited as a new coach -- have them sign in with the existing account, or use a different address.';
@@ -787,14 +831,22 @@ grant execute on function public.owner_cancel_coach_invite(uuid) to authenticate
 --
 -- `state` is computed, not stored: an invitation whose expiry has
 -- passed is still status='invited' in the table (nothing sweeps it),
--- but is functionally dead, and the owner needs to see that difference
--- to know whether to resend. The coach_invitations table itself is
--- readable by the owner through coach_invitations_select_owner, which
--- DOES include invite_token -- that policy exists for direct
--- Dashboard/psql inspection by the project owner, not for the app; the
--- app only ever calls this function. (The browser client could in
--- principle select the column directly, but nothing in this codebase
--- does, and the owner is the one party a leaked token would not help.)
+-- but is functionally dead, and the owner needs to see that difference.
+--
+-- This is now the ONLY way any client can read this table at all: the
+-- raw-row SELECT policy was removed (see the table definition above), so
+-- there is no longer any path by which a browser holding the owner's JWT
+-- can reach invite_token. That is a property of the schema now, not a
+-- convention the app happens to follow.
+--
+-- NOTE on invite_expires_at: this is the expiry of the APPLICATION's
+-- invitation record, which is what link_coach_on_email_confirmed()
+-- enforces. It is NOT necessarily the lifetime of the link Supabase Auth
+-- actually emailed -- that is governed by the project's own GoTrue mailer
+-- settings and may well be shorter. The two have not been reconciled
+-- against a real GoTrue instance, so the UI must not present this date as
+-- "the link works until then". See the resend note on
+-- owner_get_or_invite_coach().
 create or replace function public.owner_list_pending_invitations()
 returns table (
   invitation_id uuid,
