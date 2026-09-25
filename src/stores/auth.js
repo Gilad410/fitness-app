@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { supabase } from '../lib/supabaseClient'
+import { normalizeCoachAccessStatus } from '../features/auth/lib/coachAccessStatus'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -222,20 +223,39 @@ export const useAuthStore = defineStore('auth', {
 
     // The coach-side counterpart to checkTraineeActiveLink() above, added
     // by 056_owner_coach_administration.sql: role alone (isCoach) cannot
-    // tell an active coach from a suspended one, since public.user_roles
-    // and public.coaches.access_status are separate tables -- exactly the
-    // same split that motivated the trainee check. Deliberately NOT
-    // cached: the router guard calls this on every coach-route navigation
-    // so an owner suspending a coach mid-session is caught on that
-    // coach's very next navigation, not just at their next login. Throws
-    // on a genuine RPC/network failure so the caller can fail closed
-    // (see router/index.js) rather than confuse "confirmed suspended"
-    // with "couldn't check".
-    async checkCoachActiveStatus() {
+    // tell an active coach from a pending or suspended one, since
+    // public.user_roles and public.coaches.access_status are separate
+    // tables -- the same split that motivated the trainee check.
+    // Deliberately NOT cached: the router guard calls this on every
+    // coach-route navigation, so an owner suspending (or approving) a
+    // coach mid-session is reflected on that coach's very next
+    // navigation, not just at their next login.
+    //
+    // Returns the ACTUAL status string, not a boolean. An earlier
+    // revision collapsed everything to `=== 'active'`, which made a
+    // brand-new pending coach indistinguishable from a suspended one and
+    // sent them to a screen telling them they had been suspended --
+    // factually wrong and alarming. Callers must branch on the real
+    // value.
+    //
+    // Returns one of: 'active' | 'pending' | 'suspended' | 'unknown'.
+    // 'unknown' covers every case where the answer cannot be trusted:
+    // zero rows (no coaches record for this account at all), a null/
+    // absent field, or a value this client does not recognize (e.g. a
+    // future status added in a later migration and deployed ahead of
+    // the frontend). Throws only on a genuine RPC/network failure, so
+    // the caller can distinguish "could not reach the server" from
+    // "server answered, but not with something usable" -- both fail
+    // closed, but they are not the same event and should not claim to
+    // be.
+    async checkCoachAccessStatus() {
       const { data, error } = await supabase.rpc('coach_get_own_status')
       if (error) throw error
-      const row = Array.isArray(data) ? data[0] : data
-      return row?.access_status === 'active'
+      // Shape handling lives in a pure module so every payload variant
+      // (array, bare row, empty array, null field, unrecognized value)
+      // is covered by real tests -- this store cannot be loaded in a
+      // node test because of the Supabase client import above.
+      return normalizeCoachAccessStatus(data)
     },
   },
 })

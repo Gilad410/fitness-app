@@ -30,9 +30,11 @@ import DesignPreviewHome from '../features/designPreview/DesignPreviewHome.vue'
 import DesignPreviewNutrition from '../features/designPreview/DesignPreviewNutrition.vue'
 import CoachJoinView from '../features/auth/views/CoachJoinView.vue'
 import CoachSuspendedView from '../features/auth/views/CoachSuspendedView.vue'
+import CoachPendingApprovalView from '../features/auth/views/CoachPendingApprovalView.vue'
 import OwnerCoachesView from '../features/owner/views/OwnerCoachesView.vue'
 import { useAuthStore } from '../stores/auth'
 import { clearCoachDataCaches } from '../features/owner/lib/clearCoachDataCaches'
+import { resolveCoachAccessRoute } from '../features/auth/lib/coachAccessRouting'
 
 // NOTE on /signup: public coach self-signup (src/features/auth/views/SignupView.vue)
 // is intentionally NOT registered as a route. 021_trainee_auth_and_roles.sql
@@ -160,6 +162,11 @@ const router = createRouter({
     // router guard has already signed out.
     { path: '/coach/join', name: 'coach-join', component: CoachJoinView },
     { path: '/coach/suspended', name: 'coach-suspended', component: CoachSuspendedView },
+    {
+      path: '/coach/pending-approval',
+      name: 'coach-pending-approval',
+      component: CoachPendingApprovalView,
+    },
 
     // Owner administration area (056_owner_coach_administration.sql).
     {
@@ -321,34 +328,39 @@ router.beforeEach(async (to) => {
 
     // Role alone isn't enough here either: user_roles and
     // public.coaches.access_status are separate tables
-    // (056_owner_coach_administration.sql), so a suspended coach still
-    // passes the isCoach check above -- exactly the same split, and the
-    // same reason, as the trainee re-check just below. Re-verified live
-    // on every coach-route navigation (not cached), via the same RPC
-    // (coach_get_own_status) is_coach() itself is built on, so a coach
-    // being suspended mid-session is caught on their very next
-    // navigation, not just at their next login.
-    let isActive
+    // (056_owner_coach_administration.sql), so a pending or suspended
+    // coach still passes the isCoach check above -- exactly the same
+    // split, and the same reason, as the trainee re-check just below.
+    // Re-verified live on every coach-route navigation (not cached), via
+    // the same RPC (coach_get_own_status) is_coach() itself is built on,
+    // so a coach being suspended -- or approved -- mid-session is
+    // reflected on their very next navigation, not just at their next
+    // login.
+    //
+    // The actual status string is used, not a boolean: 'pending' and
+    // 'suspended' are different facts and get different screens (an
+    // earlier revision sent both to the suspension screen, telling a
+    // brand-new coach they had been suspended). The decision itself
+    // lives in resolveCoachAccessRoute() so every state is unit-tested.
+    let decision
     try {
-      isActive = await authStore.checkCoachActiveStatus()
+      const status = await authStore.checkCoachAccessStatus()
+      decision = resolveCoachAccessRoute(status)
     } catch {
-      // Fail closed, same reasoning as the trainee branch: an unverifiable
-      // status is treated as "cannot currently vouch for this session",
-      // not as "still active".
-      clearCoachDataCaches()
-      await authStore.signOut()
-      return { name: 'login', query: { suspended: 'error' } }
+      // The RPC itself failed (network/server). Fail closed, but report
+      // it as "could not verify", never as a suspension.
+      decision = resolveCoachAccessRoute(null, { verificationFailed: true })
     }
-    if (!isActive) {
+    if (decision) {
       // Clear every coach-facing cache (including the three stores
       // holding signed Storage URLs) BEFORE signing out and navigating
       // away -- see clearCoachDataCaches.js. This cannot revoke a URL
       // already open in another tab, only remove it from this session's
       // own state; the database is still the real boundary (is_coach()
-      // now returns false for every further request regardless).
-      clearCoachDataCaches()
-      await authStore.signOut()
-      return { name: 'coach-suspended' }
+      // returns false for every further request regardless).
+      if (decision.clearCoachCaches) clearCoachDataCaches()
+      if (decision.signOut) await authStore.signOut()
+      return decision.route
     }
   }
   if (to.meta.requiresRole === 'trainee') {
