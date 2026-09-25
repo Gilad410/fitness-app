@@ -8,6 +8,7 @@ import TraineeProgressSection from '../../progress/components/TraineeProgressSec
 import TraineeCircumferenceSection from '../../progress/components/TraineeCircumferenceSection.vue'
 import TraineeProgressPhotosSection from '../../progress/components/TraineeProgressPhotosSection.vue'
 import TraineeInviteSection from '../components/TraineeInviteSection.vue'
+import LoadErrorState from '../../../components/feedback/LoadErrorState.vue'
 import { useTraineesStore } from '../store/trainees'
 import { useSelectedTraineeStore } from '../store/selectedTrainee'
 import { reconcileSelectionWithRoute } from '../store/selectedTraineeStorage'
@@ -17,15 +18,28 @@ const traineesStore = useTraineesStore()
 const selectedTraineeStore = useSelectedTraineeStore()
 
 const checking = ref(true)
+const loadFailed = ref(false)
 const error = ref('')
 const updating = ref(false)
 const showArchiveConfirm = ref(false)
 
 const trainee = computed(() => traineesStore.getById(route.params.id))
 
-onMounted(async () => {
-  await traineesStore.ensureLoaded()
-  checking.value = false
+// Re-runnable (the retry button calls it again) -- a failed load must
+// never leave the screen stuck on "טוען...", and must never reach the
+// selection reconcile below, which would otherwise treat the not-yet-
+// loaded trainee as deleted and clear the remembered selection.
+async function loadTrainee() {
+  checking.value = true
+  loadFailed.value = false
+  try {
+    await traineesStore.ensureLoaded()
+  } catch {
+    loadFailed.value = true
+    return
+  } finally {
+    checking.value = false
+  }
   // Opening a trainee's own profile is the most natural "select this
   // trainee" action -- from here on, the Progress/Nutrition/Training nav
   // items jump straight into THIS trainee's workspace (selectedTrainee.js).
@@ -38,7 +52,9 @@ onMounted(async () => {
   })
   if (outcome.type === 'select') selectedTraineeStore.select(outcome.traineeId)
   else if (outcome.type === 'clear') selectedTraineeStore.clear()
-})
+}
+
+onMounted(loadTrainee)
 
 const hasStartingCircumferences = computed(() => {
   const t = trainee.value
@@ -82,7 +98,13 @@ async function confirmArchive() {
 <template>
   <AppLayout>
     <section class="mx-auto max-w-lg">
-      <p v-if="checking" class="text-neutral-600">טוען...</p>
+      <p v-if="checking" class="text-neutral-600" role="status">טוען...</p>
+
+      <LoadErrorState
+        v-else-if="loadFailed"
+        message="לא ניתן היה לטעון את פרטי המתאמן. יש לבדוק את החיבור לאינטרנט ולנסות שוב."
+        @retry="loadTrainee"
+      />
 
       <p v-else-if="!trainee" class="text-neutral-600">המתאמן לא נמצא.</p>
 

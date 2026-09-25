@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import AppLayout from '../../../layouts/AppLayout.vue'
+import LoadErrorState from '../../../components/feedback/LoadErrorState.vue'
 import TraineeStatusBadge from '../../trainees/components/TraineeStatusBadge.vue'
 import { useTraineesStore } from '../../trainees/store/trainees'
 
@@ -11,9 +12,14 @@ import { useTraineesStore } from '../../trainees/store/trainees'
 // the trainee-detail page -- no duplicated logic.
 const traineesStore = useTraineesStore()
 
-onMounted(() => {
-  traineesStore.ensureLoaded()
-})
+// A failure is rendered from traineesStore.error below; caught here only so
+// it isn't also an unhandled rejection. ensureLoaded() doesn't cache a
+// failed load, so the retry button genuinely refetches.
+function loadTrainees() {
+  traineesStore.ensureLoaded().catch(() => {})
+}
+
+onMounted(loadTrainees)
 
 const statusFilter = ref('roster')
 
@@ -40,20 +46,19 @@ const filteredTrainees = computed(() => {
         <p class="mt-1 text-sm text-neutral-600">בחר מתאמן כדי לפתוח את מרחב ההתקדמות שלו</p>
       </section>
 
-      <p v-if="traineesStore.loading && !traineesStore.loaded" class="text-neutral-600">
+      <p
+        v-if="traineesStore.loading && !traineesStore.loaded"
+        class="text-neutral-600"
+        role="status"
+      >
         טוען...
       </p>
 
-      <div v-else-if="traineesStore.error" class="flex flex-col items-start gap-3">
-        <p class="text-sm text-status-red">{{ traineesStore.error }}</p>
-        <button
-          type="button"
-          class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100"
-          @click="traineesStore.fetchAll()"
-        >
-          נסה שוב
-        </button>
-      </div>
+      <LoadErrorState
+        v-else-if="traineesStore.error"
+        message="לא ניתן היה לטעון את רשימת המתאמנים. יש לבדוק את החיבור לאינטרנט ולנסות שוב."
+        @retry="loadTrainees"
+      />
 
       <template v-else-if="traineesStore.loaded">
         <div class="mb-4 flex flex-wrap gap-2">

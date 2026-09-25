@@ -3,6 +3,7 @@ import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AppLayout from '../../../layouts/AppLayout.vue'
 import BackLink from '../../../components/layout/BackLink.vue'
+import LoadErrorState from '../../../components/feedback/LoadErrorState.vue'
 import { useTraineesStore } from '../store/trainees'
 
 const route = useRoute()
@@ -34,13 +35,22 @@ const loading = ref(false)
 const error = ref('')
 const notFound = ref(false)
 const checkingExisting = ref(isEdit.value)
+const loadFailed = ref(false)
 
-onMounted(async () => {
-  if (!isEdit.value) return
-
-  await traineesStore.ensureLoaded()
+// Re-runnable (the retry button calls it again) -- a failed load must
+// never leave the edit screen stuck on "טוען...".
+async function loadExisting() {
+  checkingExisting.value = true
+  loadFailed.value = false
+  try {
+    await traineesStore.ensureLoaded()
+  } catch {
+    loadFailed.value = true
+    return
+  } finally {
+    checkingExisting.value = false
+  }
   const trainee = traineesStore.getById(id.value)
-  checkingExisting.value = false
 
   if (!trainee) {
     notFound.value = true
@@ -61,6 +71,10 @@ onMounted(async () => {
   startingLeftArm.value = trainee.starting_left_arm_cm ?? ''
   startingRightLeg.value = trainee.starting_right_leg_cm ?? ''
   startingLeftLeg.value = trainee.starting_left_leg_cm ?? ''
+}
+
+onMounted(() => {
+  if (isEdit.value) loadExisting()
 })
 
 function emptyToNull(value) {
@@ -110,7 +124,13 @@ async function handleSubmit() {
         {{ isEdit ? 'עריכת מתאמן' : 'הוספת מתאמן' }}
       </h1>
 
-      <p v-if="checkingExisting" class="text-neutral-600">טוען...</p>
+      <p v-if="checkingExisting" class="text-neutral-600" role="status">טוען...</p>
+
+      <LoadErrorState
+        v-else-if="loadFailed"
+        message="לא ניתן היה לטעון את פרטי המתאמן. יש לבדוק את החיבור לאינטרנט ולנסות שוב."
+        @retry="loadExisting"
+      />
 
       <p v-else-if="notFound" class="text-neutral-600">המתאמן לא נמצא.</p>
 
