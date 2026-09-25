@@ -3,7 +3,13 @@ import { supabase } from '../../../lib/supabaseClient'
 import { useAuthStore } from '../../../stores/auth'
 
 const BUCKET = 'progress-photos'
-const SIGNED_URL_TTL_SECONDS = 60 * 60 // 1 hour — regenerated on every fetch, never persisted.
+// 5 minutes -- deliberately short (was 1 hour). A signed URL, once
+// issued, cannot be revoked by RLS/is_coach() -- shortening the window a
+// stale URL remains usable after a coach is suspended is the only
+// mitigation available at this layer (056_owner_coach_administration.sql's
+// design notes: already-downloaded content cannot be remotely revoked).
+// Regenerated on every fetch, never persisted to disk.
+const SIGNED_URL_TTL_SECONDS = 5 * 60
 const MAX_SIZE_BYTES = 8 * 1024 * 1024 // 8 MB, matches the bucket's file_size_limit (017_progress_photos.sql).
 const EXTENSION_BY_MIME_TYPE = {
   'image/jpeg': 'jpg',

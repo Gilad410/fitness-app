@@ -6,12 +6,13 @@ export const useAuthStore = defineStore('auth', {
     user: null,
     initialized: false,
     initPromise: null,
-    // Role read from public.user_roles (021_trainee_auth_and_roles.sql) --
-    // 'coach', 'trainee', or null. null means either "not resolved yet"
-    // (roleLoaded is false) or "resolved: this account genuinely has no
-    // role" (roleLoaded is true) -- callers that need to tell those two
-    // apart (the router guard) always await loadRole() first, so by the
-    // time they read `role` it is authoritative.
+    // Role read from public.user_roles (021_trainee_auth_and_roles.sql,
+    // widened to include 'owner' by 056_owner_coach_administration.sql) --
+    // 'coach', 'trainee', 'owner', or null. null means either "not
+    // resolved yet" (roleLoaded is false) or "resolved: this account
+    // genuinely has no role" (roleLoaded is true) -- callers that need to
+    // tell those two apart (the router guard) always await loadRole()
+    // first, so by the time they read `role` it is authoritative.
     role: null,
     roleLoaded: false,
     roleLoadPromise: null,
@@ -21,6 +22,7 @@ export const useAuthStore = defineStore('auth', {
     isAuthenticated: (state) => !!state.user,
     isCoach: (state) => state.role === 'coach',
     isTrainee: (state) => state.role === 'trainee',
+    isOwner: (state) => state.role === 'owner',
     // Authenticated, role resolved, and genuinely holds neither role --
     // an orphan/no-role account (a leftover open signup, or a trainee
     // invite that was never accepted). Distinct from "still checking".
@@ -216,6 +218,24 @@ export const useAuthStore = defineStore('auth', {
       const { data, error } = await supabase.rpc('trainee_get_auth_context')
       if (error) throw error
       return Array.isArray(data) ? data.length > 0 : !!data
+    },
+
+    // The coach-side counterpart to checkTraineeActiveLink() above, added
+    // by 056_owner_coach_administration.sql: role alone (isCoach) cannot
+    // tell an active coach from a suspended one, since public.user_roles
+    // and public.coaches.access_status are separate tables -- exactly the
+    // same split that motivated the trainee check. Deliberately NOT
+    // cached: the router guard calls this on every coach-route navigation
+    // so an owner suspending a coach mid-session is caught on that
+    // coach's very next navigation, not just at their next login. Throws
+    // on a genuine RPC/network failure so the caller can fail closed
+    // (see router/index.js) rather than confuse "confirmed suspended"
+    // with "couldn't check".
+    async checkCoachActiveStatus() {
+      const { data, error } = await supabase.rpc('coach_get_own_status')
+      if (error) throw error
+      const row = Array.isArray(data) ? data[0] : data
+      return row?.access_status === 'active'
     },
   },
 })
