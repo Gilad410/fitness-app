@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "7290013472892",
+    "screeningResult": "unusable",
+    "evidenceType": "fetch_failed",
+    "identityScreenable": false,
+    "missingInfo": ["image_unreachable"],
+    "notes": "images.openfoodfacts.org refused the connection (TCP connect refused, ~50-150ms) for both listed URLs and their full-res variants. Host-level outage/block, not a per-image issue."
+  },
+  {
+    "barcode": "7290003029433",
+    "screeningResult": "unusable",
+    "evidenceType": "fetch_failed",
+    "identityScreenable": false,
+    "missingInfo": ["image_unreachable"],
+    "notes": "images.openfoodfacts.org connection refused for the listed URL and the resolved full-resolution variant. Could not retrieve any image bytes."
+  },
+  {
+    "barcode": "7290016106664",
+    "screeningResult": "unusable",
+    "evidenceType": "fetch_failed",
+    "identityScreenable": false,
+    "missingInfo": ["image_unreachable"],
+    "notes": "images.openfoodfacts.org connection refused for the listed URL. No alternate reachable host found."
+  },
+  {
+    "barcode": "0037600207188",
+    "screeningResult": "unusable",
+    "evidenceType": "fetch_failed",
+    "identityScreenable": false,
+    "missingInfo": ["image_unreachable"],
+    "notes": "images.openfoodfacts.org connection refused for the listed URL. No alternate reachable host found."
+  },
+  {
+    "barcode": "7290008409216",
+    "screeningResult": "unusable",
+    "evidenceType": "fetch_failed",
+    "identityScreenable": false,
+    "missingInfo": ["image_unreachable"],
+    "notes": "images.openfoodfacts.org connection refused for the listed URL. No alternate reachable host found."
+  },
+  {
+    "barcode": "7290102390465",
+    "screeningResult": "unusable",
+    "evidenceType": "fetch_failed",
+    "identityScreenable": false,
+    "missingInfo": ["image_unreachable"],
+    "notes": "images.openfoodfacts.org connection refused for the listed URL. No alternate reachable host found."
+  },
+  {
+    "barcode": "7290107944472",
+    "screeningResult": "unusable",
+    "evidenceType": "fetch_failed",
+    "identityScreenable": false,
+    "missingInfo": ["image_unreachable"],
+    "notes": "images.openfoodfacts.org connection refused for the listed URL and the resolved full-resolution variant."
+  },
+  {
+    "barcode": "7290112335500",
+    "screeningResult": "unusable",
+    "evidenceType": "fetch_failed",
+    "identityScreenable": false,
+    "missingInfo": ["image_unreachable"],
+    "notes": "images.openfoodfacts.org connection refused for the listed URL and the resolved full-resolution variant."
+  },
+  {
+    "barcode": "7290000043944",
+    "screeningResult": "unusable",
+    "evidenceType": "fetch_failed",
+    "identityScreenable": false,
+    "missingInfo": ["image_unreachable"],
+    "notes": "images.openfoodfacts.org connection refused for the listed URL. No alternate reachable host found."
+  },
+  {
+    "barcode": "7290008830676",
+    "screeningResult": "unusable",
+    "evidenceType": "fetch_failed",
+    "identityScreenable": false,
+    "missingInfo": ["image_unreachable"],
+    "notes": "images.openfoodfacts.org connection refused even for this already-full-resolution nutrition-tagged URL (nutrition_en.7.full.jpg). Retried after a pause; still refused."
+  },
+  {
+    "barcode": "7290000068299",
+    "screeningResult": "unusable",
+    "evidenceType": "fetch_failed",
+    "identityScreenable": false,
+    "missingInfo": ["image_unreachable"],
+    "notes": "images.openfoodfacts.org connection refused for the listed URL and the resolved full-resolution variant."
+  },
+  {
+    "barcode": "7290004125776",
+    "screeningResult": "unusable",
+    "evidenceType": "fetch_failed",
+    "identityScreenable": false,
+    "missingInfo": ["image_unreachable"],
+    "notes": "images.openfoodfacts.org connection refused for the listed URL. No alternate reachable host found."
+  },
+  {
+    "barcode": "7290017888026",
+    "screeningResult": "unusable",
+    "evidenceType": "fetch_failed",
+    "identityScreenable": false,
+    "missingInfo": ["image_unreachable"],
+    "notes": "images.openfoodfacts.org connection refused for the listed URL. No alternate reachable host found."
+  },
+  {
+    "barcode": "7290112348548",
+    "screeningResult": "unusable",
+    "evidenceType": "fetch_failed",
+    "identityScreenable": false,
+    "missingInfo": ["image_unreachable"],
+    "notes": "images.openfoodfacts.org connection refused for the listed URL. No alternate reachable host found."
+  },
+  {
+    "barcode": "7290010030552",
+    "screeningResult": "unusable",
+    "evidenceType": "fetch_failed",
+    "identityScreenable": false,
+    "missingInfo": ["image_unreachable"],
+    "notes": "images.openfoodfacts.org connection refused for the listed (front-tagged) URL and the resolved full-resolution variant."
+  },
+  {
+    "barcode": "7290011498986",
+    "screeningResult": "unusable",
+    "evidenceType": "fetch_failed",
+    "identityScreenable": false,
+    "missingInfo": ["image_unreachable"],
+    "notes": "images.openfoodfacts.org connection refused for the listed (front-tagged) URL and the resolved full-resolution variant."
+  },
+  {
+    "barcode": "7290011947798",
+    "screeningResult": "unusable",
+    "evidenceType": "fetch_failed",
+    "identityScreenable": false,
+    "missingInfo": ["image_unreachable"],
+    "notes": "images.openfoodfacts.org connection refused for the listed (front-tagged) URL and the resolved full-resolution variant."
+  },
+  {
+    "barcode": "7290100850923",
+    "screeningResult": "unusable",
+    "evidenceType": "fetch_failed",
+    "identityScreenable": false,
+    "missingInfo": ["image_unreachable"],
+    "notes": "images.openfoodfacts.org connection refused for the listed URL. No alternate reachable host found."
+  },
+  {
+    "barcode": "7290110328504",
+    "screeningResult": "unusable",
+    "evidenceType": "fetch_failed",
+    "identityScreenable": false,
+    "missingInfo": ["image_unreachable"],
+    "notes": "images.openfoodfacts.org connection refused for the listed URL and the resolved full-resolution variant."
+  },
+  {
+    "barcode": "7290112346773",
+    "screeningResult": "unusable",
+    "evidenceType": "fetch_failed",
+    "identityScreenable": false,
+    "missingInfo": ["image_unreachable"],
+    "notes": "images.openfoodfacts.org connection refused for the listed URL and the resolved full-resolution variant."
+  },
+  {
+    "barcode": "7290353924310",
+    "screeningResult": "unusable",
+    "evidenceType": "fetch_failed",
+    "identityScreenable": false,
+    "missingInfo": ["image_unreachable"],
+    "notes": "images.openfoodfacts.org connection refused for the listed URL and the resolved full-resolution variant."
+  }
+]

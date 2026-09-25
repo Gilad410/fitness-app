@@ -1,0 +1,8 @@
+{
+  "name": "food-catalog-xlsx-gen",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "exceljs": "^4.4.0"
+  }
+}

@@ -1,0 +1,1262 @@
+{
+  "20443245": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 36,
+    "evidenceProtein": 2,
+    "basis": "100g",
+    "prepState": "unclear",
+    "legible": true,
+    "notes": "German table headed 'pro 100g' clearly shows Energie 151kJ/36kcal and Eiweiß (protein) 2.0g; a 'pro Portion' (130g) column is also shown but not used; product name/brand not visible in this crop, only the nutrition panel."
+  },
+  "72918388": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 480,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "unclear",
+    "legible": true,
+    "notes": "Hebrew nutrition table with two columns (per ~24g unit and per 100g) is present; the 480 kcal/100g figure is legible but the protein row digit is too small/blurry to read with confidence, and the product brand name is not visible in this crop."
+  },
+  "72992913": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 470,
+    "evidenceProtein": 7.4,
+    "basis": "100g",
+    "prepState": "unclear",
+    "legible": true,
+    "notes": "Clear two-column Hebrew table headed serving and 100g; used the 100g column (calories 470, protein 7.4g)."
+  },
+  "80176800": {
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Text too small, angled, and blurry to read any figures."
+  },
+  "7290112494351": {
+    "identityMatch": "yes",
+    "evidenceCalories": 375,
+    "evidenceProtein": 7,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Box clearly shows matching branding; used the 100g column (375 kcal, 7g protein)."
+  },
+  "7290110115777": {
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "unclear",
+    "legible": true,
+    "notes": "Label shows a minerals table, consistent with mineral water, but contains no calories or protein figures in this crop."
+  },
+  "5906485301012": {
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Photo shows only the front/branding; no nutrition facts table visible."
+  },
+  "8434165466333": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 505,
+    "evidenceProtein": 6.5,
+    "basis": "100g",
+    "prepState": "unclear",
+    "legible": true,
+    "notes": "Clear multilingual table explicitly headed 'Per 100g': 505kcal, 6.5g protein."
+  },
+  "7290000066318": {
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Photo shows ingredients list rather than the nutrition facts panel."
+  },
+  "7290011194246": {
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Nutrition table visible but digits too small/blurry to read reliably."
+  },
+  "7290002026440": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 280,
+    "evidenceProtein": 7.5,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Nutritional value per 100gr table: 280 Cal, 7.5g protein; no product name/brand visible in this crop."
+  },
+  "4820199870019": {
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Blurry/low-resolution; only net weight and barcode legible."
+  },
+  "7290112963895": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 461,
+    "evidenceProtein": 17,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Two-column table, per-100g column used (461 kcal, 17g protein)."
+  },
+  "4840008019521": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 466.7,
+    "evidenceProtein": 6.7,
+    "basis": "serving",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Per-serving printed (3 pieces/30g: 140 Cal, 2g protein); converted to 100g explicitly using the printed 30g weight."
+  },
+  "7296073405863": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 691,
+    "evidenceProtein": 23,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Per-100g table: 691 kcal, 23g protein."
+  },
+  "0038527591053": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 353.3,
+    "evidenceProtein": null,
+    "basis": "serving",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Serving 30g: 106 Cal as-sold; converted to 100g (353.3 kcal); protein gram figure not legible."
+  },
+  "0075442100229": {
+    "identityMatch": "no",
+    "evidenceCalories": 550,
+    "evidenceProtein": 0,
+    "basis": "serving",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Serving 10g/1 praline: 55 Cal, 0g protein; converted to 100g (550 kcal, 0g protein); 'praline' text inconsistent with 'Puffed rice' name -- possible identity mismatch."
+  },
+  "0814496020035": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 360.7,
+    "evidenceProtein": 65.6,
+    "basis": "serving",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Supplement Facts, serving 30.5g: 110 Cal, 20g protein; converted to 100g (360.7 kcal, 65.6g protein); no brand/flavor visible to confirm 'Brownie batter' name."
+  },
+  "0815871010009": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 535.7,
+    "evidenceProtein": 7.1,
+    "basis": "serving",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Serving 28g/1oz: 150 Cal, 2g protein; converted to 100g (535.7 kcal, 7.1g protein)."
+  },
+  "0850010353012": {
+    "identityMatch": "yes",
+    "evidenceCalories": 400,
+    "evidenceProtein": 46.7,
+    "basis": "serving",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Serving 15g/1 scoop: 60 Cal, 7g protein; converted to 100g (400 kcal, 46.7g protein); ingredients consistent with chocolate vegan protein powder."
+  },
+  "7290000554532": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 117,
+    "evidenceProtein": 12,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Per-100g table (after straining/סינון): 117 kcal, 12g protein."
+  },
+  "7290003222094": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 243,
+    "evidenceProtein": 7.08,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Per-100g sticker: 243 kcal, 7.08g protein; no brand text visible."
+  },
+  "7290003229192": {
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Front matches name (smoked beef pastrami) but nutrition table too small/low-res to read numbers."
+  },
+  "7290004122683": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 344,
+    "evidenceProtein": 23,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Two-column table (100g / 21.5g stick), scaling internally consistent; used 100g column (344 kcal, 23g protein)."
+  },
+  "7290011018467": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 44,
+    "evidenceProtein": 0,
+    "basis": "100ml",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Table explicitly per 100ml: 44 kcal, 0g protein; no brand visible to confirm 'Fanta Exotic' identity."
+  },
+  "7290014471184": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 401,
+    "evidenceProtein": 11.8,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Front text 'Peanuts and Puffed rice Snack'; table explicitly per 100g: 401 kcal, 11.8g protein."
+  },
+  "7290014791565": {
+    "identityMatch": "no",
+    "evidenceCalories": 24,
+    "evidenceProtein": 0,
+    "basis": "100ml",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Table per 100ml with 'teaspoons of sugar' and 'contains fruit' -- indicates a liquid/drink, not whole grapes as catalog name suggests. Likely identity mismatch."
+  },
+  "7290015161299": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 28,
+    "evidenceProtein": 1.1,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Ingredients consistent with tomato pasta sauce; per-100g table: 28 kcal, 1.1g protein; no brand/name text visible."
+  },
+  "7290016584004": {
+    "identityMatch": "yes",
+    "evidenceCalories": 27,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Baby carrots bag matches product type; per-100g table shows energy=27 kcal clearly; protein row obscured by a logo overlay, not legible."
+  },
+  "7290017617466": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 104,
+    "evidenceProtein": 24.8,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Table labeled 'per 100 gr. D.W. / לאחר סינון' (drained weight): 104 kcal, 24.8g protein -- consistent with canned tuna in water, drained basis."
+  },
+  "7290112336712": {
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "PRO branding visible with a '21' badge (likely per-container protein marketing claim, not a 100g table figure); actual facts table not legible."
+  },
+  "7290107879521": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 102,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Two-column table (60g serving / 100g), scaling confirmed via sodium and carbs rows; calories=102 from the 100g column; protein row not visible in crop."
+  },
+  "7290119370955": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 112,
+    "evidenceProtein": 20,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Two-column table, right column consistently half the left (matches a ~50g serving vs 100g); used 100g (left) column: 112 kcal, 20g protein."
+  },
+  "8423207206488": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 407,
+    "evidenceProtein": 9.2,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Table labeled 'Por 100 g': 407 kcal, 9.2g protein."
+  },
+  "7290004137311": {
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Only a price/barcode sticker visible, no nutrition table present in this photo."
+  },
+  "7290000074696": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 448,
+    "evidenceProtein": 11,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Two-column table, scaling confirms 100g column; 448 kcal, 11.0g protein."
+  },
+  "7290112967381": {
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Nestle-branded bag with a table present but too small/blurry to read reliably."
+  },
+  "7290018296868": {
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "PRO-branded bread matches name; nutrition sticker present but digits too small/low-res to extract."
+  },
+  "7290003078066": {
+    "identityMatch": "yes",
+    "evidenceCalories": 332,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Jar labeled 'ערכי תזונה ל-100 גרם מוצר', energy row=332 kcal; ingredient text confirms minced garlic; protein row not clearly legible, left null rather than guessed."
+  },
+  "7290016877021": {
+    "identityMatch": "yes",
+    "evidenceCalories": 179,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Product name printed above a two-column table (100g / 40g slice), scaling confirmed; calories=179 from 100g column; final numeric row label unclear (may be iron not protein), so protein left null."
+  },
+  "8715700419732": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 103,
+    "evidenceProtein": 0.9,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Single-column 100g table, clear."
+  },
+  "7290110325619": {
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Table present but too small/low-res."
+  },
+  "7290000446547": {
+    "identityMatch": "yes",
+    "evidenceCalories": 617,
+    "evidenceProtein": 28,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "100% peanuts ingredient text; energy first digit slightly blurry but reads 617."
+  },
+  "7290000056845": {
+    "identityMatch": "yes",
+    "evidenceCalories": 60,
+    "evidenceProtein": 3.3,
+    "basis": "100ml",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Tnuva branded; table states 100ml=100g equivalence."
+  },
+  "7290000416021": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 504,
+    "evidenceProtein": 3.6,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Two-column (25g tbsp / 100g), used 100g column."
+  },
+  "7290000063140": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 522,
+    "evidenceProtein": 9.2,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Two-column, ~5x ratio cross-check, used 100g column."
+  },
+  "8996001414002": {
+    "identityMatch": "no",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Package clearly labeled KOPIKO Cappuccino, not Torabika -- brand mismatch; no nutrition table visible anyway."
+  },
+  "7290004127077": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 77,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Calories/fat/sodium legible; cropped before protein row."
+  },
+  "7290107646147": {
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Telma Shugi confirmed by logo; energy/protein specific digits not confidently distinguishable from surrounding print."
+  },
+  "7290000574035": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 298,
+    "evidenceProtein": 10.3,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Single-column 100g table, sharp."
+  },
+  "7290107954976": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 63,
+    "evidenceProtein": 7.2,
+    "basis": "100ml",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Per-100ml table only, no brand visible."
+  },
+  "7290014760141": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 38,
+    "evidenceProtein": 0.75,
+    "basis": "100ml",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Small/blurry Tnuva-branded per-100ml table."
+  },
+  "7290119377480": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 215,
+    "evidenceProtein": 12.7,
+    "basis": "100g",
+    "prepState": "unclear",
+    "legible": true,
+    "notes": "Two-column table, pink-highlighted row; alignment moderately confident."
+  },
+  "7290102399796": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 82,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Per-100g table; protein obscured by fingers."
+  },
+  "0029424000793": {
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Front package only, no nutrition table."
+  },
+  "0016000507777": {
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Ingredients list and date code, not a nutrition table."
+  },
+  "7290106524439": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 501,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Two-column table, 100g column =501 kcal; protein row not confidently located."
+  },
+  "7290110566975": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 65,
+    "evidenceProtein": 10,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Two-column (100g/200g cup), used 100g highlighted row."
+  },
+  "7290010117970": {
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Prep icons and date code visible, no nutrition table."
+  },
+  "7290112349668": {
+    "identityMatch": "yes",
+    "evidenceCalories": 628,
+    "evidenceProtein": 9.4,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Box confirms 90% cocoa dark chocolate; two-column table, used 100g column."
+  },
+  "7290011142407": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 253,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Calories clear (253); protein row not confidently located."
+  },
+  "7290018515129": {
+    "identityMatch": "yes",
+    "evidenceCalories": 138,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "unclear",
+    "legible": true,
+    "notes": "Front matches name exactly; table blurry, column/protein digit uncertain."
+  },
+  "7290019816331": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 317,
+    "evidenceProtein": 3.6,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Two-column (serving/100g), used 100g column."
+  },
+  "7290000363288": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 371,
+    "evidenceProtein": 25,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Two-column (60g package/100g), used 100g column."
+  },
+  "7290114313278": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 45,
+    "evidenceProtein": 7.15,
+    "basis": "100ml",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Single-column per-100ml table."
+  },
+  "7290108502541": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 198,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Front reads 'גבינה לבנה' 18% (white cheese spread); table legible except protein row cropped out."
+  },
+  "7290013027399": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 216,
+    "evidenceProtein": 10.8,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Clean single-column 100g table."
+  },
+  "7290000044248": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 45,
+    "evidenceProtein": 3.6,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Leben-style dairy drink; brand text blurry but table legible."
+  },
+  "7290002008224": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 388,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Paragraph-style nutrition info; protein figure cut off at photo bottom."
+  },
+  "7290003903788": {
+    "identityMatch": "yes",
+    "evidenceCalories": 424,
+    "evidenceProtein": 4,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Front matches (vanilla cappuccino powder); two-column table, used 100g column."
+  },
+  "5900020046833": {
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "as_sold",
+    "legible": false,
+    "notes": "Digits too blurred/low-resolution even after zoom."
+  },
+  "7290118426202": {
+    "identityMatch": "yes",
+    "evidenceCalories": 529,
+    "evidenceProtein": 13.5,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Two-column table, 100g column used, cross-checked consistent with serving column."
+  },
+  "7290013038432": {
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "unclear",
+    "legible": true,
+    "notes": "Mineral-content table only (bottled water), no energy/protein figures printed at all."
+  },
+  "7290008745239": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 549,
+    "evidenceProtein": 5.9,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Two-column table, 100g column, internally consistent with 50g column."
+  },
+  "7290001594155": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 42,
+    "evidenceProtein": 0,
+    "basis": "100ml",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Per-100ml table: 42 kcal, 0 protein; red background consistent with Coca-Cola but no explicit brand text."
+  },
+  "7290111564291": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 390,
+    "evidenceProtein": 8.8,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Two-column table, 100g column, consistent with 20g-serving column."
+  },
+  "7290100850916": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 528,
+    "evidenceProtein": 8.2,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Two-column table, 100g column, consistent with 70g-bag column."
+  },
+  "7290000408316": {
+    "identityMatch": "yes",
+    "evidenceCalories": 70,
+    "evidenceProtein": 5.2,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Front text matches (Bifidus 3%); two-column table, 100g column, exactly double the 200g-cup column."
+  },
+  "7290112494283": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 515,
+    "evidenceProtein": 8.1,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Bilingual two-column table, 100g column, consistent with 65g column."
+  },
+  "7290108502985": {
+    "identityMatch": "yes",
+    "evidenceCalories": 387,
+    "evidenceProtein": 2.8,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Front text confirms dried apples; two-column table, 100g column, consistent with 22g column."
+  },
+  "7290000073767": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 225,
+    "evidenceProtein": 7.1,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Three-column table (100g dry/100ml prepared/portion), used 100g dry-powder column."
+  },
+  "7290000075143": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 514,
+    "evidenceProtein": 5.3,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Per-cookie and per-100g columns; used 100g column directly."
+  },
+  "7394376616778": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 59,
+    "evidenceProtein": 1,
+    "basis": "unclear",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Clear table (247kJ/59kcal, 1.0g protein) but basis header and brand outside this crop."
+  },
+  "7290000057477": {
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Tnuva carton front visible but table too blurry to read."
+  },
+  "7290002129479": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 234,
+    "evidenceProtein": 9.5,
+    "basis": "100g",
+    "prepState": "unclear",
+    "legible": true,
+    "notes": "Single-column table explicitly per 100g."
+  },
+  "7290006337993": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 294,
+    "evidenceProtein": 7.5,
+    "basis": "100g",
+    "prepState": "unclear",
+    "legible": true,
+    "notes": "Clear table explicitly per 100g food."
+  },
+  "7290000047546": {
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Two-column table visible but digits too blurry/obscured."
+  },
+  "0856591000062": {
+    "identityMatch": "no",
+    "evidenceCalories": 480,
+    "evidenceProtein": 8,
+    "basis": "serving",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Package reads 'Crispy Bagels - Salt Flavor' by Abadi Yosef, NOT 'עוגיוצ מזרחי' -- identity mismatch. Per-serving (25g: 120kcal/2g) converted x4 to 480kcal/8g."
+  },
+  "7290010627004": {
+    "identityMatch": "yes",
+    "evidenceCalories": 670,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Front confirms Tahini Jerusalem; energy 670 legible, protein row not confidently identified."
+  },
+  "7290013521569": {
+    "identityMatch": "yes",
+    "evidenceCalories": 59.4,
+    "evidenceProtein": 0.5,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Front matches Organic Apple Banana Sauce exactly; explicit per-100g label."
+  },
+  "7290014758681": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 62,
+    "evidenceProtein": 11.5,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Nutrition table only, no brand visible; 62 kcal, 11.5g protein per 100g."
+  },
+  "8690777206051": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 34,
+    "evidenceProtein": 0,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Nutrition table only; 34 kcal, 0g protein per 100g."
+  },
+  "8715700110141": {
+    "identityMatch": "yes",
+    "evidenceCalories": 644,
+    "evidenceProtein": 0.8,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Package confirms HEINZ SPREAD; per-100g table 644 kcal, 0.8g protein."
+  },
+  "7290102396672": {
+    "identityMatch": "no",
+    "evidenceCalories": 201,
+    "evidenceProtein": 30,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Package reads 'Tara' semi-hard cheese slices, NOT 'נעם' -- name mismatch though barcode matches; per-100g table 201 kcal, 30g protein."
+  },
+  "0064144090051": {
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Canola oil spray can, table present but out of focus/too small."
+  },
+  "7290017677804": {
+    "identityMatch": "yes",
+    "evidenceCalories": 71,
+    "evidenceProtein": 10.6,
+    "basis": "100ml",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Bottle confirms Kikkoman soy sauce; per-100ml table 71 kcal, 10.6g protein."
+  },
+  "7290004068172": {
+    "identityMatch": "yes",
+    "evidenceCalories": 73,
+    "evidenceProtein": 2.9,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Tub confirms goat yogurt; per-100g table 73 kcal, 2.9g protein, macro math internally consistent."
+  },
+  "7290113192515": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 12,
+    "evidenceProtein": 0,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Brand visible but product identity (cucumbers vs peppers) uncertain from photo; per-100g table 12 kcal, 0g protein."
+  },
+  "7290113192577": {
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Ingredients confirm salted cabbage but no nutrition table visible."
+  },
+  "7290110329952": {
+    "identityMatch": "yes",
+    "evidenceCalories": 57,
+    "evidenceProtein": 10,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Branding confirms Yoplait Go coconut; per-100g table 57 kcal, 10g protein."
+  },
+  "7290116932774": {
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "as_sold",
+    "legible": false,
+    "notes": "Front matches banana-caramel flavor but table digits too small/blurred."
+  },
+  "00728441": {
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Row labels not clearly aligned with numeric columns."
+  },
+  "7290106663183": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 550,
+    "evidenceProtein": 5.4,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "100g column 550 kcal/5.4g protein; 65g-bag column 357/3.5 printed too."
+  },
+  "7290000057149": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 128,
+    "evidenceProtein": 4,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Two columns (128/4 and 64/2, ratio 2:1); larger assumed 100g column per standard layout."
+  },
+  "7290000170077": {
+    "identityMatch": "yes",
+    "evidenceCalories": 515,
+    "evidenceProtein": 7,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Front confirms dark chocolate; 100g column 515 kcal/7g protein."
+  },
+  "7290102391301": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 53,
+    "evidenceProtein": 5.4,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Single-column 100g table, 53 kcal/5.4g protein."
+  },
+  "7290110554095": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 320,
+    "evidenceProtein": 0,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "100g column 320 kcal/0g protein; per-teaspoon column also printed."
+  },
+  "7290004125585": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 50,
+    "evidenceProtein": null,
+    "basis": "100ml",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "50 kcal/100ml legible; protein row not visible in crop."
+  },
+  "7290008750677": {
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "White text on red background too low-contrast to read."
+  },
+  "7290000523804": {
+    "identityMatch": "yes",
+    "evidenceCalories": 0,
+    "evidenceProtein": 0,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "0 kcal/0g protein/39000mg sodium -- consistent with salt."
+  },
+  "7290008752244": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 537,
+    "evidenceProtein": 6.3,
+    "basis": "100g",
+    "prepState": "unclear",
+    "legible": true,
+    "notes": "100g column 537 kcal/6.3g protein, 50g-bag serving column also printed."
+  },
+  "7290112330352": {
+    "identityMatch": "yes",
+    "evidenceCalories": 65,
+    "evidenceProtein": 10,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Partial PR branding; 20g protein per 200g cup = 10g/100g, matches 'Pro 20' name."
+  },
+  "7290004129101": {
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Yellow tub photo too blurry to read table digits."
+  },
+  "7290000136684": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 0,
+    "evidenceProtein": 0,
+    "basis": "100ml",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Per-100ml table: 0 kcal/0g protein; no product name visible."
+  },
+  "7290110115623": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 2,
+    "evidenceProtein": 0,
+    "basis": "100ml",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Per-100ml table: 2 kcal/0g protein; no brand visible."
+  },
+  "7290003075102": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 155,
+    "evidenceProtein": 2,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "155 kcal, protein 2g per 100g; no brand visible."
+  },
+  "7290112494221": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 520,
+    "evidenceProtein": 9,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "520 kcal, 9g protein per 100g."
+  },
+  "7290110565527": {
+    "identityMatch": "yes",
+    "evidenceCalories": 70,
+    "evidenceProtein": 10,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Two-column (100g/200g cup): 70/140 kcal, 10.0/20g protein; matches product claims."
+  },
+  "7613037686906": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 386,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "116/386 kcal (30g/100g); protein row not confidently legible."
+  },
+  "7290104508943": {
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": false,
+    "notes": "Bamba branding confirmed; energy/protein rows obscured by logo crease."
+  },
+  "7290004125417": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 56,
+    "evidenceProtein": 3,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "56 kcal, 3g protein per 100g; brand text not confirmable."
+  },
+  "7290000120874": {
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Side label 'Reduced calorie spread' visible, not a nutrition facts panel; doesn't explicitly say mayonnaise."
+  },
+  "7290105431516": {
+    "identityMatch": "yes",
+    "evidenceCalories": 396,
+    "evidenceProtein": 9.6,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "396 kcal, 9.6g protein per 100g; ingredients consistent with date-peanut snack."
+  },
+  "7290000574141": {
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "as_sold",
+    "legible": false,
+    "notes": "Package confirms whole wheat bread 750g; nutrition table too low-res to read."
+  },
+  "7622201401900": {
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "as_sold",
+    "legible": false,
+    "notes": "Very low-resolution multilingual table, no readable digits or product name."
+  },
+  "0898220011582": {
+    "identityMatch": "yes",
+    "evidenceCalories": 190,
+    "evidenceProtein": 6,
+    "basis": "serving",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Serving 40g bar: 190 Cal, 6g protein; allergen line consistent with dark chocolate nut bar."
+  },
+  "01002013": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 270,
+    "evidenceProtein": 8,
+    "basis": "serving",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Serving 55g bar: 270 Cal, 8g protein; no brand/name visible to confirm identity."
+  },
+  "0026400298960": {
+    "identityMatch": "yes",
+    "evidenceCalories": 110,
+    "evidenceProtein": 9,
+    "basis": "serving",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Serving 236ml carton: 110 Cal, 9g protein; Grade A Pasteurized lowfat milk confirmed."
+  },
+  "04725600": {
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "as_sold",
+    "legible": false,
+    "notes": "Package confirms Scandinavian semi-hard cheese 31% fat; table too small/blurry to read."
+  },
+  "5902670052028": {
+    "identityMatch": "yes",
+    "evidenceCalories": 290,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Barcode confirmed on package; per-100g energy=290 legible, protein row alignment not confident."
+  },
+  "7290000055015": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 122,
+    "evidenceProtein": 18,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "122 kcal, 18g protein per 100g; no brand text visible."
+  },
+  "7290100700396": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 350,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Two-column table: 350 (dry/as-sold) and 163 (likely cooked); protein not confidently legible."
+  },
+  "7290114310536": {
+    "identityMatch": "yes",
+    "evidenceCalories": 136,
+    "evidenceProtein": null,
+    "basis": "unclear",
+    "prepState": "as_sold",
+    "legible": false,
+    "notes": "Front panel shows '136'/'0%' marketing badges only, no nutrition facts table visible; basis unconfirmed."
+  },
+  "7290000416045": {
+    "identityMatch": "yes",
+    "evidenceCalories": 504,
+    "evidenceProtein": 14.2,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Two-column table (25g serving/100g): 504 kcal, 14.2g protein per 100g column."
+  },
+  "7290116934020": {
+    "identityMatch": "yes",
+    "evidenceCalories": 125,
+    "evidenceProtein": 20,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Two-column table (serving/100g as labeled by reader): 125 kcal, 20g protein."
+  },
+  "6253014790076": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 120,
+    "evidenceProtein": 1,
+    "basis": "serving",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Serving 40g (2-3 dates): 120 Cal, 1g protein. No brand/name visible in crop; identity not confirmable from image alone. Only kcal shown."
+  },
+  "6934731200078": {
+    "identityMatch": "yes",
+    "evidenceCalories": 144,
+    "evidenceProtein": 3.9,
+    "basis": "100g",
+    "prepState": "unclear",
+    "legible": true,
+    "notes": "Per-100g table: energy=144, protein=3.9. Package text '...amen Noodles' visible, consistent with Fresh Ramen Noodles. Basis (dry vs prepared) not specified on label."
+  },
+  "6942836720216": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 527,
+    "evidenceProtein": 20.8,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Per 100g: Energy 2220kJ/527kcal, Protein 20.8g. No brand/name visible in this crop, only nutrition table + allergens."
+  },
+  "7290000048437": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 135,
+    "evidenceProtein": 18.5,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Per-100g Hebrew table: energy=135, protein=18.5. Row alignment inferred from position (dense small text); fat=5g consistent with '5%' name claim. No product name visible in crop."
+  },
+  "7290000049557": {
+    "identityMatch": "unclear",
+    "evidenceCalories": 344,
+    "evidenceProtein": 17,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Angled/partly blurred photo, per-100g: energy=344, protein=17 (moderate confidence on protein due to blur). No 'Emek' brand text visible in crop."
+  }
+}

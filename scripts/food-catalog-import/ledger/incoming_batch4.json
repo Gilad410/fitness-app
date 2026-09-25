@@ -1,0 +1,12 @@
+[
+{"barcode":"7290116932774","identityMatch":"yes","evidenceCalories":null,"evidenceProtein":null,"basis":"unclear","prepState":"as_sold","legible":false,"notes":"Front matches banana-caramel flavor but table digits too small/blurred."},
+{"barcode":"00728441","identityMatch":"unclear","evidenceCalories":null,"evidenceProtein":null,"basis":"unclear","prepState":"unclear","legible":false,"notes":"Row labels not clearly aligned with numeric columns."},
+{"barcode":"7290106663183","identityMatch":"unclear","evidenceCalories":550,"evidenceProtein":5.4,"basis":"100g","prepState":"as_sold","legible":true,"notes":"100g column 550 kcal/5.4g protein; 65g-bag column 357/3.5 printed too."},
+{"barcode":"7290000057149","identityMatch":"unclear","evidenceCalories":128,"evidenceProtein":4,"basis":"100g","prepState":"as_sold","legible":true,"notes":"Two columns (128/4 and 64/2, ratio 2:1); larger assumed 100g column per standard layout."},
+{"barcode":"7290000170077","identityMatch":"yes","evidenceCalories":515,"evidenceProtein":7,"basis":"100g","prepState":"as_sold","legible":true,"notes":"Front confirms dark chocolate; 100g column 515 kcal/7g protein."},
+{"barcode":"7290102391301","identityMatch":"unclear","evidenceCalories":53,"evidenceProtein":5.4,"basis":"100g","prepState":"as_sold","legible":true,"notes":"Single-column 100g table, 53 kcal/5.4g protein."},
+{"barcode":"7290110554095","identityMatch":"unclear","evidenceCalories":320,"evidenceProtein":0,"basis":"100g","prepState":"as_sold","legible":true,"notes":"100g column 320 kcal/0g protein; per-teaspoon column also printed."},
+{"barcode":"7290004125585","identityMatch":"unclear","evidenceCalories":50,"evidenceProtein":null,"basis":"100ml","prepState":"as_sold","legible":true,"notes":"50 kcal/100ml legible; protein row not visible in crop."},
+{"barcode":"7290008750677","identityMatch":"unclear","evidenceCalories":null,"evidenceProtein":null,"basis":"unclear","prepState":"unclear","legible":false,"notes":"White text on red background too low-contrast to read."},
+{"barcode":"7290000523804","identityMatch":"yes","evidenceCalories":0,"evidenceProtein":0,"basis":"100g","prepState":"as_sold","legible":true,"notes":"0 kcal/0g protein/39000mg sodium -- consistent with salt."}
+]

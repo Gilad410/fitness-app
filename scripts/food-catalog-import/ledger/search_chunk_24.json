@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "7290008409773",
+    "name": "קציצות עוף",
+    "brand": "Tnuva",
+    "storedCalories": 183,
+    "storedProtein": 12.5
+  },
+  {
+    "barcode": "7290008415576",
+    "name": "Hummus",
+    "brand": "Tzabar",
+    "storedCalories": 215,
+    "storedProtein": 8
+  },
+  {
+    "barcode": "7290008425193",
+    "name": "Olives",
+    "brand": null,
+    "storedCalories": 214,
+    "storedProtein": 2
+  },
+  {
+    "barcode": "7290008644235",
+    "name": "עלי בייבי: עלי תרד, עלי רוקולה, עלי סלק",
+    "brand": "טעם הטבע",
+    "storedCalories": 21,
+    "storedProtein": 2.3
+  },
+  {
+    "barcode": "7290008644945",
+    "name": "סלט המושבה",
+    "brand": "שטראוס",
+    "storedCalories": 22,
+    "storedProtein": 1.2
+  },
+  {
+    "barcode": "7290008835954",
+    "name": "Fillet amnoon",
+    "brand": "Baladi",
+    "storedCalories": 85,
+    "storedProtein": 17.5
+  },
+  {
+    "barcode": "7290010030552",
+    "name": "גרנולה לנדוור",
+    "brand": "Bread art",
+    "storedCalories": 504,
+    "storedProtein": 12.8999996185303
+  },
+  {
+    "barcode": "7290010065332",
+    "name": "מחית תפוח עץ ובננה",
+    "brand": "פרינוק",
+    "storedCalories": 68,
+    "storedProtein": 0.5
+  },
+  {
+    "barcode": "7290010066582",
+    "name": "נתחי טונה בהירה בשמן קנולה",
+    "brand": "Filtuna",
+    "storedCalories": 206,
+    "storedProtein": 24.5
+  },
+  {
+    "barcode": "7290010427529",
+    "name": "Salty Almonds dark Chocolate 66%",
+    "brand": "Jo Mo",
+    "storedCalories": 487,
+    "storedProtein": 9
+  },
+  {
+    "barcode": "7290010561193",
+    "name": "Gluten free bun",
+    "brand": "Eshbal",
+    "storedCalories": 293.75,
+    "storedProtein": 2.5625
+  },
+  {
+    "barcode": "7290011378370",
+    "name": "حلاوة الهلال",
+    "brand": null,
+    "storedCalories": 545,
+    "storedProtein": 12
+  },
+  {
+    "barcode": "7290011378769",
+    "name": "חלבה בקטנה",
+    "brand": "בארכה",
+    "storedCalories": 550,
+    "storedProtein": 11.1111111111111
+  },
+  {
+    "barcode": "7290011438142",
+    "name": "Ice Cafe",
+    "brand": "Yotveta",
+    "storedCalories": 47,
+    "storedProtein": 2.70000004768372
+  },
+  {
+    "barcode": "7290011498986",
+    "name": "חטיף תמרים טבעי במלוי Tamar",
+    "brand": "שקד תבור",
+    "storedCalories": 424,
+    "storedProtein": 7.69999980926514
+  },
+  {
+    "barcode": "7290011499303",
+    "name": "Feta cheese",
+    "brand": "Gad",
+    "storedCalories": 117,
+    "storedProtein": 15
+  },
+  {
+    "barcode": "7290011499624",
+    "name": "New York Cream Cheese",
+    "brand": "Gad",
+    "storedCalories": 302,
+    "storedProtein": 5.5
+  },
+  {
+    "barcode": "7290011587581",
+    "name": "Anchovies In Sunflower Oil",
+    "brand": "Timer",
+    "storedCalories": 206,
+    "storedProtein": 26
+  },
+  {
+    "barcode": "7290011723255",
+    "name": "טחינה משומשום מלא",
+    "brand": "הר ברכה",
+    "storedCalories": 631,
+    "storedProtein": 21.5
+  },
+  {
+    "barcode": "7290011923013",
+    "name": "Cerises congèleés",
+    "brand": "Lib",
+    "storedCalories": 46,
+    "storedProtein": 0.899999976158142
+  },
+  {
+    "barcode": "7290011947798",
+    "name": "Kalamata olives",
+    "brand": "זיתא",
+    "storedCalories": 229,
+    "storedProtein": 1.3
+  },
+  {
+    "barcode": "7290011971618",
+    "name": "Tomates  puree",
+    "brand": null,
+    "storedCalories": 81,
+    "storedProtein": 4
+  },
+  {
+    "barcode": "7290012022227",
+    "name": "קליליות",
+    "brand": null,
+    "storedCalories": 372,
+    "storedProtein": 9.80000019073486
+  },
+  {
+    "barcode": "7290012052507",
+    "name": "Hatif",
+    "brand": null,
+    "storedCalories": 410,
+    "storedProtein": 9
+  }
+]

@@ -1,0 +1,7 @@
+[
+{"barcode":"7290008752244","identityMatch":"unclear","evidenceCalories":537,"evidenceProtein":6.3,"basis":"100g","prepState":"unclear","legible":true,"notes":"100g column 537 kcal/6.3g protein, 50g-bag serving column also printed."},
+{"barcode":"7290112330352","identityMatch":"yes","evidenceCalories":65,"evidenceProtein":10.0,"basis":"100g","prepState":"as_sold","legible":true,"notes":"Partial PR branding; 20g protein per 200g cup = 10g/100g, matches 'Pro 20' name."},
+{"barcode":"7290004129101","identityMatch":"unclear","evidenceCalories":null,"evidenceProtein":null,"basis":"unclear","prepState":"unclear","legible":false,"notes":"Yellow tub photo too blurry to read table digits."},
+{"barcode":"7290000136684","identityMatch":"unclear","evidenceCalories":0,"evidenceProtein":0,"basis":"100ml","prepState":"as_sold","legible":true,"notes":"Per-100ml table: 0 kcal/0g protein; no product name visible."},
+{"barcode":"7290110115623","identityMatch":"unclear","evidenceCalories":2,"evidenceProtein":0,"basis":"100ml","prepState":"as_sold","legible":true,"notes":"Per-100ml table: 2 kcal/0g protein; no brand visible."}
+]

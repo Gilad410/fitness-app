@@ -1,0 +1,52 @@
+[
+  {
+    "barcode": "0898220011582",
+    "name": "Foods, Dark Chocolate, Nuts, & Sea Salt Snack Bars",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/0898220011582.jpg"
+  },
+  {
+    "barcode": "01002013",
+    "name": "Hazelnut & Oat Milk Chocolate",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/01002013.jpg"
+  },
+  {
+    "barcode": "0026400298960",
+    "name": "Lowfat Milk",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/0026400298960.jpg"
+  },
+  {
+    "barcode": "04725600",
+    "name": "גבינה סקנדינבית",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/04725600.jpg"
+  },
+  {
+    "barcode": "5902670052028",
+    "name": "פרוסות לטוסט",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/5902670052028.jpg"
+  },
+  {
+    "barcode": "6253014790076",
+    "name": "Qamar Dates",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/6253014790076.jpg"
+  },
+  {
+    "barcode": "6934731200078",
+    "name": "Fresh Ramen Noodles",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/6934731200078.jpg"
+  },
+  {
+    "barcode": "6942836720216",
+    "name": "Cookies 'n' Mint",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/6942836720216.jpg"
+  },
+  {
+    "barcode": "7290000048437",
+    "name": "גבינה מלוחה 5%. מחלב בקר",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000048437.jpg"
+  },
+  {
+    "barcode": "7290000049557",
+    "name": "Emek",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000049557.jpg"
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "barcode": "7290116932071",
+    "identityMatch": "unclear",
+    "evidenceCalories": 387,
+    "evidenceProtein": 77,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Tnuva 'GO' brand black protein-powder tub, Hebrew/Arabic table. Three value columns printed: per 100g product (387 kcal, 77g protein), per serving 33g (128 kcal, 25g protein), and per serving+100ml milk (38 kcal, 8g protein incremental column). 100g-column internally consistent with 33g-serving column (387*0.33=127.7≈128; 77*0.33=25.4≈25). Photo crop shows only the nutrition table/back label, not the front flavor text ('Vanilla Caramel'), so flavor cannot be visually confirmed against the given name, though product type (Tnuva protein powder) matches."
+  },
+  {
+    "barcode": "7290116933009",
+    "identityMatch": "unclear",
+    "evidenceCalories": 369,
+    "evidenceProtein": 33.4,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Bar wrapper nutrition table photographed at an angle around a curved/folded surface; required digital deskewing to read reliably. Two columns: per 100g product and per bar (60g). Row-by-row 100g|60g values read: Energy 369|221 kcal, Total fat 13|7.8g, Saturated fat 4.9|2.9g, Trans fat <0.5|<0.5g, Cholesterol 32|19mg, Sodium 103|62mg, Total carbs 36|21.6g, Sugars 3.3|2g, Sugar-teaspoons 0.75|0.5, Protein 33.4|20g (label read as 'חלבונים'). All pairs scale consistently by the 0.6 (60/100) factor, supporting confidence in the readings despite image blur. Front-of-pack flavor name ('Chocolate and Cream') not visible in this crop, only the nutrition panel, so identity vs. given name is unconfirmed. A separate dietary-fiber-like row (~11g/100g) and a warning about 'excessive consumption may increase bowel activity' (suggesting polyols) were also present but not needed for the requested fields."
+  },
+  {
+    "barcode": "7290119373369",
+    "identityMatch": "yes",
+    "evidenceCalories": 386,
+    "evidenceProtein": 7.0,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Green package labeled 'פריכי אדמה ו-3 דגנים' (potato and 3-grain crisps); ingredient list includes potato flour ~18%, matching 'תפוחי אדמה' in the given name (full product also includes rice/corn flours, so name is a partial/generic rendering but matches). Table columns: per 100g (386 kcal, 7.0g protein) and per unit ~6.45g (25 kcal, 0.5g protein). Cross-check: 386*0.0645=24.9≈25 kcal and 7.0*0.0645=0.45≈0.5g protein, consistent."
+  },
+  {
+    "barcode": "7296058000298",
+    "identityMatch": "yes",
+    "evidenceCalories": 386,
+    "evidenceProtein": 8.5,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Green package labeled 'פריכיות אורז מלא' (whole rice crackers), exact match to given name. Ingredients: whole rice 99%, salt (gluten-free). Table columns: per 100g (386 kcal, 8.5g protein) and per unit 7.4g (29 kcal, 0.6g protein). Cross-check: 386*0.074=28.6≈29 kcal and 8.5*0.074=0.63≈0.6g protein, consistent. Image required a 90-degree rotation to read (was captured sideways)."
+  }
+]

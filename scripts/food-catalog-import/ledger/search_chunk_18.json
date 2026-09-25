@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "7290101551539",
+    "name": "Pro 20",
+    "brand": "Cabot",
+    "storedCalories": 65.00000000345,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290112345622",
+    "name": "Energy no added sugar",
+    "brand": null,
+    "storedCalories": 330,
+    "storedProtein": 7.6
+  },
+  {
+    "barcode": "7290106658479",
+    "name": "טורטית",
+    "brand": "עלית",
+    "storedCalories": 233,
+    "storedProtein": 2.9
+  },
+  {
+    "barcode": "7290112335487",
+    "name": "No",
+    "brand": null,
+    "storedCalories": 416.666666666667,
+    "storedProtein": 10.0000003973643
+  },
+  {
+    "barcode": "7290110325626",
+    "name": "משקה שקדים ללא תוספת סוכר",
+    "brand": "תנובה",
+    "storedCalories": 34,
+    "storedProtein": 0.7
+  },
+  {
+    "barcode": "7290006492852",
+    "name": "גבינה למריחה מחלב עזים 5%",
+    "brand": "מחלבות גד",
+    "storedCalories": 95,
+    "storedProtein": 5.09999990463257
+  },
+  {
+    "barcode": "7290000461625",
+    "name": "בייגלה שמיניות עם מלח",
+    "brand": "בייגל את בייגל",
+    "storedCalories": 382,
+    "storedProtein": 11.2
+  },
+  {
+    "barcode": "7290017928418",
+    "name": "שטוחל׳ה מלח",
+    "brand": "מאיר בייגל",
+    "storedCalories": 349,
+    "storedProtein": 10.3999996185303
+  },
+  {
+    "barcode": "7290004131845",
+    "name": "לבנה",
+    "brand": "Karoun",
+    "storedCalories": 127,
+    "storedProtein": 8
+  },
+  {
+    "barcode": "7290017023960",
+    "name": "בפרינג",
+    "brand": "מיתס",
+    "storedCalories": 40,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290015858229",
+    "name": "טפנד זיתי קלמטה",
+    "brand": "עללחם",
+    "storedCalories": 403,
+    "storedProtein": 2
+  },
+  {
+    "barcode": "7290115676099",
+    "name": "Pro 20, vanilla",
+    "brand": null,
+    "storedCalories": 64,
+    "storedProtein": 7.8
+  },
+  {
+    "barcode": "7290105968654",
+    "name": "Yams Stuffed Ravioli",
+    "brand": "שטראוס",
+    "storedCalories": 186,
+    "storedProtein": 6.3
+  },
+  {
+    "barcode": "7290014321144",
+    "name": "Protein Rings",
+    "brand": "Less & More",
+    "storedCalories": 828,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290100685341",
+    "name": "מרק בטעם עוף -אסם-",
+    "brand": "אסם",
+    "storedCalories": 312,
+    "storedProtein": 4.1
+  },
+  {
+    "barcode": "7290112495785",
+    "name": "Ranch",
+    "brand": "Hellmann's",
+    "storedCalories": 253,
+    "storedProtein": 0.899999976158142
+  },
+  {
+    "barcode": "7290018237410",
+    "name": "פסטרמה מהמעשנה",
+    "brand": "עוף טוב",
+    "storedCalories": 106,
+    "storedProtein": 18
+  },
+  {
+    "barcode": "7290112340122",
+    "name": "Rice cakes",
+    "brand": "Energy",
+    "storedCalories": 411,
+    "storedProtein": 8.8
+  },
+  {
+    "barcode": "7290002538011",
+    "name": "Ice cream סנקור",
+    "brand": "ארטיק",
+    "storedCalories": 223,
+    "storedProtein": 4.2
+  },
+  {
+    "barcode": "7290104061424",
+    "name": "חומוס עם זעתר",
+    "brand": "אחלה",
+    "storedCalories": 195,
+    "storedProtein": 8.2
+  },
+  {
+    "barcode": "7290000591643",
+    "name": "מצות",
+    "brand": "מצות רל&quot;צ ראשון",
+    "storedCalories": 383,
+    "storedProtein": 9.6
+  },
+  {
+    "barcode": "0016000459359",
+    "name": "Long Bagel Sticks",
+    "brand": "Osem",
+    "storedCalories": 413,
+    "storedProtein": 10.5
+  },
+  {
+    "barcode": "0038000138430",
+    "name": "Original Light",
+    "brand": "Pringles",
+    "storedCalories": 535.714285714286,
+    "storedProtein": 3.52746128611239
+  },
+  {
+    "barcode": "00700139",
+    "name": "Round Rice",
+    "brand": "HAMAMA",
+    "storedCalories": 133,
+    "storedProtein": 3.2
+  }
+]
