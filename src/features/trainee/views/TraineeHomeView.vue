@@ -109,11 +109,11 @@ const futureCards = [
         <dl v-else class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div v-if="profileStore.profile.email">
             <dt class="text-xs font-medium text-neutral-500">אימייל</dt>
-            <dd class="mt-0.5 text-sm text-brand-black">{{ profileStore.profile.email }}</dd>
+            <dd class="mt-0.5 text-sm text-brand-black"><bdi dir="ltr">{{ profileStore.profile.email }}</bdi></dd>
           </div>
           <div v-if="profileStore.profile.phone">
             <dt class="text-xs font-medium text-neutral-500">טלפון</dt>
-            <dd class="mt-0.5 text-sm text-brand-black">{{ profileStore.profile.phone }}</dd>
+            <dd class="mt-0.5 text-sm text-brand-black"><bdi dir="ltr">{{ profileStore.profile.phone }}</bdi></dd>
           </div>
           <div v-if="profileStore.profile.goal">
             <dt class="text-xs font-medium text-neutral-500">מטרה</dt>

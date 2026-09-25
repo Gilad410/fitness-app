@@ -106,7 +106,8 @@ const filteredTrainees = computed(() => {
               <div class="min-w-0">
                 <p class="truncate font-semibold text-brand-black">{{ trainee.full_name }}</p>
                 <p class="truncate text-sm text-neutral-600">
-                  {{ trainee.email || trainee.phone || '—' }}
+                  <bdi v-if="trainee.email || trainee.phone" dir="ltr">{{ trainee.email || trainee.phone }}</bdi>
+                  <template v-else>—</template>
                 </p>
               </div>
               <TraineeStatusBadge :status="trainee.status" />

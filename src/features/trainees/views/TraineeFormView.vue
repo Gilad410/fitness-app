@@ -150,7 +150,8 @@ async function handleSubmit() {
           <input
             v-model="email"
             type="email"
-            class="rounded-lg border border-neutral-300 bg-brand-white px-3 py-2 text-brand-black focus:border-brand-green focus:outline-none"
+            dir="ltr"
+            class="rounded-lg border border-neutral-300 bg-brand-white px-3 py-2 text-left text-brand-black focus:border-brand-green focus:outline-none"
           />
         </label>
 
@@ -159,7 +160,8 @@ async function handleSubmit() {
           <input
             v-model="phone"
             type="tel"
-            class="rounded-lg border border-neutral-300 bg-brand-white px-3 py-2 text-brand-black focus:border-brand-green focus:outline-none"
+            dir="ltr"
+            class="rounded-lg border border-neutral-300 bg-brand-white px-3 py-2 text-left text-brand-black focus:border-brand-green focus:outline-none"
           />
         </label>
 

@@ -131,11 +131,11 @@ async function confirmArchive() {
         >
           <div v-if="trainee.email">
             <dt class="text-sm text-neutral-600">אימייל</dt>
-            <dd class="text-brand-black">{{ trainee.email }}</dd>
+            <dd class="text-brand-black"><bdi dir="ltr">{{ trainee.email }}</bdi></dd>
           </div>
           <div v-if="trainee.phone">
             <dt class="text-sm text-neutral-600">טלפון</dt>
-            <dd class="text-brand-black">{{ trainee.phone }}</dd>
+            <dd class="text-brand-black"><bdi dir="ltr">{{ trainee.phone }}</bdi></dd>
           </div>
           <div v-if="trainee.start_date">
             <dt class="text-sm text-neutral-600">תאריך התחלה</dt>
