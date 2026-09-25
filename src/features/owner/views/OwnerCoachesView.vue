@@ -53,7 +53,7 @@ const noteSuccess = ref('')
 
 // Pending-invitation actions, keyed by invitation id so two rows never
 // share a confirmation or a message.
-const invitationConfirm = ref(null) // { id, email, action: 'cancel' | 'resend' } | null
+const invitationConfirm = ref(null) // { id, email } | null
 const invitationError = ref('')
 const invitationSuccess = ref('')
 
@@ -193,10 +193,12 @@ async function saveNote() {
 // Pending invitations
 // ---------------------------------------------------------------------
 
-function requestInvitationAction(invitation, action) {
+// Cancel is the only invitation action. There is no resend -- see the
+// store's note and the explanation rendered in the invitations section.
+function requestInvitationCancel(invitation) {
   invitationError.value = ''
   invitationSuccess.value = ''
-  invitationConfirm.value = { id: invitation.invitation_id, email: invitation.email, action }
+  invitationConfirm.value = { id: invitation.invitation_id, email: invitation.email }
 }
 
 function cancelInvitationConfirmation() {
@@ -206,19 +208,16 @@ function cancelInvitationConfirmation() {
 
 async function confirmInvitationAction() {
   if (!invitationConfirm.value) return
-  const { id, email, action } = invitationConfirm.value
+  const { id, email } = invitationConfirm.value
   invitationError.value = ''
   try {
-    const applied =
-      action === 'cancel' ? await store.cancelInvite(id) : await store.resendInvite(id, email)
+    const applied = await store.cancelInvite(id)
     if (applied) {
-      invitationSuccess.value =
-        action === 'cancel' ? `ההזמנה אל ${email} בוטלה.` : `ההזמנה נשלחה שוב אל ${email}.`
+      invitationSuccess.value = `ההזמנה אל ${email} בוטלה.`
       invitationConfirm.value = null
     }
   } catch (err) {
-    invitationError.value =
-      err.message || (action === 'cancel' ? 'ביטול ההזמנה נכשל.' : 'שליחת ההזמנה מחדש נכשלה.')
+    invitationError.value = err.message || 'ביטול ההזמנה נכשל.'
   }
 }
 
@@ -325,7 +324,7 @@ async function confirmStatusChange() {
               <tr class="border-b border-neutral-200 text-neutral-600">
                 <th scope="col" class="p-2 text-start">אימייל</th>
                 <th scope="col" class="p-2 text-start">נשלחה בתאריך</th>
-                <th scope="col" class="p-2 text-start">בתוקף עד</th>
+                <th scope="col" class="p-2 text-start">תוקף הרישום</th>
                 <th scope="col" class="p-2 text-start">מצב</th>
                 <th scope="col" class="p-2 text-start">פעולות</th>
               </tr>
@@ -348,24 +347,14 @@ async function confirmStatusChange() {
                   </span>
                 </td>
                 <td class="p-2">
-                  <div class="flex flex-wrap gap-1">
-                    <button
-                      type="button"
-                      :disabled="!!store.pendingInviteActionFor[invitation.invitation_id]"
-                      class="rounded-lg border border-brand-green px-2 py-1 text-xs font-medium text-brand-green hover:bg-brand-green/10 disabled:opacity-60"
-                      @click="requestInvitationAction(invitation, 'resend')"
-                    >
-                      {{ store.pendingInviteActionFor[invitation.invitation_id] ? 'פועל...' : 'שליחה מחדש' }}
-                    </button>
-                    <button
-                      type="button"
-                      :disabled="!!store.pendingInviteActionFor[invitation.invitation_id]"
-                      class="rounded-lg border border-status-red px-2 py-1 text-xs font-medium text-status-red hover:bg-status-red/10 disabled:opacity-60"
-                      @click="requestInvitationAction(invitation, 'cancel')"
-                    >
-                      ביטול הזמנה
-                    </button>
-                  </div>
+                  <button
+                    type="button"
+                    :disabled="!!store.pendingInviteActionFor[invitation.invitation_id]"
+                    class="rounded-lg border border-status-red px-2 py-1 text-xs font-medium text-status-red hover:bg-status-red/10 disabled:opacity-60"
+                    @click="requestInvitationCancel(invitation)"
+                  >
+                    {{ store.pendingInviteActionFor[invitation.invitation_id] ? 'פועל...' : 'ביטול הזמנה' }}
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -390,25 +379,17 @@ async function confirmStatusChange() {
             <dl class="grid grid-cols-2 gap-1 text-xs text-neutral-600">
               <dt>נשלחה</dt>
               <dd>{{ formatDate(invitation.invite_sent_at) }}</dd>
-              <dt>בתוקף עד</dt>
+              <dt>תוקף הרישום</dt>
               <dd>{{ formatDate(invitation.invite_expires_at) }}</dd>
             </dl>
             <div class="mt-3 flex flex-wrap gap-2">
               <button
                 type="button"
                 :disabled="!!store.pendingInviteActionFor[invitation.invitation_id]"
-                class="rounded-lg border border-brand-green px-3 py-1.5 text-xs font-medium text-brand-green disabled:opacity-60"
-                @click="requestInvitationAction(invitation, 'resend')"
-              >
-                {{ store.pendingInviteActionFor[invitation.invitation_id] ? 'פועל...' : 'שליחה מחדש' }}
-              </button>
-              <button
-                type="button"
-                :disabled="!!store.pendingInviteActionFor[invitation.invitation_id]"
                 class="rounded-lg border border-status-red px-3 py-1.5 text-xs font-medium text-status-red disabled:opacity-60"
-                @click="requestInvitationAction(invitation, 'cancel')"
+                @click="requestInvitationCancel(invitation)"
               >
-                ביטול הזמנה
+                {{ store.pendingInviteActionFor[invitation.invitation_id] ? 'פועל...' : 'ביטול הזמנה' }}
               </button>
             </div>
           </li>
@@ -416,6 +397,23 @@ async function confirmStatusChange() {
       </template>
 
       <p v-if="invitationSuccess" class="text-sm text-brand-green" role="status">{{ invitationSuccess }}</p>
+
+      <!--
+        Accurate explanation of why there is no resend button, rather than
+        a button that is known to fail. Sending the first invitation
+        creates an unconfirmed account in Supabase Auth, and the database
+        refuses to issue a second invitation to an address that already
+        has an account -- so a resend would error every time.
+      -->
+      <p v-if="store.pendingInvitations.length" class="rounded-lg bg-neutral-50 px-3 py-2 text-xs leading-relaxed text-neutral-600">
+        <strong class="font-medium text-brand-black">שליחה חוזרת של הזמנה אינה זמינה בשלב זה.</strong>
+        שליחת ההזמנה הראשונה יוצרת כבר חשבון לא-מאומת במערכת ההזדהות, ולכן שליחה נוספת לאותה כתובת
+        נדחית. אם ההזמנה לא התקבלה או שפג תוקפה, יש להסיר את החשבון הלא-מאומת מלוח הבקרה של Supabase
+        לפני הזמנה חוזרת, או להזמין כתובת אימייל אחרת.
+        <br />
+        התאריך המוצג הוא תוקף רישום ההזמנה במערכת. תוקף הקישור שנשלח באימייל נקבע בהגדרות מערכת
+        ההזדהות ועשוי להיות קצר יותר.
+      </p>
     </section>
 
     <!-- Search -->
@@ -718,7 +716,7 @@ async function confirmStatusChange() {
       </div>
     </div>
 
-    <!-- Invitation cancel / resend confirmation -->
+    <!-- Invitation cancellation confirmation -->
     <div
       v-if="invitationConfirm"
       class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
@@ -728,15 +726,15 @@ async function confirmStatusChange() {
     >
       <div class="w-full max-w-sm rounded-xl bg-brand-white p-5">
         <h2 id="invitation-confirm-heading" class="mb-2 text-lg font-bold text-brand-black">
-          {{ invitationConfirm.action === 'cancel' ? 'ביטול הזמנה' : 'שליחת ההזמנה מחדש' }}
+          ביטול הזמנה
         </h2>
         <p class="mb-4 break-all text-sm text-neutral-600">
-          {{ invitationConfirm.email }} —
-          {{
-            invitationConfirm.action === 'cancel'
-              ? 'הקישור שנשלח יפסיק לעבוד ולא יהיה ניתן להשלים באמצעותו הרשמה.'
-              : 'יישלח אימייל נוסף עם אותו קישור הזמנה. קישור שכבר נשלח ימשיך לעבוד.'
-          }}
+          {{ invitationConfirm.email }} — הקישור שנשלח יפסיק לעבוד ולא יהיה ניתן להשלים באמצעותו
+          הרשמה.
+        </p>
+        <p class="mb-4 text-xs leading-relaxed text-neutral-500">
+          שימו לב: ביטול ההזמנה אינו מוחק את החשבון הלא-מאומת שנוצר במערכת ההזדהות, ולכן לא ניתן
+          יהיה להזמין מחדש את אותה כתובת ללא הסרת החשבון מלוח הבקרה של Supabase.
         </p>
         <p v-if="invitationError" class="mb-2 text-sm text-status-red" role="alert">{{ invitationError }}</p>
         <div class="flex justify-end gap-2">
@@ -750,21 +748,10 @@ async function confirmStatusChange() {
           <button
             type="button"
             :disabled="!!store.pendingInviteActionFor[invitationConfirm.id]"
-            class="rounded-lg px-4 py-2 text-sm font-medium text-brand-white disabled:opacity-60"
-            :class="
-              invitationConfirm.action === 'cancel'
-                ? 'bg-status-red hover:opacity-90'
-                : 'bg-brand-green hover:bg-brand-green-dark'
-            "
+            class="rounded-lg bg-status-red px-4 py-2 text-sm font-medium text-brand-white hover:opacity-90 disabled:opacity-60"
             @click="confirmInvitationAction"
           >
-            {{
-              store.pendingInviteActionFor[invitationConfirm.id]
-                ? 'מבצע...'
-                : invitationConfirm.action === 'cancel'
-                  ? 'ביטול ההזמנה'
-                  : 'שליחה מחדש'
-            }}
+            {{ store.pendingInviteActionFor[invitationConfirm.id] ? 'מבצע...' : 'ביטול ההזמנה' }}
           </button>
         </div>
       </div>
