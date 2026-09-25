@@ -1,0 +1,52 @@
+[
+  {
+    "barcode": "7290000073767",
+    "name": "מנה חמה נודלס בטעם בקר",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000073767.jpg"
+  },
+  {
+    "barcode": "7290000075143",
+    "name": "עוגיות שוקוצ׳יפס קלאסי",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000075143.jpg"
+  },
+  {
+    "barcode": "7394376616778",
+    "name": "Oat milk",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7394376616778.jpg"
+  },
+  {
+    "barcode": "7290000057477",
+    "name": "Молоко",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000057477.jpg"
+  },
+  {
+    "barcode": "7290002129479",
+    "name": "פיצה איטלקית דקה",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290002129479.jpg"
+  },
+  {
+    "barcode": "7290006337993",
+    "name": "Beef dumplings",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290006337993.jpg"
+  },
+  {
+    "barcode": "7290000047546",
+    "name": "Tvorog",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000047546.jpg"
+  },
+  {
+    "barcode": "0856591000062",
+    "name": "עוגיוצ מזרחי",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/0856591000062.jpg"
+  },
+  {
+    "barcode": "7290010627004",
+    "name": "Thina Jerusalem",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290010627004.jpg"
+  },
+  {
+    "barcode": "7290013521569",
+    "name": "רסק תפוח בננה אורגני",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290013521569.jpg"
+  }
+]

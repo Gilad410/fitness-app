@@ -1,0 +1,7 @@
+[
+{"barcode":"7290003075102","identityMatch":"unclear","evidenceCalories":155,"evidenceProtein":2,"basis":"100g","prepState":"as_sold","legible":true,"notes":"155 kcal, protein 2g per 100g; no brand visible."},
+{"barcode":"7290112494221","identityMatch":"unclear","evidenceCalories":520,"evidenceProtein":9,"basis":"100g","prepState":"as_sold","legible":true,"notes":"520 kcal, 9g protein per 100g."},
+{"barcode":"7290110565527","identityMatch":"yes","evidenceCalories":70,"evidenceProtein":10.0,"basis":"100g","prepState":"as_sold","legible":true,"notes":"Two-column (100g/200g cup): 70/140 kcal, 10.0/20g protein; matches product claims."},
+{"barcode":"7613037686906","identityMatch":"unclear","evidenceCalories":386,"evidenceProtein":null,"basis":"100g","prepState":"as_sold","legible":true,"notes":"116/386 kcal (30g/100g); protein row not confidently legible."},
+{"barcode":"7290104508943","identityMatch":"yes","evidenceCalories":null,"evidenceProtein":null,"basis":"100g","prepState":"as_sold","legible":false,"notes":"Bamba branding confirmed; energy/protein rows obscured by logo crease."}
+]

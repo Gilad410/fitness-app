@@ -1,0 +1,12 @@
+[
+{"barcode":"0898220011582","identityMatch":"yes","evidenceCalories":190,"evidenceProtein":6,"basis":"serving","prepState":"as_sold","legible":true,"notes":"Serving 40g bar: 190 Cal, 6g protein; allergen line consistent with dark chocolate nut bar."},
+{"barcode":"01002013","identityMatch":"unclear","evidenceCalories":270,"evidenceProtein":8,"basis":"serving","prepState":"as_sold","legible":true,"notes":"Serving 55g bar: 270 Cal, 8g protein; no brand/name visible to confirm identity."},
+{"barcode":"0026400298960","identityMatch":"yes","evidenceCalories":110,"evidenceProtein":9,"basis":"serving","prepState":"as_sold","legible":true,"notes":"Serving 236ml carton: 110 Cal, 9g protein; Grade A Pasteurized lowfat milk confirmed."},
+{"barcode":"04725600","identityMatch":"yes","evidenceCalories":null,"evidenceProtein":null,"basis":"unclear","prepState":"as_sold","legible":false,"notes":"Package confirms Scandinavian semi-hard cheese 31% fat; table too small/blurry to read."},
+{"barcode":"5902670052028","identityMatch":"yes","evidenceCalories":290,"evidenceProtein":null,"basis":"100g","prepState":"as_sold","legible":true,"notes":"Barcode confirmed on package; per-100g energy=290 legible, protein row alignment not confident."},
+{"barcode":"7290000055015","identityMatch":"unclear","evidenceCalories":122,"evidenceProtein":18,"basis":"100g","prepState":"as_sold","legible":true,"notes":"122 kcal, 18g protein per 100g; no brand text visible."},
+{"barcode":"7290100700396","identityMatch":"unclear","evidenceCalories":350,"evidenceProtein":null,"basis":"100g","prepState":"as_sold","legible":true,"notes":"Two-column table: 350 (dry/as-sold) and 163 (likely cooked); protein not confidently legible."},
+{"barcode":"7290114310536","identityMatch":"yes","evidenceCalories":136,"evidenceProtein":null,"basis":"unclear","prepState":"as_sold","legible":false,"notes":"Front panel shows '136'/'0%' marketing badges only, no nutrition facts table visible; basis unconfirmed."},
+{"barcode":"7290000416045","identityMatch":"yes","evidenceCalories":504,"evidenceProtein":14.2,"basis":"100g","prepState":"as_sold","legible":true,"notes":"Two-column table (25g serving/100g): 504 kcal, 14.2g protein per 100g column."},
+{"barcode":"7290116934020","identityMatch":"yes","evidenceCalories":125,"evidenceProtein":20,"basis":"100g","prepState":"as_sold","legible":true,"notes":"Two-column table (serving/100g as labeled by reader): 125 kcal, 20g protein."}
+]

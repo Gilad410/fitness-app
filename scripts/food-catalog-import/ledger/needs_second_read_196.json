@@ -1,0 +1,1962 @@
+[
+  {
+    "barcode": "72917589",
+    "name": "מקופלת",
+    "firstReadOutcome": "correction_proposed",
+    "firstReadCalories": 536,
+    "firstReadProtein": 6.6,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/000/007/291/7589/nutrition_he.10.full.jpg; https://il.openfoodfacts.org/product/72917589",
+    "storedCalories": 536,
+    "storedProtein": 6.8
+  },
+  {
+    "barcode": "72986424",
+    "name": "Sweet Cream & Cookies Ice Cream",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 260,
+    "firstReadProtein": 4,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/000/007/298/6424/ingredients_en.5.full.jpg; https://il.openfoodfacts.org/product/72986424",
+    "storedCalories": 260,
+    "storedProtein": 4
+  },
+  {
+    "barcode": "88544458",
+    "name": "Stickletti",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 374,
+    "firstReadProtein": 11,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/000/008/854/4458/nutrition_en.5.full.jpg; https://il.openfoodfacts.org/product/88544458",
+    "storedCalories": 374,
+    "storedProtein": 11
+  },
+  {
+    "barcode": "7290110563462",
+    "name": "חלב נטול לקטוז מפוסטר",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 52,
+    "firstReadProtein": 3.4,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/056/3462/nutrition_en.19.full.jpg; https://il.openfoodfacts.org/product/7290110563462",
+    "storedCalories": 52,
+    "storedProtein": 3.4
+  },
+  {
+    "barcode": "7290000211503",
+    "name": "סוכר לבן",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 400,
+    "firstReadProtein": 0,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/021/1503/nutrition_he.16.full.jpg; https://il.openfoodfacts.org/product/7290000211503",
+    "storedCalories": 400,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290004584528",
+    "name": "Yogurt Nature Bio 1.7%",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 56,
+    "firstReadProtein": 5.3,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/458/4528/nutrition_en.27.400.jpg ; https://world.openfoodfacts.org/product/7290004584528",
+    "storedCalories": 56,
+    "storedProtein": 5.3
+  },
+  {
+    "barcode": "7296073274957",
+    "name": "Peanut butter",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 684,
+    "firstReadProtein": 27,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/607/327/4957/nutrition_en.8.400.jpg ; https://world.openfoodfacts.org/product/7296073274957",
+    "storedCalories": 684,
+    "storedProtein": 27
+  },
+  {
+    "barcode": "7290006983176",
+    "name": "לחמית חיטה מלאה ושיפון",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 410.5,
+    "firstReadProtein": 13.68,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/698/3176/nutrition_en.7.400.jpg ; https://world.openfoodfacts.org/product/7290006983176",
+    "storedCalories": 410.526315789474,
+    "storedProtein": 13.6842105263158
+  },
+  {
+    "barcode": "7290002603016",
+    "name": "נתחי טונה בהירה במי מלח",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 94,
+    "firstReadProtein": 22,
+    "sourceUrl": "https://world.openfoodfacts.org/api/v2/product/7290002603016.json ; https://images.openfoodfacts.org/images/products/729/000/260/3016/nutrition_he.9.400.jpg",
+    "storedCalories": 94,
+    "storedProtein": 22
+  },
+  {
+    "barcode": "7290000178707",
+    "name": "tapouchips",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 549,
+    "firstReadProtein": 6,
+    "sourceUrl": "https://world.openfoodfacts.org/api/v2/product/7290000178707.json ; https://images.openfoodfacts.org/images/products/729/000/017/8707/nutrition_he.9.400.jpg",
+    "storedCalories": 549,
+    "storedProtein": 6
+  },
+  {
+    "barcode": "0038000232183",
+    "name": "Pringles",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 531,
+    "firstReadProtein": 4,
+    "sourceUrl": "https://world.openfoodfacts.org/api/v2/product/0038000232183.json ; https://images.openfoodfacts.org/images/products/003/800/023/2183/nutrition_en.22.400.jpg",
+    "storedCalories": 531,
+    "storedProtein": 4
+  },
+  {
+    "barcode": "7290008909853",
+    "name": "קולה זירו",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 0,
+    "firstReadProtein": 0,
+    "sourceUrl": "https://world.openfoodfacts.org/api/v2/product/7290008909853.json ; https://images.openfoodfacts.org/images/products/729/000/890/9853/nutrition_he.18.400.jpg",
+    "storedCalories": 0,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290117261569",
+    "name": "סלמון אטלנטי מעושן בשמן קנולה",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 398,
+    "firstReadProtein": 14,
+    "sourceUrl": "https://world.openfoodfacts.org/api/v2/product/7290117261569.json ; https://images.openfoodfacts.org/images/products/729/011/726/1569/nutrition_en.5.400.jpg",
+    "storedCalories": 398,
+    "storedProtein": 14
+  },
+  {
+    "barcode": "7296073530381",
+    "name": "טחינה אורגנית משומשום מלא",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 634,
+    "firstReadProtein": 22,
+    "sourceUrl": "https://world.openfoodfacts.org/api/v2/product/7296073530381.json ; https://images.openfoodfacts.org/images/products/729/607/353/0381/nutrition_he.9.400.jpg",
+    "storedCalories": 634,
+    "storedProtein": 22
+  },
+  {
+    "barcode": "7290107936309",
+    "name": "Greek yogurt",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 102,
+    "firstReadProtein": 5.54,
+    "sourceUrl": "https://world.openfoodfacts.org/api/v2/product/7290107936309.json ; https://images.openfoodfacts.org/images/products/729/010/793/6309/nutrition_en.10.400.jpg",
+    "storedCalories": 101.538461538462,
+    "storedProtein": 5.53846153846154
+  },
+  {
+    "barcode": "7290002868996",
+    "name": "קוטג׳ 5%",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 97,
+    "firstReadProtein": 10.1,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/286/8996/nutrition_en.8.400.jpg",
+    "storedCalories": 97,
+    "storedProtein": 10.1
+  },
+  {
+    "barcode": "7290000446554",
+    "name": "חמאת בוטנים טבעית  (B&D)",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 617,
+    "firstReadProtein": 28,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/044/6554/nutrition_en.11.full.jpg",
+    "storedCalories": 617,
+    "storedProtein": 28
+  },
+  {
+    "barcode": "7290107932080",
+    "name": "חלב מועשר",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 60,
+    "firstReadProtein": 3.4,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/010/793/2080/nutrition_he.16.400.jpg",
+    "storedCalories": 60,
+    "storedProtein": 3.4
+  },
+  {
+    "barcode": "7290112491701",
+    "name": "ברנפלקס אקסטרה חלבון",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 348,
+    "firstReadProtein": 20,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/249/1701/nutrition_en.16.full.jpg",
+    "storedCalories": 348,
+    "storedProtein": 20
+  },
+  {
+    "barcode": "7290106576537",
+    "name": "חומוס מסעדה",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 185,
+    "firstReadProtein": 7.9,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/010/657/6537/nutrition_he.5.full.jpg",
+    "storedCalories": 185,
+    "storedProtein": 7.9
+  },
+  {
+    "barcode": "7290105363572",
+    "name": "קראנצ׳ שוקולד חלב ביסקוויט",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 539,
+    "firstReadProtein": 8.1,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/010/536/3572/nutrition_he.5.400.jpg",
+    "storedCalories": 539,
+    "storedProtein": 8.1
+  },
+  {
+    "barcode": "7290119373352",
+    "name": "Energy",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 422,
+    "firstReadProtein": 5.9,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/937/3352/nutrition_en.5.400.jpg",
+    "storedCalories": 433.333333333333,
+    "storedProtein": 6
+  },
+  {
+    "barcode": "7290119372997",
+    "name": "יוגורט בטעם רול קינמון 0% שומן",
+    "firstReadOutcome": "correction_proposed",
+    "firstReadCalories": 112,
+    "firstReadProtein": 20,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/937/2997/nutrition_he.9.400.jpg",
+    "storedCalories": 56,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290112965684",
+    "name": "חטיף דגנים עם עשבי תיבול",
+    "firstReadOutcome": "correction_proposed",
+    "firstReadCalories": 439,
+    "firstReadProtein": 6.5,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/296/5684/nutrition_he.11.400.jpg",
+    "storedCalories": 478,
+    "storedProtein": 6.5
+  },
+  {
+    "barcode": "5060517886486",
+    "name": "Monster energy",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 47,
+    "firstReadProtein": 0,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/506/051/788/6486/nutrition_fr.6.400.jpg",
+    "storedCalories": 47,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7296073441335",
+    "name": "פריכיות אורז מלא",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 386,
+    "firstReadProtein": 8.5,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/607/344/1335/nutrition_he.7.400.jpg",
+    "storedCalories": 400,
+    "storedProtein": 8.75
+  },
+  {
+    "barcode": "7290000211442",
+    "name": "White Rice",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 347,
+    "firstReadProtein": 6.9,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/021/1442/nutrition_he.8.400.jpg",
+    "storedCalories": 347,
+    "storedProtein": 6.9
+  },
+  {
+    "barcode": "7290000066141",
+    "name": "ביסלי גריל",
+    "firstReadOutcome": "correction_proposed",
+    "firstReadCalories": 492,
+    "firstReadProtein": 11,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/006/6141/nutrition_he.10.400.jpg",
+    "storedCalories": 507,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290018500361",
+    "name": "לחם אחיד פרוס",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 240,
+    "firstReadProtein": 9.2,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/850/0361/nutrition_he.13.400.jpg",
+    "storedCalories": 240,
+    "storedProtein": 9.2
+  },
+  {
+    "barcode": "7290112961464",
+    "name": "Fitness פירכיות מתובלות",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 434,
+    "firstReadProtein": 10.8,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/296/1464/nutrition_en.6.full.jpg",
+    "storedCalories": 433,
+    "storedProtein": 10.8
+  },
+  {
+    "barcode": "7290002842309",
+    "name": "סרדינים בשמן חמניות",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 214,
+    "firstReadProtein": 22,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/284/2309/nutrition_he.10.full.jpg",
+    "storedCalories": 214,
+    "storedProtein": 22
+  },
+  {
+    "barcode": "7290106570023",
+    "name": "בייגלה שטוחים - כעכים שטוחים עם שומשום",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 506,
+    "firstReadProtein": 6,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/010/657/0023/nutrition_he.61.400.jpg",
+    "storedCalories": 506,
+    "storedProtein": 6
+  },
+  {
+    "barcode": "7290011499365",
+    "name": "Hallumi cheese 24%",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 304,
+    "firstReadProtein": 21,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/149/9365/ingredients_fr.5.400.jpg",
+    "storedCalories": 304,
+    "storedProtein": 21
+  },
+  {
+    "barcode": "7290012001994",
+    "name": "Moutarde ancienne",
+    "firstReadOutcome": "correction_proposed",
+    "firstReadCalories": 158,
+    "firstReadProtein": null,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/200/1994/ingredients_en.4.full.jpg",
+    "storedCalories": 166,
+    "storedProtein": 7.69999980926514
+  },
+  {
+    "barcode": "7290005839108",
+    "name": "סימפוניה זיתים",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 104,
+    "firstReadProtein": 8.3,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/583/9108/nutrition_en.8.400.jpg",
+    "storedCalories": 104,
+    "storedProtein": 8.3
+  },
+  {
+    "barcode": "7290110570040",
+    "name": "BARISTA ללא סוכר שקדים חלב",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 24,
+    "firstReadProtein": 0.6,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/057/0040/nutrition_en.11.400.jpg",
+    "storedCalories": 24,
+    "storedProtein": 0.7
+  },
+  {
+    "barcode": "7290001216231",
+    "name": "טחינת אל ארז",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 655,
+    "firstReadProtein": 25,
+    "sourceUrl": "https://alarz.co.il/product/refined-raw-tahini/, https://alarz.co.il/product/ethiopian-whole-sesame-tahini/",
+    "storedCalories": 655,
+    "storedProtein": 25
+  },
+  {
+    "barcode": "7290112197467",
+    "name": "Dark Chocolate",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 406,
+    "firstReadProtein": 6.5,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/219/7467/nutrition_en.10.full.jpg",
+    "storedCalories": 406,
+    "storedProtein": 6.5
+  },
+  {
+    "barcode": "7290116932620",
+    "name": "Go Natural by Yoplait Without Lactose",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 86,
+    "firstReadProtein": 12.5,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/693/2620/nutrition_en.6.full.jpg",
+    "storedCalories": 86,
+    "storedProtein": 12.5
+  },
+  {
+    "barcode": "7290110325121",
+    "name": "Pineapple shake",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 52,
+    "firstReadProtein": 8,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/032/5121/nutrition_en.12.full.jpg",
+    "storedCalories": 52,
+    "storedProtein": 8
+  },
+  {
+    "barcode": "4810168058999",
+    "name": "Lightly Salted Herring Fillets In Oil",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 177,
+    "firstReadProtein": 13.3,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/481/016/805/8999/nutrition_en.5.full.jpg",
+    "storedCalories": 177,
+    "storedProtein": 13.3
+  },
+  {
+    "barcode": "7290112357083",
+    "name": "Afouna",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 73,
+    "firstReadProtein": 4.7,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/235/7083/nutrition_he.10.400.jpg",
+    "storedCalories": 73,
+    "storedProtein": 4.69999980926514
+  },
+  {
+    "barcode": "0037600311571",
+    "name": "No Added Suger Skippy",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 577,
+    "firstReadProtein": 25,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/003/760/031/1571/nutrition_en.5.full.jpg",
+    "storedCalories": 577,
+    "storedProtein": 25
+  },
+  {
+    "barcode": "7290018703304",
+    "name": "חטיף חלבון קרם עוגיות",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 348,
+    "firstReadProtein": 28.3,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/870/3304/1.jpg",
+    "storedCalories": 348.333333333333,
+    "storedProtein": 28.3333333333333
+  },
+  {
+    "barcode": "7290000117720",
+    "name": "Mushroom Soup",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 419,
+    "firstReadProtein": 4.8,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/011/7720/nutrition_en.3.400.jpg",
+    "storedCalories": 419,
+    "storedProtein": 4.8
+  },
+  {
+    "barcode": "7290002331155",
+    "name": "מי נביעות בטעם אפרסק",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 15,
+    "firstReadProtein": 0,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/233/1155/nutrition_fr.5.400.jpg",
+    "storedCalories": 15,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290019056355",
+    "name": "Limonana",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 39,
+    "firstReadProtein": 0,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/905/6355/nutrition_fr.5.400.jpg",
+    "storedCalories": 39,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290110558284",
+    "name": "MULTI Yogurt 3% fat",
+    "firstReadOutcome": "correction_proposed",
+    "firstReadCalories": 71,
+    "firstReadProtein": 2,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/055/8284/nutrition_he.12.full.jpg",
+    "storedCalories": 71.5,
+    "storedProtein": 6.5
+  },
+  {
+    "barcode": "7290114969284",
+    "name": "אבקת חלבון בטעם וניל",
+    "firstReadOutcome": "correction_proposed",
+    "firstReadCalories": 387,
+    "firstReadProtein": 77,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/496/9284/nutrition_he.5.full.jpg",
+    "storedCalories": 376.470588235294,
+    "storedProtein": 73.5294117647059
+  },
+  {
+    "barcode": "7290111930935",
+    "name": "Poof",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 483,
+    "firstReadProtein": 3.5,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/193/0935/nutrition_he.22.400.jpg",
+    "storedCalories": 482.5,
+    "storedProtein": 3.5
+  },
+  {
+    "barcode": "7290014762831",
+    "name": "גבינת שמנת עם פלפל חלפינו",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 247,
+    "firstReadProtein": 4.3,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/476/2831/nutrition_he.5.400.jpg",
+    "storedCalories": 247,
+    "storedProtein": 4.3
+  },
+  {
+    "barcode": "7290112126122",
+    "name": "Shredded Cheese",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 346,
+    "firstReadProtein": 22,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/212/6122/nutrition_en.5.400.jpg",
+    "storedCalories": 346,
+    "storedProtein": 22
+  },
+  {
+    "barcode": "7290003864492",
+    "name": "סרדינים בשמן סויה עם פלפל צ'ילי",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 193,
+    "firstReadProtein": 25,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/386/4492/nutrition_he.5.full.jpg",
+    "storedCalories": 193,
+    "storedProtein": 25
+  },
+  {
+    "barcode": "7290018441473",
+    "name": "סורבה פסיפלןרה פירות יער",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 132,
+    "firstReadProtein": 0,
+    "sourceUrl": "https://www.benjerry.co.il/flavors/passion-fruit-sorbet/",
+    "storedCalories": 132,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "5740900403215",
+    "name": "ממרח חמאה לורפק בתוספת שמן לפתית",
+    "firstReadOutcome": "correction_proposed",
+    "firstReadCalories": 679,
+    "firstReadProtein": 0.5,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/574/090/040/3215/nutrition_en.11.400.jpg, https://images.openfoodfacts.org/images/products/574/090/040/3215/nutrition_he.13.400.jpg",
+    "storedCalories": 706,
+    "storedProtein": 0.5
+  },
+  {
+    "barcode": "7290018441466",
+    "name": "Vanilla Icecream",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 230,
+    "firstReadProtein": 4,
+    "sourceUrl": "https://www.benjerry.co.il/flavors/vanilla/",
+    "storedCalories": 230,
+    "storedProtein": 4
+  },
+  {
+    "barcode": "7290004126674",
+    "name": "Tal HaEmek 9%",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 201,
+    "firstReadProtein": 30,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/412/6674/nutrition_en.5.400.jpg",
+    "storedCalories": 201,
+    "storedProtein": 30
+  },
+  {
+    "barcode": "7290004121280",
+    "name": "Cottage Cheese 9% Fat Free",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 114,
+    "firstReadProtein": 3.5,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/412/1280/nutrition_en.6.400.jpg",
+    "storedCalories": 114,
+    "storedProtein": 3.5
+  },
+  {
+    "barcode": "7290012645112",
+    "name": "יוגורט עזים",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 65,
+    "firstReadProtein": 3.3,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/264/5112/nutrition_en.6.400.jpg",
+    "storedCalories": 65,
+    "storedProtein": 3.3
+  },
+  {
+    "barcode": "7296073021568",
+    "name": "קמח",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 359,
+    "firstReadProtein": 10.7,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/607/302/1568/nutrition_he.8.400.jpg",
+    "storedCalories": 359,
+    "storedProtein": 10.7
+  },
+  {
+    "barcode": "5202082002162",
+    "name": "Greek Yogurt 10% Fat",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 128,
+    "firstReadProtein": 6,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/520/208/200/2162/nutrition_he.8.400.jpg",
+    "storedCalories": 127.39006,
+    "storedProtein": 5.6
+  },
+  {
+    "barcode": "7290106653689",
+    "name": "לקט לסלט בסגנון אסייתי",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 32,
+    "firstReadProtein": 1.4,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/010/665/3689/nutrition_he.11.full.jpg",
+    "storedCalories": 32,
+    "storedProtein": 1.4
+  },
+  {
+    "barcode": "7290116537351",
+    "name": "כריות נוגט",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 465,
+    "firstReadProtein": 5.7,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/653/7351/nutrition_he.5.400.jpg",
+    "storedCalories": 465,
+    "storedProtein": 5.7
+  },
+  {
+    "barcode": "7296073205616",
+    "name": "medjool dates semi dry",
+    "firstReadOutcome": "correction_proposed",
+    "firstReadCalories": 267,
+    "firstReadProtein": 2.2,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/607/320/5616/nutrition_he.8.400.jpg",
+    "storedCalories": 0.267,
+    "storedProtein": 2.2
+  },
+  {
+    "barcode": "7290000420325",
+    "name": "Microwave Popcorn, Natural Flavor",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 425,
+    "firstReadProtein": 10,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/042/0325/nutrition_en.5.full.jpg",
+    "storedCalories": 425,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290000604343",
+    "name": "Deglect Nour Dates",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 275,
+    "firstReadProtein": 2.4,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/060/4343/nutrition_en.7.full.jpg",
+    "storedCalories": 275,
+    "storedProtein": 2.4
+  },
+  {
+    "barcode": "7290002986218",
+    "name": "עוגיות יין חצי מצופות",
+    "firstReadOutcome": "correction_proposed",
+    "firstReadCalories": 544,
+    "firstReadProtein": 5.5,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/298/6218/nutrition_en.6.full.jpg",
+    "storedCalories": 468,
+    "storedProtein": 6.6
+  },
+  {
+    "barcode": "7290116537375",
+    "name": "קליק כריות",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 486,
+    "firstReadProtein": 6.6,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/653/7375/nutrition_en.11.full.jpg",
+    "storedCalories": 486.153846153846,
+    "storedProtein": 6.61538461538461
+  },
+  {
+    "barcode": "7298641453191",
+    "name": "אבקת חלבון פיסטוק",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 374,
+    "firstReadProtein": 76,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/864/145/3191/nutrition_he.5.400.jpg",
+    "storedCalories": 374,
+    "storedProtein": 76
+  },
+  {
+    "barcode": "7290112495037",
+    "name": "קורונה",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 379,
+    "firstReadProtein": 8.5,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/249/5037/nutrition_he.7.full.jpg",
+    "storedCalories": 379,
+    "storedProtein": 8.5
+  },
+  {
+    "barcode": "7290111566332",
+    "name": "טבעול נקניקיות וינר צבחוניות",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 214,
+    "firstReadProtein": 18.3,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/156/6332/nutrition_he.7.full.jpg",
+    "storedCalories": 214.705882352941,
+    "storedProtein": 18.2352941176471
+  },
+  {
+    "barcode": "7290002026341",
+    "name": "צ׳יפס בטטה",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 160,
+    "firstReadProtein": 2,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/202/6341/nutrition_he.5.full.jpg",
+    "storedCalories": 160,
+    "storedProtein": 2
+  },
+  {
+    "barcode": "7290005287251",
+    "name": "טונה בהירה במים",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 104,
+    "firstReadProtein": 24.8,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/528/7251/nutrition_en.7.400.jpg",
+    "storedCalories": 104,
+    "storedProtein": 24.8
+  },
+  {
+    "barcode": "7290011723101",
+    "name": "טחינה הר ברכה",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 699,
+    "firstReadProtein": 20.5,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/172/3101/nutrition_he.7.400.jpg",
+    "storedCalories": 691,
+    "storedProtein": 20.5
+  },
+  {
+    "barcode": "7290118425601",
+    "name": "Rice Tortilla Snack Onion and Garlic Flavor",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 443,
+    "firstReadProtein": 6.5,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/842/5601/nutrition_he.9.400.jpg",
+    "storedCalories": 443,
+    "storedProtein": 6.5
+  },
+  {
+    "barcode": "7290017275598",
+    "name": "רוגלעך",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 443,
+    "firstReadProtein": 6.2,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/727/5598/nutrition_he.13.400.jpg",
+    "storedCalories": 443.333333333333,
+    "storedProtein": 6.16666666666667
+  },
+  {
+    "barcode": "7290001548110",
+    "name": "סלט חצילים על האש",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 156,
+    "firstReadProtein": 1.2,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/154/8110/nutrition_he.7.400.jpg",
+    "storedCalories": 156,
+    "storedProtein": 1.2
+  },
+  {
+    "barcode": "7296073705444",
+    "name": "Tuna In Water",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 114,
+    "firstReadProtein": 27,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/607/370/5444/nutrition_he.6.400.jpg",
+    "storedCalories": 114,
+    "storedProtein": 27
+  },
+  {
+    "barcode": "7290114313865",
+    "name": "חלב מועשר חלבון",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 64,
+    "firstReadProtein": 6.5,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/431/3865/nutrition_he.5.full.jpg",
+    "storedCalories": 64,
+    "storedProtein": 6.5
+  },
+  {
+    "barcode": "7290106668713",
+    "name": "יוגורט עם פירות יער - 3% שומן",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 84,
+    "firstReadProtein": 3.1,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/010/666/8713/nutrition_en.8.400.jpg",
+    "storedCalories": 84,
+    "storedProtein": 3.06666666666667
+  },
+  {
+    "barcode": "7290106577480",
+    "name": "חציל על האש בטחינה",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 222,
+    "firstReadProtein": 4,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/010/657/7480/nutrition_he.6.400.jpg",
+    "storedCalories": 222,
+    "storedProtein": 4
+  },
+  {
+    "barcode": "5061013944991",
+    "name": "Juiced Monster Aussie Lemonade - משקה אנרגיה מוגז עם 2% מיץ לימון מרכז, טאורין, קפאין, ל-קרניטין ל-טרטראט, ויטמינים מקבוצת B עם סוכרים וממתיק",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 42,
+    "firstReadProtein": 0,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/506/101/394/4991/nutrition_he.11.400.jpg",
+    "storedCalories": 42,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290016392531",
+    "name": "Vegan Protein Complex",
+    "firstReadOutcome": "correction_proposed",
+    "firstReadCalories": 373,
+    "firstReadProtein": 73.3,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/639/2531/4.jpg, https://images.openfoodfacts.org/images/products/729/001/639/2531/6.jpg",
+    "storedCalories": 384.375,
+    "storedProtein": 75.3125
+  },
+  {
+    "barcode": "7290000334684",
+    "name": "טבעות בצל",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 221,
+    "firstReadProtein": 3.2,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/033/4684/nutrition_ru.10.400.jpg",
+    "storedCalories": 221,
+    "storedProtein": 3.2
+  },
+  {
+    "barcode": "7290016505177",
+    "name": "Nut Cream",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 584,
+    "firstReadProtein": 5.9,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/650/5177/nutrition_en.5.400.jpg",
+    "storedCalories": 584,
+    "storedProtein": 5.9
+  },
+  {
+    "barcode": "7290112499936",
+    "name": "מגנום שקדים מובחרים",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 322,
+    "firstReadProtein": 5.2,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/249/9936/nutrition_he.7.full.jpg",
+    "storedCalories": 322,
+    "storedProtein": 5.2
+  },
+  {
+    "barcode": "7622202269738",
+    "name": "Milk Chocolate With Raisins And Chopped Hazelnuts",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 508,
+    "firstReadProtein": 6.2,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/762/220/226/9738/nutrition_en.5.full.jpg",
+    "storedCalories": 508,
+    "storedProtein": 6.2
+  },
+  {
+    "barcode": "7290002769347",
+    "name": "Kaak",
+    "firstReadOutcome": "correction_proposed",
+    "firstReadCalories": 453,
+    "firstReadProtein": 4.8,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/276/9347/nutrition_he.8.full.jpg",
+    "storedCalories": 505,
+    "storedProtein": 9.7
+  },
+  {
+    "barcode": "0642135553046",
+    "name": "Tofu Fang",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 90,
+    "firstReadProtein": 10.1,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/064/213/555/3046/nutrition_en.5.full.jpg",
+    "storedCalories": 90,
+    "storedProtein": 10.1
+  },
+  {
+    "barcode": "7290018835005",
+    "name": "Rice UP! Brown Rice Chips, Sea Salt and Black Pepper",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 449,
+    "firstReadProtein": 7.6,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/883/5005/nutrition_en.24.400.jpg",
+    "storedCalories": 450,
+    "storedProtein": 7.66666666666667
+  },
+  {
+    "barcode": "2210252540925832",
+    "name": "מלח הימלאיה דק",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 0,
+    "firstReadProtein": 0,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/221/025/254/0925832/nutrition_he.7.400.jpg",
+    "storedCalories": 0,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290110116422",
+    "name": "מים מוגזים בטעם נענע וגרידת לימון",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 1,
+    "firstReadProtein": 0,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/011/6422/3.jpg",
+    "storedCalories": 1,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290015164818",
+    "name": "Yellow Curry Paste",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 129,
+    "firstReadProtein": 5.3,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/516/4818/nutrition_en.5.400.jpg",
+    "storedCalories": 129,
+    "storedProtein": 5.3
+  },
+  {
+    "barcode": "7296073707707",
+    "name": "בישקוטים",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 377,
+    "firstReadProtein": 7.9,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/607/370/7707/nutrition_he.5.400.jpg",
+    "storedCalories": 377,
+    "storedProtein": 7.9
+  },
+  {
+    "barcode": "7290104728310",
+    "name": "שמנת להקצפה 38%",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 364,
+    "firstReadProtein": 2,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/010/472/8310/nutrition_he.19.400.jpg",
+    "storedCalories": 364,
+    "storedProtein": 2
+  },
+  {
+    "barcode": "7290112968807",
+    "name": "Fitness Thin",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 458,
+    "firstReadProtein": 12,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/296/8807/nutrition_en.23.full.jpg",
+    "storedCalories": 458,
+    "storedProtein": 12.093023255814
+  },
+  {
+    "barcode": "7290000208428",
+    "name": "Chickpeas",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 145,
+    "firstReadProtein": 8,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/020/8428/nutrition_en.18.full.jpg",
+    "storedCalories": 145,
+    "storedProtein": 8
+  },
+  {
+    "barcode": "7290117261545",
+    "name": "סלמון אטלנטי ברוטב טריאקי",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 196,
+    "firstReadProtein": 15,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/726/1545/nutrition_he.15.full.jpg",
+    "storedCalories": 196,
+    "storedProtein": 15
+  },
+  {
+    "barcode": "7290112968821",
+    "name": "Fifness",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 459,
+    "firstReadProtein": 12,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/296/8821/nutrition_en.6.full.jpg",
+    "storedCalories": 459,
+    "storedProtein": 11.5
+  },
+  {
+    "barcode": "7290110558314",
+    "name": "דנונה pro בטעם פיסטוק",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 55,
+    "firstReadProtein": 10,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/055/8314/nutrition_he.10.full.jpg",
+    "storedCalories": 55.5,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290109358765",
+    "name": "Crunch",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 438,
+    "firstReadProtein": 7.8,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/010/935/8765/nutrition_en.11.full.jpg",
+    "storedCalories": 438,
+    "storedProtein": 7.8
+  },
+  {
+    "barcode": "7290106578692",
+    "name": "ביסלי במבה mix",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 510,
+    "firstReadProtein": 13.5,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/010/657/8692/nutrition_fr.5.full.jpg",
+    "storedCalories": 510,
+    "storedProtein": 13.5
+  },
+  {
+    "barcode": "7290018925065",
+    "name": "מיץ תפוזים סחוט",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 47,
+    "firstReadProtein": 0.7,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/892/5065/1.jpg",
+    "storedCalories": 47,
+    "storedProtein": 0.7
+  },
+  {
+    "barcode": "7290017918563",
+    "name": "Roasted Peeled Chestnuts",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 189,
+    "firstReadProtein": 4.2,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/791/8563/nutrition_en.5.full.jpg",
+    "storedCalories": 189,
+    "storedProtein": 4.2
+  },
+  {
+    "barcode": "7290003075553",
+    "name": "לבנה אסלי",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 155,
+    "firstReadProtein": 12,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/307/5553/3.jpg",
+    "storedCalories": 155,
+    "storedProtein": 12
+  },
+  {
+    "barcode": "7290120935495",
+    "name": "Creamy Core",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 373,
+    "firstReadProtein": 28,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/012/093/5495/nutrition_en.5.full.jpg",
+    "storedCalories": 373.809523809524,
+    "storedProtein": 28.5714285714286
+  },
+  {
+    "barcode": "7290110329846",
+    "name": "Alternative bio yogurt",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 48,
+    "firstReadProtein": 4,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/032/9846/1.400.jpg",
+    "storedCalories": 48,
+    "storedProtein": 4
+  },
+  {
+    "barcode": "7290115205176",
+    "name": "Fitness",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 461,
+    "firstReadProtein": 12.5,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/520/5176/nutrition_en.10.400.jpg",
+    "storedCalories": 461,
+    "storedProtein": 12.5
+  },
+  {
+    "barcode": "7290008775816",
+    "name": "عرجليوت اوسم 300gm",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 417,
+    "firstReadProtein": 4.5,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/877/5816/nutrition_he.10.400.jpg",
+    "storedCalories": 417,
+    "storedProtein": 4.5
+  },
+  {
+    "barcode": "8076809513739",
+    "name": "Tomate y Badilico",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 64,
+    "firstReadProtein": 1.6,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/807/680/951/3739/nutrition_fi.50.full.jpg",
+    "storedCalories": 64,
+    "storedProtein": 1.6
+  },
+  {
+    "barcode": "7290107942355",
+    "name": "Tapuchips Stickz",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 549,
+    "firstReadProtein": 5.9,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/010/794/2355/nutrition_iw.10.full.jpg",
+    "storedCalories": 548.333333333333,
+    "storedProtein": 6
+  },
+  {
+    "barcode": "7290003864478",
+    "name": "סרדינים בשמן סויה",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 153,
+    "firstReadProtein": 25,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/386/4478/nutrition_en.5.400.jpg",
+    "storedCalories": 153,
+    "storedProtein": 25
+  },
+  {
+    "barcode": "7290112330390",
+    "name": "יוגורט חלבון פירות יער",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 65,
+    "firstReadProtein": 10,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/233/0390/nutrition_en.16.full.jpg",
+    "storedCalories": 65,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290002543046",
+    "name": "Kellogg's Frosties 750",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 375,
+    "firstReadProtein": 4.5,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/254/3046/nutrition_en.17.full.jpg",
+    "storedCalories": 375,
+    "storedProtein": 4.5
+  },
+  {
+    "barcode": "0613008753351",
+    "name": "Arizona Pomegranate",
+    "firstReadOutcome": "correction_proposed",
+    "firstReadCalories": 34,
+    "firstReadProtein": 0,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/061/300/875/3351/nutrition_fr.12.full.jpg",
+    "storedCalories": 21,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "4007745058804",
+    "name": "מיונז אמיתי אורגני",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 757,
+    "firstReadProtein": 1.2,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/400/774/505/8804/nutrition_en.38.full.jpg",
+    "storedCalories": 757,
+    "storedProtein": 1.2
+  },
+  {
+    "barcode": "8001505000313",
+    "name": "ממרח אגוזי לוז אורגני",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 544,
+    "firstReadProtein": 8,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/800/150/500/0313/nutrition_fr.5.full.jpg",
+    "storedCalories": 544,
+    "storedProtein": 8
+  },
+  {
+    "barcode": "7290112345622",
+    "name": "Energy no added sugar",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 330,
+    "firstReadProtein": 7.6,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/234/5622/nutrition_fr.5.full.jpg",
+    "storedCalories": 330,
+    "storedProtein": 7.6
+  },
+  {
+    "barcode": "7290106658479",
+    "name": "טורטית",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 233,
+    "firstReadProtein": 2.9,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/010/665/8479/nutrition_he.27.full.jpg",
+    "storedCalories": 233,
+    "storedProtein": 2.9
+  },
+  {
+    "barcode": "7290105968654",
+    "name": "Yams Stuffed Ravioli",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 186,
+    "firstReadProtein": 6.3,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/010/596/8654/nutrition_he.10.full.jpg",
+    "storedCalories": 186,
+    "storedProtein": 6.3
+  },
+  {
+    "barcode": "7290112340122",
+    "name": "Rice cakes",
+    "firstReadOutcome": "correction_proposed",
+    "firstReadCalories": 388,
+    "firstReadProtein": 7.5,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/234/0122/nutrition_en.12.full.jpg",
+    "storedCalories": 411,
+    "storedProtein": 8.8
+  },
+  {
+    "barcode": "7290000591643",
+    "name": "מצות",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 383,
+    "firstReadProtein": 9.6,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/059/1643/nutrition_iw.10.full.jpg",
+    "storedCalories": 383,
+    "storedProtein": 9.6
+  },
+  {
+    "barcode": "0038000138430",
+    "name": "Original Light",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 150,
+    "firstReadProtein": 1,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/003/800/013/8430/nutrition_en.95.full.jpg",
+    "storedCalories": 535.714285714286,
+    "storedProtein": 3.52746128611239
+  },
+  {
+    "barcode": "00700139",
+    "name": "Round Rice",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 133,
+    "firstReadProtein": 3.2,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/000/000/070/0139/nutrition_en.5.full.jpg",
+    "storedCalories": 133,
+    "storedProtein": 3.2
+  },
+  {
+    "barcode": "0096086001659",
+    "name": "Keto Granola",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 588,
+    "firstReadProtein": 16.1,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/009/608/600/1659/nutrition_en.5.400.jpg",
+    "storedCalories": 588,
+    "storedProtein": 16.1
+  },
+  {
+    "barcode": "0608614343065",
+    "name": "לחם מחמצת שיפון גרעינים",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 263,
+    "firstReadProtein": 9.3,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/060/861/434/3065/nutrition_he.3.400.jpg",
+    "storedCalories": 263,
+    "storedProtein": 9.3
+  },
+  {
+    "barcode": "0632432922225",
+    "name": "Yerba Mate",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 40,
+    "firstReadProtein": 0,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/063/243/292/2225/nutrition_fr.5.400.jpg",
+    "storedCalories": 40,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "00776783",
+    "name": "Garlic Naan",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 294,
+    "firstReadProtein": 7,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/000/000/077/6783/nutrition_en.31.400.jpg",
+    "storedCalories": 294.117647058824,
+    "storedProtein": 7
+  },
+  {
+    "barcode": "1770072209807",
+    "name": "חלבון קוקוס שוקולד",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 390,
+    "firstReadProtein": 72,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/177/007/220/9807/nutrition_he.3.400.jpg",
+    "storedCalories": 390,
+    "storedProtein": 72
+  },
+  {
+    "barcode": "0038000232152",
+    "name": "BBQ CHIPS",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 150,
+    "firstReadProtein": 1,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/003/800/023/2152/nutrition_fr.5.400.jpg",
+    "storedCalories": 150,
+    "storedProtein": 1
+  },
+  {
+    "barcode": "4750616001989",
+    "name": "Sprats Paste",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 195,
+    "firstReadProtein": 12,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/475/061/600/1989/nutrition_en.3.400.jpg",
+    "storedCalories": 195,
+    "storedProtein": 12
+  },
+  {
+    "barcode": "5202302020020",
+    "name": "Kalamata olive",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 184,
+    "firstReadProtein": 1.9,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/520/230/202/0020/nutrition_en.21.400.jpg",
+    "storedCalories": 184,
+    "storedProtein": 1.9
+  },
+  {
+    "barcode": "0065633280267",
+    "name": "Barre granola érable et cassonade",
+    "firstReadOutcome": "correction_proposed",
+    "firstReadCalories": 190,
+    "firstReadProtein": 3,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/006/563/328/0267/nutrition_fr.18.full.jpg",
+    "storedCalories": 363,
+    "storedProtein": 5
+  },
+  {
+    "barcode": "7290000051758",
+    "name": "יוגורט עם אפרסק 3% שומן",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 84,
+    "firstReadProtein": 3.1,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/005/1758/2.400.jpg",
+    "storedCalories": 84,
+    "storedProtein": 3.1
+  },
+  {
+    "barcode": "7290110328580",
+    "name": "יוגורט ביו 5%",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 85,
+    "firstReadProtein": 5.3,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/032/8580/nutrition_en.5.400.jpg",
+    "storedCalories": 85,
+    "storedProtein": 5.3
+  },
+  {
+    "barcode": "7290016246445",
+    "name": "טחינה גולמית מלאה",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 647,
+    "firstReadProtein": 24,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/624/6445/nutrition_he.9.400.jpg",
+    "storedCalories": 647,
+    "storedProtein": 24
+  },
+  {
+    "barcode": "0729012494351",
+    "name": "קורנפלקס של אלופים",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 375,
+    "firstReadProtein": 7,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/072/901/249/4351/nutrition_he.12.400.jpg",
+    "storedCalories": 375,
+    "storedProtein": 7
+  },
+  {
+    "barcode": "0038000138607",
+    "name": "Salt & Vinegar",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 150,
+    "firstReadProtein": 1,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/003/800/013/8607/nutrition_en.48.400.jpg",
+    "storedCalories": 535.714285714286,
+    "storedProtein": 3.57142857142857
+  },
+  {
+    "barcode": "3560070240258",
+    "name": "Classic",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 506,
+    "firstReadProtein": 4.4,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/356/007/024/0258/nutrition_fr.115.400.jpg",
+    "storedCalories": 506,
+    "storedProtein": 4.4
+  },
+  {
+    "barcode": "7290000185224",
+    "name": "Kineret Silan Squeeze 650 GR",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 320,
+    "firstReadProtein": 1,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/018/5224/nutrition_en.7.400.jpg",
+    "storedCalories": 320,
+    "storedProtein": 1
+  },
+  {
+    "barcode": "7290101551263",
+    "name": "סילאן טבעי - יד מרדכי",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 304,
+    "firstReadProtein": 0,
+    "sourceUrl": "https://www.yad-mordechai.co.il/product/silan/",
+    "storedCalories": 304,
+    "storedProtein": 0.012
+  },
+  {
+    "barcode": "2445800003628",
+    "name": "Parmigiano Reggiano",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 402,
+    "firstReadProtein": 32,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/244/580/000/3628/nutrition_it.10.400.jpg",
+    "storedCalories": 402,
+    "storedProtein": 32
+  },
+  {
+    "barcode": "7290110113469",
+    "name": "קוקה קולה מנגו",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 0.5,
+    "firstReadProtein": 0,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/011/3469/nutrition_he.4.full.jpg",
+    "storedCalories": 0.5,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290000137513",
+    "name": "גלידונית",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 345,
+    "firstReadProtein": 3.8,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/013/7513/nutrition_iw.7.full.jpg",
+    "storedCalories": 345,
+    "storedProtein": 3.8
+  },
+  {
+    "barcode": "7290002079477",
+    "name": "לחם מקמח חיטה כהה",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 238,
+    "firstReadProtein": 8.8,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/207/9477/nutrition_he.6.400.jpg",
+    "storedCalories": 238,
+    "storedProtein": 8.8
+  },
+  {
+    "barcode": "7290002107798",
+    "name": "בולגרית מעודנת 5%",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 108,
+    "firstReadProtein": 12,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/210/7798/nutrition_he.3.400.jpg",
+    "storedCalories": 108,
+    "storedProtein": 12
+  },
+  {
+    "barcode": "7290002331124",
+    "name": "נביעות+ תפוח עדין",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 15,
+    "firstReadProtein": 0,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/233/1124/nutrition_he.15.400.jpg",
+    "storedCalories": 15,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290000318479",
+    "name": "Viande grison",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 268,
+    "firstReadProtein": 38,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/031/8479/nutrition_he.9.full.jpg",
+    "storedCalories": 268,
+    "storedProtein": 38
+  },
+  {
+    "barcode": "7290000467511",
+    "name": "ביסלי ברביקיו",
+    "firstReadOutcome": "correction_proposed",
+    "firstReadCalories": 528,
+    "firstReadProtein": 10,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/046/7511/nutrition_ru.9.full.jpg",
+    "storedCalories": 501,
+    "storedProtein": 11
+  },
+  {
+    "barcode": "7290000490601",
+    "name": "גלידל בטעם וניל",
+    "firstReadOutcome": "correction_proposed",
+    "firstReadCalories": 71,
+    "firstReadProtein": 4.3,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/049/0601/nutrition_he.9.full.jpg",
+    "storedCalories": 100,
+    "storedProtein": 4.3
+  },
+  {
+    "barcode": "7290006243577",
+    "name": "Potato BOUREKAS",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 285,
+    "firstReadProtein": 4,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/624/3577/nutrition_he.5.full.jpg",
+    "storedCalories": 285,
+    "storedProtein": 4
+  },
+  {
+    "barcode": "7290006492432",
+    "name": "Baby mozzarella",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 230,
+    "firstReadProtein": 17,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/649/2432/nutrition_he.13.full.jpg",
+    "storedCalories": 230,
+    "storedProtein": 17
+  },
+  {
+    "barcode": "7290006775405",
+    "name": "מאפין",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 403,
+    "firstReadProtein": 5.2,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/677/5405/nutrition_he.5.full.jpg",
+    "storedCalories": 402.222222222222,
+    "storedProtein": 5.11111111111111
+  },
+  {
+    "barcode": "7290008644235",
+    "name": "עלי בייבי: עלי תרד, עלי רוקולה, עלי סלק",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 21,
+    "firstReadProtein": 2.3,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/864/4235/nutrition_he.11.400.jpg",
+    "storedCalories": 21,
+    "storedProtein": 2.3
+  },
+  {
+    "barcode": "7290008644945",
+    "name": "סלט המושבה",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 22,
+    "firstReadProtein": 1.2,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/000/864/4945/nutrition_he.8.400.jpg",
+    "storedCalories": 22,
+    "storedProtein": 1.2
+  },
+  {
+    "barcode": "7290010065332",
+    "name": "מחית תפוח עץ ובננה",
+    "firstReadOutcome": "correction_proposed",
+    "firstReadCalories": 56,
+    "firstReadProtein": 0.5,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/006/5332/nutrition_he.5.400.jpg",
+    "storedCalories": 68,
+    "storedProtein": 0.5
+  },
+  {
+    "barcode": "7290012052507",
+    "name": "Hatif",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 410,
+    "firstReadProtein": 9.3,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/205/2507/1.jpg",
+    "storedCalories": 410,
+    "storedProtein": 9
+  },
+  {
+    "barcode": "7290013028211",
+    "name": "MASSIVE GAINER",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 380,
+    "firstReadProtein": 9.4,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/302/8211/nutrition_de.5.full.jpg",
+    "storedCalories": 380,
+    "storedProtein": 9.4
+  },
+  {
+    "barcode": "7290013531759",
+    "name": "שעועית לבנה במים ומלח",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 109,
+    "firstReadProtein": 6.7,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/353/1759/nutrition_he.8.400.jpg",
+    "storedCalories": 109,
+    "storedProtein": 6.69999980926514
+  },
+  {
+    "barcode": "7290017406374",
+    "name": "Jasmin rice",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 363,
+    "firstReadProtein": 6.8,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/740/6374/nutrition_he.11.400.jpg",
+    "storedCalories": 369,
+    "storedProtein": 6.8
+  },
+  {
+    "barcode": "7290017894119",
+    "name": "Fusilli Gluten Free Corn Rice",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 355,
+    "firstReadProtein": 6.8,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/789/4119/nutrition_en.5.400.jpg",
+    "storedCalories": 355,
+    "storedProtein": 6.8
+  },
+  {
+    "barcode": "7290018043134",
+    "name": "Protein Bar White Chocolate Cookie",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 347,
+    "firstReadProtein": 29.2,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/804/3134/2.jpg",
+    "storedCalories": 346.666666666667,
+    "storedProtein": 29.1666666666667
+  },
+  {
+    "barcode": "7290018237373",
+    "name": "פסטרמה עוף טוב גריל",
+    "firstReadOutcome": "correction_proposed",
+    "firstReadCalories": 99,
+    "firstReadProtein": 16,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/823/7373/3.jpg",
+    "storedCalories": 99,
+    "storedProtein": 18
+  },
+  {
+    "barcode": "7290015493215",
+    "name": "נביעות בטעם אפרסק עדין",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 0,
+    "firstReadProtein": 0,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/549/3215/nutrition_fr.5.400.jpg",
+    "storedCalories": 0,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290015597548",
+    "name": "קרמיסימו",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 224,
+    "firstReadProtein": 4,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/559/7548/nutrition_he.14.400.jpg",
+    "storedCalories": 224,
+    "storedProtein": 4
+  },
+  {
+    "barcode": "7290015673204",
+    "name": "BBQ KEBAB",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 203,
+    "firstReadProtein": 13.7,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/567/3204/nutrition_fr.5.400.jpg",
+    "storedCalories": 203,
+    "storedProtein": 13.7
+  },
+  {
+    "barcode": "7290019545576",
+    "name": "מיני קוקיס שוקולד צ'יפס",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 507,
+    "firstReadProtein": 4.3,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/954/5576/nutrition_he.12.full.jpg",
+    "storedCalories": 507,
+    "storedProtein": 4.3
+  },
+  {
+    "barcode": "7290100704684",
+    "name": "קמח שמרים כוסמין",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 355,
+    "firstReadProtein": 13.2,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/010/070/4684/nutrition_he.5.full.jpg",
+    "storedCalories": 355,
+    "storedProtein": 13.2
+  },
+  {
+    "barcode": "7290101551584",
+    "name": "Tapochips kids",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 501,
+    "firstReadProtein": 9,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/010/155/1584/nutrition_he.10.full.jpg",
+    "storedCalories": 501,
+    "storedProtein": 9
+  },
+  {
+    "barcode": "7290105366047",
+    "name": "טחינה לבנה",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 321,
+    "firstReadProtein": 10.6,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/010/536/6047/nutrition_en.9.full.jpg",
+    "storedCalories": 316,
+    "storedProtein": 10.6
+  },
+  {
+    "barcode": "7290018703076",
+    "name": "חטיף חלבון דאבל שוקולד",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 350,
+    "firstReadProtein": 33.3,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/870/3076/nutrition_en.9.full.jpg",
+    "storedCalories": 351.666666666667,
+    "storedProtein": 33.3333333333333
+  },
+  {
+    "barcode": "7290018703489",
+    "name": "חטיף חלבון בננה טופי",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 348,
+    "firstReadProtein": 30,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/870/3489/nutrition_he.6.full.jpg",
+    "storedCalories": 348,
+    "storedProtein": 30
+  },
+  {
+    "barcode": "7290019204800",
+    "name": "Chongo Super Crunch",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 210,
+    "firstReadProtein": 14,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/920/4800/nutrition_en.13.400.jpg",
+    "storedCalories": 210,
+    "storedProtein": 14
+  },
+  {
+    "barcode": "7290019310006",
+    "name": "Whey Protein - Belgian Chocolate",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 380,
+    "firstReadProtein": 73,
+    "sourceUrl": "https://www.allinpro.co.il/products/khdsh-bqt-khlbvn-whey-bt-m-shvqvld-blgy-759-sm",
+    "storedCalories": 378.787878787879,
+    "storedProtein": 72.7272727272727
+  },
+  {
+    "barcode": "7290019310686",
+    "name": "Extra Soft שוקולד לבן בוטנים קרמל",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 384,
+    "firstReadProtein": 27.3,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/001/931/0686/front_he.4.full.jpg",
+    "storedCalories": 383.636363636364,
+    "storedProtein": 27.2727272727273
+  },
+  {
+    "barcode": "7290019310990",
+    "name": "Whey Protein Unflavored",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 392,
+    "firstReadProtein": 79,
+    "sourceUrl": "https://www.allinpro.co.il/products/bqt-khlbvn-whey-ll-tvspt-t-m-ryzh-qtnh",
+    "storedCalories": 390.909090909091,
+    "storedProtein": 78.7878787878788
+  },
+  {
+    "barcode": "7290107649681",
+    "name": "טילון פסק זמן",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 347,
+    "firstReadProtein": 4.3,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/010/764/9681/nutrition_yi.5.full.jpg",
+    "storedCalories": 346.875,
+    "storedProtein": 4.375
+  },
+  {
+    "barcode": "7290109358260",
+    "name": "Saucisses Tivol",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 232,
+    "firstReadProtein": 19,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/010/935/8260/nutrition_fr.5.full.jpg",
+    "storedCalories": 232,
+    "storedProtein": 19
+  },
+  {
+    "barcode": "7290110323585",
+    "name": "Go Light דובדבן",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 62,
+    "firstReadProtein": 10,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/032/3585/nutrition_he.6.full.jpg",
+    "storedCalories": 62,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290110554460",
+    "name": "Chitos crunchy cheder jalapinio",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 544,
+    "firstReadProtein": 5.8,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/055/4460/nutrition_he.6.full.jpg",
+    "storedCalories": 544,
+    "storedProtein": 5.8
+  },
+  {
+    "barcode": "7290110564339",
+    "name": "חומוס עשיר בטחינה גולמית",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 263,
+    "firstReadProtein": 10,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/056/4339/front_en.4.full.jpg",
+    "storedCalories": 254,
+    "storedProtein": 10.4
+  },
+  {
+    "barcode": "7290111566103",
+    "name": "Falafel vegan - Falafel vegan",
+    "firstReadOutcome": "correction_proposed",
+    "firstReadCalories": 220,
+    "firstReadProtein": 7.8,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/156/6103/nutrition_yi.7.full.jpg",
+    "storedCalories": 160,
+    "storedProtein": 8.9
+  },
+  {
+    "barcode": "7290112197191",
+    "name": "Dark Choc Vanilla Filled Cereal",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 464,
+    "firstReadProtein": 4.6,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/219/7191/nutrition_en.5.full.jpg",
+    "storedCalories": 464,
+    "storedProtein": 4.6
+  },
+  {
+    "barcode": "7290112351067",
+    "name": "סילאן טבעי",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 304,
+    "firstReadProtein": 0,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/235/1067/nutrition_he.9.full.jpg",
+    "storedCalories": 304,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290114604901",
+    "name": "רוטב שום מאסטר שף",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 487,
+    "firstReadProtein": 1,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/460/4901/nutrition_he.8.400.jpg",
+    "storedCalories": 487,
+    "storedProtein": 1
+  },
+  {
+    "barcode": "7290114969307",
+    "name": "Whey, White Chocolate",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 385,
+    "firstReadProtein": 78,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/496/9307/nutrition_en.7.400.jpg",
+    "storedCalories": 387.878787878788,
+    "storedProtein": 78.7878787878788
+  },
+  {
+    "barcode": "7290115203844",
+    "name": "Plant-based schnitzel",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 240,
+    "firstReadProtein": 12.3,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/520/3844/nutrition_sv.10.full.jpg",
+    "storedCalories": 240,
+    "storedProtein": 12.3333333333333
+  },
+  {
+    "barcode": "7290115208245",
+    "name": "בייגלה סלק",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 399,
+    "firstReadProtein": 11.3,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/520/8245/nutrition_he.5.full.jpg",
+    "storedCalories": 399,
+    "storedProtein": 11.3
+  },
+  {
+    "barcode": "7296073274964",
+    "name": "חמאת בוטנים טבעית עם שבבי בוטנים",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 676,
+    "firstReadProtein": 27,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/607/327/4964/nutrition_he.5.400.jpg",
+    "storedCalories": 676,
+    "storedProtein": 27
+  },
+  {
+    "barcode": "7296150000011",
+    "name": "עלי גפן ממולאים באורז - AVRAMENTO-TERMIN",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 170,
+    "firstReadProtein": 1.6,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/615/000/0011/nutrition_en.8.400.jpg",
+    "storedCalories": 170,
+    "storedProtein": 1.6
+  },
+  {
+    "barcode": "8005110002533",
+    "name": "רוטב עגבניות לפסטה",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 49,
+    "firstReadProtein": 1.7,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/800/511/000/2533/nutrition_he.3.400.jpg",
+    "storedCalories": 49,
+    "storedProtein": 1.7
+  },
+  {
+    "barcode": "8723400782100",
+    "name": "Chewy dragees",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 388,
+    "firstReadProtein": 0,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/872/340/078/2100/nutrition_en.19.400.jpg",
+    "storedCalories": 388,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290116932071",
+    "name": "GO Protein Powder -- Vanilla Caramel Flavour",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 387,
+    "firstReadProtein": 77,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/693/2071/nutrition_en.5.full.jpg",
+    "storedCalories": 386,
+    "storedProtein": 77
+  },
+  {
+    "barcode": "7290116933009",
+    "name": "Chocolate And Cream Protein Bar",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 369,
+    "firstReadProtein": 33.4,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/693/3009/nutrition_en.5.full.jpg",
+    "storedCalories": 368.333333333333,
+    "storedProtein": 33.3333333333333
+  },
+  {
+    "barcode": "7290119373369",
+    "name": "פרכיות תפוחי אדמה",
+    "firstReadOutcome": "correction_proposed",
+    "firstReadCalories": 386,
+    "firstReadProtein": 7,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/011/937/3369/nutrition_he.6.full.jpg",
+    "storedCalories": 387.596899224806,
+    "storedProtein": 7.75193798449612
+  },
+  {
+    "barcode": "7296058000298",
+    "name": "פרכיות אורז מלא",
+    "firstReadOutcome": "verified",
+    "firstReadCalories": 386,
+    "firstReadProtein": 8.5,
+    "sourceUrl": "https://images.openfoodfacts.org/images/products/729/605/800/0298/nutrition_he.10.full.jpg",
+    "storedCalories": 386,
+    "storedProtein": 8.5
+  }
+]

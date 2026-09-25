@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "7290107649681",
+    "name": "טילון פסק זמן",
+    "brand": "עלית",
+    "storedCalories": 346.875,
+    "storedProtein": 4.375
+  },
+  {
+    "barcode": "7290107649858",
+    "name": "גלידה שוקולד לבן",
+    "brand": "שוראוס",
+    "storedCalories": 300,
+    "storedProtein": 3.5
+  },
+  {
+    "barcode": "7290107879699",
+    "name": "La fruta",
+    "brand": "Nestlé",
+    "storedCalories": 102,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290107958370",
+    "name": "Chips. Crunch",
+    "brand": "Hatif maïs",
+    "storedCalories": 464.615384615385,
+    "storedProtein": 6.15384615384615
+  },
+  {
+    "barcode": "7290108501490",
+    "name": "Mozzarella מוצרלה",
+    "brand": "Euro מחלבות אירופה",
+    "storedCalories": 297,
+    "storedProtein": 25
+  },
+  {
+    "barcode": "7290108503814",
+    "name": "Melting Cheese",
+    "brand": "Voila",
+    "storedCalories": 296,
+    "storedProtein": 11
+  },
+  {
+    "barcode": "7290108505177",
+    "name": "Greek Yoghurt",
+    "brand": "Euro",
+    "storedCalories": 90,
+    "storedProtein": 7.6
+  },
+  {
+    "barcode": "7290108505207",
+    "name": "Yaourt grec",
+    "brand": "Euro",
+    "storedCalories": 90,
+    "storedProtein": 7.6
+  },
+  {
+    "barcode": "7290109358260",
+    "name": "Saucisses Tivol",
+    "brand": null,
+    "storedCalories": 232,
+    "storedProtein": 19
+  },
+  {
+    "barcode": "7290109580050",
+    "name": "Chorizo plant based",
+    "brand": "Wonders",
+    "storedCalories": 278,
+    "storedProtein": 13
+  },
+  {
+    "barcode": "7290109580074",
+    "name": "Mini kebab",
+    "brand": "Wonders",
+    "storedCalories": 227,
+    "storedProtein": 13
+  },
+  {
+    "barcode": "7290109581231",
+    "name": "כתף בקר מפולפל",
+    "brand": "זוגלובק",
+    "storedCalories": 114,
+    "storedProtein": 16
+  },
+  {
+    "barcode": "7290109581255",
+    "name": "BBQ Pastrami",
+    "brand": "Zoglobak",
+    "storedCalories": 115,
+    "storedProtein": 15
+  },
+  {
+    "barcode": "7290109640600",
+    "name": "Fake Tuna",
+    "brand": "Mashu",
+    "storedCalories": 280,
+    "storedProtein": 12
+  },
+  {
+    "barcode": "7290110001872",
+    "name": "פצפוצי אורז",
+    "brand": "B&D",
+    "storedCalories": 351,
+    "storedProtein": 7
+  },
+  {
+    "barcode": "7290110320232",
+    "name": "Même fromage chèvre vegan",
+    "brand": null,
+    "storedCalories": 284,
+    "storedProtein": 7.37
+  },
+  {
+    "barcode": "7290110321604",
+    "name": "Bulgary  cheese",
+    "brand": "Firas",
+    "storedCalories": 103,
+    "storedProtein": 11.5
+  },
+  {
+    "barcode": "7290110323585",
+    "name": "Go Light דובדבן",
+    "brand": "Yoplait",
+    "storedCalories": 62,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290110327804",
+    "name": "Go tnuva cookie dough",
+    "brand": "Tnuva",
+    "storedCalories": 370,
+    "storedProtein": 33.5000006357829
+  },
+  {
+    "barcode": "7290110328504",
+    "name": "טריו מיקס שלוש גבינות",
+    "brand": null,
+    "storedCalories": 335,
+    "storedProtein": 22.5
+  },
+  {
+    "barcode": "7290110328887",
+    "name": "חלב תנובה 3%",
+    "brand": "תנובה",
+    "storedCalories": 60,
+    "storedProtein": 3.29999995231628
+  },
+  {
+    "barcode": "7290110329143",
+    "name": "Go 12 Vanilla",
+    "brand": "Tnuva",
+    "storedCalories": 106.666666666667,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290110550363",
+    "name": "המשולשות הטעימות",
+    "brand": "Energy",
+    "storedCalories": 439,
+    "storedProtein": 8.2
+  },
+  {
+    "barcode": "7290110554118",
+    "name": "Noddles Spicy Malaysan  style",
+    "brand": "Strauss",
+    "storedCalories": 113.142857142857,
+    "storedProtein": 4.37142862592425
+  }
+]

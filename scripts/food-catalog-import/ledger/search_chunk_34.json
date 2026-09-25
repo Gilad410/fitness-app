@@ -1,0 +1,142 @@
+[
+  {
+    "barcode": "7296073230106",
+    "name": "סלט תפוחי אדמה",
+    "brand": "שופרסל",
+    "storedCalories": 166,
+    "storedProtein": 1.10000002384186
+  },
+  {
+    "barcode": "7296073274964",
+    "name": "חמאת בוטנים טבעית עם שבבי בוטנים",
+    "brand": "שופרסל green",
+    "storedCalories": 676,
+    "storedProtein": 27
+  },
+  {
+    "barcode": "7296073283829",
+    "name": "Mix ananas papaye mangue congelé",
+    "brand": "Supersal",
+    "storedCalories": 45,
+    "storedProtein": 0.5
+  },
+  {
+    "barcode": "7296073320395",
+    "name": "תרד טרי",
+    "brand": null,
+    "storedCalories": 22,
+    "storedProtein": 2.90000009536743
+  },
+  {
+    "barcode": "7296073342922",
+    "name": "קורנדביף",
+    "brand": null,
+    "storedCalories": 135,
+    "storedProtein": 21
+  },
+  {
+    "barcode": "7296073405993",
+    "name": "יוגורט וניל יווני",
+    "brand": "שופרסל",
+    "storedCalories": 85,
+    "storedProtein": 5.5
+  },
+  {
+    "barcode": "7296073423485",
+    "name": "תפוחים מיובשים",
+    "brand": "שופרסל",
+    "storedCalories": 344,
+    "storedProtein": 2
+  },
+  {
+    "barcode": "7296073431909",
+    "name": "עוגה עם מחית תפוח עץ וצימוקים",
+    "brand": "גדרון",
+    "storedCalories": 376,
+    "storedProtein": 4.9
+  },
+  {
+    "barcode": "7296073450740",
+    "name": "Rice crackers with peanut",
+    "brand": "Supersal",
+    "storedCalories": 426.666666666667,
+    "storedProtein": 7.66666666666667
+  },
+  {
+    "barcode": "7296073552987",
+    "name": "Mediterranean Couscous",
+    "brand": "Shufersal",
+    "storedCalories": 139,
+    "storedProtein": 4.3
+  },
+  {
+    "barcode": "7296073641780",
+    "name": "Lasagnia",
+    "brand": "Shufersal",
+    "storedCalories": 159,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7296150000011",
+    "name": "עלי גפן ממולאים באורז - AVRAMENTO-TERMIN",
+    "brand": "Akmar",
+    "storedCalories": 170,
+    "storedProtein": 1.6
+  },
+  {
+    "barcode": "0080000515582",
+    "name": "Light Tuna in Water",
+    "brand": "StarKist",
+    "storedCalories": 94.5945945945946,
+    "storedProtein": 22.972972972973
+  },
+  {
+    "barcode": "8005110002533",
+    "name": "רוטב עגבניות לפסטה",
+    "brand": "Mutti",
+    "storedCalories": 49,
+    "storedProtein": 1.7
+  },
+  {
+    "barcode": "8006040380166",
+    "name": "Barista משקה סויה",
+    "brand": "Valsoia",
+    "storedCalories": 39,
+    "storedProtein": 3
+  },
+  {
+    "barcode": "8006040380210",
+    "name": "משקה אגוזי מלך",
+    "brand": "Valsoia",
+    "storedCalories": 23,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "8723400782100",
+    "name": "Chewy dragees",
+    "brand": "Mentos",
+    "storedCalories": 388,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "9002975000550",
+    "name": "סוכריות גומי חמוצות",
+    "brand": "Haribo",
+    "storedCalories": 363,
+    "storedProtein": 5.7
+  },
+  {
+    "barcode": "9002975393843",
+    "name": "Goldbears Gummies",
+    "brand": "Haribo",
+    "storedCalories": 340,
+    "storedProtein": 6.3
+  },
+  {
+    "barcode": "9720188501007",
+    "name": "Tofutti",
+    "brand": "Tofutti",
+    "storedCalories": 321,
+    "storedProtein": 2.5
+  }
+]

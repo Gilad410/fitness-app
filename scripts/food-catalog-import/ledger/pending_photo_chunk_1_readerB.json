@@ -1,0 +1,212 @@
+[
+  {
+    "barcode": "7290100240632",
+    "identityMatch": "no",
+    "evidenceCalories": 501,
+    "evidenceProtein": 9.0,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Photo (nutrition_en.6.full.jpg) shows an Israeli 'Tapuchips Kids' baked potato-snack bag ('תפוציפס קידס - חטיף תפוח אדמה אפוי'), not 'Craquottes' - wrong/mismatched product photo for this barcode. Clear 2-column Hebrew table: per 100g / per 20g bag. Per 100g: 501 kcal, fat 24g (sat 2.5g, trans <0.5g), cholesterol 0, sodium 350mg, carbs 60g (sugars 1.6g), protein 9.0g. Per 20g bag: 100 kcal, protein 1.8g."
+  },
+  {
+    "barcode": "7290119370177",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Only image available (1.jpg) is a front-of-package photo of a Danone Pro 20 yogurt cup (banana-toffee flavor, 0% sugar) held in a car, lid partly peeled - matches the given name (yogurt banana-toffee flavor). No nutrition panel in frame. Tried 2.jpg/3.jpg/nutrition_he variants - none exist on server."
+  },
+  {
+    "barcode": "7290015009393",
+    "identityMatch": "no",
+    "evidenceCalories": 351,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Only image (1.jpg, 590x1280, low-res) shows a milk-chocolate-flavored protein-bar wrapper ('חטיף חלבון בטעם שוקולד חלב ומריר', net 60g) lying on a countertop - NOT Kalamata olives; wrong/mismatched photo for this barcode. Zoomed the Hebrew 2-column table (ל-100 גרם / ל-60 גרם): energy 211kcal per 60g = 351kcal/100g (ratio-consistent); fat 13.8g/100g (8.3g/60g); saturated ~7.4g/100g; sugars 3.4g/100g (2g/60g). A second, apparently duplicated/overlapping set of columns further left could not be reliably attributed to specific nutrients, and the protein and sodium rows were not confidently locatable at this resolution - not reported. No higher-res image variant found. These figures belong to a different product and should not be attributed to the olives catalog entry."
+  },
+  {
+    "barcode": "7290006983763",
+    "identityMatch": "no",
+    "evidenceCalories": 348,
+    "evidenceProtein": 30.0,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Photo (1.jpg, high-res) shows an 'AllInPro' (allinpro.co.il) protein snack/bar wrapper with a full Hebrew table (columns: ל-100 גרם / ל-60 גרם חטיף), NOT 'עוגת הבית בטעם שוקולד' (house chocolate cake) - wrong/mismatched product photo. Per 100g: energy 348 kcal, total fat 13.3g (sat 6g, trans <0.5g), cholesterol 11.7mg, sodium 235mg, total carbs 28.9g (sugars 3.7g, sugar alcohols 23.8g, fiber 16.5g), protein 30g, plus leucine/isoleucine/valine breakdown. Per 60g serving: 209kcal, 18g protein. Not a cake nutrition profile; these values should not be attributed to the cake catalog entry."
+  },
+  {
+    "barcode": "7290114310338",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Only image (1.jpg) is a top-down photo of the container lid: 'משק צוריאל צפתית מעודנת 5%' matching the given name. No nutrition panel in frame (lid only). No other image variants found on server (2.jpg/3.jpg return errors)."
+  },
+  {
+    "barcode": "7290008175173",
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Only image (1.jpg) shows a crumpled Valio 'Master Butter Makers since 1905' foil wrapper, side/back view, no product-name text or nutrition panel legible/in frame - cannot confirm the 'no added salt' claim specifically. No other image variants exist on server."
+  },
+  {
+    "barcode": "7290110557478",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Only image (1.jpg, high-res) is a top-down photo of the container lid: 'אחלה חומוס גלילי 600 גרם' (Ahla Galilee Hummus 600g), matching 'חומוס'. No nutrition panel in frame (lid/top view only)."
+  },
+  {
+    "barcode": "7290002353836",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Only image (1.400.jpg) shows the front of a 'Robert' sardines-in-olive-oil tin ('סרדינים בשמן זית'), matching the given name. Front text gives only omega-3 content (5.1g/100g drained) and net/drained weights (115g/85g) - no full nutrition facts table in frame. No full-res or additional image variant found on server."
+  },
+  {
+    "barcode": "8715700423906",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Both available images (1.400.jpg, 2.400.jpg) are front-of-bottle photos of Heinz Tomato Ketchup 50%, matching the given name. No nutrition panel in frame in either photo; no other image variants found on server."
+  },
+  {
+    "barcode": "7290112962904",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Only image (1.400.jpg) is a front-of-bag photo ('שקדי מרק - טבעות, כשר לפסח'), matching 'Soup Almond Rings - Kosher For Passover'. No nutrition panel in frame. No other image variants found on server."
+  },
+  {
+    "barcode": "7290000062952",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Only image (1.400.jpg) is a front-of-bag photo of Osem 'מיני קרוטונים' (mini croutons) salad topping, matching the given name. No nutrition panel in frame. No other image variants found on server."
+  },
+  {
+    "barcode": "7290000311425",
+    "identityMatch": "no",
+    "evidenceCalories": 544,
+    "evidenceProtein": 5.8,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Photo (1.jpg, high-res, held in hand) clearly shows a Cheetos Crunchy corn snack bag (cheddar & jalapeño flavor, 'חטיף תירס בטעם צדר וחלפיניו') - NOT 'ופלים מצופים' (coated wafers); wrong/mismatched product photo for this barcode. Sharp Hebrew/Arabic 2-column table (ל-100 גרם / ב-65 גרם שקית): per 100g energy 544 kcal, total fat 33g (sat 3.4g, trans <0.5g), cholesterol 0, sodium 1022mg, carbs 54g (sugars 2.5g), protein 5.8g. Per 65g bag: 354 kcal, protein 3.8g. These values are for corn/cheese chips, not wafers, and should not be attributed to the wafer catalog entry."
+  },
+  {
+    "barcode": "7290013453891",
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Image 2.jpg (very high-res, 4048x3036) is an extreme macro close-up of a woven/mesh flour bag, rotated ~90°, and is severely out of focus - even at full native resolution and after rotation/contrast enhancement the nutrition-table row labels (energy, fat...) are only just legible as shapes but the numeric value columns are blurred past readability or cut off at the frame/curve edge. No product name/branding visible in this crop to independently confirm identity against 'קמח חומוס מלא אורגני' (organic whole chickpea flour) - the bag material is consistent with a flour product but unconfirmed. Not reporting guessed values."
+  },
+  {
+    "barcode": "7290005509445",
+    "identityMatch": "yes",
+    "evidenceCalories": 534,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Photo (1.jpg, high-res, on-shelf) shows 'נרחיות מיני קוקיס - עוגיות בטעם חמאה' (mini butter-flavor cookies), matching 'מיני קוקיס חמאה'. Hebrew/Arabic nutrition table per 100g clearly reads: energy 534 kcal, total fat 26.3g, saturated fat 13g, trans fat <0.5g. Remaining rows (cholesterol, sodium, carbs, sugars, fiber, and critically protein/חלבונים) are physically obscured by a pink price-tag divider clipped in front of the jar, cutting off the bottom of the label - protein value not visible so not reported/guessed."
+  },
+  {
+    "barcode": "7290008425193",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Only image (front_en.3.400.jpg) is a front label photo: 'נאות סמדר - נבאלי זיתים אורגניים' (Neot Smadar Organic Nabali Olives), matching 'Olives'. No nutrition panel in frame (front label only). No nutrition image variant found on server."
+  },
+  {
+    "barcode": "7290011378769",
+    "identityMatch": "yes",
+    "evidenceCalories": 99,
+    "evidenceProtein": null,
+    "basis": "serving",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Only image (front_en.4.400.jpg) is a front box photo: 'בענוגה - חטיף חלבה בטעם וניל' (halva snack, vanilla flavor), 7 sticks x 18g = 126g net, matching 'חלבה בקטנה'. Box shows a marketing callout '99 קלוריות לחטיף' (99 kcal per stick/18g serving) but no full per-100g nutrition facts table and no protein figure are in frame/found. No other image variants exist on server."
+  },
+  {
+    "barcode": "7290011923013",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Only image (front_en.3.400.jpg) is a front bag photo: 'ליב לחיות אורגני - דובדבן חמוץ אורגני מוקפא ללא גלעינים' (organic frozen pitted sour cherries), matching 'Cerises congèleés'. No nutrition panel in frame. No other image variants found on server."
+  },
+  {
+    "barcode": "7290100659090",
+    "identityMatch": "yes",
+    "evidenceCalories": 67,
+    "evidenceProtein": null,
+    "basis": "serving",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Only image (2.jpg, identical to 1.jpg) is a front box photo of a dates-and-cinnamon cereal bar, matching 'חטיף דגנים תמרים וקינמון' (5 units x 22g = 110g net). Box shows a marketing callout '67 קלוריות לחטיף' (67 kcal per 22g bar) but no full per-100g nutrition table and no protein figure are in frame/found."
+  },
+  {
+    "barcode": "7290109580050",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Only image (1.400.jpg) is a front bag photo: 'Plant Based Wonders Chorizo 2.0', matching 'Chorizo plant based'. Bag shows '13g PROTEIN Per...' but the line is cut off at the bottom edge of the image before the basis (per 100g vs. per serving) is legible, and no full nutrition table is in frame - protein value not reported since its basis is unknown. No other image variants found on server."
+  },
+  {
+    "barcode": "7290111602641",
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Only image (front_en.3.400.jpg) is a front bag photo showing a rice cracker with a za'atar/herb-and-oil coating and a 'Life Wellness' logo, plausibly consistent with 'פריכיות אורז בתיבול שמן זית וזעתר' but no readable product-name text confirms it in frame. No nutrition panel in frame. No other image variants found on server."
+  },
+  {
+    "barcode": "7290119670277",
+    "identityMatch": "unclear",
+    "evidenceCalories": 676,
+    "evidenceProtein": 27,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Only image (1.400.jpg) is a close crop of just a wood-grain-background nutrition table ('סימון תזונתי ב-100 גרם מזון'), with no product name/branding visible anywhere in frame, so identity vs. 'Natural Flavored Popcorn' cannot be visually confirmed. Table clearly reads per 100g: energy 676 kcal, total fat 53.4g (sat 10g, trans <0.5g), cholesterol 0, sodium ~6mg (digit uncertain), carbs 16.6g, sugars 4.1g, fiber 10.7g, protein 27g. This macro profile (very high fat/protein, low carb) is unusual for popcorn and should be treated with caution pending identity confirmation."
+  }
+]

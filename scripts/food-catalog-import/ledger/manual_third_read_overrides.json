@@ -1,0 +1,87 @@
+{
+  "7290003075102": {
+    "finalOutcome": "CORRECTION_PROPOSED",
+    "thirdRead": { "evidenceCalories": 155, "evidenceProtein": 6, "basis": "100g" },
+    "proposedCalories": 155,
+    "proposedProtein": 6,
+    "justification": "Own direct read of the label image (single-column table, per 100g): אנרגיה(קלוריות)=155, פחמימות=2, מזה סוכרים=1.6, חלבונים=6, סידן=120. Confirms reader1's protein reading (6g) exactly. Reader2's reported protein=2 is the carbohydrates row, misread as the protein row (row-alignment error). Stored protein (12g) is roughly double the true label value -- a real, confirmed correction. Calories (155) already matched stored and both readers."
+  },
+  "7290118426202": {
+    "finalOutcome": "VERIFIED",
+    "thirdRead": { "evidenceCalories": "520-529 (digit not fully certain)", "evidenceProtein": 13.5, "basis": "100g" },
+    "justification": "Own direct read of the label image: protein=13.5g per 100g confirmed by both readers and by this third read, matching stored (13.57, rounding). The calories digit is genuinely hard to read with full certainty (520 vs 529 -- readers split on this); the gap (~1.7%) is within normal label-rounding/reading tolerance and does not indicate a real nutritional discrepancy. Stored value (520) accepted; no correction warranted."
+  },
+  "7290116934020": {
+    "finalOutcome": "VERIFIED",
+    "thirdRead": { "evidenceCalories": 63, "evidenceProtein": 10, "basis": "100g" },
+    "justification": "Own direct read of the two-column label (100g-cup and per-100g columns; every left-column value is exactly double the corresponding right-column value, e.g. 125/63, 60/30, 20/10, 206/103 -- confirms right column = per 100g, left column = per 200g cup). Per-100g column: calories=63, protein=10, matching stored (62.5/10) exactly and matching reader1. Reader2's reported values (125/20) are the per-200g-cup column, misidentified as '100g' in their notes -- a column-selection error, not a genuine data conflict. No correction warranted."
+  },
+  "8690777206051": {
+    "finalOutcome": "CORRECTION_PROPOSED",
+    "thirdRead": { "evidenceCalories": 34, "evidenceProtein": 0, "basis": "100g" },
+    "proposedCalories": 34,
+    "proposedProtein": 0,
+    "justification": "Own direct read of the label (clear single-column per-100g table): אנרגיה(קלוריות)=34, פחמימות=8, חלבונים=0, שומנים=0, כולסטרול=0, נתרן=460. Protein=0g confirmed by all three independent readings (reader1, reader2, and this third read). Stored protein (1g) does not match any of the three readings -- a real, triply-confirmed correction. Calories (34) already matched stored."
+  },
+  "7290019816331": {
+    "finalOutcome": "VERIFIED",
+    "thirdRead": { "evidenceCalories": 317, "evidenceProtein": 3.6, "basis": "100g" },
+    "justification": "Own direct read of the two-column label (per-28g-unit and per-100g columns): per-100g column reads calories=317, protein=3.6 -- matching both reader1 and reader2 exactly, and matching stored (317.2/3.548) within normal label-rounding precision (label prints one decimal place; the ~0.05g protein gap is not a real discrepancy). No correction warranted."
+  },
+  "7290000073767": {
+    "finalOutcome": "VERIFIED",
+    "thirdRead": { "evidenceCalories": 454, "evidenceProtein": 10, "basis": "100g", "prepState": "as_sold (dry)" },
+    "justification": "Own direct read of the three-column label (100ml-prepared / per-portion / 100g-dry columns, left to right in the photo): per-100g-dry column reads calories=454, protein=10 -- matching reader1 exactly and matching stored (457.75/10) within normal rounding (~0.8%). The 100ml-prepared column reads calories=225, protein=7.1 -- exactly what reader2 reported, confirming reader2 read the prepared-soup column while mislabeling it '100g dry' in their notes. Column-selection error, not a genuine value conflict. No correction warranted."
+  },
+  "7290006337993": {
+    "finalOutcome": "CORRECTION_PROPOSED",
+    "thirdRead": { "evidenceCalories": 294, "evidenceProtein": 7.5, "basis": "100g" },
+    "proposedCalories": 294,
+    "proposedProtein": 7.5,
+    "justification": "Own direct read of the label (single-column per-100g table): אנרגיה(קלוריות)=294, ...חלבונים(protein, last row)=7.5. Confirms reader2's exact reading; reader1 independently confirmed the calorie figure (294) but could not read the protein row confidently. Stored values (214 kcal / 10.4g protein) do not match the confirmed label values on either metric -- a real, evidence-backed correction on both calories and protein."
+  },
+  "7290112963895": {
+    "finalOutcome": "VERIFIED",
+    "thirdRead": { "evidenceCalories": 461, "evidenceProtein": 12.5, "basis": "100g" },
+    "justification": "Own direct read of the two-column label (per-21.8g-serving and per-100g columns): per-100g column reads calories=461, protein=12.5 -- matching stored exactly and matching reader1 exactly. Reader2's reported protein=17 corresponds to the total-fat row (3.7/17g), misread as the protein row; their calories figure (461) was read from the correct row. Row-alignment error, not a genuine value conflict. No correction warranted."
+  },
+  "4840008019521": {
+    "finalOutcome": "VERIFIED",
+    "thirdRead": { "evidenceCaloriesPerServing": 140, "servingWeightG": 30, "note": "protein digit in this crop (2g vs 7g) not independently legible on this pass; deferring to two prior agreeing independent reads" },
+    "justification": "Reader1 and reader2 both independently read the printed serving as 140 kcal / 2g protein per 30g (3 pieces), deterministically converting via the explicit printed serving weight to 466.67 kcal / 6.67g protein per 100g -- an exact match to stored on both metrics. A plausibility check confirms this: the alternative reading of 7g protein per 30g serving would convert to 23.3g protein per 100g, which is nutritionally implausible for a 140-kcal butter biscuit and does not appear anywhere else in the evidence. Two independent agreeing reads plus the implausibility of the alternative resolve this as VERIFIED; no correction warranted."
+  },
+  "6942836720216": {
+    "finalOutcome": "CORRECTION_PROPOSED",
+    "thirdRead": { "evidenceCalories": 527, "evidenceProtein": 20.8, "basis": "100g" },
+    "proposedCalories": 527,
+    "proposedProtein": 20.8,
+    "justification": "Own direct read of the label image: 'TYPICAL VALUES PER 100G: Energy 2220kJ/527Kcal ... PROTEIN 20.8G' -- clearly printed and unambiguous. Confirms reader2's reading exactly. Reader1's recorded reason ('protein 5.7 exact') does not match anything visible on this label and appears to be a transcription or cross-product error. Calories (527) already matched stored; protein is a real, confirmed correction (20.8g, not 5.7g stored)."
+  },
+  "0814496020035": {
+    "finalOutcome": "VERIFIED",
+    "thirdRead": { "evidenceCaloriesPerServing": 110, "evidenceProteinPerServing": 20, "servingWeightG": 30.5, "note": "reader2's structured evidenceCalories/evidenceProtein fields (360.7/65.6) were ALREADY their own converted-to-100g figures despite basis:'serving' -- their notes explicitly say 'converted to 100g (360.7 kcal, 65.6g protein)'. Not re-divided by the 30.5g serving weight a second time." },
+    "justification": "Reader2's raw printed evidence (Supplement Facts, 30.5g scoop: 110 kcal, 20g protein) converts deterministically to 360.7 kcal / 65.6g protein per 100g -- an exact match to stored (360.66/65.57). Reader1 independently transcribed the same raw serving figures and explicitly flagged the resulting protein density as 'implausible' without being able to confirm or refute it; the deterministic conversion resolves that flag as a real, if unusually high, but internally consistent and confirmed value (plausible for a protein-supplement 'brownie batter' mix product, not a plain food). No correction warranted."
+  },
+  "0815871010009": {
+    "finalOutcome": "CORRECTION_PROPOSED",
+    "thirdRead": { "evidenceCaloriesPerServing": 150, "evidenceProteinPerServing": 2, "servingWeightG": 28, "note": "reader2's evidenceCalories/evidenceProtein (535.7/7.1) were already their own converted-to-100g figures ('converted to 100g (535.7 kcal, 7.1g protein)' in notes) -- not re-divided by 28g a second time." },
+    "proposedCalories": 535.7,
+    "proposedProtein": 7.1,
+    "justification": "Reader2's raw printed evidence (28g/1oz serving: 150 kcal, 2g protein) converts deterministically to 535.7 kcal / 7.1g protein per 100g. Reader1 independently transcribed the same raw serving figures without computing the conversion. Stored calories (564) do not match the converted evidence (535.7, ~5% gap) -- a real, if modest, correction; stored protein (7.05) already closely matches (7.1, within rounding) and needs no change."
+  },
+  "0850010353012": {
+    "finalOutcome": "VERIFIED",
+    "thirdRead": { "evidenceCaloriesPerServing": 60, "evidenceProteinPerServing": 7, "servingWeightG": 15, "note": "reader2's evidenceCalories/evidenceProtein (400/46.7) were already their own converted-to-100g figures ('converted to 100g (400 kcal, 46.7g protein)' in notes) -- not re-divided by 15g a second time." },
+    "justification": "Reader2's raw printed evidence (15g scoop: 60 kcal, 7g protein) converts deterministically to 400 kcal / 46.7g protein per 100g -- an exact match to stored (400/46.67). Reader1 independently transcribed the same raw serving figures. No correction warranted."
+  },
+  "0856591000062": {
+    "finalOutcome": "UNRESOLVED",
+    "thirdRead": { "evidenceCaloriesPerServing": 120, "evidenceProteinPerServing": 2, "servingWeightG": 25, "note": "identity conflict, not a value conflict -- reader2's evidenceCalories/evidenceProtein (480/8) were already their own converted-to-100g figures, not raw-serving values needing division by 25g again." },
+    "justification": "Both readers independently converted the printed 25g-serving evidence (120 kcal/2g protein) to the same per-100g figures (480 kcal/8g protein), which does not match stored (452/10.7) -- a numerically real gap. But reader2 flagged a genuine identity concern: the package reads 'Crispy Bagels - Salt Flavor' by Abadi Yosef, not the stored product name 'עוגיוצ מזרחי'. As with barcode 0075442100229 (Puffed rice/praline), applying a numeric correction here risks attaching the wrong product's evidence to this barcode, so this stays UNRESOLVED pending confirmation of product identity rather than being resolved as a correction."
+  },
+  "0075442100229": {
+    "finalOutcome": "UNRESOLVED",
+    "thirdRead": { "note": "identity conflict confirmed, not a value conflict" },
+    "justification": "Reader2 flagged a genuine identity concern: the visible label text reads 'Serving size: 1 praline (10g)' -- 'praline' is a chocolate/confectionery term, inconsistent with the stored product name 'Puffed rice'. The numeric evidence itself is internally consistent (55 kcal / 0g protein per 10g serving, deterministically converting to 550 kcal / 0g protein per 100g), and reader1's flag that stored (55) equals the unconverted per-serving figure rather than a true per-100g value is also correct. But because product identity cannot be confirmed from this crop (no product name/brand visible, and 'praline' contradicts the catalog name), this stays UNRESOLVED per the identity-conflict rule rather than being resolved as a correction -- resolving the numbers would risk correcting the wrong product's data onto this barcode."
+  }
+}

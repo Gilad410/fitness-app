@@ -1,0 +1,27 @@
+[
+  {
+    "barcode": "7290000055015",
+    "name": "פטה כבשים 5%",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000055015.jpg"
+  },
+  {
+    "barcode": "7290100700396",
+    "name": "Classic Jasmin Rice",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290100700396.jpg"
+  },
+  {
+    "barcode": "7290114310536",
+    "name": "יוגורט קרמי בטעם וניל",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290114310536.jpg"
+  },
+  {
+    "barcode": "7290000416045",
+    "name": "קרם שוקולד למריחה",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000416045.jpg"
+  },
+  {
+    "barcode": "7290116934020",
+    "name": "יוגורט מוקצף עם קפה",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290116934020.jpg"
+  }
+]
