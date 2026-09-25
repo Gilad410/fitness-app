@@ -95,11 +95,37 @@ test('first invitation: issues a fresh token and sends successfully', async () =
 })
 
 test('resend of a still-pending invite reuses the same token (no rotation)', async () => {
-  const { asUser, admin } = fakeSupabase()
-  const first = await handleInviteCoachRequest({ asUser, admin, email: 'x@example.com', siteUrl: 'https://example.com' })
+  // The token is asserted where it actually travels -- the emailed link's
+  // metadata -- because the response body no longer carries it (see the
+  // token-exposure test below). A rotation here would silently invalidate
+  // a link the invitee may already have received.
+  const sentTokens = []
+  const { asUser, admin } = fakeSupabase({
+    inviteEmailImpl: async (_email, opts) => {
+      sentTokens.push(opts.data.coach_invite_token)
+      return { data: {}, error: null }
+    },
+  })
+  await handleInviteCoachRequest({ asUser, admin, email: 'x@example.com', siteUrl: 'https://example.com' })
   const second = await handleInviteCoachRequest({ asUser, admin, email: 'x@example.com', siteUrl: 'https://example.com' })
-  assert.equal(second.body.invite_token, first.body.invite_token)
+  assert.equal(sentTokens.length, 2)
+  assert.equal(sentTokens[1], sentTokens[0])
+  assert.ok(sentTokens[0], 'a token must actually have been sent')
   assert.equal(second.body.newly_issued, false)
+})
+
+test('the response body never carries the invitation token back to the browser', async () => {
+  const { asUser, admin } = fakeSupabase()
+  const result = await handleInviteCoachRequest({ asUser, admin, email: 'x@example.com', siteUrl: 'https://example.com' })
+
+  assert.equal(result.body.invite_token, undefined)
+  // Belt and braces: no field of the body may contain the token value,
+  // under any key. The fake issues a recognizable token shape.
+  const serialized = JSON.stringify(result.body)
+  assert.ok(!/token/i.test(serialized), `response body mentions a token: ${serialized}`)
+  // What the dashboard legitimately needs is still there.
+  assert.ok(result.body.invitation_id)
+  assert.equal(result.body.email, 'x@example.com')
 })
 
 test('a non-owner caller is rejected with 400, before any email is sent', async () => {
