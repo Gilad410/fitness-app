@@ -13,6 +13,7 @@ import { formatNutritionAmount } from '../../../lib/formatNumber'
 import { startRetentionClock, stopRetentionClock } from '../../nutrition/lib/nutritionRetentionClock'
 import { israelCalendarDate } from '../../nutrition/lib/nutritionLogRetention.js'
 import { entryDisplayName, entryQuantityLabel } from '../../nutrition/lib/entryDisplay.js'
+import { searchPanelState } from '../../../lib/searchPanelState.js'
 import {
   stateAfterStartBarcodeEntry,
   stateAfterBarcodeLogSaved,
@@ -171,6 +172,16 @@ const entryDate = ref(selectedDate.value)
 const referenceSearchTerm = ref('')
 const referenceResults = ref([])
 const referenceSearched = ref(false)
+const referenceSearching = ref(false)
+const referenceSearchFailed = ref(false)
+const referenceSearchPanel = computed(() =>
+  searchPanelState({
+    searching: referenceSearching.value,
+    failed: referenceSearchFailed.value,
+    resultCount: referenceResults.value.length,
+    searched: referenceSearched.value,
+  }),
+)
 const selectedReference = ref(null)
 let referenceSearchTimer = null
 
@@ -204,25 +215,44 @@ function proteinLabel(proteinPer100g) {
   return proteinPer100g === null ? 'חלבון לא ידוע' : `${proteinPer100g} ג' חלבון ל-100 גרם`
 }
 
+// Distinguishes "no results" from a failed request (U5) -- a network/
+// server error must not be presented to the trainee as if the food
+// simply isn't in the reference catalog. runReferenceSearch is also
+// called directly by the retry button, bypassing the debounce so a
+// retry is immediate.
+async function runReferenceSearch(trimmed) {
+  referenceSearching.value = true
+  referenceSearchFailed.value = false
+  try {
+    referenceResults.value = await referenceCatalogStore.search(trimmed)
+    referenceSearched.value = true
+  } catch {
+    referenceResults.value = []
+    referenceSearchFailed.value = true
+  } finally {
+    referenceSearching.value = false
+  }
+}
+
 watch(referenceSearchTerm, (term) => {
   clearTimeout(referenceSearchTimer)
   selectedReference.value = null
+  referenceSearchFailed.value = false
   const trimmed = term.trim()
   if (trimmed.length < NAME_SEARCH_MIN_LENGTH) {
     referenceResults.value = []
     referenceSearched.value = false
     return
   }
-  referenceSearchTimer = setTimeout(async () => {
-    try {
-      referenceResults.value = await referenceCatalogStore.search(trimmed)
-    } catch {
-      referenceResults.value = []
-    } finally {
-      referenceSearched.value = true
-    }
-  }, NAME_SEARCH_DEBOUNCE_MS)
+  referenceSearchTimer = setTimeout(() => runReferenceSearch(trimmed), NAME_SEARCH_DEBOUNCE_MS)
 })
+
+function retryReferenceSearch() {
+  const trimmed = referenceSearchTerm.value.trim()
+  if (trimmed.length < NAME_SEARCH_MIN_LENGTH) return
+  clearTimeout(referenceSearchTimer)
+  runReferenceSearch(trimmed)
+}
 
 function pickReference(item) {
   selectedReference.value = item
@@ -282,6 +312,8 @@ function setEntrySource(source) {
   referenceSearchTerm.value = ''
   referenceResults.value = []
   referenceSearched.value = false
+  referenceSearching.value = false
+  referenceSearchFailed.value = false
   selectedReference.value = null
   selectedChain.value = ''
   restaurantSearchTerm.value = ''
@@ -379,10 +411,10 @@ const dateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
         <p class="mt-1 text-sm text-neutral-600">יומן התזונה היומי שלך</p>
       </section>
 
-      <p v-if="checking" class="text-neutral-600">טוען...</p>
+      <p v-if="checking" class="text-neutral-600" role="status">טוען...</p>
 
       <div v-else-if="loadError" class="flex flex-col items-start gap-3 rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm">
-        <p class="text-sm text-status-red">{{ loadError }}</p>
+        <p role="alert" class="text-sm text-status-red">{{ loadError }}</p>
         <button
           type="button"
           class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100"
@@ -457,7 +489,7 @@ const dateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
                 @cancel="handleBarcodeCancel"
               />
               <p v-if="nutritionStore.adding" class="text-sm text-neutral-600">שומר ביומן התזונה...</p>
-              <p v-if="barcodeSaveError" class="text-sm text-status-red">{{ barcodeSaveError }}</p>
+              <p v-if="barcodeSaveError" role="alert" class="text-sm text-status-red">{{ barcodeSaveError }}</p>
             </template>
           </div>
 
@@ -481,7 +513,7 @@ const dateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
             <span v-if="dailyProteinUnknown" class="text-xs text-neutral-500">(לא כולל פריט/ים עם חלבון לא ידוע)</span>
           </div>
 
-          <p v-if="successMessage" class="text-sm text-brand-green">{{ successMessage }}</p>
+          <p v-if="successMessage" role="status" class="text-sm text-brand-green">{{ successMessage }}</p>
         </section>
 
         <!-- Inline add-entry form, in its original place in the page flow
@@ -500,6 +532,7 @@ const dateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
             <div class="flex flex-wrap gap-2">
               <button
                 type="button"
+:aria-pressed="entrySource === 'coach' ? 'true' : 'false'"
                 :class="[
                   'inline-flex min-h-11 items-center justify-center rounded-lg border px-3 py-1.5 text-sm font-medium',
                   entrySource === 'coach'
@@ -512,6 +545,7 @@ const dateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
               </button>
               <button
                 type="button"
+:aria-pressed="entrySource === 'reference' ? 'true' : 'false'"
                 :class="[
                   'inline-flex min-h-11 items-center justify-center rounded-lg border px-3 py-1.5 text-sm font-medium',
                   entrySource === 'reference'
@@ -524,6 +558,7 @@ const dateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
               </button>
               <button
                 type="button"
+:aria-pressed="entrySource === 'restaurant' ? 'true' : 'false'"
                 :class="[
                   'inline-flex min-h-11 items-center justify-center rounded-lg border px-3 py-1.5 text-sm font-medium',
                   entrySource === 'restaurant'
@@ -581,6 +616,7 @@ const dateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
                 step="0.1"
                 min="0.1"
                 dir="ltr"
+                inputmode="decimal"
                 class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
               />
             </label>
@@ -603,8 +639,25 @@ const dateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
               {{ selectedReference.protein_per_100g }} ג' חלבון ל-100 גרם)
             </p>
 
+            <p v-if="referenceSearchPanel === 'searching'" role="status" class="text-sm text-neutral-600">
+              מחפש...
+            </p>
+
+            <div v-else-if="referenceSearchPanel === 'error'" role="alert" class="flex flex-col items-start gap-2">
+              <p class="text-sm text-status-red">
+                החיפוש במאגר המאכלים נכשל. יש לבדוק את החיבור לאינטרנט ולנסות שוב.
+              </p>
+              <button
+                type="button"
+                class="inline-flex min-h-11 items-center justify-center rounded-lg border border-neutral-300 px-3 py-1.5 text-sm font-medium text-brand-black hover:bg-neutral-100"
+                @click="retryReferenceSearch"
+              >
+                ניסיון חוזר
+              </button>
+            </div>
+
             <ul
-              v-if="referenceResults.length > 0"
+              v-else-if="referenceSearchPanel === 'results'"
               class="flex flex-col gap-1 rounded-lg border border-neutral-300 p-2"
             >
               <li v-for="item in referenceResults" :key="item.id">
@@ -620,10 +673,7 @@ const dateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
                 </button>
               </li>
             </ul>
-            <p
-              v-else-if="referenceSearched && !selectedReference"
-              class="text-sm text-neutral-600"
-            >
+            <p v-else-if="referenceSearchPanel === 'empty' && !selectedReference" class="text-sm text-neutral-600">
               לא נמצאו תוצאות במאגר.
             </p>
 
@@ -635,6 +685,7 @@ const dateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
                 step="0.1"
                 min="0.1"
                 dir="ltr"
+                inputmode="decimal"
                 class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
               />
             </label>
@@ -703,6 +754,7 @@ const dateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
                   step="0.5"
                   min="0.5"
                   dir="ltr"
+                  inputmode="decimal"
                   class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
                 />
               </label>
@@ -727,8 +779,8 @@ const dateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
             />
           </label>
 
-          <p v-if="validationError" class="text-sm text-status-red">{{ validationError }}</p>
-          <p v-if="nutritionStore.addError" class="text-sm text-status-red">{{ nutritionStore.addError }}</p>
+          <p v-if="validationError" role="alert" class="text-sm text-status-red">{{ validationError }}</p>
+          <p v-if="nutritionStore.addError" role="alert" class="text-sm text-status-red">{{ nutritionStore.addError }}</p>
 
           <div class="flex flex-wrap gap-3">
             <button
@@ -753,7 +805,7 @@ const dateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
         <section class="rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm sm:p-6">
           <h2 class="mb-3 font-semibold text-brand-black">{{ dateFormatter.format(new Date(selectedDate)) }}</h2>
 
-          <p v-if="nutritionStore.deleteError" class="mb-3 text-sm text-status-red">
+          <p v-if="nutritionStore.deleteError" role="alert" class="mb-3 text-sm text-status-red">
             {{ nutritionStore.deleteError }}
           </p>
 
