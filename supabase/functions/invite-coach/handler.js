@@ -72,11 +72,20 @@ export async function handleInviteCoachRequest({ asUser, admin, email, siteUrl }
     )
   }
 
+  // The response body deliberately carries NO invite_token. The token is
+  // a bearer credential: whoever holds it plus the invited mailbox can
+  // complete the acceptance, so the only place it belongs is inside the
+  // emailed link, which is exactly where it went above. An earlier
+  // revision echoed it back here; nothing in the app ever read it, but a
+  // token in a fetch response is a token in the browser's memory, devtools
+  // network tab, and any error report that captures a response body.
+  // invitation_id is returned instead -- it identifies the invitation for
+  // the dashboard (cancel/resend) and grants nothing on its own.
   return {
     status: 200,
     body: {
       ok: true,
-      invite_token: inviteToken,
+      invitation_id: issued?.invitation_id ?? null,
       invite_expires_at: inviteExpiresAt,
       email,
       newly_issued: newlyIssued,
