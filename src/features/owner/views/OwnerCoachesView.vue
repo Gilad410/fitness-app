@@ -1,6 +1,9 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useOwnerCoachesStore } from '../store/ownerCoaches'
+import { useAuthStore } from '../../../stores/auth'
+import { performOwnerLogout } from '../lib/ownerLogout'
 import {
   validateInviteEmail,
   validateStatusChangeReason,
@@ -25,6 +28,8 @@ import {
 // view or by owner_list_coaches() itself (see that function's own
 // comment). RTL Hebrew throughout, matching the rest of the app.
 const store = useOwnerCoachesStore()
+const authStore = useAuthStore()
+const router = useRouter()
 
 const searchTerm = ref('')
 const inviteEmail = ref('')
@@ -56,6 +61,24 @@ const noteSuccess = ref('')
 const invitationConfirm = ref(null) // { id, email } | null
 const invitationError = ref('')
 const invitationSuccess = ref('')
+
+const loggingOut = ref(false)
+
+// Sequence and failure behaviour live in performOwnerLogout() so they are
+// covered by tests -- see that module for why order matters here.
+async function handleLogout() {
+  if (loggingOut.value) return // no double-submit
+  loggingOut.value = true
+  try {
+    await performOwnerLogout({
+      authStore,
+      ownerStore: store,
+      navigate: (path) => router.push(path),
+    })
+  } finally {
+    loggingOut.value = false
+  }
+}
 
 onMounted(() => {
   store.fetchCoaches()
@@ -253,7 +276,33 @@ async function confirmStatusChange() {
 
 <template>
   <section class="mx-auto flex max-w-5xl flex-col gap-6 p-4 sm:p-6" dir="rtl">
-    <h1 class="text-2xl font-bold text-brand-black">ניהול מאמנים</h1>
+    <!--
+      Owner header. Deliberately NOT TheHeader.vue: that component carries
+      the coach portal's chrome (sidebar trigger, coach navigation), none
+      of which belongs to an owner. Only the sign-out affordance is shared,
+      and it is shared as behaviour, not as markup.
+
+      The row wraps and the button keeps a 44px minimum touch target, so it
+      is reachable on a phone as well as on desktop -- this view has no
+      bottom nav or drawer to fall back on.
+    -->
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <h1 class="text-2xl font-bold text-brand-black">ניהול מאמנים</h1>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <span class="hidden max-w-[12rem] truncate text-sm text-neutral-600 sm:inline">
+          {{ authStore.user?.email }}
+        </span>
+        <button
+          type="button"
+          :disabled="loggingOut"
+          class="inline-flex min-h-11 shrink-0 items-center justify-center rounded-full border border-neutral-300 px-4 py-1.5 text-sm font-medium text-brand-black transition-colors hover:border-brand-green hover:text-brand-green disabled:opacity-60"
+          @click="handleLogout"
+        >
+          {{ loggingOut ? 'מתנתק...' : 'התנתקות' }}
+        </button>
+      </div>
+    </div>
 
     <!-- Counts -->
     <div class="grid grid-cols-3 gap-3">
