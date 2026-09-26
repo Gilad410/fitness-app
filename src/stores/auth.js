@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { supabase } from '../lib/supabaseClient'
 import { normalizeCoachAccessStatus } from '../features/auth/lib/coachAccessStatus'
+import { resolveLoginRoleOutcome } from '../features/auth/lib/loginRoleCheck'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -167,21 +168,28 @@ export const useAuthStore = defineStore('auth', {
     // enforcement. Today a wrong-role account already gets redirected
     // away with zero data access -- this only stops it from completing a
     // silent "successful" sign-in on the wrong page first.
-    async signInWithRoleCheck(email, password, requiredRole) {
+    // `allowedRoles` is the set of roles the calling login page accepts --
+    // GENERAL_LOGIN_ROLES (coach + owner) or TRAINEE_LOGIN_ROLES, from
+    // loginRoleCheck.js. It takes a set rather than one required role
+    // because the general login page legitimately serves two roles; an
+    // earlier revision demanded 'coach' exactly and so rejected every
+    // valid owner. A bare string is still accepted and treated as a
+    // one-role set, so a caller cannot accidentally pass a string and have
+    // it silently match nothing.
+    async signInWithRoleCheck(email, password, allowedRoles) {
+      const allowed = typeof allowedRoles === 'string' ? [allowedRoles] : allowedRoles
       await this.signIn(email, password)
       await this.loadRole()
-      if (this.role === requiredRole) return
 
-      const wrongRoleMessages = {
-        trainee: 'זהו חשבון מתאמן. יש להתחבר דרך כניסת המתאמנים.',
-        coach: 'זהו חשבון מאמן. יש להתחבר דרך כניסת המאמנים.',
-      }
-      // this.role reflects the account's actual role (or null), so this
-      // picks the right message regardless of which page rejected it.
-      const message = this.role ? wrongRoleMessages[this.role] : 'לחשבון זה אין הרשאת גישה.'
+      // this.role reflects the account's actual role (or null), so the
+      // decision and its message are correct regardless of which page
+      // rejected it. The message is guaranteed non-empty -- see the
+      // module comment for why that guarantee is load-bearing.
+      const outcome = resolveLoginRoleOutcome(this.role, allowed)
+      if (outcome.accepted) return
 
       await this.signOut()
-      throw new Error(message)
+      throw new Error(outcome.message)
     },
 
     async signOut() {
