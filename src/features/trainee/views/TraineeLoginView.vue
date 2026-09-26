@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '../../../stores/auth'
+import { TRAINEE_LOGIN_ROLES } from '../../auth/lib/loginRoleCheck'
 
 const email = ref('')
 const password = ref('')
@@ -43,14 +44,15 @@ const resetMessage = computed(() =>
   route.query.reset === '1' ? 'הסיסמה עודכנה בהצלחה. ניתן להתחבר כעת.' : '',
 )
 
-// signInWithRoleCheck() requires the resolved role to be 'trainee' --
-// a coach account (or one with no role at all) is signed back out and
-// rejected with a clear Hebrew error before ever reaching /trainee.
+// TRAINEE_LOGIN_ROLES is trainee-only, and stays that way: widening the
+// general login page to accept owners did not widen this one. A coach,
+// owner, or role-less account is signed back out and rejected with a
+// clear Hebrew error before ever reaching /trainee.
 async function handleSubmit() {
   error.value = ''
   loading.value = true
   try {
-    await authStore.signInWithRoleCheck(email.value, password.value, 'trainee')
+    await authStore.signInWithRoleCheck(email.value, password.value, TRAINEE_LOGIN_ROLES)
     router.push('/trainee')
   } catch (err) {
     error.value = err.message

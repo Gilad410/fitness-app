@@ -1,17 +1,20 @@
 import { defineStore } from 'pinia'
 import { supabase } from '../lib/supabaseClient'
+import { normalizeCoachAccessStatus } from '../features/auth/lib/coachAccessStatus'
+import { resolveLoginRoleOutcome } from '../features/auth/lib/loginRoleCheck'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: null,
     initialized: false,
     initPromise: null,
-    // Role read from public.user_roles (021_trainee_auth_and_roles.sql) --
-    // 'coach', 'trainee', or null. null means either "not resolved yet"
-    // (roleLoaded is false) or "resolved: this account genuinely has no
-    // role" (roleLoaded is true) -- callers that need to tell those two
-    // apart (the router guard) always await loadRole() first, so by the
-    // time they read `role` it is authoritative.
+    // Role read from public.user_roles (021_trainee_auth_and_roles.sql,
+    // widened to include 'owner' by 056_owner_coach_administration.sql) --
+    // 'coach', 'trainee', 'owner', or null. null means either "not
+    // resolved yet" (roleLoaded is false) or "resolved: this account
+    // genuinely has no role" (roleLoaded is true) -- callers that need to
+    // tell those two apart (the router guard) always await loadRole()
+    // first, so by the time they read `role` it is authoritative.
     role: null,
     roleLoaded: false,
     roleLoadPromise: null,
@@ -21,6 +24,7 @@ export const useAuthStore = defineStore('auth', {
     isAuthenticated: (state) => !!state.user,
     isCoach: (state) => state.role === 'coach',
     isTrainee: (state) => state.role === 'trainee',
+    isOwner: (state) => state.role === 'owner',
     // Authenticated, role resolved, and genuinely holds neither role --
     // an orphan/no-role account (a leftover open signup, or a trainee
     // invite that was never accepted). Distinct from "still checking".
@@ -164,21 +168,28 @@ export const useAuthStore = defineStore('auth', {
     // enforcement. Today a wrong-role account already gets redirected
     // away with zero data access -- this only stops it from completing a
     // silent "successful" sign-in on the wrong page first.
-    async signInWithRoleCheck(email, password, requiredRole) {
+    // `allowedRoles` is the set of roles the calling login page accepts --
+    // GENERAL_LOGIN_ROLES (coach + owner) or TRAINEE_LOGIN_ROLES, from
+    // loginRoleCheck.js. It takes a set rather than one required role
+    // because the general login page legitimately serves two roles; an
+    // earlier revision demanded 'coach' exactly and so rejected every
+    // valid owner. A bare string is still accepted and treated as a
+    // one-role set, so a caller cannot accidentally pass a string and have
+    // it silently match nothing.
+    async signInWithRoleCheck(email, password, allowedRoles) {
+      const allowed = typeof allowedRoles === 'string' ? [allowedRoles] : allowedRoles
       await this.signIn(email, password)
       await this.loadRole()
-      if (this.role === requiredRole) return
 
-      const wrongRoleMessages = {
-        trainee: 'זהו חשבון מתאמן. יש להתחבר דרך כניסת המתאמנים.',
-        coach: 'זהו חשבון מאמן. יש להתחבר דרך כניסת המאמנים.',
-      }
-      // this.role reflects the account's actual role (or null), so this
-      // picks the right message regardless of which page rejected it.
-      const message = this.role ? wrongRoleMessages[this.role] : 'לחשבון זה אין הרשאת גישה.'
+      // this.role reflects the account's actual role (or null), so the
+      // decision and its message are correct regardless of which page
+      // rejected it. The message is guaranteed non-empty -- see the
+      // module comment for why that guarantee is load-bearing.
+      const outcome = resolveLoginRoleOutcome(this.role, allowed)
+      if (outcome.accepted) return
 
       await this.signOut()
-      throw new Error(message)
+      throw new Error(outcome.message)
     },
 
     async signOut() {
@@ -216,6 +227,43 @@ export const useAuthStore = defineStore('auth', {
       const { data, error } = await supabase.rpc('trainee_get_auth_context')
       if (error) throw error
       return Array.isArray(data) ? data.length > 0 : !!data
+    },
+
+    // The coach-side counterpart to checkTraineeActiveLink() above, added
+    // by 056_owner_coach_administration.sql: role alone (isCoach) cannot
+    // tell an active coach from a pending or suspended one, since
+    // public.user_roles and public.coaches.access_status are separate
+    // tables -- the same split that motivated the trainee check.
+    // Deliberately NOT cached: the router guard calls this on every
+    // coach-route navigation, so an owner suspending (or approving) a
+    // coach mid-session is reflected on that coach's very next
+    // navigation, not just at their next login.
+    //
+    // Returns the ACTUAL status string, not a boolean. An earlier
+    // revision collapsed everything to `=== 'active'`, which made a
+    // brand-new pending coach indistinguishable from a suspended one and
+    // sent them to a screen telling them they had been suspended --
+    // factually wrong and alarming. Callers must branch on the real
+    // value.
+    //
+    // Returns one of: 'active' | 'pending' | 'suspended' | 'unknown'.
+    // 'unknown' covers every case where the answer cannot be trusted:
+    // zero rows (no coaches record for this account at all), a null/
+    // absent field, or a value this client does not recognize (e.g. a
+    // future status added in a later migration and deployed ahead of
+    // the frontend). Throws only on a genuine RPC/network failure, so
+    // the caller can distinguish "could not reach the server" from
+    // "server answered, but not with something usable" -- both fail
+    // closed, but they are not the same event and should not claim to
+    // be.
+    async checkCoachAccessStatus() {
+      const { data, error } = await supabase.rpc('coach_get_own_status')
+      if (error) throw error
+      // Shape handling lives in a pure module so every payload variant
+      // (array, bare row, empty array, null field, unrecognized value)
+      // is covered by real tests -- this store cannot be loaded in a
+      // node test because of the Supabase client import above.
+      return normalizeCoachAccessStatus(data)
     },
   },
 })

@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '../../../stores/auth'
+import { GENERAL_LOGIN_ROLES } from '../lib/loginRoleCheck'
 
 const email = ref('')
 const password = ref('')
@@ -20,11 +21,32 @@ const resetMessage = computed(() =>
   route.query.reset === '1' ? 'הסיסמה עודכנה בהצלחה. ניתן להתחבר כעת.' : '',
 )
 
+// Set by the router guard (resolveCoachAccessRoute) when a coach's
+// access status could not be verified: the status RPC failed outright,
+// returned no row, or returned a value this build does not recognize.
+// Without this the coach would be bounced back to a blank login screen
+// with no explanation of what went wrong.
+//
+// The wording is deliberately generic and non-accusatory, because in
+// this branch we genuinely do NOT know the account's state: it must not
+// imply a suspension (or an approval). 'pending' and 'suspended' never
+// reach here -- each has its own screen with its own accurate wording.
+const accessMessage = computed(() =>
+  route.query.access === 'unavailable'
+    ? 'לא ניתן היה לאמת כרגע את הרשאות החשבון. יש לנסות להתחבר שוב, ואם התקלה חוזרת יש לפנות לבעל/ת המערכת.'
+    : '',
+)
+
 async function handleSubmit() {
   error.value = ''
   loading.value = true
   try {
-    await authStore.signInWithRoleCheck(email.value, password.value, 'coach')
+    // Coach AND owner: this is the only login page either of them has.
+    // Routing afterwards is the guard's job -- pushing '/' sends a coach
+    // to the dashboard and an owner on to owner-coaches (the '/' route is
+    // coach-only, and the guard redirects a non-coach to their own area),
+    // so no role branching is needed or wanted here.
+    await authStore.signInWithRoleCheck(email.value, password.value, GENERAL_LOGIN_ROLES)
     router.push('/')
   } catch (err) {
     error.value = err.message
@@ -43,6 +65,14 @@ async function handleSubmit() {
       class="rounded-lg border border-brand-green/30 bg-brand-green/10 px-3 py-2 text-sm text-brand-black"
     >
       {{ resetMessage }}
+    </p>
+
+    <p
+      v-if="accessMessage"
+      role="alert"
+      class="rounded-lg border border-status-yellow/40 bg-status-yellow/10 px-3 py-2 text-sm text-brand-black"
+    >
+      {{ accessMessage }}
     </p>
 
     <form class="flex flex-col gap-4" @submit.prevent="handleSubmit">

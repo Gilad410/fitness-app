@@ -9,7 +9,10 @@ import { supabase } from '../../../lib/supabaseClient'
 // (traineeExerciseSubmissions.js). ExercisesSection.vue only ever calls
 // these actions.
 const BUCKET = 'exercise-submission-videos'
-const SIGNED_URL_TTL_SECONDS = 60 * 60 // 1 hour -- regenerated on demand, never persisted (matches exercises.js's own convention).
+// 5 minutes -- this store is coach-facing only (see the file header:
+// trainees upload through a separate store). Shortened for the same
+// suspended-coach exposure-window reason as progressPhotos.js/exercises.js.
+const SIGNED_URL_TTL_SECONDS = 5 * 60
 
 export const useExerciseSubmissionsStore = defineStore('exerciseSubmissions', {
   state: () => ({
