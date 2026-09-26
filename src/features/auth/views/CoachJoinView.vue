@@ -21,6 +21,10 @@ const authStore = useAuthStore()
 const checkingSession = ref(true)
 const newPassword = ref('')
 const confirmNewPassword = ref('')
+// Both default to false: a password field starts masked. Tracked per
+// field so revealing one does not reveal the other.
+const showNewPassword = ref(false)
+const showConfirmNewPassword = ref(false)
 const settingPassword = ref(false)
 const setPasswordError = ref('')
 
@@ -84,28 +88,114 @@ async function handleSetPassword() {
       </p>
 
       <form class="flex flex-col gap-4" @submit.prevent="handleSetPassword">
+        <!--
+          Show/hide toggles follow TraineeJoinView.vue's existing pattern
+          exactly: type swapped between password/text, `pe-10` padding so
+          the typed text never runs under the button, the button absolutely
+          positioned at `end-0` (logical, so it sits correctly in RTL), and
+          type="button" so it can never submit the form. Toggling only
+          changes the input's `type` -- the v-model value is untouched.
+        -->
         <label class="flex flex-col gap-1">
           <span class="text-sm text-neutral-600">סיסמה</span>
-          <input
-            v-model="newPassword"
-            type="password"
-            required
-            :minlength="MIN_PASSWORD_LENGTH"
-            autocomplete="new-password"
-            class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
-          />
+          <div class="relative">
+            <input
+              v-model="newPassword"
+              :type="showNewPassword ? 'text' : 'password'"
+              required
+              :minlength="MIN_PASSWORD_LENGTH"
+              autocomplete="new-password"
+              class="w-full rounded-lg border border-neutral-300 px-3 py-2 pe-10 focus:border-brand-green focus:outline-none"
+            />
+            <button
+              type="button"
+              :aria-label="showNewPassword ? 'הסתרת סיסמה' : 'הצגת סיסמה'"
+              :aria-pressed="showNewPassword"
+              class="absolute inset-y-0 end-0 flex w-10 items-center justify-center text-neutral-600 hover:text-brand-black"
+              @click="showNewPassword = !showNewPassword"
+            >
+              <svg
+                v-if="showNewPassword"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="size-5"
+                aria-hidden="true"
+              >
+                <path
+                  d="M9.88 9.88a3 3 0 1 0 4.24 4.24M10.73 5.08A10.4 10.4 0 0 1 12 5c7 0 11 7 11 7a13.2 13.2 0 0 1-1.67 2.68M6.61 6.61A13.5 13.5 0 0 0 1 12s4 7 11 7a10.4 10.4 0 0 0 5.39-1.61M1 1l22 22"
+                />
+              </svg>
+              <svg
+                v-else
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="size-5"
+                aria-hidden="true"
+              >
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </button>
+          </div>
         </label>
 
         <label class="flex flex-col gap-1">
           <span class="text-sm text-neutral-600">אימות סיסמה</span>
-          <input
-            v-model="confirmNewPassword"
-            type="password"
-            required
-            :minlength="MIN_PASSWORD_LENGTH"
-            autocomplete="new-password"
-            class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
-          />
+          <div class="relative">
+            <input
+              v-model="confirmNewPassword"
+              :type="showConfirmNewPassword ? 'text' : 'password'"
+              required
+              :minlength="MIN_PASSWORD_LENGTH"
+              autocomplete="new-password"
+              class="w-full rounded-lg border border-neutral-300 px-3 py-2 pe-10 focus:border-brand-green focus:outline-none"
+            />
+            <button
+              type="button"
+              :aria-label="showConfirmNewPassword ? 'הסתרת סיסמה' : 'הצגת סיסמה'"
+              :aria-pressed="showConfirmNewPassword"
+              class="absolute inset-y-0 end-0 flex w-10 items-center justify-center text-neutral-600 hover:text-brand-black"
+              @click="showConfirmNewPassword = !showConfirmNewPassword"
+            >
+              <svg
+                v-if="showConfirmNewPassword"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="size-5"
+                aria-hidden="true"
+              >
+                <path
+                  d="M9.88 9.88a3 3 0 1 0 4.24 4.24M10.73 5.08A10.4 10.4 0 0 1 12 5c7 0 11 7 11 7a13.2 13.2 0 0 1-1.67 2.68M6.61 6.61A13.5 13.5 0 0 0 1 12s4 7 11 7a10.4 10.4 0 0 0 5.39-1.61M1 1l22 22"
+                />
+              </svg>
+              <svg
+                v-else
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="size-5"
+                aria-hidden="true"
+              >
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </button>
+          </div>
         </label>
 
         <p v-if="setPasswordError" class="text-sm text-status-red">{{ setPasswordError }}</p>
