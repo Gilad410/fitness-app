@@ -38,7 +38,7 @@ const totalsForPlan = computed(() => planTotals(planStore.plan))
     <h2 class="font-semibold text-brand-black">תוכנית התזונה שלי</h2>
 
     <p v-if="checking" class="text-sm text-neutral-600">טוען...</p>
-    <p v-else-if="loadError" class="text-sm text-status-red">{{ loadError }}</p>
+    <p v-else-if="loadError" role="alert" class="text-sm text-status-red">{{ loadError }}</p>
 
     <p v-else-if="!planStore.plan" class="text-sm text-neutral-600">
       המאמן/ת טרם הקצה/תה לך תוכנית תזונה.

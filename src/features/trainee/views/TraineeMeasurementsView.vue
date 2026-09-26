@@ -299,13 +299,13 @@ async function confirmDeletePhoto(photo) {
         <p class="mt-1 text-sm text-neutral-600">היקפי גוף ותמונות התקדמות פרטיות</p>
       </section>
 
-      <p v-if="checking" class="text-neutral-600">טוען...</p>
+      <p v-if="checking" role="status" class="text-neutral-600">טוען...</p>
 
       <div
         v-else-if="loadError"
         class="flex flex-col items-start gap-3 rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm"
       >
-        <p class="text-sm text-status-red">{{ loadError }}</p>
+        <p role="alert" class="text-sm text-status-red">{{ loadError }}</p>
         <button
           type="button"
           class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100"
@@ -385,6 +385,7 @@ async function confirmDeletePhoto(photo) {
                 <input
                   v-model="circumferenceForm[m.formKey]"
                   type="number"
+                  inputmode="decimal"
                   step="0.1"
                   min="0.1"
                   dir="ltr"
@@ -412,10 +413,10 @@ async function confirmDeletePhoto(photo) {
               />
             </label>
 
-            <p v-if="circumferenceValidationError" class="text-sm text-status-red">
+            <p v-if="circumferenceValidationError" role="alert" class="text-sm text-status-red">
               {{ circumferenceValidationError }}
             </p>
-            <p v-if="circumferenceLogsStore.addError" class="text-sm text-status-red">
+            <p v-if="circumferenceLogsStore.addError" role="alert" class="text-sm text-status-red">
               {{ circumferenceLogsStore.addError }}
             </p>
 
@@ -438,7 +439,7 @@ async function confirmDeletePhoto(photo) {
             </div>
           </form>
 
-          <p v-if="circumferenceLogsStore.deleteError" class="text-sm text-status-red">
+          <p v-if="circumferenceLogsStore.deleteError" role="alert" class="text-sm text-status-red">
             {{ circumferenceLogsStore.deleteError }}
           </p>
 
@@ -557,13 +558,13 @@ async function confirmDeletePhoto(photo) {
                   @change="handlePhotoFileChange(angle.key, $event)"
                 />
 
-                <p v-if="angleErrors[angle.key]" class="text-xs text-status-red">
+                <p v-if="angleErrors[angle.key]" role="alert" class="text-xs text-status-red">
                   {{ angleErrors[angle.key] }}
                 </p>
               </div>
             </div>
 
-            <p v-if="addPhotosValidationError" class="text-sm text-status-red">
+            <p v-if="addPhotosValidationError" role="alert" class="text-sm text-status-red">
               {{ addPhotosValidationError }}
             </p>
 
@@ -586,7 +587,7 @@ async function confirmDeletePhoto(photo) {
             </div>
           </form>
 
-          <p v-if="photosStore.deleteError" class="text-sm text-status-red">{{ photosStore.deleteError }}</p>
+          <p v-if="photosStore.deleteError" role="alert" class="text-sm text-status-red">{{ photosStore.deleteError }}</p>
 
           <button
             type="button"

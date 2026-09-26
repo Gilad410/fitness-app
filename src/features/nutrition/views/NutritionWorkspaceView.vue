@@ -6,6 +6,7 @@ import BackLink from '../../../components/layout/BackLink.vue'
 import TraineeStatusBadge from '../../trainees/components/TraineeStatusBadge.vue'
 import NutritionSection from '../components/NutritionSection.vue'
 import NutritionPlanSection from '../components/NutritionPlanSection.vue'
+import LoadErrorState from '../../../components/feedback/LoadErrorState.vue'
 import { useTraineesStore } from '../../trainees/store/trainees'
 import { useSelectedTraineeStore } from '../../trainees/store/selectedTrainee'
 import { reconcileSelectionWithRoute } from '../../trainees/store/selectedTraineeStorage'
@@ -20,12 +21,25 @@ const traineesStore = useTraineesStore()
 const selectedTraineeStore = useSelectedTraineeStore()
 
 const checking = ref(true)
+const loadFailed = ref(false)
 
 const trainee = computed(() => traineesStore.getById(route.params.id))
 
-onMounted(async () => {
-  await traineesStore.ensureLoaded()
-  checking.value = false
+// Re-runnable (the retry button calls it again) -- a failed load must
+// never leave the screen stuck on "טוען...", and must never reach the
+// selection reconcile below, which would otherwise treat the not-yet-
+// loaded trainee as deleted and clear the remembered selection.
+async function loadTrainee() {
+  checking.value = true
+  loadFailed.value = false
+  try {
+    await traineesStore.ensureLoaded()
+  } catch {
+    loadFailed.value = true
+    return
+  } finally {
+    checking.value = false
+  }
   // See selectedTraineeStorage.js's reconcileSelectionWithRoute() for the
   // full precedence/stale-clear reasoning.
   const outcome = reconcileSelectionWithRoute({
@@ -35,13 +49,21 @@ onMounted(async () => {
   })
   if (outcome.type === 'select') selectedTraineeStore.select(outcome.traineeId)
   else if (outcome.type === 'clear') selectedTraineeStore.clear()
-})
+}
+
+onMounted(loadTrainee)
 </script>
 
 <template>
   <AppLayout>
     <section class="mx-auto max-w-lg">
-      <p v-if="checking" class="text-neutral-600">טוען...</p>
+      <p v-if="checking" class="text-neutral-600" role="status">טוען...</p>
+
+      <LoadErrorState
+        v-else-if="loadFailed"
+        message="לא ניתן היה לטעון את פרטי המתאמן. יש לבדוק את החיבור לאינטרנט ולנסות שוב."
+        @retry="loadTrainee"
+      />
 
       <p v-else-if="!trainee" class="text-neutral-600">המתאמן לא נמצא.</p>
 

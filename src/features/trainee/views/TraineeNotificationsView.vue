@@ -51,7 +51,7 @@ async function markRead(id) {
         v-else-if="notificationsStore.error"
         class="flex flex-col items-start gap-3 rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm"
       >
-        <p class="text-sm text-status-red">{{ notificationsStore.error }}</p>
+        <p role="alert" class="text-sm text-status-red">{{ notificationsStore.error }}</p>
         <button
           type="button"
           class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100"

@@ -257,6 +257,7 @@ defineExpose({ resolve, reset })
       <div class="flex flex-wrap gap-2">
         <button
           type="button"
+          :aria-pressed="entrySource === 'regular' ? 'true' : 'false'"
           :class="[
             'rounded-lg border px-3 py-1.5 text-sm font-medium',
             entrySource === 'regular'
@@ -269,6 +270,7 @@ defineExpose({ resolve, reset })
         </button>
         <button
           type="button"
+          :aria-pressed="entrySource === 'restaurant' ? 'true' : 'false'"
           :class="[
             'rounded-lg border px-3 py-1.5 text-sm font-medium',
             entrySource === 'restaurant'
@@ -351,7 +353,7 @@ defineExpose({ resolve, reset })
             + הוסף מאכל חדש
           </button>
         </div>
-        <p v-if="removeFoodError" class="text-sm text-status-red">{{ removeFoodError }}</p>
+        <p v-if="removeFoodError" role="alert" class="text-sm text-status-red">{{ removeFoodError }}</p>
       </div>
 
       <template v-if="entryFoodId === NEW_FOOD_VALUE">
@@ -394,6 +396,7 @@ defineExpose({ resolve, reset })
           <input
             v-model="newFoodCalories"
             type="number"
+            inputmode="decimal"
             step="0.1"
             min="0.1"
             required
@@ -407,6 +410,7 @@ defineExpose({ resolve, reset })
           <input
             v-model="newFoodProtein"
             type="number"
+            inputmode="decimal"
             step="0.1"
             min="0"
             required
@@ -421,6 +425,7 @@ defineExpose({ resolve, reset })
         <input
           v-model="entryGrams"
           type="number"
+          inputmode="decimal"
           step="0.1"
           min="0.1"
           required
@@ -490,6 +495,7 @@ defineExpose({ resolve, reset })
           <input
             v-model="entryServings"
             type="number"
+            inputmode="decimal"
             step="0.5"
             min="0.5"
             required
