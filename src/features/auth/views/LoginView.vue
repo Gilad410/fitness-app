@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '../../../stores/auth'
+import { GENERAL_LOGIN_ROLES } from '../lib/loginRoleCheck'
 
 const email = ref('')
 const password = ref('')
@@ -40,7 +41,12 @@ async function handleSubmit() {
   error.value = ''
   loading.value = true
   try {
-    await authStore.signInWithRoleCheck(email.value, password.value, 'coach')
+    // Coach AND owner: this is the only login page either of them has.
+    // Routing afterwards is the guard's job -- pushing '/' sends a coach
+    // to the dashboard and an owner on to owner-coaches (the '/' route is
+    // coach-only, and the guard redirects a non-coach to their own area),
+    // so no role branching is needed or wanted here.
+    await authStore.signInWithRoleCheck(email.value, password.value, GENERAL_LOGIN_ROLES)
     router.push('/')
   } catch (err) {
     error.value = err.message
