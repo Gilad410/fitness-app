@@ -15,6 +15,7 @@
 // authorization). It is not a substitute for a real preview-environment
 // test against actual Supabase Auth, which has not been performed.
 import { PGlite } from '@electric-sql/pglite'
+import process from 'node:process'
 
 let allOk = true
 function check(label, cond, detail) {

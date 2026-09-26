@@ -17,7 +17,11 @@
 //      from the Edge Function's own runtime environment and is never
 //      logged, echoed to the client, or written anywhere.
 //
-// Deploy: supabase functions deploy invite-coach
+// Deploy: supabase functions deploy invite-coach --no-verify-jwt
+// The function passes the caller's JWT to the RLS-bound client below, and
+// owner_get_or_invite_coach performs the authoritative owner check. Disabling
+// the gateway's legacy JWT verification also allows Supabase's current signing
+// keys to reach that database authorization check.
 // (requires the same SITE_URL secret invite-trainee already depends on --
 // not a new configuration requirement.)
 
