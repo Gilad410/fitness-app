@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { supabase } from '../../../lib/supabaseClient'
 import { useAuthStore } from '../../../stores/auth'
+import { ensureLoadedOnce } from '../../../lib/retryableLoad'
 
 export const useTraineesStore = defineStore('trainees', {
   state: () => ({
@@ -22,10 +23,10 @@ export const useTraineesStore = defineStore('trainees', {
   actions: {
     // Loads the roster once and caches the in-flight/resolved promise, so
     // views can call this on every mount without refetching redundantly.
+    // A failed load is NOT cached (see retryableLoad.js) -- the next call
+    // retries instead of replaying the same rejection forever.
     ensureLoaded() {
-      if (this.loadPromise) return this.loadPromise
-      this.loadPromise = this.fetchAll()
-      return this.loadPromise
+      return ensureLoadedOnce(this, () => this.fetchAll())
     },
 
     async fetchAll() {

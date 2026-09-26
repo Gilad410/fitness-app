@@ -3,6 +3,7 @@ import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AppLayout from '../../../layouts/AppLayout.vue'
 import BackLink from '../../../components/layout/BackLink.vue'
+import LoadErrorState from '../../../components/feedback/LoadErrorState.vue'
 import { useTraineesStore } from '../store/trainees'
 
 const route = useRoute()
@@ -34,13 +35,22 @@ const loading = ref(false)
 const error = ref('')
 const notFound = ref(false)
 const checkingExisting = ref(isEdit.value)
+const loadFailed = ref(false)
 
-onMounted(async () => {
-  if (!isEdit.value) return
-
-  await traineesStore.ensureLoaded()
+// Re-runnable (the retry button calls it again) -- a failed load must
+// never leave the edit screen stuck on "טוען...".
+async function loadExisting() {
+  checkingExisting.value = true
+  loadFailed.value = false
+  try {
+    await traineesStore.ensureLoaded()
+  } catch {
+    loadFailed.value = true
+    return
+  } finally {
+    checkingExisting.value = false
+  }
   const trainee = traineesStore.getById(id.value)
-  checkingExisting.value = false
 
   if (!trainee) {
     notFound.value = true
@@ -61,6 +71,10 @@ onMounted(async () => {
   startingLeftArm.value = trainee.starting_left_arm_cm ?? ''
   startingRightLeg.value = trainee.starting_right_leg_cm ?? ''
   startingLeftLeg.value = trainee.starting_left_leg_cm ?? ''
+}
+
+onMounted(() => {
+  if (isEdit.value) loadExisting()
 })
 
 function emptyToNull(value) {
@@ -110,7 +124,13 @@ async function handleSubmit() {
         {{ isEdit ? 'עריכת מתאמן' : 'הוספת מתאמן' }}
       </h1>
 
-      <p v-if="checkingExisting" class="text-neutral-600">טוען...</p>
+      <p v-if="checkingExisting" class="text-neutral-600" role="status">טוען...</p>
+
+      <LoadErrorState
+        v-else-if="loadFailed"
+        message="לא ניתן היה לטעון את פרטי המתאמן. יש לבדוק את החיבור לאינטרנט ולנסות שוב."
+        @retry="loadExisting"
+      />
 
       <p v-else-if="notFound" class="text-neutral-600">המתאמן לא נמצא.</p>
 
@@ -130,7 +150,8 @@ async function handleSubmit() {
           <input
             v-model="email"
             type="email"
-            class="rounded-lg border border-neutral-300 bg-brand-white px-3 py-2 text-brand-black focus:border-brand-green focus:outline-none"
+            dir="ltr"
+            class="rounded-lg border border-neutral-300 bg-brand-white px-3 py-2 text-left text-brand-black focus:border-brand-green focus:outline-none"
           />
         </label>
 
@@ -139,7 +160,8 @@ async function handleSubmit() {
           <input
             v-model="phone"
             type="tel"
-            class="rounded-lg border border-neutral-300 bg-brand-white px-3 py-2 text-brand-black focus:border-brand-green focus:outline-none"
+            dir="ltr"
+            class="rounded-lg border border-neutral-300 bg-brand-white px-3 py-2 text-left text-brand-black focus:border-brand-green focus:outline-none"
           />
         </label>
 
@@ -171,6 +193,7 @@ async function handleSubmit() {
           <input
             v-model="startingWeight"
             type="number"
+            inputmode="decimal"
             step="0.1"
             min="0"
             dir="ltr"
@@ -183,6 +206,7 @@ async function handleSubmit() {
           <input
             v-model="targetWeight"
             type="number"
+            inputmode="decimal"
             step="0.1"
             min="0.1"
             dir="ltr"
@@ -199,6 +223,7 @@ async function handleSubmit() {
               <input
                 v-model="startingAbdomen"
                 type="number"
+                inputmode="decimal"
                 step="0.1"
                 min="0"
                 dir="ltr"
@@ -211,6 +236,7 @@ async function handleSubmit() {
               <input
                 v-model="startingNeck"
                 type="number"
+                inputmode="decimal"
                 step="0.1"
                 min="0"
                 dir="ltr"
@@ -223,6 +249,7 @@ async function handleSubmit() {
               <input
                 v-model="startingRightArm"
                 type="number"
+                inputmode="decimal"
                 step="0.1"
                 min="0"
                 dir="ltr"
@@ -235,6 +262,7 @@ async function handleSubmit() {
               <input
                 v-model="startingLeftArm"
                 type="number"
+                inputmode="decimal"
                 step="0.1"
                 min="0"
                 dir="ltr"
@@ -247,6 +275,7 @@ async function handleSubmit() {
               <input
                 v-model="startingRightLeg"
                 type="number"
+                inputmode="decimal"
                 step="0.1"
                 min="0"
                 dir="ltr"
@@ -259,6 +288,7 @@ async function handleSubmit() {
               <input
                 v-model="startingLeftLeg"
                 type="number"
+                inputmode="decimal"
                 step="0.1"
                 min="0"
                 dir="ltr"
@@ -277,7 +307,7 @@ async function handleSubmit() {
           />
         </label>
 
-        <p v-if="error" class="text-sm text-status-red">{{ error }}</p>
+        <p v-if="error" role="alert" class="text-sm text-status-red">{{ error }}</p>
 
         <button
           type="submit"

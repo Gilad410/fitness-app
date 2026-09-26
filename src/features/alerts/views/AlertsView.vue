@@ -29,10 +29,10 @@ const formatDate = (value) => dateFormatter.format(new Date(value))
         <p class="mt-1 text-sm text-neutral-600">מעקב אחר מתאמנים שדורשים תשומת לב</p>
       </section>
 
-      <p v-if="alertsStore.loading && !alertsStore.loaded" class="text-neutral-600">טוען...</p>
+      <p v-if="alertsStore.loading && !alertsStore.loaded" role="status" class="text-neutral-600">טוען...</p>
 
       <div v-else-if="alertsStore.error" class="flex flex-col items-start gap-3">
-        <p class="text-sm text-status-red">{{ alertsStore.error }}</p>
+        <p role="alert" class="text-sm text-status-red">{{ alertsStore.error }}</p>
         <button
           type="button"
           class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100"

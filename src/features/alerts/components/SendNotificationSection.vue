@@ -114,7 +114,7 @@ const dateTimeFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long', 
     </p>
 
     <div v-else-if="traineesStore.error" class="flex flex-col items-start gap-3">
-      <p class="text-sm text-status-red">{{ traineesStore.error }}</p>
+      <p role="alert" class="text-sm text-status-red">{{ traineesStore.error }}</p>
       <button
         type="button"
         class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100"
@@ -172,7 +172,7 @@ const dateTimeFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long', 
           />
         </label>
 
-        <p v-if="validationError" class="text-sm text-status-red">{{ validationError }}</p>
+        <p v-if="validationError" role="alert" class="text-sm text-status-red">{{ validationError }}</p>
         <p v-if="successMessage" class="text-sm text-brand-green-dark">{{ successMessage }}</p>
 
         <div>
@@ -208,7 +208,7 @@ const dateTimeFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long', 
           </div>
         </dl>
 
-        <p v-if="notificationsStore.sendError" class="text-sm text-status-red">
+        <p v-if="notificationsStore.sendError" role="alert" class="text-sm text-status-red">
           {{ notificationsStore.sendError }}
         </p>
 
@@ -244,7 +244,7 @@ const dateTimeFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long', 
     </p>
 
     <div v-else-if="notificationsStore.error" class="flex flex-col items-start gap-3">
-      <p class="text-sm text-status-red">{{ notificationsStore.error }}</p>
+      <p role="alert" class="text-sm text-status-red">{{ notificationsStore.error }}</p>
       <button
         type="button"
         class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100"

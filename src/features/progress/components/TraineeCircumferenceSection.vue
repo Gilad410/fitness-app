@@ -130,6 +130,7 @@ async function confirmDelete(logId) {
           <input
             v-model="form[m.key]"
             type="number"
+            inputmode="decimal"
             step="0.1"
             min="0.1"
             dir="ltr"
@@ -157,7 +158,7 @@ async function confirmDelete(logId) {
         />
       </label>
 
-      <p v-if="addLogError" class="text-sm text-status-red">{{ addLogError }}</p>
+      <p v-if="addLogError" role="alert" class="text-sm text-status-red">{{ addLogError }}</p>
 
       <div class="flex flex-wrap gap-3">
         <button
@@ -180,9 +181,9 @@ async function confirmDelete(logId) {
 
     <p v-if="logsChecking" class="text-sm text-neutral-600">טוען...</p>
 
-    <p v-else-if="logsError" class="text-sm text-status-red">{{ logsError }}</p>
+    <p v-else-if="logsError" role="alert" class="text-sm text-status-red">{{ logsError }}</p>
 
-    <p v-if="deleteError" class="text-sm text-status-red">{{ deleteError }}</p>
+    <p v-if="deleteError" role="alert" class="text-sm text-status-red">{{ deleteError }}</p>
 
     <p v-if="!logsChecking && !logsError && logs.length === 0" class="text-sm text-neutral-600">
       אין עדיין מדידות היקפים.

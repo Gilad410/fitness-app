@@ -98,7 +98,7 @@ function handleSaveForFutureFailed({ barcode, category, message }) {
     return
   }
   const categoryLabel = SAVE_FAILURE_LABELS[category] ?? SAVE_FAILURE_LABELS.other
-  saveForFutureFailedNotice.value = `שמירת המוצר לברקוד ${barcode} לסריקות הבאות נכשלה -- ${categoryLabel} (${message}). הרישום הנוכחי נשמר כרגיל, אך בסריקה הבאה של אותו ברקוד יהיה צורך להזין את הערכים שוב.`
+  saveForFutureFailedNotice.value = `שמירת המוצר לברקוד ${barcode} לסריקות הבאות נכשלה — ${categoryLabel} (${message}). הרישום הנוכחי נשמר כרגיל, אך בסריקה הבאה של אותו ברקוד יהיה צורך להזין את הערכים שוב.`
 }
 
 async function signInAgainFromNotice() {
@@ -341,7 +341,7 @@ async function handleDelete(logId) {
           @save-for-future-failed="handleSaveForFutureFailed"
         />
         <p v-if="barcodeSaving" class="text-sm text-neutral-600">שומר ביומן התזונה...</p>
-        <p v-if="barcodeSaveError" class="text-sm text-status-red">{{ barcodeSaveError }}</p>
+        <p v-if="barcodeSaveError" role="alert" class="text-sm text-status-red">{{ barcodeSaveError }}</p>
       </template>
     </div>
 
@@ -362,7 +362,7 @@ async function handleDelete(logId) {
         />
       </label>
 
-      <p v-if="addEntryError" class="text-sm text-status-red">{{ addEntryError }}</p>
+      <p v-if="addEntryError" role="alert" class="text-sm text-status-red">{{ addEntryError }}</p>
 
       <div class="flex flex-wrap gap-3">
         <button
@@ -385,11 +385,11 @@ async function handleDelete(logId) {
 
     <p v-if="checking" class="text-sm text-neutral-600">טוען...</p>
 
-    <p v-else-if="loadError" class="text-sm text-status-red">{{ loadError }}</p>
+    <p v-else-if="loadError" role="alert" class="text-sm text-status-red">{{ loadError }}</p>
 
     <p v-else-if="logs.length === 0" class="text-sm text-neutral-600">אין עדיין רישומי תזונה.</p>
 
-    <p v-if="deleteError" class="text-sm text-status-red">{{ deleteError }}</p>
+    <p v-if="deleteError" role="alert" class="text-sm text-status-red">{{ deleteError }}</p>
 
     <div v-if="!checking && groupedLogs.length > 0" class="flex flex-col gap-4">
       <div

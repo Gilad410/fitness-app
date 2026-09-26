@@ -169,13 +169,13 @@ async function confirmDelete(logId) {
         <p class="mt-1 text-sm text-neutral-600">מעקב משקל והתקדמות לאורך זמן</p>
       </section>
 
-      <p v-if="checking" class="text-neutral-600">טוען...</p>
+      <p v-if="checking" role="status" class="text-neutral-600">טוען...</p>
 
       <div
         v-else-if="loadError"
         class="flex flex-col items-start gap-3 rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm"
       >
-        <p class="text-sm text-status-red">{{ loadError }}</p>
+        <p role="alert" class="text-sm text-status-red">{{ loadError }}</p>
         <button
           type="button"
           class="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100"
@@ -280,6 +280,7 @@ async function confirmDelete(logId) {
               <input
                 v-model="logWeight"
                 type="number"
+                inputmode="decimal"
                 step="0.1"
                 min="0.1"
                 required
@@ -307,7 +308,7 @@ async function confirmDelete(logId) {
               />
             </label>
 
-            <p v-if="progressLogsStore.addError" class="text-sm text-status-red">
+            <p v-if="progressLogsStore.addError" role="alert" class="text-sm text-status-red">
               {{ progressLogsStore.addError }}
             </p>
 
@@ -330,7 +331,7 @@ async function confirmDelete(logId) {
             </div>
           </form>
 
-          <p v-if="progressLogsStore.deleteError" class="text-sm text-status-red">
+          <p v-if="progressLogsStore.deleteError" role="alert" class="text-sm text-status-red">
             {{ progressLogsStore.deleteError }}
           </p>
 

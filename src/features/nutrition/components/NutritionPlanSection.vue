@@ -256,31 +256,42 @@ async function handleAddItem(mealId) {
 
 const confirmDeleteItemId = ref(null)
 const deletingItemId = ref(null)
-const deleteItemError = ref('')
+// Item-level errors are scoped to the item whose action failed --
+// { itemId, message } or null -- and rendered inside that item's own row,
+// never once per meal. A later success on the same item clears them.
+const deleteItemError = ref(null)
+
+function clearItemErrors(itemId) {
+  for (const error of [deleteItemError, moveItemError, editItemError]) {
+    if (error.value?.itemId === itemId) error.value = null
+  }
+}
 
 async function confirmDeleteItem(mealId, itemId) {
-  deleteItemError.value = ''
+  deleteItemError.value = null
   deletingItemId.value = itemId
   try {
     await plansStore.removeMealItem(props.traineeId, mealId, itemId)
     confirmDeleteItemId.value = null
+    clearItemErrors(itemId)
   } catch (err) {
-    deleteItemError.value = err.message
+    deleteItemError.value = { itemId, message: err.message }
   } finally {
     deletingItemId.value = null
   }
 }
 
 const movingItemId = ref(null)
-const moveItemError = ref('')
+const moveItemError = ref(null)
 
 async function moveItem(mealId, itemId, direction) {
-  moveItemError.value = ''
+  moveItemError.value = null
   movingItemId.value = itemId
   try {
     await plansStore.moveMealItem(props.traineeId, mealId, itemId, direction)
+    clearItemErrors(itemId)
   } catch (err) {
-    moveItemError.value = err.message
+    moveItemError.value = { itemId, message: err.message }
   } finally {
     movingItemId.value = null
   }
@@ -298,23 +309,27 @@ async function moveItem(mealId, itemId, direction) {
 const editingItemId = ref(null)
 const editItemQuantity = ref('')
 const savingItemId = ref(null)
-const editItemError = ref('')
+const editItemError = ref(null)
 
 function startEditItem(item) {
-  editItemError.value = ''
+  editItemError.value = null
   editingItemId.value = item.id
   editItemQuantity.value = String(item.food_id ? item.grams : item.servings)
 }
 
 function cancelEditItem() {
+  if (editItemError.value?.itemId === editingItemId.value) editItemError.value = null
   editingItemId.value = null
 }
 
 async function saveEditItem(mealId, item) {
-  editItemError.value = ''
+  editItemError.value = null
   const value = Number(editItemQuantity.value)
   if (!Number.isFinite(value) || value <= 0) {
-    editItemError.value = item.food_id ? 'יש להזין כמות בגרמים גדולה מאפס.' : 'יש להזין כמות מנות גדולה מאפס.'
+    editItemError.value = {
+      itemId: item.id,
+      message: item.food_id ? 'יש להזין כמות בגרמים גדולה מאפס.' : 'יש להזין כמות מנות גדולה מאפס.',
+    }
     return
   }
   savingItemId.value = item.id
@@ -322,8 +337,9 @@ async function saveEditItem(mealId, item) {
     const patch = item.food_id ? { grams: value } : { servings: value }
     await plansStore.updateMealItem(props.traineeId, mealId, item.id, patch)
     editingItemId.value = null
+    clearItemErrors(item.id)
   } catch (err) {
-    editItemError.value = err.message
+    editItemError.value = { itemId: item.id, message: err.message }
   } finally {
     savingItemId.value = null
   }
@@ -335,7 +351,7 @@ async function saveEditItem(mealId, item) {
     <h2 class="font-semibold text-brand-black">תוכנית תזונה</h2>
 
     <p v-if="checking" class="text-sm text-neutral-600">טוען...</p>
-    <p v-else-if="loadError" class="text-sm text-status-red">{{ loadError }}</p>
+    <p v-else-if="loadError" role="alert" class="text-sm text-status-red">{{ loadError }}</p>
 
     <!-- No plan assigned yet -->
     <template v-else-if="!plan">
@@ -364,7 +380,7 @@ async function saveEditItem(mealId, item) {
           />
         </label>
 
-        <p v-if="createPlanError" class="text-sm text-status-red">{{ createPlanError }}</p>
+        <p v-if="createPlanError" role="alert" class="text-sm text-status-red">{{ createPlanError }}</p>
 
         <div class="flex flex-wrap gap-3">
           <button
@@ -416,7 +432,7 @@ async function saveEditItem(mealId, item) {
             />
           </label>
 
-          <p v-if="editPlanError" class="text-sm text-status-red">{{ editPlanError }}</p>
+          <p v-if="editPlanError" role="alert" class="text-sm text-status-red">{{ editPlanError }}</p>
 
           <div class="flex flex-wrap gap-3">
             <button
@@ -482,7 +498,7 @@ async function saveEditItem(mealId, item) {
             </button>
           </div>
         </div>
-        <p v-if="deletePlanError" class="text-sm text-status-red">{{ deletePlanError }}</p>
+        <p v-if="deletePlanError" role="alert" class="text-sm text-status-red">{{ deletePlanError }}</p>
       </template>
 
       <!-- Whole-plan totals -- summed across every meal, shared with the
@@ -545,7 +561,7 @@ async function saveEditItem(mealId, item) {
             />
           </label>
 
-          <p v-if="addMealError" class="text-sm text-status-red">{{ addMealError }}</p>
+          <p v-if="addMealError" role="alert" class="text-sm text-status-red">{{ addMealError }}</p>
 
           <div class="flex flex-wrap gap-3">
             <button
@@ -566,8 +582,8 @@ async function saveEditItem(mealId, item) {
           </div>
         </form>
 
-        <p v-if="moveMealError" class="text-sm text-status-red">{{ moveMealError }}</p>
-        <p v-if="deleteMealError" class="text-sm text-status-red">{{ deleteMealError }}</p>
+        <p v-if="moveMealError" role="alert" class="text-sm text-status-red">{{ moveMealError }}</p>
+        <p v-if="deleteMealError" role="alert" class="text-sm text-status-red">{{ deleteMealError }}</p>
 
         <p v-if="meals.length === 0" class="text-sm text-neutral-600">אין עדיין ארוחות בתוכנית.</p>
 
@@ -592,7 +608,7 @@ async function saveEditItem(mealId, item) {
                   />
                 </label>
 
-                <p v-if="editMealError" class="text-sm text-status-red">{{ editMealError }}</p>
+                <p v-if="editMealError" role="alert" class="text-sm text-status-red">{{ editMealError }}</p>
 
                 <div class="flex flex-wrap gap-3">
                   <button
@@ -693,10 +709,6 @@ async function saveEditItem(mealId, item) {
 
               <!-- Meal items -->
               <div class="mt-3 border-t border-neutral-300 pt-3">
-                <p v-if="moveItemError" class="mb-2 text-sm text-status-red">{{ moveItemError }}</p>
-                <p v-if="deleteItemError" class="mb-2 text-sm text-status-red">{{ deleteItemError }}</p>
-                <p v-if="editItemError" class="mb-2 text-sm text-status-red">{{ editItemError }}</p>
-
                 <p v-if="(meal.items ?? []).length === 0" class="text-sm text-neutral-600">
                   אין עדיין פריטים בארוחה זו.
                 </p>
@@ -705,7 +717,7 @@ async function saveEditItem(mealId, item) {
                   <li
                     v-for="(item, itemIndex) in meal.items"
                     :key="item.id"
-                    class="flex items-center justify-between gap-4"
+                    class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1"
                   >
                     <template v-if="editingItemId === item.id">
                       <form
@@ -720,6 +732,12 @@ async function saveEditItem(mealId, item) {
                           :min="item.food_id ? '0.1' : '0.5'"
                           required
                           dir="ltr"
+                          inputmode="decimal"
+                          aria-label="כמות"
+                          :aria-invalid="editItemError?.itemId === item.id ? 'true' : undefined"
+                          :aria-describedby="
+                            editItemError?.itemId === item.id ? `edit-item-error-${item.id}` : undefined
+                          "
                           class="w-24 rounded-lg border border-neutral-300 px-2 py-1 text-sm focus:border-brand-green focus:outline-none"
                         />
                         <span class="text-sm text-neutral-600">{{ item.food_id ? 'גרם' : 'מנות' }}</span>
@@ -817,6 +835,29 @@ async function saveEditItem(mealId, item) {
                         </button>
                       </div>
                     </template>
+
+                    <p
+                      v-if="editItemError?.itemId === item.id"
+                      :id="`edit-item-error-${item.id}`"
+                      role="alert"
+                      class="w-full text-sm text-status-red"
+                    >
+                      {{ editItemError.message }}
+                    </p>
+                    <p
+                      v-if="moveItemError?.itemId === item.id"
+                      role="alert"
+                      class="w-full text-sm text-status-red"
+                    >
+                      {{ moveItemError.message }}
+                    </p>
+                    <p
+                      v-if="deleteItemError?.itemId === item.id"
+                      role="alert"
+                      class="w-full text-sm text-status-red"
+                    >
+                      {{ deleteItemError.message }}
+                    </p>
                   </li>
                 </ul>
 
@@ -827,7 +868,7 @@ async function saveEditItem(mealId, item) {
                 >
                   <FoodQuantityPicker :ref="(el) => setItemPickerRef(meal.id, el)" />
 
-                  <p v-if="addItemError" class="text-sm text-status-red">{{ addItemError }}</p>
+                  <p v-if="addItemError" role="alert" class="text-sm text-status-red">{{ addItemError }}</p>
 
                   <div class="flex flex-wrap gap-3">
                     <button

@@ -493,7 +493,7 @@ async function move(exerciseId, direction) {
           </select>
         </label>
 
-        <p v-if="catalogUnavailable" class="text-xs text-status-red">
+        <p v-if="catalogUnavailable" role="alert" class="text-xs text-status-red">
           לא ניתן לטעון את קטלוג התרגילים ({{ catalogError }}) — ניתן להזין שם תרגיל ידנית למטה.
         </p>
 
@@ -545,6 +545,7 @@ async function move(exerciseId, direction) {
           <input
             v-model="addForm.sets"
             type="number"
+            inputmode="numeric"
             step="1"
             min="1"
             required
@@ -567,6 +568,7 @@ async function move(exerciseId, direction) {
           <input
             v-model="addForm.weight_kg"
             type="number"
+            inputmode="decimal"
             step="0.1"
             min="0.1"
             dir="ltr"
@@ -578,6 +580,7 @@ async function move(exerciseId, direction) {
           <input
             v-model="addForm.rest_seconds"
             type="number"
+            inputmode="numeric"
             step="1"
             min="1"
             dir="ltr"
@@ -594,7 +597,7 @@ async function move(exerciseId, direction) {
         />
       </label>
 
-      <p v-if="addError" class="text-xs text-status-red">{{ addError }}</p>
+      <p v-if="addError" role="alert" class="text-xs text-status-red">{{ addError }}</p>
 
       <div class="flex flex-wrap gap-2">
         <button
@@ -615,14 +618,14 @@ async function move(exerciseId, direction) {
       </div>
     </form>
 
-    <p v-if="checking" class="text-xs text-neutral-600">טוען תרגילים...</p>
-    <p v-else-if="loadError" class="text-xs text-status-red">{{ loadError }}</p>
+    <p v-if="checking" role="status" class="text-xs text-neutral-600">טוען תרגילים...</p>
+    <p v-else-if="loadError" role="alert" class="text-xs text-status-red">{{ loadError }}</p>
     <p v-else-if="exercises.length === 0" class="text-xs text-neutral-600">
       אין עדיין תרגילים באימון הזה.
     </p>
 
-    <p v-if="moveError" class="text-xs text-status-red">{{ moveError }}</p>
-    <p v-if="deleteError" class="text-xs text-status-red">{{ deleteError }}</p>
+    <p v-if="moveError" role="alert" class="text-xs text-status-red">{{ moveError }}</p>
+    <p v-if="deleteError" role="alert" class="text-xs text-status-red">{{ deleteError }}</p>
 
     <ul v-if="!checking && !loadError && exercises.length > 0" class="flex flex-col gap-2">
       <li v-for="(exercise, index) in exercises" :key="exercise.id" class="rounded-lg border border-neutral-300 p-3">
@@ -643,7 +646,7 @@ async function move(exerciseId, direction) {
                 </select>
               </label>
 
-              <p v-if="catalogUnavailable" class="text-xs text-status-red">
+              <p v-if="catalogUnavailable" role="alert" class="text-xs text-status-red">
                 לא ניתן לטעון את קטלוג התרגילים ({{ catalogError }}) — ניתן להזין שם תרגיל ידנית למטה.
               </p>
 
@@ -695,6 +698,7 @@ async function move(exerciseId, direction) {
                 <input
                   v-model="editForm.sets"
                   type="number"
+                  inputmode="numeric"
                   step="1"
                   min="1"
                   required
@@ -716,6 +720,7 @@ async function move(exerciseId, direction) {
                 <input
                   v-model="editForm.weight_kg"
                   type="number"
+                  inputmode="decimal"
                   step="0.1"
                   min="0.1"
                   dir="ltr"
@@ -727,6 +732,7 @@ async function move(exerciseId, direction) {
                 <input
                   v-model="editForm.rest_seconds"
                   type="number"
+                  inputmode="numeric"
                   step="1"
                   min="1"
                   dir="ltr"
@@ -743,7 +749,7 @@ async function move(exerciseId, direction) {
               />
             </label>
 
-            <p v-if="editError" class="text-xs text-status-red">{{ editError }}</p>
+            <p v-if="editError" role="alert" class="text-xs text-status-red">{{ editError }}</p>
 
             <div class="flex flex-wrap gap-2">
               <button
@@ -943,7 +949,7 @@ async function move(exerciseId, direction) {
               </button>
             </div>
 
-            <p v-if="videoErrorByExerciseId[exercise.id]" class="mt-2 text-xs text-status-red">
+            <p v-if="videoErrorByExerciseId[exercise.id]" role="alert" class="mt-2 text-xs text-status-red">
               {{ videoErrorByExerciseId[exercise.id] }}
             </p>
           </div>
@@ -1053,7 +1059,7 @@ async function move(exerciseId, direction) {
             </template>
             <p v-else class="mt-2 text-xs text-neutral-600">המתאמן/ת עדיין לא העלה/תה סרטון ביצוע לתרגיל זה.</p>
 
-            <p v-if="submissionErrorByExerciseId[exercise.id]" class="mt-2 text-xs text-status-red">
+            <p v-if="submissionErrorByExerciseId[exercise.id]" role="alert" class="mt-2 text-xs text-status-red">
               {{ submissionErrorByExerciseId[exercise.id] }}
             </p>
           </div>

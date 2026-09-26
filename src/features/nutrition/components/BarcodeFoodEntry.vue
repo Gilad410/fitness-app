@@ -815,8 +815,8 @@ defineExpose({ reset })
       v-if="cacheCheckError && cacheCheckErrorCategory === SAVE_FAILURE_NOT_SIGNED_IN"
       class="flex flex-col gap-2 rounded-lg border border-status-red/40 bg-status-red/5 p-3"
     >
-      <p class="text-sm text-status-red">
-        ההתחברות שלך פגה -- לא ניתן היה לבדוק אם המוצר כבר אושר בעבר. יש להתחבר מחדש ולנסות שוב.
+      <p role="alert" class="text-sm text-status-red">
+        ההתחברות שלך פגה — לא ניתן היה לבדוק אם המוצר כבר אושר בעבר. יש להתחבר מחדש ולנסות שוב.
       </p>
       <button
         type="button"
@@ -827,8 +827,8 @@ defineExpose({ reset })
       </button>
     </div>
     <p v-else-if="cacheCheckError" class="text-xs text-status-yellow">
-      לא ניתן היה לבדוק אם המוצר כבר אושר בעבר על ידך -- {{ cacheCheckErrorLabel }}
-      (<bdi dir="ltr">{{ cacheCheckError }}</bdi>). ממשיכים לחפש ב-Open Food Facts כרגיל -- אם המוצר כבר אושר בעבר, ייתכן שיהיה צורך לאשר את הערכים שוב הפעם.
+      לא ניתן היה לבדוק אם המוצר כבר אושר בעבר על ידך — {{ cacheCheckErrorLabel }}
+      (<bdi dir="ltr">{{ cacheCheckError }}</bdi>). ממשיכים לחפש ב-Open Food Facts כרגיל — אם המוצר כבר אושר בעבר, ייתכן שיהיה צורך לאשר את הערכים שוב הפעם.
     </p>
 
     <!-- Kept visible regardless of step -- approveManual() attempts this
@@ -839,7 +839,7 @@ defineExpose({ reset })
       v-if="saveForFutureError && saveForFutureErrorCategory === SAVE_FAILURE_NOT_SIGNED_IN"
       class="flex flex-col gap-2 rounded-lg border border-status-red/40 bg-status-red/5 p-3"
     >
-      <p class="text-sm text-status-red">ההתחברות שלך פגה, ולכן השמירה למאגר לסריקות הבאות נכשלה. ניתן להתחבר מחדש -- הרישום הנוכחי ביומן התזונה עדיין ניתן להשלמה.</p>
+      <p role="alert" class="text-sm text-status-red">ההתחברות שלך פגה, ולכן השמירה למאגר לסריקות הבאות נכשלה. ניתן להתחבר מחדש — הרישום הנוכחי ביומן התזונה עדיין ניתן להשלמה.</p>
       <button
         type="button"
         class="self-start rounded-lg bg-status-red px-3 py-1.5 text-xs font-medium text-brand-white"
@@ -849,7 +849,7 @@ defineExpose({ reset })
       </button>
     </div>
     <p v-else-if="saveForFutureError" class="text-xs text-status-yellow">
-      השמירה למאגר לסריקות הבאות נכשלה -- {{ saveForFutureErrorLabel }}
+      השמירה למאגר לסריקות הבאות נכשלה — {{ saveForFutureErrorLabel }}
       (<bdi dir="ltr">{{ saveForFutureError }}</bdi>). ניתן להמשיך ולשמור את הרישום הנוכחי ביומן התזונה כרגיל.
     </p>
 
@@ -892,7 +892,7 @@ defineExpose({ reset })
     </template>
 
     <template v-else-if="step === 'manual_barcode'">
-      <p v-if="scanError" class="text-sm text-status-red">{{ scanError }}</p>
+      <p v-if="scanError" role="alert" class="text-sm text-status-red">{{ scanError }}</p>
       <label class="flex flex-col gap-1">
         <span class="text-sm text-neutral-600">מספר ברקוד</span>
         <input
@@ -931,7 +931,7 @@ defineExpose({ reset })
       <p class="text-sm text-neutral-600">
         נמצאו ערכים שמורים עבורך לברקוד זה (<bdi dir="ltr">{{ lastBarcode }}</bdi>):
         <template v-if="savedBasisPreference?.basis === BASIS_COOKED_PACKAGE">
-          מבושל לפי האריזה -- {{ formatNutritionAmount(savedBasisPreference.cooked_calories_per_100g) }} קק"ל,
+          מבושל לפי האריזה — {{ formatNutritionAmount(savedBasisPreference.cooked_calories_per_100g) }} קק"ל,
           {{ formatNutritionAmount(savedBasisPreference.cooked_protein_per_100g) }} ג' חלבון ל-100 גרם.
         </template>
         <template v-else>כפי שנמכר / יבש (הערכים מ-Open Food Facts).</template>
@@ -1001,7 +1001,7 @@ defineExpose({ reset })
             </button>
           </div>
           <p class="mt-1 text-xs text-neutral-500">
-            למוצר זה יש נתוני תזונה גם לפני וגם אחרי הכנה (כגון פסטה יבשה מול מבושלת) -- יש לבחור לפי מה ששקלת בפועל, אחרת החישוב לא יהיה נכון.
+            למוצר זה יש נתוני תזונה גם לפני וגם אחרי הכנה (כגון פסטה יבשה מול מבושלת) — יש לבחור לפי מה ששקלת בפועל, אחרת החישוב לא יהיה נכון.
           </p>
         </template>
         <!-- "מבושל לפי האריזה" (cooked, per package) -- correction to an
@@ -1015,7 +1015,7 @@ defineExpose({ reset })
         <template v-else-if="nutritionBasis === BASIS_COOKED_PACKAGE">
           <p class="mt-1 text-sm font-medium text-brand-black">מבושל לפי האריזה</p>
           <p class="text-xs text-neutral-500">
-            יש להזין את הערכים המבושלים המודפסים על האריזה (ל-100 גרם מבושל). הערכים הללו לא יומרו או יוערכו -- יש להזין בדיוק את מה שכתוב על האריזה.
+            יש להזין את הערכים המבושלים המודפסים על האריזה (ל-100 גרם מבושל). הערכים הללו לא יומרו או יוערכו — יש להזין בדיוק את מה שכתוב על האריזה.
           </p>
           <label class="mt-1 flex flex-col gap-1">
             <span class="text-sm text-neutral-600">קלוריות ל-100 גרם (מבושל, לפי האריזה)</span>
@@ -1068,10 +1068,10 @@ defineExpose({ reset })
       actually did, since this step now happens unconditionally regardless
       of whether that save succeeded (see approveManual()'s own comment). -->
       <p v-if="product.source === SOURCE_MANUAL && manualApprovalOutcome === 'saved'" class="text-xs text-neutral-500">
-        הערכים אושרו ונשמרו במאגר שלך -- בסריקה הבאה של אותו ברקוד לא יהיה צורך להזין אותם שוב. נותר להזין כמות ולשמור ביומן התזונה.
+        הערכים אושרו ונשמרו במאגר שלך — בסריקה הבאה של אותו ברקוד לא יהיה צורך להזין אותם שוב. נותר להזין כמות ולשמור ביומן התזונה.
       </p>
       <p v-else-if="product.source === SOURCE_MANUAL && manualApprovalOutcome === 'failed'" class="text-xs text-neutral-500">
-        הערכים יישמרו כהזנה חד-פעמית עבור הרשומה הזו בלבד -- השמירה למאגר לסריקות הבאות נכשלה (פירוט למעלה). נותר להזין כמות ולשמור ביומן התזונה.
+        הערכים יישמרו כהזנה חד-פעמית עבור הרשומה הזו בלבד — השמירה למאגר לסריקות הבאות נכשלה (פירוט למעלה). נותר להזין כמות ולשמור ביומן התזונה.
       </p>
       <p v-else-if="product.source === SOURCE_MANUAL" class="text-xs text-neutral-500">
         הערכים יישמרו כהזנה חד-פעמית עבור הרשומה הזו בלבד, ולא יתווספו למאגר המאכלים המאומת. נותר להזין כמות ולשמור ביומן התזונה.
@@ -1111,7 +1111,7 @@ defineExpose({ reset })
     </template>
 
     <template v-else-if="step === 'lookup_failed'">
-      <p class="text-sm text-status-red">{{ lookupMessage }}</p>
+      <p role="alert" class="text-sm text-status-red">{{ lookupMessage }}</p>
       <div class="flex flex-wrap gap-3">
         <button
           type="button"
@@ -1139,13 +1139,13 @@ defineExpose({ reset })
       must still be told accurately that the product WAS found, not that
       it wasn't. See isEligibleForCoachCache()'s own comment. -->
       <p v-if="canSaveForFuture" class="text-xs text-neutral-500">
-        המוצר נמצא ב-Open Food Facts (ברקוד <bdi dir="ltr">{{ lastBarcode }}</bdi>) אך ללא נתוני קלוריות. הערכים שתזין ותאשר כאן יישמרו עבור הברקוד הזה -- בסריקה הבאה של אותו מוצר לא תצטרך/י להזין אותם שוב. הם לא יתווספו למאגר המאכלים המאומת.
+        המוצר נמצא ב-Open Food Facts (ברקוד <bdi dir="ltr">{{ lastBarcode }}</bdi>) אך ללא נתוני קלוריות. הערכים שתזין ותאשר כאן יישמרו עבור הברקוד הזה — בסריקה הבאה של אותו מוצר לא תצטרך/י להזין אותם שוב. הם לא יתווספו למאגר המאכלים המאומת.
       </p>
       <p v-else-if="foundButNoNutrition" class="text-xs text-neutral-500">
         המוצר נמצא ב-Open Food Facts (ברקוד <bdi dir="ltr">{{ lastBarcode }}</bdi>) אך ללא נתוני קלוריות. הערכים שתזין כאן יישמרו עבור הרשומה הזו בלבד.
       </p>
       <p v-else class="text-xs text-neutral-500">
-        הפריט לא נמצא במאגר -- הערכים יישמרו כהזנה ידנית עבור הרשומה הזו בלבד, ולא יתווספו למאגר המאכלים המאומת.
+        הפריט לא נמצא במאגר — הערכים יישמרו כהזנה ידנית עבור הרשומה הזו בלבד, ולא יתווספו למאגר המאכלים המאומת.
       </p>
       <label class="flex flex-col gap-1">
         <span class="text-sm text-neutral-600">שם המוצר</span>
@@ -1165,7 +1165,7 @@ defineExpose({ reset })
         <input v-model="manualCalories" type="text" inputmode="decimal" dir="ltr" class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none" @keydown.enter.prevent />
       </label>
       <label class="flex flex-col gap-1">
-        <span class="text-sm text-neutral-600">חלבון (גרם) ל-100 גרם -- אופציונלי</span>
+        <span class="text-sm text-neutral-600">חלבון (גרם) ל-100 גרם — אופציונלי</span>
         <input v-model="manualProtein" type="text" inputmode="decimal" dir="ltr" class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none" @keydown.enter.prevent />
       </label>
 

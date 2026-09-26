@@ -82,8 +82,8 @@ async function setStatus(status) {
 <template>
   <AppLayout>
     <section class="mx-auto max-w-lg">
-      <p v-if="checking" class="text-neutral-600">טוען...</p>
-      <p v-else-if="loadError" class="text-sm text-status-red">{{ loadError }}</p>
+      <p v-if="checking" role="status" class="text-neutral-600">טוען...</p>
+      <p v-else-if="loadError" role="alert" class="text-sm text-status-red">{{ loadError }}</p>
       <p v-else-if="!program" class="text-neutral-600">התוכנית לא נמצאה.</p>
 
       <template v-else>
@@ -135,7 +135,7 @@ async function setStatus(status) {
                 />
               </label>
 
-              <p v-if="detailsError" class="text-sm text-status-red">{{ detailsError }}</p>
+              <p v-if="detailsError" role="alert" class="text-sm text-status-red">{{ detailsError }}</p>
 
               <div class="flex flex-wrap gap-3">
                 <button
@@ -165,7 +165,7 @@ async function setStatus(status) {
             <p v-else class="text-sm text-neutral-600">אין הערות כלליות לתוכנית.</p>
           </template>
 
-          <p v-if="statusError" class="text-sm text-status-red">{{ statusError }}</p>
+          <p v-if="statusError" role="alert" class="text-sm text-status-red">{{ statusError }}</p>
 
           <div class="flex flex-wrap gap-3">
             <button

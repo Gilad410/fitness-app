@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router'
 import AppLayout from '../../../layouts/AppLayout.vue'
 import BackLink from '../../../components/layout/BackLink.vue'
 import TraineeStatusBadge from '../../trainees/components/TraineeStatusBadge.vue'
+import LoadErrorState from '../../../components/feedback/LoadErrorState.vue'
 import { useTraineesStore } from '../../trainees/store/trainees'
 import { useSelectedTraineeStore } from '../../trainees/store/selectedTrainee'
 import { reconcileSelectionWithRoute } from '../../trainees/store/selectedTraineeStorage'
@@ -20,6 +21,7 @@ const selectedTraineeStore = useSelectedTraineeStore()
 const programsStore = useTrainingProgramsStore()
 
 const checkingTrainee = ref(true)
+const traineeLoadFailed = ref(false)
 const checkingPrograms = ref(true)
 const loadError = ref('')
 
@@ -30,9 +32,21 @@ const addForm = reactive({ name: '', notes: '' })
 
 const trainee = computed(() => traineesStore.getById(route.params.traineeId))
 
-onMounted(async () => {
-  await traineesStore.ensureLoaded()
-  checkingTrainee.value = false
+// Re-runnable (the retry button calls it again) -- a failed roster load
+// must never leave the screen stuck on "טוען...", and must never reach the
+// selection reconcile below, which would otherwise treat the not-yet-
+// loaded trainee as deleted and clear the remembered selection.
+async function loadTrainee() {
+  checkingTrainee.value = true
+  traineeLoadFailed.value = false
+  try {
+    await traineesStore.ensureLoaded()
+  } catch {
+    traineeLoadFailed.value = true
+    return
+  } finally {
+    checkingTrainee.value = false
+  }
   // See selectedTraineeStorage.js's reconcileSelectionWithRoute() for the
   // full precedence/stale-clear reasoning.
   const outcome = reconcileSelectionWithRoute({
@@ -50,7 +64,9 @@ onMounted(async () => {
   } finally {
     checkingPrograms.value = false
   }
-})
+}
+
+onMounted(loadTrainee)
 const programs = computed(() => programsStore.programsFor(route.params.traineeId))
 
 const statusLabels = { active: 'פעילה', inactive: 'לא פעילה' }
@@ -83,7 +99,13 @@ async function handleAdd() {
 <template>
   <AppLayout>
     <section class="mx-auto max-w-lg">
-      <p v-if="checkingTrainee" class="text-neutral-600">טוען...</p>
+      <p v-if="checkingTrainee" class="text-neutral-600" role="status">טוען...</p>
+
+      <LoadErrorState
+        v-else-if="traineeLoadFailed"
+        message="לא ניתן היה לטעון את פרטי המתאמן. יש לבדוק את החיבור לאינטרנט ולנסות שוב."
+        @retry="loadTrainee"
+      />
 
       <p v-else-if="!trainee" class="text-neutral-600">המתאמן לא נמצא.</p>
 
@@ -131,7 +153,7 @@ async function handleAdd() {
               />
             </label>
 
-            <p v-if="addError" class="text-sm text-status-red">{{ addError }}</p>
+            <p v-if="addError" role="alert" class="text-sm text-status-red">{{ addError }}</p>
 
             <div class="flex flex-wrap gap-3">
               <button
@@ -153,7 +175,7 @@ async function handleAdd() {
           </form>
 
           <p v-if="checkingPrograms" class="text-sm text-neutral-600">טוען תוכניות...</p>
-          <p v-else-if="loadError" class="text-sm text-status-red">{{ loadError }}</p>
+          <p v-else-if="loadError" role="alert" class="text-sm text-status-red">{{ loadError }}</p>
           <p v-else-if="programs.length === 0" class="text-sm text-neutral-600">
             עדיין לא נוצרה תוכנית אימון למתאמן הזה.
           </p>

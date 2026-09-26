@@ -175,7 +175,7 @@ async function move(workoutId, direction) {
         />
       </label>
 
-      <p v-if="addError" class="text-sm text-status-red">{{ addError }}</p>
+      <p v-if="addError" role="alert" class="text-sm text-status-red">{{ addError }}</p>
 
       <div class="flex flex-wrap gap-3">
         <button
@@ -196,10 +196,10 @@ async function move(workoutId, direction) {
       </div>
     </form>
 
-    <p v-if="checking" class="text-sm text-neutral-600">טוען...</p>
-    <p v-else-if="loadError" class="text-sm text-status-red">{{ loadError }}</p>
-    <p v-if="moveError" class="text-sm text-status-red">{{ moveError }}</p>
-    <p v-if="deleteError" class="text-sm text-status-red">{{ deleteError }}</p>
+    <p v-if="checking" role="status" class="text-sm text-neutral-600">טוען...</p>
+    <p v-else-if="loadError" role="alert" class="text-sm text-status-red">{{ loadError }}</p>
+    <p v-if="moveError" role="alert" class="text-sm text-status-red">{{ moveError }}</p>
+    <p v-if="deleteError" role="alert" class="text-sm text-status-red">{{ deleteError }}</p>
 
     <div
       v-if="!checking && !loadError && workouts.length === 0 && !showAddForm"
@@ -243,7 +243,7 @@ async function move(workoutId, direction) {
               />
             </label>
 
-            <p v-if="editError" class="text-sm text-status-red">{{ editError }}</p>
+            <p v-if="editError" role="alert" class="text-sm text-status-red">{{ editError }}</p>
 
             <div class="flex flex-wrap gap-3">
               <button
