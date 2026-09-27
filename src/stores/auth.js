@@ -192,6 +192,45 @@ export const useAuthStore = defineStore('auth', {
       throw new Error(outcome.message)
     },
 
+    async getMfaAssurance() {
+      const { data, error } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel()
+      if (error) throw error
+      return data
+    },
+
+    async listMfaFactors() {
+      const { data, error } = await supabase.auth.mfa.listFactors()
+      if (error) throw error
+      return data
+    },
+
+    async enrollOwnerMfa() {
+      // An interrupted setup leaves an unverified factor behind. Remove
+      // those before starting again so repeated refreshes cannot exhaust
+      // Supabase's per-user factor limit. Verified factors are never
+      // touched here (and the router sends those users to challenge).
+      const factors = await this.listMfaFactors()
+      for (const factor of factors.all ?? []) {
+        if (factor.factor_type === 'totp' && factor.status === 'unverified') {
+          const { error: unenrollError } = await supabase.auth.mfa.unenroll({ factorId: factor.id })
+          if (unenrollError) throw unenrollError
+        }
+      }
+
+      const { data, error } = await supabase.auth.mfa.enroll({
+        factorType: 'totp',
+        friendlyName: `Fitness App Owner ${Date.now()}`,
+      })
+      if (error) throw error
+      return data
+    },
+
+    async verifyMfaCode(factorId, code) {
+      const { data, error } = await supabase.auth.mfa.challengeAndVerify({ factorId, code })
+      if (error) throw error
+      return data
+    },
+
     async signOut() {
       try {
         const { error } = await supabase.auth.signOut()

@@ -37,6 +37,12 @@ const accessMessage = computed(() =>
     : '',
 )
 
+const mfaMessage = computed(() =>
+  route.query.mfa === 'unavailable'
+    ? 'לא ניתן היה לאמת כרגע את רמת האבטחה של החשבון. יש להתחבר מחדש.'
+    : '',
+)
+
 async function handleSubmit() {
   error.value = ''
   loading.value = true
@@ -73,6 +79,10 @@ async function handleSubmit() {
       class="rounded-lg border border-status-yellow/40 bg-status-yellow/10 px-3 py-2 text-sm text-brand-black"
     >
       {{ accessMessage }}
+    </p>
+
+    <p v-if="mfaMessage" role="alert" class="rounded-lg border border-status-yellow/40 bg-status-yellow/10 px-3 py-2 text-sm text-brand-black">
+      {{ mfaMessage }}
     </p>
 
     <form class="flex flex-col gap-4" @submit.prevent="handleSubmit">
