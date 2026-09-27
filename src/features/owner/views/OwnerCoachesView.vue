@@ -135,7 +135,7 @@ async function handleInvite() {
     // The store re-reads the pending-invitation list as part of this, so
     // the new invitation is visible in the section below immediately.
     await store.inviteCoach(email)
-    inviteSuccess.value = `ההזמנה נשלחה אל ${email}.`
+    inviteSuccess.value = `ההזמנה נשלחה אל ${email}. מומלץ לבקש מהמאמן/ת לבדוק גם בתיקיית הספאם.`
     inviteEmail.value = ''
     await store.fetchCoaches().catch(() => {})
   } catch (err) {
@@ -321,7 +321,10 @@ async function confirmStatusChange() {
     </div>
 
     <!-- Invite a coach -->
-    <form class="flex flex-col gap-2 rounded-xl border border-neutral-200 p-4 sm:flex-row sm:items-end" @submit.prevent="handleInvite">
+    <form
+      class="flex flex-col gap-2 rounded-xl border border-neutral-200 p-4 sm:flex-row sm:items-end"
+      @submit.prevent="handleInvite"
+    >
       <label class="flex flex-1 flex-col gap-1">
         <span class="text-sm text-neutral-600">הזמנת מאמן/ת חדש/ה (אימייל)</span>
         <input
@@ -340,7 +343,16 @@ async function confirmStatusChange() {
       </button>
     </form>
     <p v-if="inviteError" class="text-sm text-status-red" role="alert">{{ inviteError }}</p>
-    <p v-if="inviteSuccess" class="text-sm text-brand-green" role="status">{{ inviteSuccess }}</p>
+    <div
+      v-if="inviteSuccess"
+      class="rounded-lg border border-brand-green/30 bg-brand-green/10 px-3 py-2 text-sm text-brand-black"
+      role="status"
+    >
+      <p class="font-medium">{{ inviteSuccess }}</p>
+      <p class="mt-1 text-xs text-neutral-600">
+        ההזמנה תופיע למטה עד שהמאמן/ת ישלים/תשלים את ההצטרפות.
+      </p>
+    </div>
 
     <!--
       Pending invitations. Kept as its own section rather than mixed into
@@ -349,7 +361,10 @@ async function confirmStatusChange() {
       link. No invitation token appears here or anywhere else in the UI;
       owner_list_pending_invitations() does not return one.
     -->
-    <section class="flex flex-col gap-3 rounded-xl border border-neutral-200 p-4" aria-labelledby="pending-invites-heading">
+    <section
+      class="flex flex-col gap-3 rounded-xl border border-neutral-200 p-4"
+      aria-labelledby="pending-invites-heading"
+    >
       <h2 id="pending-invites-heading" class="text-lg font-bold text-brand-black">
         הזמנות ממתינות
         <span v-if="store.pendingInvitations.length" class="text-sm font-normal text-neutral-600">
@@ -368,7 +383,9 @@ async function confirmStatusChange() {
       <template v-else>
         <div class="hidden overflow-x-auto sm:block">
           <table class="w-full text-start text-sm">
-            <caption class="sr-only">הזמנות שנשלחו וטרם נענו</caption>
+            <caption class="sr-only">
+              הזמנות שנשלחו וטרם נענו
+            </caption>
             <thead>
               <tr class="border-b border-neutral-200 text-neutral-600">
                 <th scope="col" class="p-2 text-start">אימייל</th>
@@ -402,7 +419,11 @@ async function confirmStatusChange() {
                     class="rounded-lg border border-status-red px-2 py-1 text-xs font-medium text-status-red hover:bg-status-red/10 disabled:opacity-60"
                     @click="requestInvitationCancel(invitation)"
                   >
-                    {{ store.pendingInviteActionFor[invitation.invitation_id] ? 'פועל...' : 'ביטול הזמנה' }}
+                    {{
+                      store.pendingInviteActionFor[invitation.invitation_id]
+                        ? 'פועל...'
+                        : 'ביטול הזמנה'
+                    }}
                   </button>
                 </td>
               </tr>
@@ -438,14 +459,18 @@ async function confirmStatusChange() {
                 class="rounded-lg border border-status-red px-3 py-1.5 text-xs font-medium text-status-red disabled:opacity-60"
                 @click="requestInvitationCancel(invitation)"
               >
-                {{ store.pendingInviteActionFor[invitation.invitation_id] ? 'פועל...' : 'ביטול הזמנה' }}
+                {{
+                  store.pendingInviteActionFor[invitation.invitation_id] ? 'פועל...' : 'ביטול הזמנה'
+                }}
               </button>
             </div>
           </li>
         </ul>
       </template>
 
-      <p v-if="invitationSuccess" class="text-sm text-brand-green" role="status">{{ invitationSuccess }}</p>
+      <p v-if="invitationSuccess" class="text-sm text-brand-green" role="status">
+        {{ invitationSuccess }}
+      </p>
 
       <!--
         Accurate explanation of why there is no resend button, rather than
@@ -454,8 +479,13 @@ async function confirmStatusChange() {
         refuses to issue a second invitation to an address that already
         has an account -- so a resend would error every time.
       -->
-      <p v-if="store.pendingInvitations.length" class="rounded-lg bg-neutral-50 px-3 py-2 text-xs leading-relaxed text-neutral-600">
-        <strong class="font-medium text-brand-black">שליחה חוזרת של הזמנה אינה זמינה בשלב זה.</strong>
+      <p
+        v-if="store.pendingInvitations.length"
+        class="rounded-lg bg-neutral-50 px-3 py-2 text-xs leading-relaxed text-neutral-600"
+      >
+        <strong class="font-medium text-brand-black"
+          >שליחה חוזרת של הזמנה אינה זמינה בשלב זה.</strong
+        >
         שליחת ההזמנה הראשונה יוצרת כבר חשבון לא-מאומת במערכת ההזדהות, ולכן שליחה נוספת לאותה כתובת
         נדחית. אם ההזמנה לא התקבלה או שפג תוקפה, יש להסיר את החשבון הלא-מאומת מלוח הבקרה של Supabase
         לפני הזמנה חוזרת, או להזמין כתובת אימייל אחרת.
@@ -477,7 +507,9 @@ async function confirmStatusChange() {
     <p v-if="store.loading" class="text-sm text-neutral-600">טוען...</p>
     <p v-else-if="store.error" class="text-sm text-status-red">{{ store.error }}</p>
     <p v-else-if="filteredCoaches.length === 0" class="text-sm text-neutral-600">
-      {{ store.coaches.length === 0 ? 'אין עדיין מאמנים במערכת.' : 'לא נמצאו מאמנים התואמים לחיפוש.' }}
+      {{
+        store.coaches.length === 0 ? 'אין עדיין מאמנים במערכת.' : 'לא נמצאו מאמנים התואמים לחיפוש.'
+      }}
     </p>
 
     <template v-else>
@@ -497,12 +529,19 @@ async function confirmStatusChange() {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="coach in filteredCoaches" :key="coach.user_id" class="border-b border-neutral-100">
+            <tr
+              v-for="coach in filteredCoaches"
+              :key="coach.user_id"
+              class="border-b border-neutral-100"
+            >
               <td class="p-2 font-medium text-brand-black">{{ coach.email }}</td>
               <td class="p-2 text-neutral-600">{{ formatDate(coach.created_at) }}</td>
               <td class="p-2 text-neutral-600">{{ coach.trainee_count }}</td>
               <td class="p-2">
-                <span class="rounded-full px-2 py-1 text-xs font-medium" :class="STATUS_BADGE_CLASS[coach.access_status]">
+                <span
+                  class="rounded-full px-2 py-1 text-xs font-medium"
+                  :class="STATUS_BADGE_CLASS[coach.access_status]"
+                >
                   {{ STATUS_LABEL(coach.access_status) }}
                 </span>
               </td>
@@ -556,10 +595,17 @@ async function confirmStatusChange() {
 
       <!-- Mobile cards -->
       <div class="flex flex-col gap-3 sm:hidden">
-        <div v-for="coach in filteredCoaches" :key="coach.user_id" class="rounded-xl border border-neutral-200 p-4">
+        <div
+          v-for="coach in filteredCoaches"
+          :key="coach.user_id"
+          class="rounded-xl border border-neutral-200 p-4"
+        >
           <div class="mb-2 flex items-center justify-between">
             <span class="font-medium text-brand-black">{{ coach.email }}</span>
-            <span class="rounded-full px-2 py-1 text-xs font-medium" :class="STATUS_BADGE_CLASS[coach.access_status]">
+            <span
+              class="rounded-full px-2 py-1 text-xs font-medium"
+              :class="STATUS_BADGE_CLASS[coach.access_status]"
+            >
               {{ STATUS_LABEL(coach.access_status) }}
             </span>
           </div>
@@ -682,7 +728,10 @@ async function confirmStatusChange() {
         <p class="mb-4 break-all text-sm text-neutral-600">{{ editingFor.email }}</p>
 
         <!-- Payment -->
-        <form class="mb-5 flex flex-col gap-3 border-b border-neutral-200 pb-5" @submit.prevent="savePayment">
+        <form
+          class="mb-5 flex flex-col gap-3 border-b border-neutral-200 pb-5"
+          @submit.prevent="savePayment"
+        >
           <label class="flex flex-col gap-1">
             <span class="text-sm text-neutral-600">סטטוס תשלום</span>
             <select
@@ -711,7 +760,9 @@ async function confirmStatusChange() {
             />
           </label>
           <p v-if="paymentError" class="text-sm text-status-red" role="alert">{{ paymentError }}</p>
-          <p v-else-if="paymentSuccess" class="text-sm text-brand-green" role="status">{{ paymentSuccess }}</p>
+          <p v-else-if="paymentSuccess" class="text-sm text-brand-green" role="status">
+            {{ paymentSuccess }}
+          </p>
           <div class="flex justify-end">
             <button
               type="submit"
@@ -726,9 +777,7 @@ async function confirmStatusChange() {
         <!-- Private owner note -->
         <form class="flex flex-col gap-3" @submit.prevent="saveNote">
           <label class="flex flex-col gap-1">
-            <span class="text-sm text-neutral-600">
-              הערה פרטית (נראית לבעל/ת המערכת בלבד)
-            </span>
+            <span class="text-sm text-neutral-600"> הערה פרטית (נראית לבעל/ת המערכת בלבד) </span>
             <textarea
               v-model="noteDraft"
               rows="4"
@@ -741,7 +790,9 @@ async function confirmStatusChange() {
             {{ noteDraft.length }} / {{ NOTE_LIMIT }} תווים
           </p>
           <p v-if="noteError" class="text-sm text-status-red" role="alert">{{ noteError }}</p>
-          <p v-else-if="noteSuccess" class="text-sm text-brand-green" role="status">{{ noteSuccess }}</p>
+          <p v-else-if="noteSuccess" class="text-sm text-brand-green" role="status">
+            {{ noteSuccess }}
+          </p>
           <div class="flex justify-end">
             <button
               type="submit"
@@ -785,7 +836,9 @@ async function confirmStatusChange() {
           שימו לב: ביטול ההזמנה אינו מוחק את החשבון הלא-מאומת שנוצר במערכת ההזדהות, ולכן לא ניתן
           יהיה להזמין מחדש את אותה כתובת ללא הסרת החשבון מלוח הבקרה של Supabase.
         </p>
-        <p v-if="invitationError" class="mb-2 text-sm text-status-red" role="alert">{{ invitationError }}</p>
+        <p v-if="invitationError" class="mb-2 text-sm text-status-red" role="alert">
+          {{ invitationError }}
+        </p>
         <div class="flex justify-end gap-2">
           <button
             type="button"

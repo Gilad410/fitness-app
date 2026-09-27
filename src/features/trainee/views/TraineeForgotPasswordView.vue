@@ -18,6 +18,11 @@ const loading = ref(false)
 const error = ref('')
 const submitted = ref(false)
 
+function useAnotherEmail() {
+  submitted.value = false
+  error.value = ''
+}
+
 function safeErrorMessage(err) {
   const msg = (err?.message || '').toLowerCase()
   if (msg.includes('security purposes') || msg.includes('rate limit')) {
@@ -48,16 +53,35 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <section class="trainee-portal mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-6 bg-brand-white p-6">
+  <section
+    class="trainee-portal mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-6 bg-brand-white p-6"
+  >
     <h1 class="text-2xl font-bold text-brand-black">שחזור סיסמה</h1>
 
     <template v-if="submitted">
-      <p class="rounded-lg border border-brand-green/30 bg-brand-green/10 px-3 py-2 text-sm text-brand-black">
-        אם קיים חשבון מתאמן/ת המשויך לכתובת האימייל הזו, נשלח אליו מייל עם קישור לאיפוס הסיסמה.
-      </p>
-      <RouterLink to="/trainee/login" class="text-sm text-brand-green-dark hover:underline">
-        חזרה למסך ההתחברות
-      </RouterLink>
+      <div
+        class="rounded-lg border border-brand-green/30 bg-brand-green/10 px-4 py-3 text-sm text-brand-black"
+      >
+        <p class="font-medium">בדקו את תיבת האימייל</p>
+        <p class="mt-1">אם קיים חשבון מתאמן/ת המשויך לכתובת הזו, נשלח אליו קישור לאיפוס הסיסמה.</p>
+        <ul class="mt-3 list-inside list-disc space-y-1 text-xs text-neutral-600">
+          <li>ההודעה עשויה להגיע בתוך כמה דקות.</li>
+          <li>כדאי לבדוק גם בתיקיות ספאם וקידומי מכירות.</li>
+          <li>מטעמי אבטחה, יש להשתמש בקישור האחרון שנשלח.</li>
+        </ul>
+      </div>
+      <div class="flex flex-col gap-2 text-sm">
+        <button
+          type="button"
+          class="self-start text-brand-green-dark hover:underline"
+          @click="useAnotherEmail"
+        >
+          שימוש בכתובת אימייל אחרת
+        </button>
+        <RouterLink to="/trainee/login" class="text-brand-green-dark hover:underline">
+          חזרה למסך ההתחברות
+        </RouterLink>
+      </div>
     </template>
 
     <form v-else class="flex flex-col gap-4" @submit.prevent="handleSubmit">
