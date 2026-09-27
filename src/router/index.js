@@ -32,9 +32,12 @@ import CoachJoinView from '../features/auth/views/CoachJoinView.vue'
 import CoachSuspendedView from '../features/auth/views/CoachSuspendedView.vue'
 import CoachPendingApprovalView from '../features/auth/views/CoachPendingApprovalView.vue'
 import OwnerCoachesView from '../features/owner/views/OwnerCoachesView.vue'
+import OwnerMfaSetupView from '../features/auth/views/OwnerMfaSetupView.vue'
+import OwnerMfaChallengeView from '../features/auth/views/OwnerMfaChallengeView.vue'
 import { useAuthStore } from '../stores/auth'
 import { clearCoachDataCaches } from '../features/owner/lib/clearCoachDataCaches'
 import { resolveCoachAccessRoute } from '../features/auth/lib/coachAccessRouting'
+import { resolveOwnerMfaRoute } from '../features/auth/lib/ownerMfaRouting'
 
 // NOTE on /signup: public coach self-signup (src/features/auth/views/SignupView.vue)
 // is intentionally NOT registered as a route. 021_trainee_auth_and_roles.sql
@@ -175,6 +178,18 @@ const router = createRouter({
       component: OwnerCoachesView,
       meta: { requiresAuth: true, requiresRole: 'owner' },
     },
+    {
+      path: '/owner/security/setup',
+      name: 'owner-mfa-setup',
+      component: OwnerMfaSetupView,
+      meta: { requiresAuth: true, requiresRole: 'owner' },
+    },
+    {
+      path: '/owner/security/verify',
+      name: 'owner-mfa-challenge',
+      component: OwnerMfaChallengeView,
+      meta: { requiresAuth: true, requiresRole: 'owner' },
+    },
 
     // Trainee side. /trainee/join is deliberately public (no requiresAuth/
     // guestOnly) -- it's where a brand-new trainee account is created from
@@ -301,6 +316,18 @@ router.beforeEach(async (to) => {
   // so a trainee can never slip past a coach-only route (or vice versa)
   // just because the role hadn't loaded yet.
   await authStore.loadRole()
+
+  if (authStore.isOwner) {
+    try {
+      const assurance = await authStore.getMfaAssurance()
+      const decision = resolveOwnerMfaRoute(assurance, to.name)
+      if (decision?.unavailable) throw new Error('MFA assurance unavailable')
+      if (decision?.route) return decision.route
+    } catch {
+      await authStore.signOut()
+      return { name: 'login', query: { mfa: 'unavailable' } }
+    }
+  }
 
   // Where a signed-in user belongs: their own area if they have a
   // resolved role, the access-denied screen if they genuinely have none.
