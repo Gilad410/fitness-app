@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-28T00:00:00.000Z",
+  "title": "Design System: Electric Coach",
+  "extensions": {
+    "colorMeta": {
+      "ink-navy": {
+        "role": "secondary",
+        "displayName": "Ink Navy",
+        "canonical": "#12153a",
+        "tonalRamp": ["#05060f", "#0a0d20", "#12153a", "#232759", "#3c4178", "#5c6299", "#8890bb", "#c4c8e0"]
+      },
+      "accent-blue": {
+        "role": "primary",
+        "displayName": "Electric Blue",
+        "canonical": "#2f6fed",
+        "tonalRamp": ["#0a1f5c", "#123a8f", "#1d4ed8", "#2f6fed", "#5a8ff2", "#8bb0f6", "#bdd3fa", "#eaf1fe"]
+      },
+      "accent-blue-deep": {
+        "role": "primary",
+        "displayName": "Deep Blue",
+        "canonical": "#1d4ed8",
+        "tonalRamp": ["#081840", "#0f2969", "#173d99", "#1d4ed8", "#4a72e3", "#7d9aed", "#b3c4f5", "#e5ecfc"]
+      },
+      "electric-violet": {
+        "role": "tertiary",
+        "displayName": "Electric Violet",
+        "canonical": "#8b5cf6",
+        "tonalRamp": ["#2e1065", "#4c1d95", "#6d28d9", "#8b5cf6", "#a78bfa", "#c4b5fd", "#ddd6fe", "#f3f0ff"]
+      },
+      "signal-mint": {
+        "role": "tertiary",
+        "displayName": "Signal Mint",
+        "canonical": "#17b892",
+        "tonalRamp": ["#053b2f", "#0a5c48", "#0f8a6c", "#17b892", "#4fd3ae", "#7fe0c4", "#b3edd9", "#e2f9f1"]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Soft Ink",
+        "canonical": "#5b6178",
+        "tonalRamp": ["#1a1c24", "#2c2f3c", "#40445a", "#5b6178", "#7c8199", "#a1a5b8", "#c7cad6", "#e9eaef"]
+      },
+      "border-soft": {
+        "role": "neutral",
+        "displayName": "Soft Border",
+        "canonical": "#e2e5f5",
+        "tonalRamp": ["#3a3f5c", "#565c80", "#7d84ab", "#a9aecf", "#c7cbe4", "#e2e5f5", "#eef0fa", "#f9fafd"]
+      },
+      "surface-lavender": {
+        "role": "neutral",
+        "displayName": "Lavender Surface",
+        "canonical": "#eef0fb",
+        "tonalRamp": ["#454b78", "#5f66a0", "#8388c0", "#aab0dc", "#cbd0ec", "#eef0fb", "#f5f6fc", "#fbfbfe"]
+      },
+      "surface-white": {
+        "role": "neutral",
+        "displayName": "Pure White",
+        "canonical": "#ffffff",
+        "tonalRamp": ["#c9cbd6", "#d8dae2", "#e6e7ed", "#f0f1f5", "#f6f7fa", "#fafbfc", "#fdfdfe", "#ffffff"]
+      },
+      "status-caution": {
+        "role": "status",
+        "displayName": "Caution Amber",
+        "canonical": "#d97706",
+        "tonalRamp": ["#451a03", "#78350f", "#b45309", "#d97706", "#f59e0b", "#fbbf24", "#fde68a", "#fef3c7"]
+      },
+      "status-coral": {
+        "role": "status",
+        "displayName": "Alert Coral",
+        "canonical": "#c8362a",
+        "tonalRamp": ["#3a0e0a", "#5c1610", "#8a231a", "#c8362a", "#db6055", "#e8938a", "#f2c1bb", "#fbe6e3"]
+      }
+    },
+    "typographyMeta": {
+      "title": { "displayName": "Title", "purpose": "Section and card headings." },
+      "body": { "displayName": "Body", "purpose": "Default paragraph, label, and field text." },
+      "label": { "displayName": "Label", "purpose": "Nav labels, badge text, captions." },
+      "stat": { "displayName": "Stat", "purpose": "Calorie/protein/weight figures — the one raised typographic voice." }
+    },
+    "shadows": [
+      { "name": "ambient-card", "value": "0 1px 2px rgba(0,0,0,0.05)", "purpose": "Default resting shadow for content cards (Tailwind shadow-sm)." },
+      { "name": "ambient-card-hover", "value": "0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06)", "purpose": "Card hover state (Tailwind shadow-md)." },
+      { "name": "emphasis-glow", "value": "0 6px 16px rgba(47,111,237,0.4)", "purpose": "The one elevated primary action per screen — the mobile Add button." },
+      { "name": "sheet-lift", "value": "0 -8px 24px rgba(16,20,51,0.16)", "purpose": "A bottom sheet/overlay lifting above page content." }
+    ],
+    "motion": [
+      { "name": "press-feedback", "value": "transform 0.1s ease", "purpose": "Scale-down on :active for primary tappable actions." },
+      { "name": "panel-ease", "value": "opacity 0.18s ease, transform 0.18s ease", "purpose": "An existing inline panel fading/easing into place on open/close." },
+      { "name": "nav-dot", "value": "opacity 0.15s ease, transform 0.15s ease", "purpose": "The bottom-nav active-state dot appearing/disappearing." }
+    ],
+    "breakpoints": [
+      { "name": "phone-nav", "value": "640px (combined with pointer: coarse)" },
+      { "name": "desktop-rail", "value": "900px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Default call-to-action button, e.g. form save actions.",
+      "html": "<button class=\"ds-btn-primary\" type=\"button\">שמירה</button>",
+      "css": ".ds-btn-primary { background: #2f6fed; color: #12153a; font-weight: 500; min-height: 44px; padding: 0 1rem; border: none; border-radius: 0.5rem; font-family: 'Heebo', 'Rubik', system-ui, sans-serif; transition: background-color 0.15s ease, color 0.15s ease; } .ds-btn-primary:hover, .ds-btn-primary:focus-visible { background: #1d4ed8; color: #ffffff; } .ds-btn-primary:focus-visible { outline: none; } .ds-btn-primary:disabled { opacity: 0.6; }"
+    },
+    {
+      "name": "Secondary Button (Pill)",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Low-emphasis action, e.g. the header logout control.",
+      "html": "<button class=\"ds-btn-secondary\" type=\"button\">התנתקות</button>",
+      "css": ".ds-btn-secondary { background: transparent; color: #ffffff; font-weight: 500; font-size: 0.875rem; min-height: 44px; padding: 0.375rem 0.75rem; border: 1px solid #5b6178; border-radius: 9999px; font-family: 'Heebo', 'Rubik', system-ui, sans-serif; transition: border-color 0.15s ease, color 0.15s ease; } .ds-btn-secondary:hover, .ds-btn-secondary:focus-visible { border-color: #2f6fed; color: #2f6fed; } .ds-btn-secondary:focus-visible { outline: none; }"
+    },
+    {
+      "name": "Status Badge",
+      "kind": "chip",
+      "refersTo": "badge-active",
+      "description": "Trainee status pill — one of active / paused / archived.",
+      "html": "<span class=\"ds-badge ds-badge-active\">פעיל</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; border-radius: 9999px; padding: 0.125rem 0.5rem; font-size: 0.75rem; font-weight: 500; font-family: 'Heebo', 'Rubik', system-ui, sans-serif; } .ds-badge-active { background: rgba(47,111,237,0.1); color: #1d4ed8; } .ds-badge-paused { background: rgba(217,119,6,0.1); color: #d97706; } .ds-badge-archived { background: #f5f5f5; color: #5b6178; }"
+    },
+    {
+      "name": "Content Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Dashboard/navigation card: icon chip, optional status pill, title, description, optional stat row.",
+      "html": "<article class=\"ds-card\"><div class=\"ds-card-head\"><span class=\"ds-card-icon\" aria-hidden=\"true\">●</span><span class=\"ds-card-pill\">בקרוב</span></div><h3 class=\"ds-card-title\">תזונה</h3><p class=\"ds-card-desc\">מעקב יומי אחר קלוריות וחלבון</p><p class=\"ds-card-stat\">1,840</p></article>",
+      "css": ".ds-card { display: flex; flex-direction: column; gap: 1rem; border-radius: 1rem; border: 1px solid #e2e5f5; background: #ffffff; padding: 1.25rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: box-shadow 0.15s ease; font-family: 'Heebo', 'Rubik', system-ui, sans-serif; } .ds-card:hover { box-shadow: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06); } .ds-card-head { display: flex; align-items: flex-start; justify-content: space-between; } .ds-card-icon { display: flex; width: 2.5rem; height: 2.5rem; align-items: center; justify-content: center; border-radius: 0.75rem; background: rgba(47,111,237,0.1); color: #2f6fed; } .ds-card-pill { border-radius: 9999px; background: #f5f5f5; padding: 0.125rem 0.5rem; font-size: 0.75rem; font-weight: 500; color: #5b6178; } .ds-card-title { margin: 0; font-weight: 600; color: #12153a; } .ds-card-desc { margin: 0; font-size: 0.875rem; color: #5b6178; } .ds-card-stat { margin: 0; font-variant-numeric: tabular-nums; font-weight: 800; letter-spacing: -0.01em; font-size: 1.5rem; color: #2f6fed; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Standard text/number field with border-shift focus.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"שם מלא\" />",
+      "css": ".ds-input { width: 100%; border-radius: 0.5rem; border: 1px solid #e2e5f5; padding: 0.5rem 0.75rem; font-family: 'Heebo', 'Rubik', system-ui, sans-serif; font-size: 1rem; color: #12153a; background: #ffffff; transition: border-color 0.15s ease; } .ds-input:focus { border-color: #2f6fed; outline: none; } .ds-input::placeholder { color: #5b6178; }"
+    },
+    {
+      "name": "Bottom Nav Item",
+      "kind": "nav",
+      "refersTo": "nav-item",
+      "description": "A single bottom-nav destination with active color + quiet dot indicator.",
+      "html": "<a class=\"ds-nav-item ds-nav-item-active\" href=\"#\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3 10.5 12 3l9 7.5\"/><path d=\"M5 9v11h14V9\"/></svg><span>בית</span><span class=\"ds-nav-dot\"></span></a>",
+      "css": ".ds-nav-item { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; padding: 0.25rem; border-radius: 0.5rem; font-size: 0.6875rem; font-weight: 500; color: #5b6178; text-decoration: none; font-family: 'Heebo', 'Rubik', system-ui, sans-serif; } .ds-nav-item-active { color: #1d4ed8; } .ds-nav-dot { width: 4px; height: 4px; border-radius: 9999px; background: currentColor; opacity: 0; transform: scale(0.5); transition: opacity 0.15s ease, transform 0.15s ease; } .ds-nav-item-active .ds-nav-dot { opacity: 1; transform: scale(1); }"
+    },
+    {
+      "name": "Add Action (Elevated)",
+      "kind": "custom",
+      "refersTo": "nav-add-action",
+      "description": "The bottom nav's central, visually elevated Add destination — blue-to-violet gradient circle lifted above the bar.",
+      "html": "<a class=\"ds-fab-nav\" href=\"#\" aria-label=\"הוספה\"><svg width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M12 5v14M5 12h14\"/></svg></a>",
+      "css": ".ds-fab-nav { display: flex; align-items: center; justify-content: center; width: 3.5rem; height: 3.5rem; margin-top: -1.5rem; border-radius: 9999px; background: linear-gradient(to bottom right, #2f6fed, #8b5cf6); color: #ffffff; box-shadow: 0 6px 16px rgba(47,111,237,0.4); border: 4px solid #ffffff; transition: transform 0.15s ease; } .ds-fab-nav:active { transform: scale(0.92); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Command Center",
+    "overview": "Electric Coach reads like a focused control panel: a navy anchor, one confident electric-blue action color, and a violet-tipped moment of energy at the single place that deserves it. It exists to make an independent coach feel like they're running a real business from a clear, decisive cockpit — not filling out a form. The voice is energetic, confident, and no-nonsense: color carries meaning (one action color, one warning color, two narrowly-scoped accents) rather than decoration.\n\nThe system is mobile-first and RTL-native by construction — Hebrew is the primary reading direction, not a mirrored afterthought, and CSS logical properties keep layout correct automatically. Its one deliberate structural move is dual navigation, chosen by device capability rather than screen size alone: a fixed five-slot bottom nav on phone-class touch devices, a navy header + drawer everywhere else.\n\nElectric Coach is a confirmed rejection of the generic, sterile, spreadsheet-gray enterprise dashboard look. The electric-blue/navy/lavender palette and the one colored-glow moment (the mobile Add action) exist specifically so a small-business coaching tool doesn't feel like faceless B2B software — while staying restrained enough that it never tips into a playful consumer app either.",
+    "keyCharacteristics": [
+      "Electric-blue authority accent anchored by an ink-navy header and text color",
+      "RTL-native, mobile-first, with a capability-driven (not width-only) nav split",
+      "Ambient-lift cards; a heavier colored shadow is earned by exactly one action per screen",
+      "One typographic flourish: tabular, weight-800 stat numerals",
+      "Border-shift focus on inputs instead of an outline ring"
+    ],
+    "rules": [
+      { "name": "The One Warning Color Rule", "body": "Coral is the only color that means destructive/warning/alert — on badges, error text, the alerts-count pill — and is never repurposed as a decorative or general accent anywhere else.", "section": "colors" },
+      { "name": "The Narrow Accent Rule", "body": "Electric Violet and Signal Mint each answer to exactly one surface. Reaching for either elsewhere requires a deliberate decision to widen its role, not an ad hoc reuse.", "section": "colors" },
+      { "name": "The One Numeral Rule", "body": "Every stat figure — calories, protein, weight, measurements — renders tabular at weight 800 with tight tracking, consistently, rather than being styled per screen.", "section": "typography" },
+      { "name": "The Capability, Not Width Rule", "body": "The bottom-nav/drawer split is decided by viewport width and pointer coarseness together, never by width alone or user-agent sniffing — a narrow desktop window with a mouse must still get the familiar hamburger menu.", "section": "layout" },
+      { "name": "The Rare Emphasis Rule", "body": "A heavier, colored shadow is earned by exactly one element per screen — an add action, or an open sheet. Everything else stays on the ambient shadow-sm/shadow-md pair.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do treat Electric Blue as the one primary action/authority color; reach for Deep Blue only for its hover/pressed state.",
+      "Do keep the border-shift focus treatment (border → Electric Blue, outline removed) as the standard for text inputs.",
+      "Do decide bottom-nav-vs-drawer by viewport width and pointer coarseness together, never width alone or user-agent sniffing.",
+      "Do give every transform-based motion a prefers-reduced-motion fallback.",
+      "Do keep stat figures in the tabular, weight-800 numeral style, consistently."
+    ],
+    "donts": [
+      "Don't use Alert Coral for anything but destructive/warning/notification meaning.",
+      "Don't reach for Electric Violet or Signal Mint outside their one reserved surface each without a deliberate decision to widen their role.",
+      "Don't let this system drift toward a generic gray, sterile enterprise-dashboard look — the navy/electric-blue/lavender combination is the deliberate alternative to that.",
+      "Don't pair a heavy colored shadow with a hairline border on the same element — emphasis comes from one or the other, not both stacked.",
+      "Don't introduce a second display typeface; Heebo already carries the full weight range (400–800) the system needs."
+    ]
+  }
+}
