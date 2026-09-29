@@ -1,0 +1,736 @@
+<meta charset="utf-8" />
+<title>מרכז אימון — אתלטי ואנרגטי</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap"
+/>
+
+<style>
+  /* ===================================================================
+     Direction B — "אתלטי ואנרגטי" (Athletic & energetic)
+     Pushes the Electric Coach palette to its loudest usable setting: a
+     saturated blue→violet field carrying one enormous number, then hard
+     colour-blocked rows beneath it. Typography does the shouting —
+     Heebo 900 at display size with tight tracking — because Hebrew has
+     no uppercase to lean on. The boldness is spent in exactly one place
+     (the hero); everything below it is deliberately flat and quiet so
+     the screen doesn't turn into noise.
+     Single-theme by intent.
+     =================================================================== */
+  .b-root {
+    --field-1: #1d4ed8;
+    --field-2: #6d28d9;
+    --ground: #ffffff;
+    --ink: #0e1130;
+    --ink-soft: #565c80;
+    /* darkened from #8d93ae, which only reached 3.0:1 on white */
+    --ink-faint: #676d8c;
+    --line: #e7e9f4;
+    --accent: #2f6fed;
+    --mint: #0f8a6c;
+    --mint-wash: #e3f7f1;
+    --coral: #c8362a;
+    --coral-wash: #fdecea;
+    --amber: #b45309;
+    --amber-wash: #fdf3e6;
+
+    font-family: 'Heebo', 'Rubik', 'Segoe UI', system-ui, sans-serif;
+    background: var(--ground);
+    color: var(--ink);
+    min-height: 100vh;
+    max-width: 430px;
+    margin-inline: auto;
+    padding-bottom: 92px;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .b-root *,
+  .b-root *::before,
+  .b-root *::after {
+    box-sizing: border-box;
+  }
+  .b-root p,
+  .b-root h1,
+  .b-root h2,
+  .b-root h3,
+  .b-root ul {
+    margin: 0;
+    padding: 0;
+  }
+  .b-root ul {
+    list-style: none;
+  }
+
+  .b-demo {
+    background: #0b0d22;
+    color: #a8afd4;
+    font-size: 11.5px;
+    font-weight: 500;
+    text-align: center;
+    padding: 7px 14px;
+  }
+
+  /* --- the field: one number, stated loudly ---------------------- */
+  .b-field {
+    background: linear-gradient(145deg, var(--field-1) 0%, var(--field-2) 100%);
+    color: #fff;
+    padding: 22px 20px 26px;
+    border-end-start-radius: 26px;
+    border-end-end-radius: 26px;
+    position: relative;
+    overflow: hidden;
+  }
+  .b-field::after {
+    /* a single angled highlight — the only decorative mark in the design */
+    content: '';
+    position: absolute;
+    inset-block-start: -40%;
+    inset-inline-end: -25%;
+    width: 78%;
+    height: 180%;
+    background: rgba(255, 255, 255, 0.07);
+    transform: rotate(18deg);
+    pointer-events: none;
+  }
+  .b-field-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    position: relative;
+  }
+  .b-hello {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .b-date {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.72);
+    margin-top: 2px;
+  }
+  .b-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1.5px solid rgba(255, 255, 255, 0.38);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  .b-hero {
+    position: relative;
+    margin-top: 20px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .b-hero-num {
+    font-size: 76px;
+    font-weight: 900;
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+  }
+  .b-hero-side {
+    padding-bottom: 4px;
+  }
+  .b-hero-label {
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+  .b-hero-sub {
+    font-size: 11.5px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 2px;
+  }
+
+  .b-chips {
+    position: relative;
+    display: flex;
+    gap: 7px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+  }
+  .b-chip {
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 32px;
+  }
+  .b-chip b {
+    font-weight: 900;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* --- action stack: hard blocks, no cards ----------------------- */
+  .b-body {
+    padding: 22px 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .b-label {
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    margin-bottom: 10px;
+  }
+
+  .b-alerts {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .b-alert {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 62px;
+    padding: 10px 14px 10px 10px;
+    border: 0;
+    border-radius: 14px;
+    font: inherit;
+    text-align: start;
+    color: var(--ink);
+    cursor: pointer;
+    border-inline-start: 5px solid var(--sev, var(--accent));
+    background: var(--sev-wash, #f3f6fe);
+    transition: transform 0.1s ease;
+  }
+  .b-alert:active {
+    transform: scale(0.985);
+  }
+  .b-alert:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+  .b-alert-body {
+    min-width: 0;
+    flex: 1;
+  }
+  .b-alert-name {
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.25;
+  }
+  .b-alert-text {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin-top: 2px;
+    line-height: 1.4;
+  }
+  .b-alert-go {
+    color: var(--sev, var(--accent));
+    flex-shrink: 0;
+  }
+  .b-alert[aria-pressed='true'] {
+    background: #f4f5f9;
+    border-inline-start-color: #c9cddd;
+  }
+  .b-alert[aria-pressed='true'] .b-alert-name {
+    color: var(--ink-faint);
+    text-decoration: line-through;
+  }
+  .b-alert[aria-pressed='true'] .b-alert-go {
+    color: #c9cddd;
+  }
+  .b-sev-amber {
+    --sev: var(--amber);
+    --sev-wash: var(--amber-wash);
+  }
+  .b-sev-mint {
+    --sev: var(--mint);
+    --sev-wash: var(--mint-wash);
+  }
+  .b-sev-blue {
+    --sev: var(--accent);
+    --sev-wash: #eaf1fe;
+  }
+
+  /* --- capability rows ------------------------------------------- */
+  .b-rows {
+    display: flex;
+    flex-direction: column;
+  }
+  .b-row {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    width: 100%;
+    min-height: 64px;
+    padding: 12px 4px;
+    background: none;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    font: inherit;
+    text-align: start;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .b-row:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
+  .b-row[aria-pressed='true'] {
+    background: #f3f6fe;
+  }
+  .b-row-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 13px;
+    background: var(--ink);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .b-row[aria-pressed='true'] .b-row-icon {
+    background: var(--accent);
+  }
+  .b-row-body {
+    flex: 1;
+    min-width: 0;
+  }
+  .b-row-name {
+    font-size: 15.5px;
+    font-weight: 800;
+    line-height: 1.25;
+  }
+  .b-row-desc {
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    margin-top: 1px;
+  }
+  .b-row-num {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .b-row-num-none {
+    font-size: 22px;
+    font-weight: 800;
+    color: #ccd0e0;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  /* --- bottom nav ------------------------------------------------ */
+  .b-nav {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    max-width: 430px;
+    margin-inline: auto;
+    background: #0e1130;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    align-items: end;
+    padding: 8px 6px calc(8px + env(safe-area-inset-bottom, 0px));
+    z-index: 20;
+  }
+  .b-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-height: 50px;
+    background: none;
+    border: 0;
+    font: inherit;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #8f96b8;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 2px;
+  }
+  .b-nav-item[aria-current='page'] {
+    color: #fff;
+  }
+  .b-nav-item:focus-visible {
+    outline: 2px solid #5a8ff2;
+    outline-offset: -2px;
+  }
+  .b-nav-bar {
+    width: 18px;
+    height: 3px;
+    border-radius: 999px;
+    background: currentColor;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+  .b-nav-item[aria-current='page'] .b-nav-bar {
+    opacity: 1;
+  }
+  .b-nav-add {
+    justify-self: center;
+    align-self: center;
+    width: 56px;
+    height: 56px;
+    margin-top: -22px;
+    border-radius: 50%;
+    border: 4px solid #0e1130;
+    background: linear-gradient(145deg, var(--field-1), var(--field-2));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* softened: a wide violet glow on a dark bar reads as bloom, not emphasis */
+    box-shadow: 0 4px 12px rgba(29, 78, 216, 0.38);
+    cursor: pointer;
+    transition: transform 0.1s ease;
+  }
+  .b-nav-add:active {
+    transform: scale(0.92);
+  }
+  .b-nav-add:focus-visible {
+    outline: 2px solid #a78bfa;
+    outline-offset: 3px;
+  }
+
+  /* --- sheet ------------------------------------------------------ */
+  .b-scrim {
+    position: fixed;
+    inset: 0;
+    background: rgba(14, 17, 48, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease;
+    z-index: 30;
+  }
+  .b-scrim[data-open='true'] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .b-sheet {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    max-width: 430px;
+    margin-inline: auto;
+    background: #fff;
+    border-radius: 24px 24px 0 0;
+    padding: 10px 18px calc(22px + env(safe-area-inset-bottom, 0px));
+    transform: translateY(100%);
+    transition: transform 0.22s cubic-bezier(0.32, 0.72, 0, 1);
+    z-index: 31;
+  }
+  .b-sheet[data-open='true'] {
+    transform: translateY(0);
+  }
+  .b-grip {
+    width: 40px;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--line);
+    margin: 0 auto 14px;
+  }
+  .b-sheet h2 {
+    font-size: 16px;
+    font-weight: 900;
+    margin-bottom: 8px;
+  }
+  .b-sheet-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 54px;
+    padding: 0 4px;
+    background: none;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    font: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    text-align: start;
+    cursor: pointer;
+  }
+  .b-sheet-row:last-of-type {
+    border-bottom: 0;
+  }
+  .b-sheet-row:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
+  .b-sheet-row svg {
+    color: var(--ink-faint);
+    flex-shrink: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .b-root *,
+    .b-root *::before,
+    .b-root *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+    .b-sheet {
+      transition: none;
+    }
+  }
+</style>
+
+<div class="b-root" dir="rtl" lang="he">
+  <p class="b-demo">תצוגת עיצוב — כיוון ב׳ · אתלטי ואנרגטי · נתוני הדגמה בלבד</p>
+
+  <header class="b-field">
+    <div class="b-field-top">
+      <div>
+        <p class="b-hello">ברוך הבא, יוסי</p>
+        <p class="b-date">יום שלישי, 29 בספטמבר 2026</p>
+      </div>
+      <span class="b-avatar" aria-hidden="true">י</span>
+    </div>
+
+    <div class="b-hero">
+      <span class="b-hero-num">18</span>
+      <span class="b-hero-side">
+        <span class="b-hero-label">מתאמנים פעילים</span>
+        <span class="b-hero-sub">לא כולל ארכיון</span>
+      </span>
+    </div>
+
+    <div class="b-chips">
+      <span class="b-chip"><b>3</b> התראות פעילות</span>
+      <span class="b-chip">עודכן היום</span>
+    </div>
+  </header>
+
+  <div class="b-body">
+    <section aria-labelledby="b-alerts-title">
+      <p class="b-label" id="b-alerts-title">דורש התייחסות</p>
+      <ul class="b-alerts">
+        <li>
+          <button class="b-alert b-sev-amber" type="button" aria-pressed="false" data-alert>
+            <span class="b-alert-body">
+              <span class="b-alert-name">דנה לוי</span>
+              <span class="b-alert-text">לא דיווחה תזונה שלושה ימים</span>
+            </span>
+            <svg class="b-alert-go" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+        </li>
+        <li>
+          <button class="b-alert b-sev-mint" type="button" aria-pressed="false" data-alert>
+            <span class="b-alert-body">
+              <span class="b-alert-name">אמיר בן־חיים</span>
+              <span class="b-alert-text">השלים את תוכנית האימון</span>
+            </span>
+            <svg class="b-alert-go" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+        </li>
+        <li>
+          <button class="b-alert b-sev-blue" type="button" aria-pressed="false" data-alert>
+            <span class="b-alert-body">
+              <span class="b-alert-name">מאיה שרון</span>
+              <span class="b-alert-text">עדכנה מדידות חדשות</span>
+            </span>
+            <svg class="b-alert-go" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="b-areas-title">
+      <p class="b-label" id="b-areas-title">האזורים שלי</p>
+      <div class="b-rows">
+        <button class="b-row" type="button" aria-pressed="false" data-row>
+          <span class="b-row-icon" aria-hidden="true">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+            </svg>
+          </span>
+          <span class="b-row-body">
+            <span class="b-row-name">לקוחות</span>
+            <span class="b-row-desc">רשימת המתאמנים שלך</span>
+          </span>
+          <span class="b-row-num">18</span>
+        </button>
+
+        <button class="b-row" type="button" aria-pressed="false" data-row>
+          <span class="b-row-icon" aria-hidden="true">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+            </svg>
+          </span>
+          <span class="b-row-body">
+            <span class="b-row-name">התקדמות</span>
+            <span class="b-row-desc">מעקב והישגים</span>
+          </span>
+          <span class="b-row-num-none" aria-hidden="true">—</span>
+        </button>
+
+        <button class="b-row" type="button" aria-pressed="false" data-row>
+          <span class="b-row-icon" aria-hidden="true">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20a6 6 0 0 1-6-6c0-4 3-8 6-8s6 4 6 8a6 6 0 0 1-6 6Z" />
+              <path d="M12 6V3" />
+            </svg>
+          </span>
+          <span class="b-row-body">
+            <span class="b-row-name">תזונה</span>
+            <span class="b-row-desc">תוכניות למתאמנים</span>
+          </span>
+          <span class="b-row-num-none" aria-hidden="true">—</span>
+        </button>
+
+        <button class="b-row" type="button" aria-pressed="false" data-row>
+          <span class="b-row-icon" aria-hidden="true">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+          </span>
+          <span class="b-row-body">
+            <span class="b-row-name">התראות</span>
+            <span class="b-row-desc">עדכונים אחרונים</span>
+          </span>
+          <span class="b-row-num">3</span>
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <nav class="b-nav" aria-label="ניווט ראשי">
+    <button class="b-nav-item" type="button" aria-current="page">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 10.5 12 3l9 7.5" />
+        <path d="M5 9v11h14V9" />
+      </svg>
+      בית
+      <span class="b-nav-bar" aria-hidden="true"></span>
+    </button>
+    <button class="b-nav-item" type="button">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+      </svg>
+      לקוחות
+      <span class="b-nav-bar" aria-hidden="true"></span>
+    </button>
+    <button class="b-nav-add" type="button" aria-label="הוספה">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true">
+        <path d="M12 5v14M5 12h14" />
+      </svg>
+    </button>
+    <button class="b-nav-item" type="button">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+        <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+      </svg>
+      התראות
+      <span class="b-nav-bar" aria-hidden="true"></span>
+    </button>
+    <button class="b-nav-item" type="button" data-more aria-haspopup="dialog" aria-expanded="false">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="5" cy="12" r="1.5" fill="currentColor" />
+        <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+        <circle cx="19" cy="12" r="1.5" fill="currentColor" />
+      </svg>
+      עוד
+      <span class="b-nav-bar" aria-hidden="true"></span>
+    </button>
+  </nav>
+
+  <div class="b-scrim" data-scrim></div>
+  <div class="b-sheet" data-sheet role="dialog" aria-modal="true" aria-label="תפריט נוסף" data-open="false">
+    <div class="b-grip" aria-hidden="true"></div>
+    <h2>עוד</h2>
+    <button class="b-sheet-row" type="button">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+      </svg>
+      התקדמות
+    </button>
+    <button class="b-sheet-row" type="button">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 20a6 6 0 0 1-6-6c0-4 3-8 6-8s6 4 6 8a6 6 0 0 1-6 6Z" />
+      </svg>
+      תזונה
+    </button>
+    <button class="b-sheet-row" type="button">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="3" />
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09A1.65 1.65 0 0 0 15 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9Z" />
+      </svg>
+      הגדרות
+    </button>
+    <button class="b-sheet-row" type="button" data-close>
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+        <path d="M18 6 6 18M6 6l12 12" />
+      </svg>
+      סגירה
+    </button>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const root = document.querySelector('.b-root')
+    const sheet = root.querySelector('[data-sheet]')
+    const scrim = root.querySelector('[data-scrim]')
+    const moreBtn = root.querySelector('[data-more]')
+
+    function setSheet(open) {
+      sheet.dataset.open = String(open)
+      scrim.dataset.open = String(open)
+      moreBtn.setAttribute('aria-expanded', String(open))
+      if (open) sheet.querySelector('.b-sheet-row').focus()
+      else moreBtn.focus()
+    }
+
+    moreBtn.addEventListener('click', () => setSheet(sheet.dataset.open !== 'true'))
+    scrim.addEventListener('click', () => setSheet(false))
+    root.querySelector('[data-close]').addEventListener('click', () => setSheet(false))
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && sheet.dataset.open === 'true') setSheet(false)
+    })
+
+    root.querySelectorAll('[data-alert]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        btn.setAttribute('aria-pressed', btn.getAttribute('aria-pressed') === 'true' ? 'false' : 'true')
+      })
+    })
+
+    const rows = [...root.querySelectorAll('[data-row]')]
+    rows.forEach((row) => {
+      row.addEventListener('click', () => {
+        const wasOn = row.getAttribute('aria-pressed') === 'true'
+        rows.forEach((r) => r.setAttribute('aria-pressed', 'false'))
+        row.setAttribute('aria-pressed', wasOn ? 'false' : 'true')
+      })
+    })
+  })()
+</script>

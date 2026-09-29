@@ -1,0 +1,668 @@
+<meta charset="utf-8" />
+<title>מרכז אימון — כהה ואלגנטי</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap"
+/>
+
+<style>
+  /* ===================================================================
+     Direction C — "כהה ואלגנטי" (Dark & elegant)
+     Takes the ink-navy that Electric Coach uses only for its header and
+     makes it the whole ground. Restraint is the point: no gradients, no
+     coloured fills, one accent (a desaturated blue that survives on a
+     dark ground) used only where something is genuinely interactive or
+     genuinely urgent. Separation comes from hairlines and space rather
+     than from stacked cards, and weights run lighter than the other two
+     directions because thin type on dark reads as refined, not weak —
+     provided the contrast holds, which is why body text sits at #c9cee6
+     rather than a dimmer grey.
+     Single-theme by intent: a dark direction that flipped to light under
+     the OS setting would defeat the comparison.
+     =================================================================== */
+  .c-root {
+    --ground: #0c0f1f;
+    --raised: #141829;
+    --raised-2: #1b2036;
+    --line: rgba(255, 255, 255, 0.075);
+    --line-strong: rgba(255, 255, 255, 0.14);
+    --ink: #f2f4fb;
+    --ink-soft: #c9cee6;
+    --ink-faint: #858caa;
+    --accent: #6f9bf5;
+    --accent-dim: rgba(111, 155, 245, 0.14);
+    --amber: #e0a33c;
+    --mint: #45c8a4;
+
+    font-family: 'Heebo', 'Rubik', 'Segoe UI', system-ui, sans-serif;
+    background: var(--ground);
+    color: var(--ink);
+    min-height: 100vh;
+    max-width: 430px;
+    margin-inline: auto;
+    padding-bottom: 94px;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .c-root *,
+  .c-root *::before,
+  .c-root *::after {
+    box-sizing: border-box;
+  }
+  .c-root p,
+  .c-root h1,
+  .c-root h2,
+  .c-root ul {
+    margin: 0;
+    padding: 0;
+  }
+  .c-root ul {
+    list-style: none;
+  }
+
+  .c-demo {
+    background: #05070f;
+    color: #6f7796;
+    font-size: 11.5px;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    text-align: center;
+    padding: 7px 14px;
+  }
+
+  .c-page {
+    padding: 26px 22px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  /* --- greeting: light weight, wide tracking on the date --------- */
+  .c-greet h1 {
+    font-size: 25px;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  .c-greet p {
+    margin-top: 7px;
+    font-size: 12.5px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: var(--ink-faint);
+  }
+
+  /* --- summary line: two figures, separated by a hairline -------- */
+  .c-summary {
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr;
+    align-items: center;
+    background: var(--raised);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 17px 8px;
+  }
+  .c-sum-cell {
+    text-align: center;
+    padding: 0 8px;
+  }
+  .c-sum-num {
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.025em;
+    font-variant-numeric: tabular-nums;
+    display: block;
+  }
+  .c-sum-num-alert {
+    color: var(--amber);
+  }
+  .c-sum-cap {
+    display: block;
+    margin-top: 6px;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: var(--ink-faint);
+  }
+  .c-sum-rule {
+    background: var(--line-strong);
+    height: 34px;
+    width: 1px;
+  }
+
+  /* --- attention list: hairlines, no card per row ---------------- */
+  .c-label {
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    margin-bottom: 4px;
+  }
+  .c-list {
+    display: flex;
+    flex-direction: column;
+  }
+  .c-item {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    width: 100%;
+    min-height: 60px;
+    padding: 13px 2px;
+    background: none;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    font: inherit;
+    text-align: start;
+    color: var(--ink);
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+  }
+  .c-item:focus-visible {
+    outline: 1px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  .c-tick {
+    width: 2px;
+    align-self: stretch;
+    border-radius: 2px;
+    background: var(--tick, var(--accent));
+    flex-shrink: 0;
+  }
+  .c-tick-amber {
+    --tick: var(--amber);
+  }
+  .c-tick-mint {
+    --tick: var(--mint);
+  }
+  .c-item-body {
+    flex: 1;
+    min-width: 0;
+  }
+  .c-item-name {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+  .c-item-text {
+    font-size: 12.5px;
+    font-weight: 300;
+    color: var(--ink-soft);
+    margin-top: 3px;
+    line-height: 1.45;
+  }
+  .c-item-time {
+    font-size: 11px;
+    color: var(--ink-faint);
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+  }
+  .c-item[aria-pressed='true'] {
+    opacity: 0.45;
+  }
+  .c-item[aria-pressed='true'] .c-item-name {
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+  }
+
+  /* --- areas: quiet rows, the accent only on the chevron --------- */
+  .c-areas {
+    display: flex;
+    flex-direction: column;
+  }
+  .c-area {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    min-height: 58px;
+    padding: 12px 2px;
+    background: none;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    font: inherit;
+    text-align: start;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .c-area:focus-visible {
+    outline: 1px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  .c-area[aria-pressed='true'] {
+    background: var(--accent-dim);
+    border-radius: 10px;
+    border-bottom-color: transparent;
+    padding-inline: 10px;
+  }
+  .c-area-icon {
+    color: var(--ink-faint);
+    flex-shrink: 0;
+  }
+  .c-area[aria-pressed='true'] .c-area-icon {
+    color: var(--accent);
+  }
+  .c-area-name {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .c-area-val {
+    font-size: 15px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+    flex-shrink: 0;
+  }
+  .c-area-val-none {
+    font-size: 15px;
+    font-weight: 400;
+    color: #4b5271;
+    flex-shrink: 0;
+  }
+  .c-area-go {
+    color: #4b5271;
+    flex-shrink: 0;
+  }
+
+  /* --- bottom nav ------------------------------------------------ */
+  .c-nav {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    max-width: 430px;
+    margin-inline: auto;
+    background: rgba(12, 15, 31, 0.92);
+    backdrop-filter: blur(14px);
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    align-items: end;
+    padding: 8px 6px calc(8px + env(safe-area-inset-bottom, 0px));
+    z-index: 20;
+  }
+  .c-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-height: 50px;
+    background: none;
+    border: 0;
+    font: inherit;
+    font-size: 11.5px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: var(--ink-faint);
+    cursor: pointer;
+    padding: 2px;
+    border-radius: 10px;
+  }
+  .c-nav-item[aria-current='page'] {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .c-nav-item:focus-visible {
+    outline: 1px solid var(--accent);
+    outline-offset: -2px;
+  }
+  .c-nav-dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+  .c-nav-item[aria-current='page'] .c-nav-dot {
+    opacity: 1;
+  }
+  .c-nav-add {
+    justify-self: center;
+    align-self: center;
+    width: 50px;
+    height: 50px;
+    margin-top: -16px;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    background: var(--raised-2);
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.1s ease, border-color 0.15s ease;
+  }
+  .c-nav-add:active {
+    transform: scale(0.93);
+  }
+  .c-nav-add:hover,
+  .c-nav-add:focus-visible {
+    border-color: var(--accent);
+    color: var(--accent);
+    outline: none;
+  }
+
+  /* --- sheet ------------------------------------------------------ */
+  .c-scrim {
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 3, 8, 0.66);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease;
+    z-index: 30;
+  }
+  .c-scrim[data-open='true'] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .c-sheet {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    max-width: 430px;
+    margin-inline: auto;
+    background: var(--raised);
+    border-top: 1px solid var(--line-strong);
+    border-radius: 20px 20px 0 0;
+    padding: 10px 20px calc(24px + env(safe-area-inset-bottom, 0px));
+    transform: translateY(100%);
+    transition: transform 0.22s cubic-bezier(0.32, 0.72, 0, 1);
+    z-index: 31;
+  }
+  .c-sheet[data-open='true'] {
+    transform: translateY(0);
+  }
+  .c-grip {
+    width: 34px;
+    height: 3px;
+    border-radius: 999px;
+    background: var(--line-strong);
+    margin: 0 auto 16px;
+  }
+  .c-sheet h2 {
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    margin-bottom: 6px;
+  }
+  .c-sheet-row {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    width: 100%;
+    min-height: 52px;
+    padding: 0 2px;
+    background: none;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    font: inherit;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--ink);
+    text-align: start;
+    cursor: pointer;
+  }
+  .c-sheet-row:last-of-type {
+    border-bottom: 0;
+  }
+  .c-sheet-row:focus-visible {
+    outline: 1px solid var(--accent);
+    outline-offset: -2px;
+  }
+  .c-sheet-row svg {
+    color: var(--ink-faint);
+    flex-shrink: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .c-root *,
+    .c-root *::before,
+    .c-root *::after {
+      transition-duration: 0.01ms !important;
+    }
+    .c-sheet {
+      transition: none;
+    }
+  }
+</style>
+
+<div class="c-root" dir="rtl" lang="he">
+  <p class="c-demo">תצוגת עיצוב — כיוון ג׳ · כהה ואלגנטי · נתוני הדגמה בלבד</p>
+
+  <div class="c-page">
+    <header class="c-greet">
+      <h1>ברוך הבא, יוסי</h1>
+      <p>יום שלישי · 29 בספטמבר 2026</p>
+    </header>
+
+    <section class="c-summary" aria-label="סיכום">
+      <div class="c-sum-cell">
+        <span class="c-sum-num">18</span>
+        <span class="c-sum-cap">מתאמנים פעילים</span>
+      </div>
+      <div class="c-sum-rule" aria-hidden="true"></div>
+      <div class="c-sum-cell">
+        <span class="c-sum-num c-sum-num-alert">3</span>
+        <span class="c-sum-cap">התראות פעילות</span>
+      </div>
+    </section>
+
+    <section aria-labelledby="c-attention">
+      <p class="c-label" id="c-attention">דורש התייחסות</p>
+      <ul class="c-list">
+        <li>
+          <button class="c-item" type="button" aria-pressed="false" data-alert>
+            <span class="c-tick c-tick-amber" aria-hidden="true"></span>
+            <span class="c-item-body">
+              <span class="c-item-name">דנה לוי</span>
+              <span class="c-item-text">לא דיווחה תזונה שלושה ימים</span>
+            </span>
+            <span class="c-item-time">3 ימים</span>
+          </button>
+        </li>
+        <li>
+          <button class="c-item" type="button" aria-pressed="false" data-alert>
+            <span class="c-tick c-tick-mint" aria-hidden="true"></span>
+            <span class="c-item-body">
+              <span class="c-item-name">אמיר בן־חיים</span>
+              <span class="c-item-text">השלים את תוכנית האימון</span>
+            </span>
+            <span class="c-item-time">אתמול</span>
+          </button>
+        </li>
+        <li>
+          <button class="c-item" type="button" aria-pressed="false" data-alert>
+            <span class="c-tick" aria-hidden="true"></span>
+            <span class="c-item-body">
+              <span class="c-item-name">מאיה שרון</span>
+              <span class="c-item-text">עדכנה מדידות חדשות</span>
+            </span>
+            <span class="c-item-time">היום</span>
+          </button>
+        </li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="c-areas">
+      <p class="c-label" id="c-areas">האזורים שלי</p>
+      <div class="c-areas">
+        <button class="c-area" type="button" aria-pressed="false" data-area>
+          <span class="c-area-icon" aria-hidden="true">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+            </svg>
+          </span>
+          <span class="c-area-name">לקוחות</span>
+          <span class="c-area-val">18</span>
+          <svg class="c-area-go" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+
+        <button class="c-area" type="button" aria-pressed="false" data-area>
+          <span class="c-area-icon" aria-hidden="true">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+            </svg>
+          </span>
+          <span class="c-area-name">התקדמות</span>
+          <span class="c-area-val-none" aria-hidden="true">—</span>
+          <svg class="c-area-go" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+
+        <button class="c-area" type="button" aria-pressed="false" data-area>
+          <span class="c-area-icon" aria-hidden="true">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20a6 6 0 0 1-6-6c0-4 3-8 6-8s6 4 6 8a6 6 0 0 1-6 6Z" />
+              <path d="M12 6V3" />
+            </svg>
+          </span>
+          <span class="c-area-name">תזונה</span>
+          <span class="c-area-val-none" aria-hidden="true">—</span>
+          <svg class="c-area-go" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+
+        <button class="c-area" type="button" aria-pressed="false" data-area>
+          <span class="c-area-icon" aria-hidden="true">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+          </span>
+          <span class="c-area-name">התראות</span>
+          <span class="c-area-val">3</span>
+          <svg class="c-area-go" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <nav class="c-nav" aria-label="ניווט ראשי">
+    <button class="c-nav-item" type="button" aria-current="page">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 10.5 12 3l9 7.5" />
+        <path d="M5 9v11h14V9" />
+      </svg>
+      בית
+      <span class="c-nav-dot" aria-hidden="true"></span>
+    </button>
+    <button class="c-nav-item" type="button">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+      </svg>
+      לקוחות
+      <span class="c-nav-dot" aria-hidden="true"></span>
+    </button>
+    <button class="c-nav-add" type="button" aria-label="הוספה">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+        <path d="M12 5v14M5 12h14" />
+      </svg>
+    </button>
+    <button class="c-nav-item" type="button">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+        <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+      </svg>
+      התראות
+      <span class="c-nav-dot" aria-hidden="true"></span>
+    </button>
+    <button class="c-nav-item" type="button" data-more aria-haspopup="dialog" aria-expanded="false">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="5" cy="12" r="1.4" fill="currentColor" />
+        <circle cx="12" cy="12" r="1.4" fill="currentColor" />
+        <circle cx="19" cy="12" r="1.4" fill="currentColor" />
+      </svg>
+      עוד
+      <span class="c-nav-dot" aria-hidden="true"></span>
+    </button>
+  </nav>
+
+  <div class="c-scrim" data-scrim></div>
+  <div class="c-sheet" data-sheet role="dialog" aria-modal="true" aria-label="תפריט נוסף" data-open="false">
+    <div class="c-grip" aria-hidden="true"></div>
+    <h2>עוד</h2>
+    <button class="c-sheet-row" type="button">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+      </svg>
+      התקדמות
+    </button>
+    <button class="c-sheet-row" type="button">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 20a6 6 0 0 1-6-6c0-4 3-8 6-8s6 4 6 8a6 6 0 0 1-6 6Z" />
+      </svg>
+      תזונה
+    </button>
+    <button class="c-sheet-row" type="button">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="3" />
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09A1.65 1.65 0 0 0 15 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9Z" />
+      </svg>
+      הגדרות
+    </button>
+    <button class="c-sheet-row" type="button" data-close>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+        <path d="M18 6 6 18M6 6l12 12" />
+      </svg>
+      סגירה
+    </button>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const root = document.querySelector('.c-root')
+    const sheet = root.querySelector('[data-sheet]')
+    const scrim = root.querySelector('[data-scrim]')
+    const moreBtn = root.querySelector('[data-more]')
+
+    function setSheet(open) {
+      sheet.dataset.open = String(open)
+      scrim.dataset.open = String(open)
+      moreBtn.setAttribute('aria-expanded', String(open))
+      if (open) sheet.querySelector('.c-sheet-row').focus()
+      else moreBtn.focus()
+    }
+
+    moreBtn.addEventListener('click', () => setSheet(sheet.dataset.open !== 'true'))
+    scrim.addEventListener('click', () => setSheet(false))
+    root.querySelector('[data-close]').addEventListener('click', () => setSheet(false))
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && sheet.dataset.open === 'true') setSheet(false)
+    })
+
+    root.querySelectorAll('[data-alert]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        btn.setAttribute('aria-pressed', btn.getAttribute('aria-pressed') === 'true' ? 'false' : 'true')
+      })
+    })
+
+    const areas = [...root.querySelectorAll('[data-area]')]
+    areas.forEach((area) => {
+      area.addEventListener('click', () => {
+        const wasOn = area.getAttribute('aria-pressed') === 'true'
+        areas.forEach((a) => a.setAttribute('aria-pressed', 'false'))
+        area.setAttribute('aria-pressed', wasOn ? 'false' : 'true')
+      })
+    })
+  })()
+</script>

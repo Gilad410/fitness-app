@@ -1,0 +1,709 @@
+<meta charset="utf-8" />
+<title>מרכז אימון — נקי ובהיר</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap"
+/>
+
+<style>
+  /* ===================================================================
+     Direction A — "נקי ובהיר" (Clean & light)
+     Closest of the three to the committed Electric Coach system: same
+     ink-navy / electric-blue / lavender family, but given more air.
+     Hierarchy is carried by whitespace and weight rather than by colour,
+     so the one blue action reads immediately on a small screen.
+     Single-theme by intent: this is a product surface being compared
+     against two others, so it must not flip with the OS theme.
+     =================================================================== */
+  .a-root {
+    --ground: #f6f7fc;
+    --surface: #ffffff;
+    --ink: #12153a;
+    --ink-soft: #5b6178;
+    /* darkened from #868ba3, which only reached 3.1:1 on this ground */
+    --ink-faint: #676d8c;
+    --accent: #2f6fed;
+    --accent-deep: #1d4ed8;
+    --accent-wash: #eaf1fe;
+    --border: #e4e7f4;
+    --caution: #b45309;
+    --caution-wash: #fdf4e7;
+    --coral: #c8362a;
+    --mint: #0f8a6c;
+    --mint-wash: #e6f6f1;
+
+    --radius-tile: 18px;
+    --radius-pill: 999px;
+
+    font-family: 'Heebo', 'Rubik', 'Segoe UI', system-ui, sans-serif;
+    background: var(--ground);
+    color: var(--ink);
+    min-height: 100vh;
+    max-width: 430px;
+    margin-inline: auto;
+    padding-bottom: 92px;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .a-root *,
+  .a-root *::before,
+  .a-root *::after {
+    box-sizing: border-box;
+  }
+
+  .a-root p,
+  .a-root h1,
+  .a-root h2,
+  .a-root h3,
+  .a-root ul {
+    margin: 0;
+    padding: 0;
+  }
+  .a-root ul {
+    list-style: none;
+  }
+
+  /* --- demo banner: follows the existing /design-preview convention --- */
+  .a-demo {
+    background: var(--ink);
+    color: #cbd0ec;
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-align: center;
+    padding: 7px 14px;
+  }
+
+  .a-page {
+    padding: 22px 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+  }
+
+  /* --- greeting ------------------------------------------------- */
+  .a-greet h1 {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  .a-greet p {
+    margin-top: 5px;
+    font-size: 13.5px;
+    color: var(--ink-faint);
+  }
+
+  /* --- "needs attention" summary — the one thing above the fold --- */
+  .a-focus {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-tile);
+    padding: 18px 18px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .a-focus-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .a-focus-head h2 {
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .a-focus-count {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--caution);
+    background: var(--caution-wash);
+    border-radius: var(--radius-pill);
+    padding: 3px 10px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .a-alerts {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .a-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    width: 100%;
+    min-height: 48px;
+    padding: 9px 4px;
+    background: none;
+    border: 0;
+    border-radius: 11px;
+    text-align: start;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+  .a-alert + .a-alert {
+    border-top: 1px solid var(--border);
+  }
+  .a-alert:hover,
+  .a-alert:focus-visible {
+    background: #fafbff;
+  }
+  .a-alert:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+  .a-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    margin-top: 7px;
+    flex-shrink: 0;
+  }
+  .a-dot-caution {
+    background: var(--caution);
+  }
+  .a-dot-mint {
+    background: var(--mint);
+  }
+  .a-dot-accent {
+    background: var(--accent);
+  }
+  .a-alert-body {
+    min-width: 0;
+  }
+  .a-alert-name {
+    font-size: 14.5px;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+  .a-alert-text {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.45;
+    margin-top: 1px;
+  }
+  .a-alert[aria-pressed='true'] .a-alert-name,
+  .a-alert[aria-pressed='true'] .a-alert-text {
+    color: var(--ink-faint);
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+  }
+  .a-alert[aria-pressed='true'] .a-dot {
+    background: var(--border);
+  }
+
+  .a-focus-link {
+    align-self: flex-start;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--accent);
+    background: none;
+    border: 0;
+    padding: 0 4px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .a-focus-link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  /* --- capability tiles ------------------------------------------ */
+  .a-section-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    color: var(--ink-faint);
+    margin-bottom: 11px;
+  }
+  .a-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .a-tile {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-tile);
+    padding: 15px 14px 13px;
+    min-height: 116px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    text-align: start;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    transition:
+      border-color 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+  .a-tile:hover {
+    box-shadow: 0 2px 6px rgba(18, 21, 58, 0.06);
+  }
+  .a-tile:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .a-tile[aria-pressed='true'] {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
+  }
+  .a-tile-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 11px;
+    background: var(--accent-wash);
+    color: var(--accent-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .a-tile-name {
+    font-size: 14.5px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .a-tile-foot {
+    margin-top: auto;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .a-stat {
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .a-stat-none {
+    font-size: 25px;
+    font-weight: 700;
+    color: #c5c9dc;
+    line-height: 1;
+  }
+  .a-stat-cap {
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    line-height: 1.3;
+  }
+
+  /* --- bottom nav ------------------------------------------------- */
+  .a-nav {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    max-width: 430px;
+    margin-inline: auto;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    align-items: end;
+    padding: 7px 6px calc(7px + env(safe-area-inset-bottom, 0px));
+    z-index: 20;
+  }
+  .a-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    min-height: 50px;
+    justify-content: center;
+    background: none;
+    border: 0;
+    font: inherit;
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--ink-faint);
+    cursor: pointer;
+    padding: 2px;
+    border-radius: 10px;
+  }
+  .a-nav-item:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
+  .a-nav-item[aria-current='page'] {
+    color: var(--accent-deep);
+    font-weight: 600;
+  }
+  .a-nav-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0;
+    transform: scale(0.5);
+    transition:
+      opacity 0.15s ease,
+      transform 0.15s ease;
+  }
+  .a-nav-item[aria-current='page'] .a-nav-dot {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .a-nav-add {
+    align-self: center;
+    width: 54px;
+    height: 54px;
+    margin-top: -20px;
+    border-radius: 50%;
+    border: 4px solid var(--surface);
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 16px rgba(47, 111, 237, 0.4);
+    cursor: pointer;
+    justify-self: center;
+    transition: transform 0.1s ease;
+  }
+  .a-nav-add:active {
+    transform: scale(0.92);
+  }
+  .a-nav-add:focus-visible {
+    outline: 2px solid var(--accent-deep);
+    outline-offset: 3px;
+  }
+
+  /* --- "more" sheet ------------------------------------------------ */
+  .a-scrim {
+    position: fixed;
+    inset: 0;
+    background: rgba(18, 21, 58, 0.34);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease;
+    z-index: 30;
+  }
+  .a-scrim[data-open='true'] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .a-sheet {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    max-width: 430px;
+    margin-inline: auto;
+    background: var(--surface);
+    border-radius: 22px 22px 0 0;
+    padding: 10px 18px calc(22px + env(safe-area-inset-bottom, 0px));
+    transform: translateY(100%);
+    transition: transform 0.22s cubic-bezier(0.32, 0.72, 0, 1);
+    z-index: 31;
+    box-shadow: 0 -8px 24px rgba(16, 20, 51, 0.16);
+  }
+  .a-sheet[data-open='true'] {
+    transform: translateY(0);
+  }
+  .a-sheet-grip {
+    width: 38px;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--border);
+    margin: 0 auto 14px;
+  }
+  .a-sheet h2 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .a-sheet-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 52px;
+    padding: 0 6px;
+    background: none;
+    border: 0;
+    border-radius: 12px;
+    font: inherit;
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--ink);
+    text-align: start;
+    cursor: pointer;
+  }
+  .a-sheet-row + .a-sheet-row {
+    border-top: 1px solid var(--border);
+  }
+  .a-sheet-row:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
+  .a-sheet-row svg {
+    color: var(--ink-faint);
+    flex-shrink: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .a-root *,
+    .a-root *::before,
+    .a-root *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+    .a-sheet {
+      transition: none;
+    }
+  }
+</style>
+
+<div class="a-root" dir="rtl" lang="he">
+  <p class="a-demo">תצוגת עיצוב — כיוון א׳ · נקי ובהיר · נתוני הדגמה בלבד</p>
+
+  <div class="a-page">
+    <header class="a-greet">
+      <h1>ברוך הבא, יוסי</h1>
+      <p>יום שלישי, 29 בספטמבר 2026</p>
+    </header>
+
+    <!-- The single most useful thing on a coach's phone: what changed
+         since they last looked, and who it concerns. -->
+    <section class="a-focus" aria-labelledby="a-focus-title">
+      <div class="a-focus-head">
+        <h2 id="a-focus-title">דורש התייחסות</h2>
+        <span class="a-focus-count">3 התראות</span>
+      </div>
+
+      <ul class="a-alerts">
+        <li>
+          <button class="a-alert" type="button" aria-pressed="false" data-alert>
+            <span class="a-dot a-dot-caution" aria-hidden="true"></span>
+            <span class="a-alert-body">
+              <span class="a-alert-name">דנה לוי</span>
+              <span class="a-alert-text">לא דיווחה תזונה שלושה ימים</span>
+            </span>
+          </button>
+        </li>
+        <li>
+          <button class="a-alert" type="button" aria-pressed="false" data-alert>
+            <span class="a-dot a-dot-mint" aria-hidden="true"></span>
+            <span class="a-alert-body">
+              <span class="a-alert-name">אמיר בן־חיים</span>
+              <span class="a-alert-text">השלים את תוכנית האימון</span>
+            </span>
+          </button>
+        </li>
+        <li>
+          <button class="a-alert" type="button" aria-pressed="false" data-alert>
+            <span class="a-dot a-dot-accent" aria-hidden="true"></span>
+            <span class="a-alert-body">
+              <span class="a-alert-name">מאיה שרון</span>
+              <span class="a-alert-text">עדכנה מדידות חדשות</span>
+            </span>
+          </button>
+        </li>
+      </ul>
+
+      <button class="a-focus-link" type="button">
+        לכל ההתראות
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </button>
+    </section>
+
+    <section aria-labelledby="a-areas-title">
+      <p class="a-section-label" id="a-areas-title">האזורים שלי</p>
+      <div class="a-grid">
+        <button class="a-tile" type="button" aria-pressed="false" data-tile>
+          <span class="a-tile-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            </svg>
+          </span>
+          <span class="a-tile-name">לקוחות</span>
+          <span class="a-tile-foot">
+            <span class="a-stat">18</span>
+            <span class="a-stat-cap">לא כולל ארכיון</span>
+          </span>
+        </button>
+
+        <button class="a-tile" type="button" aria-pressed="false" data-tile>
+          <span class="a-tile-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+            </svg>
+          </span>
+          <span class="a-tile-name">התקדמות</span>
+          <span class="a-tile-foot">
+            <span class="a-stat-none" aria-hidden="true">—</span>
+            <span class="a-stat-cap">מעקב והישגים</span>
+          </span>
+        </button>
+
+        <button class="a-tile" type="button" aria-pressed="false" data-tile>
+          <span class="a-tile-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20a6 6 0 0 1-6-6c0-4 3-8 6-8s6 4 6 8a6 6 0 0 1-6 6Z" />
+              <path d="M12 6V3" />
+            </svg>
+          </span>
+          <span class="a-tile-name">תזונה</span>
+          <span class="a-tile-foot">
+            <span class="a-stat-none" aria-hidden="true">—</span>
+            <span class="a-stat-cap">תוכניות למתאמנים</span>
+          </span>
+        </button>
+
+        <button class="a-tile" type="button" aria-pressed="false" data-tile>
+          <span class="a-tile-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+          </span>
+          <span class="a-tile-name">התראות</span>
+          <span class="a-tile-foot">
+            <span class="a-stat">3</span>
+            <span class="a-stat-cap">התראות פעילות</span>
+          </span>
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <nav class="a-nav" aria-label="ניווט ראשי">
+    <button class="a-nav-item" type="button" aria-current="page">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 10.5 12 3l9 7.5" />
+        <path d="M5 9v11h14V9" />
+      </svg>
+      בית
+      <span class="a-nav-dot" aria-hidden="true"></span>
+    </button>
+
+    <button class="a-nav-item" type="button">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+      </svg>
+      לקוחות
+      <span class="a-nav-dot" aria-hidden="true"></span>
+    </button>
+
+    <button class="a-nav-add" type="button" aria-label="הוספה">
+      <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" aria-hidden="true">
+        <path d="M12 5v14M5 12h14" />
+      </svg>
+    </button>
+
+    <button class="a-nav-item" type="button">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+        <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+      </svg>
+      התראות
+      <span class="a-nav-dot" aria-hidden="true"></span>
+    </button>
+
+    <button class="a-nav-item" type="button" data-more aria-haspopup="dialog" aria-expanded="false">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+        <circle cx="5" cy="12" r="1.3" fill="currentColor" />
+        <circle cx="12" cy="12" r="1.3" fill="currentColor" />
+        <circle cx="19" cy="12" r="1.3" fill="currentColor" />
+      </svg>
+      עוד
+      <span class="a-nav-dot" aria-hidden="true"></span>
+    </button>
+  </nav>
+
+  <div class="a-scrim" data-scrim></div>
+  <div class="a-sheet" data-sheet role="dialog" aria-modal="true" aria-label="תפריט נוסף" data-open="false">
+    <div class="a-sheet-grip" aria-hidden="true"></div>
+    <h2>עוד</h2>
+    <button class="a-sheet-row" type="button">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+      </svg>
+      התקדמות
+    </button>
+    <button class="a-sheet-row" type="button">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 20a6 6 0 0 1-6-6c0-4 3-8 6-8s6 4 6 8a6 6 0 0 1-6 6Z" />
+      </svg>
+      תזונה
+    </button>
+    <button class="a-sheet-row" type="button">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="3" />
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09A1.65 1.65 0 0 0 15 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9Z" />
+      </svg>
+      הגדרות
+    </button>
+    <button class="a-sheet-row" type="button" data-close>
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <path d="M18 6 6 18M6 6l12 12" />
+      </svg>
+      סגירה
+    </button>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const root = document.querySelector('.a-root')
+    const sheet = root.querySelector('[data-sheet]')
+    const scrim = root.querySelector('[data-scrim]')
+    const moreBtn = root.querySelector('[data-more]')
+
+    function setSheet(open) {
+      sheet.dataset.open = String(open)
+      scrim.dataset.open = String(open)
+      moreBtn.setAttribute('aria-expanded', String(open))
+      if (open) {
+        sheet.querySelector('.a-sheet-row').focus()
+      } else {
+        moreBtn.focus()
+      }
+    }
+
+    moreBtn.addEventListener('click', () => setSheet(sheet.dataset.open !== 'true'))
+    scrim.addEventListener('click', () => setSheet(false))
+    root.querySelector('[data-close]').addEventListener('click', () => setSheet(false))
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && sheet.dataset.open === 'true') setSheet(false)
+    })
+
+    // Alerts: tapping one marks it handled (visual only — nothing is stored).
+    root.querySelectorAll('[data-alert]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        btn.setAttribute('aria-pressed', btn.getAttribute('aria-pressed') === 'true' ? 'false' : 'true')
+      })
+    })
+
+    // Tiles behave as a single-select group, so "selected" reads clearly.
+    const tiles = [...root.querySelectorAll('[data-tile]')]
+    tiles.forEach((tile) => {
+      tile.addEventListener('click', () => {
+        const wasOn = tile.getAttribute('aria-pressed') === 'true'
+        tiles.forEach((t) => t.setAttribute('aria-pressed', 'false'))
+        tile.setAttribute('aria-pressed', wasOn ? 'false' : 'true')
+      })
+    })
+  })()
+</script>
