@@ -180,6 +180,38 @@ body {
   transform: scale(1);
 }
 
+/*
+ * Swipe-between-pages slide (lib/useSwipeNavigation.js). The class is set
+ * on <main> at the moment a swipe triggers a navigation and cleared on
+ * animationend, so only a swipe animates -- tapping the bottom nav or
+ * pressing back still changes pages instantly, which is what those
+ * controls have always felt like.
+ *
+ * Logical properties, so the direction is correct in this RTL app without
+ * a second rule: "from-start" enters from the inline start (the right in
+ * Hebrew), matching a finger that travelled left.
+ */
+.ec-slide-from-start,
+.ec-slide-from-end {
+  animation: ec-slide-in 0.26s cubic-bezier(0.22, 0.9, 0.24, 1);
+}
+.ec-slide-from-start {
+  --ec-slide-offset: 22px;
+}
+.ec-slide-from-end {
+  --ec-slide-offset: -22px;
+}
+@keyframes ec-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(var(--ec-slide-offset, 0));
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 /* Respected everywhere: strips every transform-based motion above down
    to opacity-only (or nothing, for the press feedback), instantly. */
 @media (prefers-reduced-motion: reduce) {
@@ -195,5 +227,21 @@ body {
   }
   .ec-press:active {
     transform: none !important;
+  }
+  /* The slide still has to run so its animationend fires and clears the
+     class -- it is just made instant and motionless. */
+  .ec-slide-from-start,
+  .ec-slide-from-end {
+    animation-duration: 0.01ms !important;
+  }
+  @keyframes ec-slide-in {
+    from {
+      opacity: 1;
+      transform: none;
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
 }
