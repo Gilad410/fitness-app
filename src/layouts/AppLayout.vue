@@ -1,11 +1,13 @@
 <script setup>
 import { ref, useTemplateRef } from 'vue'
+import { useRouter } from 'vue-router'
 import TheHeader from '../components/layout/TheHeader.vue'
 import TheSidebar from '../components/layout/TheSidebar.vue'
 import TheBottomNavElectric from '../components/layout/TheBottomNavElectric.vue'
 import { useSelectedTraineeStore } from '../features/trainees/store/selectedTrainee'
 import { useSwipeNavigation } from '../lib/useSwipeNavigation'
 import { COACH_SWIPE_ROUTES } from '../lib/swipeNavigation'
+import { prefetchRoutes } from '../lib/prefetchRoutes'
 
 // Every coach screen (dashboard, trainees, nutrition, progress, training,
 // alerts) renders through this one shared layout, so applying the
@@ -37,6 +39,10 @@ useSelectedTraineeStore().restore()
 // than dragging a carousel.
 const mainRef = useTemplateRef('main')
 const { slideFrom } = useSwipeNavigation(mainRef, COACH_SWIPE_ROUTES)
+
+// Warm the neighbouring screens' code while the device is idle, so a
+// swipe never waits on a chunk download. See lib/prefetchRoutes.js.
+prefetchRoutes(useRouter(), COACH_SWIPE_ROUTES)
 </script>
 
 <template>

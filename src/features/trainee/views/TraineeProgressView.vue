@@ -1,4 +1,11 @@
 <script setup>
+// Explicit name so <KeepAlive :include> in App.vue can match this view.
+// The name Vite infers from the filename exists only in development
+// builds, so relying on it would have made the whole keep-alive a
+// silent no-op in production -- the screens would still have
+// re-mounted and re-fetched on every swipe.
+defineOptions({ name: 'TraineeProgressView' })
+
 import { computed, onMounted, ref } from 'vue'
 import TraineeLayout from '../layouts/TraineeLayout.vue'
 import { useTraineeProgressLogsStore } from '../store/traineeProgressLogs'

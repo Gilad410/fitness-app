@@ -1,11 +1,13 @@
 <script setup>
 import { ref, useTemplateRef } from 'vue'
+import { useRouter } from 'vue-router'
 import TraineeHeader from '../components/TraineeHeader.vue'
 import TraineeSidebar from '../components/TraineeSidebar.vue'
 import TraineeBottomNavElectric from '../components/TraineeBottomNavElectric.vue'
 import TraineeRestBar from '../components/TraineeRestBar.vue'
 import { useSwipeNavigation } from '../../../lib/useSwipeNavigation'
 import { TRAINEE_SWIPE_ROUTES } from '../../../lib/swipeNavigation'
+import { prefetchRoutes } from '../../../lib/prefetchRoutes'
 
 // Trainee-only layout -- structurally mirrors src/layouts/AppLayout.vue
 // (same header+sidebar+bottom-nav+main shape, same "Electric Coach" visual
@@ -24,6 +26,10 @@ const isSidebarOpen = ref(false)
 // navigates rather than dragging a carousel.
 const mainRef = useTemplateRef('main')
 const { slideFrom } = useSwipeNavigation(mainRef, TRAINEE_SWIPE_ROUTES)
+
+// Warm the neighbouring screens' code while the device is idle, so a
+// swipe never waits on a chunk download. See lib/prefetchRoutes.js.
+prefetchRoutes(useRouter(), TRAINEE_SWIPE_ROUTES)
 </script>
 
 <template>

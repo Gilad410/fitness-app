@@ -1,5 +1,12 @@
 <script setup>
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+// Explicit name so <KeepAlive :include> in App.vue can match this view.
+// The name Vite infers from the filename exists only in development
+// builds, so relying on it would have made the whole keep-alive a
+// silent no-op in production -- the screens would still have
+// re-mounted and re-fetched on every swipe.
+defineOptions({ name: 'TraineeNutritionView' })
+
+import { computed, onActivated, onDeactivated, onMounted, onUnmounted, ref, watch } from 'vue'
 import TraineeLayout from '../layouts/TraineeLayout.vue'
 import ExternalChainLink from '../../nutrition/components/ExternalChainLink.vue'
 import { externalChainLinks } from '../../nutrition/config/externalChainLinks'
@@ -80,8 +87,18 @@ const selectedDate = ref(todayIsoDate())
 // already-fetched entry once it ages out of the 7-day retention window,
 // without needing a fresh fetch. Started in onMounted, stopped in
 // onUnmounted.
+// Activation, not mount: this view is kept alive between navigations
+// (App.vue), so onUnmounted no longer fires when the trainee swipes away.
+// Tying the clock to activate/deactivate keeps it running exactly while
+// the screen is on display, instead of for the rest of the session.
 onMounted(() => {
   startRetentionClock()
+})
+onActivated(() => {
+  startRetentionClock()
+})
+onDeactivated(() => {
+  stopRetentionClock()
 })
 onUnmounted(() => {
   stopRetentionClock()

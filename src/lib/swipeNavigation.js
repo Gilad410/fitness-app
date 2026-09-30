@@ -19,6 +19,25 @@ export const TRAINEE_SWIPE_ROUTES = [
   '/trainee/progress',
 ]
 
+// The components behind those routes, by name, for <KeepAlive> in
+// App.vue. A screen that stays alive keeps its DOM and its already-
+// fetched data, so swiping back to it shows the screen itself rather
+// than its loading state -- which is the whole difference between
+// "navigating" and "sliding".
+//
+// Names are matched against each SFC's inferred component name (its
+// filename). A name that does not match simply is not cached, so a
+// rename degrades to today's behaviour rather than breaking anything.
+export const KEEP_ALIVE_VIEWS = [
+  'DashboardView',
+  'TraineesListView',
+  'AlertsView',
+  'TraineeHomeView',
+  'TraineeTrainingView',
+  'TraineeNutritionView',
+  'TraineeProgressView',
+]
+
 /**
  * Which path a swipe should navigate to, or null when it should be
  * ignored.
