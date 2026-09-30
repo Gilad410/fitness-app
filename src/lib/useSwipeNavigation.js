@@ -6,75 +6,154 @@ import {
   startedInHorizontalScroller,
 } from './swipeNavigation'
 
-// Swipe left/right to move between a portal's main destinations. Mounted
-// once per layout -- AppLayout.vue for the coach, TraineeLayout.vue for
-// the trainee -- each passing its own ordered route list.
+// Swipe left/right between a portal's main destinations. Mounted once per
+// layout -- AppLayout.vue for the coach, TraineeLayout.vue for the
+// trainee -- each passing its own ordered route list.
 //
-// WHY A GESTURE AND NOT A CAROUSEL. A finger-following carousel needs the
-// outgoing and incoming pages rendered at the same time. Every screen
-// here is its own route, mounted and unmounted by vue-router, so getting
-// that would mean holding several routes alive at once and driving the
-// URL from scroll position -- which breaks deep links, the back button,
-// and per-page scroll restoration, on a production app, for a navigation
-// nicety. This recognises the gesture and performs a normal router
-// navigation, with a short slide so the movement still reads as pages
-// moving rather than pages blinking.
+// THE PAGE FOLLOWS THE FINGER. The first version of this only acted on
+// touchend: nothing on screen moved until the finger lifted, so the
+// gesture felt dead and the navigation felt like a delayed jump. Now the
+// page translates under the finger from the first millimetre, and the
+// release only decides whether that movement completes or springs back.
+// The perceived latency of a gesture is the time until something moves,
+// not the time until it finishes.
 //
-// The listeners are touch-only on purpose: a mouse drag across a page is
-// a text selection, not a navigation, and stealing it would be worse than
-// not having the feature on desktop -- where the sidebar already exists.
+// Two things make that actually fast:
+//   · `touch-action: pan-y` on the element (set in style.css) tells the
+//     browser up front that horizontal movement is ours. Without it the
+//     browser waits to see whether the gesture is a scroll before
+//     releasing touchmove events, which is its own source of lag.
+//   · The drag writes el.style.transform directly inside rAF rather than
+//     going through Vue reactivity every frame. Transform is composited,
+//     so the drag never triggers layout or paint.
+//
+// Touch-only on purpose: a mouse drag across a page is a text selection,
+// and desktop already has the sidebar.
 export function useSwipeNavigation(targetRef, routes) {
   const router = useRouter()
-  // Drives the CSS slide; read by the layout's <main> as a class.
+  // Drives the enter animation after a committed swipe.
   const slideFrom = ref('')
 
   let startX = 0
   let startY = 0
-  let startedInScroller = false
+  let dx = 0
+  let axis = null // null = undecided, 'x' = ours, 'y' = the page scrolls
   let tracking = false
+  let frame = null
+
+  function paint() {
+    frame = null
+    const el = targetRef.value
+    if (el) el.style.transform = dx === 0 ? '' : `translate3d(${dx}px,0,0)`
+  }
+  function schedule() {
+    if (frame === null) frame = requestAnimationFrame(paint)
+  }
+  function release(el) {
+    if (frame !== null) {
+      cancelAnimationFrame(frame)
+      frame = null
+    }
+    el.style.transition = ''
+    el.style.transform = ''
+    el.style.willChange = ''
+  }
 
   function onTouchStart(event) {
-    // Pinch/zoom or a second finger mid-gesture: not a swipe.
+    const el = targetRef.value
+    if (!el) return
     if (event.touches.length !== 1) {
       tracking = false
       return
     }
-    const touch = event.touches[0]
-    startX = touch.clientX
-    startY = touch.clientY
+    const t = event.touches[0]
+    startX = t.clientX
+    startY = t.clientY
+    dx = 0
+    axis = null
     tracking = true
-    startedInScroller = startedInHorizontalScroller(event.target, targetRef.value)
+    // No transition while the finger is down -- the page must track it
+    // exactly, not chase it.
+    el.style.transition = 'none'
+    el.style.willChange = 'transform'
   }
 
-  function onTouchEnd(event) {
+  function onTouchMove(event) {
+    if (!tracking) return
+    const el = targetRef.value
+    if (!el || event.touches.length !== 1) return
+
+    const t = event.touches[0]
+    const mx = t.clientX - startX
+    const my = t.clientY - startY
+
+    if (axis === null) {
+      // Decide once, on the first few pixels, and never revisit it: a
+      // gesture that changes its mind mid-stroke feels broken.
+      if (Math.abs(mx) < 5 && Math.abs(my) < 5) return
+      axis = Math.abs(mx) > Math.abs(my) ? 'x' : 'y'
+      if (axis === 'y') {
+        release(el)
+        tracking = false
+        return
+      }
+    }
+    if (axis !== 'x') return
+
+    // Rubber-band when there is nothing to swipe to, so the end of the
+    // list feels like an edge rather than a dead control.
+    const target = resolveSwipeTarget(router.currentRoute.value.path, mx, routes)
+    dx = target ? mx : mx * 0.25
+    schedule()
+  }
+
+  function finish(event) {
     if (!tracking) return
     tracking = false
-    if (startedInScroller) return
-    const touch = event.changedTouches && event.changedTouches[0]
-    // Fingers still down, or none recorded: not a completed single-finger
-    // swipe.
-    if (!touch || event.touches.length > 0) return
+    const el = targetRef.value
+    if (!el) return
 
-    const deltaX = touch.clientX - startX
-    const deltaY = touch.clientY - startY
-    if (!isHorizontalSwipe(deltaX, deltaY)) return
+    const t = event.changedTouches && event.changedTouches[0]
+    const settled = axis === 'x' && t && event.touches.length === 0
+    if (!settled) {
+      release(el)
+      return
+    }
 
-    const target = resolveSwipeTarget(router.currentRoute.value.path, deltaX, routes)
-    if (!target) return
+    const totalX = t.clientX - startX
+    const totalY = t.clientY - startY
+    const target =
+      isHorizontalSwipe(totalX, totalY) &&
+      !startedInHorizontalScroller(t.target, el)
+        ? resolveSwipeTarget(router.currentRoute.value.path, totalX, routes)
+        : null
 
-    // The new page enters from the side the finger travelled towards, so
-    // the motion matches the gesture instead of contradicting it.
-    slideFrom.value = deltaX < 0 ? 'ec-slide-from-start' : 'ec-slide-from-end'
+    if (!target) {
+      // Spring back to where it was. Short, so a rejected swipe does not
+      // hold the page hostage.
+      if (frame !== null) {
+        cancelAnimationFrame(frame)
+        frame = null
+      }
+      el.style.transition = 'transform 0.16s cubic-bezier(0.22,0.9,0.24,1)'
+      el.style.transform = ''
+      dx = 0
+      setTimeout(() => {
+        if (!tracking) {
+          el.style.transition = ''
+          el.style.willChange = ''
+        }
+      }, 170)
+      return
+    }
+
+    // Committed. The new page enters from the side the finger travelled
+    // towards, continuing the movement instead of restarting it.
+    slideFrom.value = totalX < 0 ? 'ec-slide-from-start' : 'ec-slide-from-end'
+    release(el)
     router.push(target)
   }
 
-  function onTouchCancel() {
-    tracking = false
-  }
-
-  // Clear the animation class once it has played, so a later navigation
-  // that did NOT come from a swipe (a nav tap, the back button) does not
-  // inherit a stale slide direction.
   function onAnimationEnd() {
     slideFrom.value = ''
   }
@@ -83,17 +162,20 @@ export function useSwipeNavigation(targetRef, routes) {
     const el = targetRef.value
     if (!el) return
     el.addEventListener('touchstart', onTouchStart, { passive: true })
-    el.addEventListener('touchend', onTouchEnd, { passive: true })
-    el.addEventListener('touchcancel', onTouchCancel, { passive: true })
+    el.addEventListener('touchmove', onTouchMove, { passive: true })
+    el.addEventListener('touchend', finish, { passive: true })
+    el.addEventListener('touchcancel', finish, { passive: true })
     el.addEventListener('animationend', onAnimationEnd)
   })
 
   onBeforeUnmount(() => {
     const el = targetRef.value
+    if (frame !== null) cancelAnimationFrame(frame)
     if (!el) return
     el.removeEventListener('touchstart', onTouchStart)
-    el.removeEventListener('touchend', onTouchEnd)
-    el.removeEventListener('touchcancel', onTouchCancel)
+    el.removeEventListener('touchmove', onTouchMove)
+    el.removeEventListener('touchend', finish)
+    el.removeEventListener('touchcancel', finish)
     el.removeEventListener('animationend', onAnimationEnd)
   })
 

@@ -1,39 +1,47 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import DashboardView from '../features/dashboard/views/DashboardView.vue'
-import LoginView from '../features/auth/views/LoginView.vue'
-import ForgotPasswordView from '../features/auth/views/ForgotPasswordView.vue'
-import ResetPasswordView from '../features/auth/views/ResetPasswordView.vue'
-import TraineesListView from '../features/trainees/views/TraineesListView.vue'
-import TraineeFormView from '../features/trainees/views/TraineeFormView.vue'
-import TraineeInviteView from '../features/trainees/views/TraineeInviteView.vue'
-import TraineeDetailView from '../features/trainees/views/TraineeDetailView.vue'
-import NutritionTraineesListView from '../features/nutrition/views/NutritionTraineesListView.vue'
-import NutritionWorkspaceView from '../features/nutrition/views/NutritionWorkspaceView.vue'
-import ProgressTraineesListView from '../features/progress/views/ProgressTraineesListView.vue'
-import ProgressWorkspaceView from '../features/progress/views/ProgressWorkspaceView.vue'
-import TrainingTraineesListView from '../features/training/views/TrainingTraineesListView.vue'
-import TrainingProgramsListView from '../features/training/views/TrainingProgramsListView.vue'
-import TrainingProgramDetailView from '../features/training/views/TrainingProgramDetailView.vue'
-import AlertsView from '../features/alerts/views/AlertsView.vue'
-import TraineeJoinView from '../features/trainee/views/TraineeJoinView.vue'
-import TraineeLoginView from '../features/trainee/views/TraineeLoginView.vue'
-import TraineeForgotPasswordView from '../features/trainee/views/TraineeForgotPasswordView.vue'
-import TraineeResetPasswordView from '../features/trainee/views/TraineeResetPasswordView.vue'
-import TraineeHomeView from '../features/trainee/views/TraineeHomeView.vue'
-import TraineeNotificationsView from '../features/trainee/views/TraineeNotificationsView.vue'
-import TraineeTrainingView from '../features/trainee/views/TraineeTrainingView.vue'
-import TraineeNutritionView from '../features/trainee/views/TraineeNutritionView.vue'
-import TraineeProgressView from '../features/trainee/views/TraineeProgressView.vue'
-import TraineeMeasurementsView from '../features/trainee/views/TraineeMeasurementsView.vue'
-import NoAccessView from '../features/trainee/views/NoAccessView.vue'
-import DesignPreviewHome from '../features/designPreview/DesignPreviewHome.vue'
-import DesignPreviewNutrition from '../features/designPreview/DesignPreviewNutrition.vue'
-import CoachJoinView from '../features/auth/views/CoachJoinView.vue'
-import CoachSuspendedView from '../features/auth/views/CoachSuspendedView.vue'
-import CoachPendingApprovalView from '../features/auth/views/CoachPendingApprovalView.vue'
-import OwnerCoachesView from '../features/owner/views/OwnerCoachesView.vue'
-import OwnerMfaSetupView from '../features/auth/views/OwnerMfaSetupView.vue'
-import OwnerMfaChallengeView from '../features/auth/views/OwnerMfaChallengeView.vue'
+
+// Every route component is loaded on demand. They used to be 35 static
+// imports, which meant the coach dashboard, the trainee portal, every
+// workspace and both design previews were all parsed before the login
+// screen could paint -- on a phone, seconds of nothing. Each route now
+// ships as its own chunk and arrives when that route is actually
+// visited. The router guard and the stores it needs stay eager, since
+// they run on the very first navigation.
+const DashboardView = () => import('../features/dashboard/views/DashboardView.vue')
+const LoginView = () => import('../features/auth/views/LoginView.vue')
+const ForgotPasswordView = () => import('../features/auth/views/ForgotPasswordView.vue')
+const ResetPasswordView = () => import('../features/auth/views/ResetPasswordView.vue')
+const TraineesListView = () => import('../features/trainees/views/TraineesListView.vue')
+const TraineeFormView = () => import('../features/trainees/views/TraineeFormView.vue')
+const TraineeInviteView = () => import('../features/trainees/views/TraineeInviteView.vue')
+const TraineeDetailView = () => import('../features/trainees/views/TraineeDetailView.vue')
+const NutritionTraineesListView = () => import('../features/nutrition/views/NutritionTraineesListView.vue')
+const NutritionWorkspaceView = () => import('../features/nutrition/views/NutritionWorkspaceView.vue')
+const ProgressTraineesListView = () => import('../features/progress/views/ProgressTraineesListView.vue')
+const ProgressWorkspaceView = () => import('../features/progress/views/ProgressWorkspaceView.vue')
+const TrainingTraineesListView = () => import('../features/training/views/TrainingTraineesListView.vue')
+const TrainingProgramsListView = () => import('../features/training/views/TrainingProgramsListView.vue')
+const TrainingProgramDetailView = () => import('../features/training/views/TrainingProgramDetailView.vue')
+const AlertsView = () => import('../features/alerts/views/AlertsView.vue')
+const TraineeJoinView = () => import('../features/trainee/views/TraineeJoinView.vue')
+const TraineeLoginView = () => import('../features/trainee/views/TraineeLoginView.vue')
+const TraineeForgotPasswordView = () => import('../features/trainee/views/TraineeForgotPasswordView.vue')
+const TraineeResetPasswordView = () => import('../features/trainee/views/TraineeResetPasswordView.vue')
+const TraineeHomeView = () => import('../features/trainee/views/TraineeHomeView.vue')
+const TraineeNotificationsView = () => import('../features/trainee/views/TraineeNotificationsView.vue')
+const TraineeTrainingView = () => import('../features/trainee/views/TraineeTrainingView.vue')
+const TraineeNutritionView = () => import('../features/trainee/views/TraineeNutritionView.vue')
+const TraineeProgressView = () => import('../features/trainee/views/TraineeProgressView.vue')
+const TraineeMeasurementsView = () => import('../features/trainee/views/TraineeMeasurementsView.vue')
+const NoAccessView = () => import('../features/trainee/views/NoAccessView.vue')
+const DesignPreviewHome = () => import('../features/designPreview/DesignPreviewHome.vue')
+const DesignPreviewNutrition = () => import('../features/designPreview/DesignPreviewNutrition.vue')
+const CoachJoinView = () => import('../features/auth/views/CoachJoinView.vue')
+const CoachSuspendedView = () => import('../features/auth/views/CoachSuspendedView.vue')
+const CoachPendingApprovalView = () => import('../features/auth/views/CoachPendingApprovalView.vue')
+const OwnerCoachesView = () => import('../features/owner/views/OwnerCoachesView.vue')
+const OwnerMfaSetupView = () => import('../features/auth/views/OwnerMfaSetupView.vue')
+const OwnerMfaChallengeView = () => import('../features/auth/views/OwnerMfaChallengeView.vue')
 import { useAuthStore } from '../stores/auth'
 import { clearCoachDataCaches } from '../features/owner/lib/clearCoachDataCaches'
 import { resolveCoachAccessRoute } from '../features/auth/lib/coachAccessRouting'
