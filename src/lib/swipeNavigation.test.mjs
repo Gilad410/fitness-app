@@ -7,6 +7,7 @@ import {
   isHorizontalSwipe,
   passesCommitThreshold,
   startedInHorizontalScroller,
+  startedInInteractiveControl,
 } from './swipeNavigation.js'
 
 // ---------------------------------------------------------------------
@@ -121,6 +122,18 @@ test('the walk stops at the boundary, so the page container itself is not consul
 test('a plain element with no ancestors is safe', () => {
   assert.equal(startedInHorizontalScroller(el({}), null, readStyle), false)
   assert.equal(startedInHorizontalScroller(null, null, readStyle), false)
+})
+
+test('category selectors and other controls keep ownership of their touch', () => {
+  for (const tag of ['select', 'button', 'a', 'input']) {
+    const target = { closest: (selector) => (selector.includes(tag) ? { tagName: tag } : null) }
+    assert.equal(startedInInteractiveControl(target), true, tag)
+  }
+})
+
+test('plain page content remains eligible for a swipe', () => {
+  assert.equal(startedInInteractiveControl({ closest: () => null }), false)
+  assert.equal(startedInInteractiveControl(null), false)
 })
 
 // ---------------------------------------------------------------------

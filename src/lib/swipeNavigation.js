@@ -149,3 +149,16 @@ export function startedInHorizontalScroller(target, boundary, readStyle) {
   }
   return false
 }
+
+const INTERACTIVE_CONTROL_SELECTOR =
+  'a, button, input, select, textarea, label, [role="button"], [contenteditable="true"]'
+
+/**
+ * A gesture that begins on a control belongs to that control. In
+ * particular, iOS renders <select> as a native category picker and can
+ * appear frozen when an ancestor simultaneously starts a page gesture.
+ */
+export function startedInInteractiveControl(target) {
+  if (!target || typeof target.closest !== 'function') return false
+  return target.closest(INTERACTIVE_CONTROL_SELECTOR) !== null
+}

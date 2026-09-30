@@ -181,18 +181,6 @@ body {
 }
 
 /*
- * Horizontal swipes on the page body belong to the swipe gesture, not to
- * the browser. Declaring that up front is what makes the drag feel
- * instant: without it the browser holds touchmove back while it decides
- * whether the gesture is a scroll, and the page starts moving late. pan-y
- * keeps vertical scrolling completely native.
- */
-.coach-portal .ec-main,
-.trainee-portal .ec-main {
-  touch-action: pan-y;
-}
-
-/*
  * Rest-timer bar (TraineeRestBar.vue). Sits just above whichever
  * navigation this viewport actually has: clear of the fixed bottom nav on
  * a phone, and near the bottom edge everywhere else, where no bottom nav
@@ -228,21 +216,22 @@ body {
  */
 .ec-slide-in-from-left,
 .ec-slide-in-from-right {
-  animation: ec-slide-in 0.17s cubic-bezier(0.25, 0.8, 0.3, 1);
-  will-change: transform;
+  animation: ec-slide-in 0.14s ease-out;
 }
 .ec-slide-in-from-left {
-  --ec-slide-from: -100%;
+  --ec-slide-from: -16px;
 }
 .ec-slide-in-from-right {
-  --ec-slide-from: 100%;
+  --ec-slide-from: 16px;
 }
 @keyframes ec-slide-in {
   from {
-    transform: translate3d(var(--ec-slide-from, 0), 0, 0);
+    opacity: 0.72;
+    transform: translateX(var(--ec-slide-from, 0));
   }
   to {
-    transform: translate3d(0, 0, 0);
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
