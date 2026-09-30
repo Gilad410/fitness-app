@@ -1,10 +1,11 @@
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import {
   passesCommitThreshold,
   resolveSwipeTarget,
   startedInHorizontalScroller,
 } from './swipeNavigation'
+import { clearSlide, setSlideFromGesture, slideDirection } from './swipeTransition'
 
 // Swipe left/right between a portal's main destinations. Mounted once per
 // layout -- AppLayout.vue for the coach, TraineeLayout.vue for the
@@ -35,8 +36,6 @@ import {
 // and desktop already has the sidebar.
 export function useSwipeNavigation(targetRef, routes) {
   const router = useRouter()
-  // Set the moment a swipe commits; drives the incoming page's animation.
-  const slideFrom = ref('')
 
   let startX = 0
   let startY = 0
@@ -177,14 +176,14 @@ export function useSwipeNavigation(targetRef, routes) {
     // is about to be replaced anyway, so animating it out buys nothing
     // and costs the whole delay.
     cancelFrame()
-    slideFrom.value = totalX > 0 ? 'ec-slide-in-from-left' : 'ec-slide-in-from-right'
+    setSlideFromGesture(totalX)
     el.style.transition = ''
     el.style.willChange = ''
     router.push(target)
   }
 
   function onAnimationEnd() {
-    slideFrom.value = ''
+    clearSlide()
   }
 
   onMounted(() => {
@@ -208,5 +207,7 @@ export function useSwipeNavigation(targetRef, routes) {
     el.removeEventListener('animationend', onAnimationEnd)
   })
 
-  return { slideFrom }
+  // The shared ref, so every layout renders the direction the gesture
+  // that led here actually set.
+  return { slideFrom: slideDirection }
 }

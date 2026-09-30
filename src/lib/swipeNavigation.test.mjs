@@ -18,22 +18,21 @@ test('the swipe order matches the bottom nav, and excludes the form and the shee
   assert.ok(!COACH_SWIPE_ROUTES.includes('/trainees/new'), 'must never swipe into the add form')
 })
 
-// Dragging the RTL strip rightwards brings the next destination in from
-// the left edge. An earlier revision had this inverted and the app moved
-// against the finger.
-test('dragging right advances to the next page', () => {
-  assert.equal(resolveSwipeTarget('/', 90, COACH_SWIPE_ROUTES), '/trainees')
-  assert.equal(resolveSwipeTarget('/trainees', 90, COACH_SWIPE_ROUTES), '/alerts')
+// The nav reads right-to-left, so the next destination is displayed to
+// the LEFT of the current one: a finger moving left advances.
+test('swiping left advances to the next page', () => {
+  assert.equal(resolveSwipeTarget('/', -90, COACH_SWIPE_ROUTES), '/trainees')
+  assert.equal(resolveSwipeTarget('/trainees', -90, COACH_SWIPE_ROUTES), '/alerts')
 })
 
-test('dragging left goes back a page', () => {
-  assert.equal(resolveSwipeTarget('/alerts', -90, COACH_SWIPE_ROUTES), '/trainees')
-  assert.equal(resolveSwipeTarget('/trainees', -90, COACH_SWIPE_ROUTES), '/')
+test('swiping right goes back a page', () => {
+  assert.equal(resolveSwipeTarget('/alerts', 90, COACH_SWIPE_ROUTES), '/trainees')
+  assert.equal(resolveSwipeTarget('/trainees', 90, COACH_SWIPE_ROUTES), '/')
 })
 
 test('the ends do not wrap around', () => {
-  assert.equal(resolveSwipeTarget('/', -90, COACH_SWIPE_ROUTES), null, 'first page: dragging back does nothing')
-  assert.equal(resolveSwipeTarget('/alerts', 90, COACH_SWIPE_ROUTES), null, 'last page: dragging on does nothing')
+  assert.equal(resolveSwipeTarget('/', 90, COACH_SWIPE_ROUTES), null, 'first page: swiping back does nothing')
+  assert.equal(resolveSwipeTarget('/alerts', -90, COACH_SWIPE_ROUTES), null, 'last page: swiping on does nothing')
 })
 
 test('pages outside the swipe set are left alone', () => {
@@ -44,9 +43,9 @@ test('pages outside the swipe set are left alone', () => {
 })
 
 test('query strings, hashes and trailing slashes still resolve to the right page', () => {
-  assert.equal(resolveSwipeTarget('/trainees?filter=active', 90, COACH_SWIPE_ROUTES), '/alerts')
-  assert.equal(resolveSwipeTarget('/trainees#top', -90, COACH_SWIPE_ROUTES), '/')
-  assert.equal(resolveSwipeTarget('/trainees/', 90, COACH_SWIPE_ROUTES), '/alerts')
+  assert.equal(resolveSwipeTarget('/trainees?filter=active', -90, COACH_SWIPE_ROUTES), '/alerts')
+  assert.equal(resolveSwipeTarget('/trainees#top', 90, COACH_SWIPE_ROUTES), '/')
+  assert.equal(resolveSwipeTarget('/trainees/', -90, COACH_SWIPE_ROUTES), '/alerts')
 })
 
 test('a zero or nonsense delta resolves to nothing', () => {
@@ -138,10 +137,10 @@ test('the trainee swipe order matches its own bottom nav', () => {
 })
 
 test('swiping works across all four trainee pages', () => {
-  assert.equal(resolveSwipeTarget('/trainee', 90, TRAINEE_SWIPE_ROUTES), '/trainee/training')
-  assert.equal(resolveSwipeTarget('/trainee/training', 90, TRAINEE_SWIPE_ROUTES), '/trainee/nutrition')
-  assert.equal(resolveSwipeTarget('/trainee/nutrition', 90, TRAINEE_SWIPE_ROUTES), '/trainee/progress')
-  assert.equal(resolveSwipeTarget('/trainee/progress', -90, TRAINEE_SWIPE_ROUTES), '/trainee/nutrition')
+  assert.equal(resolveSwipeTarget('/trainee', -90, TRAINEE_SWIPE_ROUTES), '/trainee/training')
+  assert.equal(resolveSwipeTarget('/trainee/training', -90, TRAINEE_SWIPE_ROUTES), '/trainee/nutrition')
+  assert.equal(resolveSwipeTarget('/trainee/nutrition', -90, TRAINEE_SWIPE_ROUTES), '/trainee/progress')
+  assert.equal(resolveSwipeTarget('/trainee/progress', 90, TRAINEE_SWIPE_ROUTES), '/trainee/nutrition')
 })
 
 test('the two portals never leak into each other', () => {
@@ -196,4 +195,29 @@ test('the threshold scales with the screen, and survives junk', () => {
   assert.equal(passesCommitThreshold(80, 0, 900), false, 'not a quarter of a wide one')
   assert.equal(passesCommitThreshold(120, NaN, NaN), true)
   assert.equal(passesCommitThreshold(NaN, 1, W), false)
+})
+
+// ---------------------------------------------------------------------
+// The gesture and the motion must describe the same movement
+// ---------------------------------------------------------------------
+
+test('the page that arrives and the direction it arrives from always agree', async () => {
+  // Both have now been wrong, separately, because they were decided in
+  // two places. This asserts they are derived from the same deltaX: a
+  // swipe that advances must animate in from the right, and one that
+  // goes back must animate in from the left.
+  const { setSlideFromGesture, slideDirection, clearSlide } = await import('./swipeTransition.js')
+
+  for (const delta of [-90, -300, -61]) {
+    setSlideFromGesture(delta)
+    assert.equal(resolveSwipeTarget('/trainee', delta, TRAINEE_SWIPE_ROUTES), '/trainee/training')
+    assert.equal(slideDirection.value, 'ec-slide-in-from-right', 'advancing enters from the right')
+  }
+  for (const delta of [90, 300, 61]) {
+    setSlideFromGesture(delta)
+    assert.equal(resolveSwipeTarget('/trainee/training', delta, TRAINEE_SWIPE_ROUTES), '/trainee')
+    assert.equal(slideDirection.value, 'ec-slide-in-from-left', 'going back enters from the left')
+  }
+  clearSlide()
+  assert.equal(slideDirection.value, '')
 })

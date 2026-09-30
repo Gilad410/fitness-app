@@ -42,18 +42,20 @@ export const KEEP_ALIVE_VIEWS = [
  * Which path a swipe should navigate to, or null when it should be
  * ignored.
  *
- * DIRECTION. The pages sit in a right-to-left strip, matching the bottom
- * nav: the home slot is rightmost and each later destination sits
- * further left. Dragging the strip to the RIGHT therefore brings the
- * next destination in from the left edge, so a POSITIVE deltaX advances.
+ * DIRECTION. Follow the bottom nav, not a filmstrip. The nav reads
+ * right-to-left -- home on the right, each later destination further
+ * left -- so a finger moving LEFT goes to the next destination, the one
+ * displayed to the left. A NEGATIVE deltaX advances.
  *
- * An earlier revision had this the other way round and the app moved
- * opposite to the finger. It is stated here once, with the drag now
- * animating continuously in the same direction, so the two can never
- * disagree again.
+ * This has now been wrong in both directions, for the same underlying
+ * reason each time: the destination and the animation were decided in
+ * two different places and drifted apart, and a swipe whose motion does
+ * not match its outcome reads as inverted no matter which way it goes.
+ * The motion is derived from this same deltaX in swipeTransition.js, so
+ * the two cannot disagree.
  *
  * @param {string} currentPath  router.currentRoute.path
- * @param {number} deltaX       total horizontal travel, px (positive = rightwards)
+ * @param {number} deltaX       total horizontal travel, px (negative = leftwards)
  * @param {string[]} routes     the ordered destinations for this portal
  * @returns {string|null} the path to navigate to, or null to do nothing
  */
@@ -65,7 +67,7 @@ export function resolveSwipeTarget(currentPath, deltaX, routes) {
   if (index === -1) return null
   if (!Number.isFinite(deltaX) || deltaX === 0) return null
 
-  const next = deltaX > 0 ? index + 1 : index - 1
+  const next = deltaX < 0 ? index + 1 : index - 1
   // No wrapping: running off either end does nothing, so the first and
   // last pages feel like ends rather than silently looping around.
   if (next < 0 || next >= routes.length) return null
