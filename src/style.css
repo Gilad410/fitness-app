@@ -214,34 +214,35 @@ body {
 }
 
 /*
- * Swipe-between-pages slide (lib/useSwipeNavigation.js). The class is set
- * on <main> at the moment a swipe triggers a navigation and cleared on
- * animationend, so only a swipe animates -- tapping the bottom nav or
- * pressing back still changes pages instantly, which is what those
- * controls have always felt like.
+ * Swipe-between-pages motion (lib/useSwipeNavigation.js).
  *
- * Logical properties, so the direction is correct in this RTL app without
- * a second rule: "from-start" enters from the inline start (the right in
- * Hebrew), matching a finger that travelled left.
+ * The outgoing page is carried off by JS in the direction the finger was
+ * already travelling; these two classes bring the incoming page in from
+ * the OPPOSITE edge, so the pair reads as one continuous push rather
+ * than a reset followed by a fade.
+ *
+ * Named for physical direction, not logical start/end, because
+ * translateX is itself physical -- a "from-start" name over a physical
+ * transform is exactly how the previous revision ended up animating
+ * against the gesture in this RTL app.
  */
-.ec-slide-from-start,
-.ec-slide-from-end {
-  animation: ec-slide-in 0.2s cubic-bezier(0.22, 0.9, 0.24, 1);
+.ec-slide-in-from-left,
+.ec-slide-in-from-right {
+  animation: ec-slide-in 0.24s cubic-bezier(0.32, 0.72, 0, 1);
+  will-change: transform;
 }
-.ec-slide-from-start {
-  --ec-slide-offset: 40px;
+.ec-slide-in-from-left {
+  --ec-slide-from: -100%;
 }
-.ec-slide-from-end {
-  --ec-slide-offset: -40px;
+.ec-slide-in-from-right {
+  --ec-slide-from: 100%;
 }
 @keyframes ec-slide-in {
   from {
-    opacity: 0;
-    transform: translateX(var(--ec-slide-offset, 0));
+    transform: translate3d(var(--ec-slide-from, 0), 0, 0);
   }
   to {
-    opacity: 1;
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -263,8 +264,8 @@ body {
   }
   /* The slide still has to run so its animationend fires and clears the
      class -- it is just made instant and motionless. */
-  .ec-slide-from-start,
-  .ec-slide-from-end {
+  .ec-slide-in-from-left,
+  .ec-slide-in-from-right {
     animation-duration: 0.01ms !important;
   }
   .ec-rest-fill {

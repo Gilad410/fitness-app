@@ -1,7 +1,7 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import {
-  isHorizontalSwipe,
+  passesCommitThreshold,
   resolveSwipeTarget,
   startedInHorizontalScroller,
 } from './swipeNavigation'
@@ -10,28 +10,32 @@ import {
 // layout -- AppLayout.vue for the coach, TraineeLayout.vue for the
 // trainee -- each passing its own ordered route list.
 //
-// THE PAGE FOLLOWS THE FINGER. The first version of this only acted on
-// touchend: nothing on screen moved until the finger lifted, so the
-// gesture felt dead and the navigation felt like a delayed jump. Now the
-// page translates under the finger from the first millimetre, and the
-// release only decides whether that movement completes or springs back.
-// The perceived latency of a gesture is the time until something moves,
-// not the time until it finishes.
+// THE MOTION MUST NEVER REVERSE OR JUMP. Two earlier revisions each broke
+// that in their own way:
 //
-// Two things make that actually fast:
-//   · `touch-action: pan-y` on the element (set in style.css) tells the
-//     browser up front that horizontal movement is ours. Without it the
-//     browser waits to see whether the gesture is a scroll before
-//     releasing touchmove events, which is its own source of lag.
-//   · The drag writes el.style.transform directly inside rAF rather than
-//     going through Vue reactivity every frame. Transform is composited,
-//     so the drag never triggers layout or paint.
+//   1. The first acted only on touchend, so nothing moved until the
+//      finger lifted. Perceived latency in a gesture is the time until
+//      something moves, not the time until it finishes.
+//   2. The second followed the finger but then, on commit, reset the
+//      page to 0 before the next one animated in from 40px -- a visible
+//      snap backwards in the middle of a forward gesture. That is what
+//      read as "not smooth": not the frame rate, a discontinuity.
+//
+// So the page now leaves in the direction the finger was already
+// travelling, and the next page continues from the far edge on the same
+// axis. Nothing reverses, nothing teleports.
+//
+// `touch-action: pan-y` (style.css) is what makes the first frame
+// immediate: without it the browser withholds touchmove while it decides
+// whether the gesture is a scroll. The drag writes el.style.transform
+// inside rAF with translate3d, so it is composited -- no layout, no
+// paint, no Vue reactivity per frame.
 //
 // Touch-only on purpose: a mouse drag across a page is a text selection,
 // and desktop already has the sidebar.
 export function useSwipeNavigation(targetRef, routes) {
   const router = useRouter()
-  // Drives the enter animation after a committed swipe.
+  // Set the moment a swipe commits; drives the incoming page's animation.
   const slideFrom = ref('')
 
   let startX = 0
@@ -40,6 +44,12 @@ export function useSwipeNavigation(targetRef, routes) {
   let axis = null // null = undecided, 'x' = ours, 'y' = the page scrolls
   let tracking = false
   let frame = null
+  let width = 360
+  // Velocity is measured over the last move only -- a flick's speed is in
+  // its final millimetres, not its average.
+  let lastX = 0
+  let lastT = 0
+  let velocity = 0
 
   function paint() {
     frame = null
@@ -49,11 +59,14 @@ export function useSwipeNavigation(targetRef, routes) {
   function schedule() {
     if (frame === null) frame = requestAnimationFrame(paint)
   }
-  function release(el) {
+  function cancelFrame() {
     if (frame !== null) {
       cancelAnimationFrame(frame)
       frame = null
     }
+  }
+  function reset(el) {
+    cancelFrame()
     el.style.transition = ''
     el.style.transform = ''
     el.style.willChange = ''
@@ -61,19 +74,21 @@ export function useSwipeNavigation(targetRef, routes) {
 
   function onTouchStart(event) {
     const el = targetRef.value
-    if (!el) return
-    if (event.touches.length !== 1) {
+    if (!el || event.touches.length !== 1) {
       tracking = false
       return
     }
     const t = event.touches[0]
-    startX = t.clientX
+    startX = lastX = t.clientX
     startY = t.clientY
+    lastT = event.timeStamp || performance.now()
+    velocity = 0
     dx = 0
     axis = null
     tracking = true
-    // No transition while the finger is down -- the page must track it
-    // exactly, not chase it.
+    width = el.clientWidth || 360
+    // No transition while the finger is down: the page tracks it exactly
+    // rather than chasing it.
     el.style.transition = 'none'
     el.style.willChange = 'transform'
   }
@@ -88,22 +103,34 @@ export function useSwipeNavigation(targetRef, routes) {
     const my = t.clientY - startY
 
     if (axis === null) {
-      // Decide once, on the first few pixels, and never revisit it: a
-      // gesture that changes its mind mid-stroke feels broken.
+      // Decided once, within a few pixels, and never revisited: a gesture
+      // that changes its mind mid-stroke feels broken.
       if (Math.abs(mx) < 5 && Math.abs(my) < 5) return
       axis = Math.abs(mx) > Math.abs(my) ? 'x' : 'y'
       if (axis === 'y') {
-        release(el)
+        reset(el)
+        tracking = false
+        return
+      }
+      if (startedInHorizontalScroller(t.target, el)) {
+        // The gesture belongs to a rail or table inside the page.
+        reset(el)
         tracking = false
         return
       }
     }
     if (axis !== 'x') return
 
-    // Rubber-band when there is nothing to swipe to, so the end of the
-    // list feels like an edge rather than a dead control.
-    const target = resolveSwipeTarget(router.currentRoute.value.path, mx, routes)
-    dx = target ? mx : mx * 0.25
+    const now = event.timeStamp || performance.now()
+    const dt = now - lastT
+    if (dt > 0) velocity = (t.clientX - lastX) / dt
+    lastX = t.clientX
+    lastT = now
+
+    // Rubber-band where there is nowhere to go, so an end feels like an
+    // edge rather than a dead control.
+    const reachable = resolveSwipeTarget(router.currentRoute.value.path, mx, routes)
+    dx = reachable ? mx : mx * 0.25
     schedule()
   }
 
@@ -114,44 +141,43 @@ export function useSwipeNavigation(targetRef, routes) {
     if (!el) return
 
     const t = event.changedTouches && event.changedTouches[0]
-    const settled = axis === 'x' && t && event.touches.length === 0
-    if (!settled) {
-      release(el)
+    if (axis !== 'x' || !t || event.touches.length > 0) {
+      reset(el)
       return
     }
 
     const totalX = t.clientX - startX
-    const totalY = t.clientY - startY
-    const target =
-      isHorizontalSwipe(totalX, totalY) &&
-      !startedInHorizontalScroller(t.target, el)
-        ? resolveSwipeTarget(router.currentRoute.value.path, totalX, routes)
-        : null
+    const target = passesCommitThreshold(totalX, velocity, width)
+      ? resolveSwipeTarget(router.currentRoute.value.path, totalX, routes)
+      : null
 
     if (!target) {
-      // Spring back to where it was. Short, so a rejected swipe does not
-      // hold the page hostage.
-      if (frame !== null) {
-        cancelAnimationFrame(frame)
-        frame = null
-      }
-      el.style.transition = 'transform 0.16s cubic-bezier(0.22,0.9,0.24,1)'
-      el.style.transform = ''
+      // Ease back to rest. Short, so a rejected swipe does not hold the
+      // page hostage.
+      cancelFrame()
       dx = 0
-      setTimeout(() => {
-        if (!tracking) {
+      el.style.transition = 'transform 0.18s cubic-bezier(0.22,0.9,0.24,1)'
+      el.style.transform = ''
+      window.setTimeout(() => {
+        if (!tracking && targetRef.value === el) {
           el.style.transition = ''
           el.style.willChange = ''
         }
-      }, 170)
+      }, 200)
       return
     }
 
-    // Committed. The new page enters from the side the finger travelled
-    // towards, continuing the movement instead of restarting it.
-    slideFrom.value = totalX < 0 ? 'ec-slide-from-start' : 'ec-slide-from-end'
-    release(el)
-    router.push(target)
+    // Committed. Carry the page off the edge it was already heading for,
+    // then navigate. The incoming page enters from the opposite edge, so
+    // the whole thing reads as one continuous movement in one direction.
+    cancelFrame()
+    slideFrom.value = totalX > 0 ? 'ec-slide-in-from-left' : 'ec-slide-in-from-right'
+    el.style.transition = 'transform 0.16s cubic-bezier(0.32,0.72,0,1)'
+    el.style.transform = `translate3d(${totalX > 0 ? width : -width}px,0,0)`
+    // Navigating mid-flight is what keeps it seamless: this element is
+    // replaced by the incoming page's own <main>, which starts its enter
+    // animation already offset to the far side.
+    window.setTimeout(() => router.push(target), 110)
   }
 
   function onAnimationEnd() {
@@ -169,8 +195,8 @@ export function useSwipeNavigation(targetRef, routes) {
   })
 
   onBeforeUnmount(() => {
+    cancelFrame()
     const el = targetRef.value
-    if (frame !== null) cancelAnimationFrame(frame)
     if (!el) return
     el.removeEventListener('touchstart', onTouchStart)
     el.removeEventListener('touchmove', onTouchMove)
