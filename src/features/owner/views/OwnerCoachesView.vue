@@ -216,8 +216,17 @@ async function saveNote() {
 // Pending invitations
 // ---------------------------------------------------------------------
 
-// Cancel is the only invitation action. There is no resend -- see the
-// store's note and the explanation rendered in the invitations section.
+async function resendInvitation(invitation) {
+  invitationError.value = ''
+  invitationSuccess.value = ''
+  try {
+    const applied = await store.resendInvite(invitation.invitation_id)
+    if (applied) invitationSuccess.value = `הזמנה חדשה נשלחה אל ${invitation.email}.`
+  } catch (err) {
+    invitationError.value = err.message || 'שליחת ההזמנה מחדש נכשלה.'
+  }
+}
+
 function requestInvitationCancel(invitation) {
   invitationError.value = ''
   invitationSuccess.value = ''
@@ -413,18 +422,28 @@ async function confirmStatusChange() {
                   </span>
                 </td>
                 <td class="p-2">
-                  <button
-                    type="button"
-                    :disabled="!!store.pendingInviteActionFor[invitation.invitation_id]"
-                    class="rounded-lg border border-status-red px-2 py-1 text-xs font-medium text-status-red hover:bg-status-red/10 disabled:opacity-60"
-                    @click="requestInvitationCancel(invitation)"
-                  >
-                    {{
-                      store.pendingInviteActionFor[invitation.invitation_id]
-                        ? 'פועל...'
-                        : 'ביטול הזמנה'
-                    }}
-                  </button>
+                  <div class="flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      :disabled="!!store.pendingInviteActionFor[invitation.invitation_id]"
+                      class="min-h-9 rounded-lg border border-brand-green px-3 py-1 text-xs font-medium text-brand-green hover:bg-brand-green/10 disabled:opacity-60"
+                      @click="resendInvitation(invitation)"
+                    >
+                      {{
+                        store.pendingInviteActionFor[invitation.invitation_id]
+                          ? 'שולח...'
+                          : 'שליחה מחדש'
+                      }}
+                    </button>
+                    <button
+                      type="button"
+                      :disabled="!!store.pendingInviteActionFor[invitation.invitation_id]"
+                      class="min-h-9 rounded-lg border border-status-red px-3 py-1 text-xs font-medium text-status-red hover:bg-status-red/10 disabled:opacity-60"
+                      @click="requestInvitationCancel(invitation)"
+                    >
+                      ביטול הזמנה
+                    </button>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -456,12 +475,20 @@ async function confirmStatusChange() {
               <button
                 type="button"
                 :disabled="!!store.pendingInviteActionFor[invitation.invitation_id]"
-                class="rounded-lg border border-status-red px-3 py-1.5 text-xs font-medium text-status-red disabled:opacity-60"
-                @click="requestInvitationCancel(invitation)"
+                class="min-h-11 flex-1 rounded-lg border border-brand-green px-3 py-2 text-sm font-medium text-brand-green disabled:opacity-60"
+                @click="resendInvitation(invitation)"
               >
                 {{
-                  store.pendingInviteActionFor[invitation.invitation_id] ? 'פועל...' : 'ביטול הזמנה'
+                  store.pendingInviteActionFor[invitation.invitation_id] ? 'שולח...' : 'שליחה מחדש'
                 }}
+              </button>
+              <button
+                type="button"
+                :disabled="!!store.pendingInviteActionFor[invitation.invitation_id]"
+                class="min-h-11 flex-1 rounded-lg border border-status-red px-3 py-2 text-sm font-medium text-status-red disabled:opacity-60"
+                @click="requestInvitationCancel(invitation)"
+              >
+                ביטול הזמנה
               </button>
             </div>
           </li>
@@ -471,27 +498,15 @@ async function confirmStatusChange() {
       <p v-if="invitationSuccess" class="text-sm text-brand-green" role="status">
         {{ invitationSuccess }}
       </p>
+      <p v-if="invitationError && !invitationConfirm" class="text-sm text-status-red" role="alert">
+        {{ invitationError }}
+      </p>
 
-      <!--
-        Accurate explanation of why there is no resend button, rather than
-        a button that is known to fail. Sending the first invitation
-        creates an unconfirmed account in Supabase Auth, and the database
-        refuses to issue a second invitation to an address that already
-        has an account -- so a resend would error every time.
-      -->
       <p
         v-if="store.pendingInvitations.length"
         class="rounded-lg bg-neutral-50 px-3 py-2 text-xs leading-relaxed text-neutral-600"
       >
-        <strong class="font-medium text-brand-black"
-          >שליחה חוזרת של הזמנה אינה זמינה בשלב זה.</strong
-        >
-        שליחת ההזמנה הראשונה יוצרת כבר חשבון לא-מאומת במערכת ההזדהות, ולכן שליחה נוספת לאותה כתובת
-        נדחית. אם ההזמנה לא התקבלה או שפג תוקפה, יש להסיר את החשבון הלא-מאומת מלוח הבקרה של Supabase
-        לפני הזמנה חוזרת, או להזמין כתובת אימייל אחרת.
-        <br />
-        התאריך המוצג הוא תוקף רישום ההזמנה במערכת. תוקף הקישור שנשלח באימייל נקבע בהגדרות מערכת
-        ההזדהות ועשוי להיות קצר יותר.
+        שליחה מחדש יוצרת קישור חדש ומאריכה את תוקף ההזמנה בשבעה ימים. הקישור הקודם מפסיק לעבוד.
       </p>
     </section>
 
@@ -833,8 +848,7 @@ async function confirmStatusChange() {
           הרשמה.
         </p>
         <p class="mb-4 text-xs leading-relaxed text-neutral-500">
-          שימו לב: ביטול ההזמנה אינו מוחק את החשבון הלא-מאומת שנוצר במערכת ההזדהות, ולכן לא ניתן
-          יהיה להזמין מחדש את אותה כתובת ללא הסרת החשבון מלוח הבקרה של Supabase.
+          הפעולה מבטלת את ההזמנה הממתינה. חשבון מאומת או נתוני מאמן אינם נמחקים.
         </p>
         <p v-if="invitationError" class="mb-2 text-sm text-status-red" role="alert">
           {{ invitationError }}

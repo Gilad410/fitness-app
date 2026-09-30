@@ -3,8 +3,8 @@
 // The second place in this app (after invite-trainee) that ever touches
 // the Supabase service-role key. Mirrors invite-trainee/index.ts's
 // structure exactly -- thin glue only, all real logic lives in
-// ./handler.js (handleInviteCoachRequest), which is Deno-agnostic and
-// directly unit-tested under Node (handler.test.mjs).
+// ./handlerV2.js (handleInviteCoachRequest), which is Deno-agnostic and
+// directly unit-tested under Node (handlerV2.test.mjs).
 //
 // Two Supabase clients, same two trust levels as invite-trainee:
 //   1. `asUser` -- ANON key + the caller's own Authorization header.
@@ -12,10 +12,10 @@
 //      RLS and owner_get_or_invite_coach's own is_owner() check
 //      (056_owner_coach_administration.sql) -- this function does not
 //      re-implement "is this caller the owner" itself.
-//   2. `admin` -- SERVICE ROLE key, used for exactly one privileged call:
-//      auth.admin.inviteUserByEmail(). The service-role key is read only
-//      from the Edge Function's own runtime environment and is never
-//      logged, echoed to the client, or written anywhere.
+//   2. `admin` -- SERVICE ROLE key, used for the narrow invitation RPCs
+//      and Supabase Auth invite-link operations. The service-role key is
+//      read only from the Edge Function runtime and is never logged,
+//      echoed to the client, or written anywhere.
 //
 // Deploy: supabase functions deploy invite-coach --no-verify-jwt
 // The function passes the caller's JWT to the RLS-bound client below, and
@@ -27,7 +27,7 @@
 
 // @ts-nocheck -- Deno runtime, not this repo's Node/Vite toolchain.
 import { createClient } from 'jsr:@supabase/supabase-js@2'
-import { handleInviteCoachRequest } from './handler.js'
+import { handleInviteCoachRequest } from './handlerV2.js'
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -66,15 +66,22 @@ Deno.serve(async (req) => {
     return errorResponse(400, 'Invalid JSON body.')
   }
 
+  const action = typeof body?.action === 'string' ? body.action : 'invite'
   const email = typeof body?.email === 'string' ? body.email.trim() : ''
-  if (!email) {
-    return errorResponse(400, 'email is required.')
+  const invitationId = typeof body?.invitationId === 'string' ? body.invitationId : ''
+  if (action === 'invite' && !email) return errorResponse(400, 'יש להזין כתובת אימייל.')
+  if (!['invite', 'resend', 'cancel'].includes(action)) {
+    return errorResponse(400, 'הפעולה המבוקשת אינה נתמכת.')
   }
+  if (action !== 'invite' && !invitationId) return errorResponse(400, 'חסר מזהה הזמנה.')
 
   const supabaseUrl = Deno.env.get('SUPABASE_URL')
   const anonKey = Deno.env.get('SUPABASE_ANON_KEY')
   const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')
   const siteUrl = Deno.env.get('SITE_URL')
+  const resendApiKey = Deno.env.get('RESEND_API_KEY')
+  const resendFromEmail =
+    Deno.env.get('RESEND_FROM_EMAIL') ?? 'Fitness App <no-reply@auth.fitness-app.online>'
 
   if (!supabaseUrl || !anonKey || !serviceRoleKey) {
     return errorResponse(500, 'Server is missing Supabase configuration.')
@@ -94,6 +101,30 @@ Deno.serve(async (req) => {
     auth: { autoRefreshToken: false, persistSession: false },
   })
 
-  const result = await handleInviteCoachRequest({ asUser, admin, email, siteUrl })
+  const sendResendEmail = resendApiKey
+    ? async ({ to, subject, html }) => {
+        const response = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${resendApiKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ from: resendFromEmail, to: [to], subject, html }),
+        })
+        if (response.ok) return null
+        const result = await response.json().catch(() => null)
+        return result?.message ?? `Resend returned ${response.status}`
+      }
+    : null
+
+  const result = await handleInviteCoachRequest({
+    asUser,
+    admin,
+    action,
+    email,
+    invitationId,
+    siteUrl,
+    sendResendEmail,
+  })
   return jsonResponse(result.status, result.body)
 })

@@ -82,33 +82,29 @@ export const useOwnerCoachesStore = defineStore('ownerCoaches', {
       return data
     },
 
-    // There is deliberately NO resendInvite action.
-    //
-    // An earlier revision had one that re-invoked the invite-coach Edge
-    // Function with the same address, on the theory that
-    // owner_get_or_invite_coach is idempotent and reuses the existing
-    // token. That reasoning only holds in a test whose fake never creates
-    // an Auth user. In reality the first successful
-    // admin.auth.admin.inviteUserByEmail() creates an UNCONFIRMED
-    // auth.users row, and the RPC rejects every address that already has
-    // one -- so the resend failed on the very first call, every time,
-    // for any invitation that had actually been sent.
-    //
-    // A correct resend needs an officially supported GoTrue mechanism
-    // verified against a real instance. That could not be done in this
-    // environment (no container runtime, so no local Supabase/GoTrue),
-    // and shipping a control that is known to work only against a fake is
-    // worse than not shipping one. The dashboard says so in plain Hebrew
-    // instead of offering a button that always errors.
+    async resendInvite(invitationId) {
+      if (this.pendingInviteActionFor[invitationId]) return false
+      this.pendingInviteActionFor = { ...this.pendingInviteActionFor, [invitationId]: true }
+      try {
+        const { error } = await supabase.functions.invoke('invite-coach', {
+          body: { action: 'resend', invitationId },
+        })
+        if (error) throw await toFunctionError(error)
+        await this.fetchPendingInvitations()
+        return true
+      } finally {
+        this.pendingInviteActionFor = omitKey(this.pendingInviteActionFor, invitationId)
+      }
+    },
 
     async cancelInvite(invitationId) {
       if (this.pendingInviteActionFor[invitationId]) return false
       this.pendingInviteActionFor = { ...this.pendingInviteActionFor, [invitationId]: true }
       try {
-        const { error } = await supabase.rpc('owner_cancel_coach_invite', {
-          p_invitation_id: invitationId,
+        const { error } = await supabase.functions.invoke('invite-coach', {
+          body: { action: 'cancel', invitationId },
         })
-        if (error) throw error
+        if (error) throw await toFunctionError(error)
         // Drop it locally only now that the server has confirmed.
         this.pendingInvitations = this.pendingInvitations.filter(
           (i) => i.invitation_id !== invitationId,

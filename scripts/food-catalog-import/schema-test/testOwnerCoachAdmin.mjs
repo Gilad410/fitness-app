@@ -54,8 +54,9 @@ as $$ select nullif(current_setting('app.current_uid', true), '')::uuid; $$;
 await db.exec(`
 create role anon nosuperuser noBypassRLS;
 create role authenticated nosuperuser noBypassRLS;
+create role service_role nosuperuser noBypassRLS;
 create role app_user nosuperuser noBypassRLS in role authenticated;
-grant usage on schema public, auth to app_user, anon, authenticated;
+grant usage on schema public, auth to app_user, anon, authenticated, service_role;
 grant select on auth.users to app_user;
 alter default privileges in schema public grant select, insert, update, delete on tables to app_user;
 `)
@@ -130,6 +131,27 @@ try {
 check('Migration 056 applies without error', migrationError === null, migrationError?.message)
 if (migrationError) {
   console.log('\nCannot continue -- migration itself failed.')
+  await db.close()
+  process.exit(1)
+}
+
+const lifecycleMigrationSql = await (await import('node:fs')).promises.readFile(
+  new URL('../../../supabase/sql/057_coach_invitation_lifecycle.sql', import.meta.url),
+  'utf8',
+)
+let lifecycleMigrationError = null
+try {
+  await db.exec(lifecycleMigrationSql)
+} catch (e) {
+  lifecycleMigrationError = e
+}
+check(
+  'Migration 057 applies without error',
+  lifecycleMigrationError === null,
+  lifecycleMigrationError?.message,
+)
+if (lifecycleMigrationError) {
+  console.log('\nCannot continue -- invitation lifecycle migration failed.')
   await db.close()
   process.exit(1)
 }
@@ -251,6 +273,57 @@ check('Duplicate invite to the same still-pending email: reuses the SAME token (
 // email goes out, GoTrue creates an unconfirmed auth.users row and the
 // pre-existing-account check rejects this same call. Section 27 below
 // proves exactly that, so this check cannot be mistaken for resend.
+
+// Migration 057: only the Edge Function's service role can prepare a
+// resend/cancel. The owner's browser cannot obtain the bearer token.
+const resendInvite = await queryAs(
+  OWNER,
+  `select * from public.owner_get_or_invite_coach('resend.coach@example.com')`,
+)
+await db.query('set role postgres')
+await db.query(
+  `insert into auth.users (email, raw_user_meta_data)
+   values ('resend.coach@example.com', jsonb_build_object('coach_invite_token', $1::text))`,
+  [resendInvite.rows[0].invite_token],
+)
+await expectError('Owner browser cannot call the token-bearing resend helper', () =>
+  queryAs(
+    OWNER,
+    `select * from public.owner_admin_prepare_coach_invite($1,$2,'resend')`,
+    [OWNER, resendInvite.rows[0].invitation_id],
+  ),
+)
+async function queryAsService(sql, params = []) {
+  await db.query('begin')
+  await db.query('set local role service_role')
+  try {
+    return await db.query(sql, params)
+  } finally {
+    await db.query('commit')
+  }
+}
+const preparedResend = await queryAsService(
+  `select * from public.owner_admin_prepare_coach_invite($1,$2,'resend')`,
+  [OWNER, resendInvite.rows[0].invitation_id],
+)
+check(
+  'Service-only resend helper returns the matching invitation and token',
+  preparedResend.rows[0]?.email === 'resend.coach@example.com' &&
+    preparedResend.rows[0]?.invite_token === resendInvite.rows[0].invite_token,
+)
+check(
+  'Preparing a resend refreshes the application expiry',
+  new Date(preparedResend.rows[0]?.invite_expires_at).getTime() > Date.now(),
+)
+await queryAsService(`select public.owner_admin_cancel_coach_invite($1,$2)`, [
+  OWNER,
+  resendInvite.rows[0].invitation_id,
+])
+const afterServiceCancel = await queryAs(OWNER, `select * from public.owner_list_pending_invitations()`)
+check(
+  'Service-only cancellation removes the invitation from the pending list',
+  !afterServiceCancel.rows.some((row) => row.email === 'resend.coach@example.com'),
+)
 
 await expectError('Inviting an email that already belongs to an existing coach is rejected', () =>
   queryAs(OWNER, `select * from public.owner_get_or_invite_coach('coach.a@example.com')`))
