@@ -8,6 +8,7 @@ import TraineeRestBar from '../components/TraineeRestBar.vue'
 import { useSwipeNavigation } from '../../../lib/useSwipeNavigation'
 import { TRAINEE_SWIPE_ROUTES } from '../../../lib/swipeNavigation'
 import { prefetchRoutes } from '../../../lib/prefetchRoutes'
+import { warmTraineeData } from '../../../lib/warmPortalData'
 
 // Trainee-only layout -- structurally mirrors src/layouts/AppLayout.vue
 // (same header+sidebar+bottom-nav+main shape, same "Electric Coach" visual
@@ -30,6 +31,9 @@ const { slideFrom } = useSwipeNavigation(mainRef, TRAINEE_SWIPE_ROUTES)
 // Warm the neighbouring screens' code while the device is idle, so a
 // swipe never waits on a chunk download. See lib/prefetchRoutes.js.
 prefetchRoutes(useRouter(), TRAINEE_SWIPE_ROUTES)
+// ...and their data, so the first swipe to a screen shows the screen and
+// not its loading state. Once per session, on idle -- see warmPortalData.js.
+warmTraineeData()
 </script>
 
 <template>

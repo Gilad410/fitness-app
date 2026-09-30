@@ -8,6 +8,7 @@ import { useSelectedTraineeStore } from '../features/trainees/store/selectedTrai
 import { useSwipeNavigation } from '../lib/useSwipeNavigation'
 import { COACH_SWIPE_ROUTES } from '../lib/swipeNavigation'
 import { prefetchRoutes } from '../lib/prefetchRoutes'
+import { warmCoachData } from '../lib/warmPortalData'
 
 // Every coach screen (dashboard, trainees, nutrition, progress, training,
 // alerts) renders through this one shared layout, so applying the
@@ -43,6 +44,9 @@ const { slideFrom } = useSwipeNavigation(mainRef, COACH_SWIPE_ROUTES)
 // Warm the neighbouring screens' code while the device is idle, so a
 // swipe never waits on a chunk download. See lib/prefetchRoutes.js.
 prefetchRoutes(useRouter(), COACH_SWIPE_ROUTES)
+// ...and their data, so the first swipe to a screen shows the screen and
+// not its loading state. Once per session, on idle -- see warmPortalData.js.
+warmCoachData()
 </script>
 
 <template>

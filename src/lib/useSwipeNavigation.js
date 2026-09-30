@@ -167,17 +167,20 @@ export function useSwipeNavigation(targetRef, routes) {
       return
     }
 
-    // Committed. Carry the page off the edge it was already heading for,
-    // then navigate. The incoming page enters from the opposite edge, so
-    // the whole thing reads as one continuous movement in one direction.
+    // Committed. Navigate on this very frame.
+    //
+    // The previous revision animated the outgoing page off the edge and
+    // waited 110ms before navigating -- 110ms in which the finger had
+    // already lifted and nothing new was happening. Added to a 240ms
+    // enter, that is a third of a second of waiting after the gesture is
+    // over, which is precisely what "stuck" describes. The outgoing page
+    // is about to be replaced anyway, so animating it out buys nothing
+    // and costs the whole delay.
     cancelFrame()
     slideFrom.value = totalX > 0 ? 'ec-slide-in-from-left' : 'ec-slide-in-from-right'
-    el.style.transition = 'transform 0.16s cubic-bezier(0.32,0.72,0,1)'
-    el.style.transform = `translate3d(${totalX > 0 ? width : -width}px,0,0)`
-    // Navigating mid-flight is what keeps it seamless: this element is
-    // replaced by the incoming page's own <main>, which starts its enter
-    // animation already offset to the far side.
-    window.setTimeout(() => router.push(target), 110)
+    el.style.transition = ''
+    el.style.willChange = ''
+    router.push(target)
   }
 
   function onAnimationEnd() {
