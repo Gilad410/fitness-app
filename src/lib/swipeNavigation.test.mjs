@@ -1,7 +1,8 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import {
-  SWIPE_ROUTES,
+  COACH_SWIPE_ROUTES,
+  TRAINEE_SWIPE_ROUTES,
   resolveSwipeTarget,
   isHorizontalSwipe,
   startedInHorizontalScroller,
@@ -12,43 +13,43 @@ import {
 // ---------------------------------------------------------------------
 
 test('the swipe order matches the bottom nav, and excludes the form and the sheet', () => {
-  assert.deepEqual(SWIPE_ROUTES, ['/', '/trainees', '/alerts'])
-  assert.ok(!SWIPE_ROUTES.includes('/trainees/new'), 'must never swipe into the add form')
+  assert.deepEqual(COACH_SWIPE_ROUTES, ['/', '/trainees', '/alerts'])
+  assert.ok(!COACH_SWIPE_ROUTES.includes('/trainees/new'), 'must never swipe into the add form')
 })
 
 test('swiping left advances to the next page (RTL: further along is leftwards)', () => {
-  assert.equal(resolveSwipeTarget('/', -90), '/trainees')
-  assert.equal(resolveSwipeTarget('/trainees', -90), '/alerts')
+  assert.equal(resolveSwipeTarget('/', -90, COACH_SWIPE_ROUTES), '/trainees')
+  assert.equal(resolveSwipeTarget('/trainees', -90, COACH_SWIPE_ROUTES), '/alerts')
 })
 
 test('swiping right goes back a page', () => {
-  assert.equal(resolveSwipeTarget('/alerts', 90), '/trainees')
-  assert.equal(resolveSwipeTarget('/trainees', 90), '/')
+  assert.equal(resolveSwipeTarget('/alerts', 90, COACH_SWIPE_ROUTES), '/trainees')
+  assert.equal(resolveSwipeTarget('/trainees', 90, COACH_SWIPE_ROUTES), '/')
 })
 
 test('the ends do not wrap around', () => {
-  assert.equal(resolveSwipeTarget('/', 90), null, 'first page: swiping back does nothing')
-  assert.equal(resolveSwipeTarget('/alerts', -90), null, 'last page: swiping on does nothing')
+  assert.equal(resolveSwipeTarget('/', 90, COACH_SWIPE_ROUTES), null, 'first page: swiping back does nothing')
+  assert.equal(resolveSwipeTarget('/alerts', -90, COACH_SWIPE_ROUTES), null, 'last page: swiping on does nothing')
 })
 
 test('pages outside the swipe set are left alone', () => {
   for (const path of ['/trainees/new', '/trainees/abc-123', '/nutrition', '/progress/7', '/login']) {
-    assert.equal(resolveSwipeTarget(path, -90), null, `${path} must not be swipeable`)
-    assert.equal(resolveSwipeTarget(path, 90), null, `${path} must not be swipeable`)
+    assert.equal(resolveSwipeTarget(path, -90, COACH_SWIPE_ROUTES), null, `${path} must not be swipeable`)
+    assert.equal(resolveSwipeTarget(path, 90, COACH_SWIPE_ROUTES), null, `${path} must not be swipeable`)
   }
 })
 
 test('query strings, hashes and trailing slashes still resolve to the right page', () => {
-  assert.equal(resolveSwipeTarget('/trainees?filter=active', -90), '/alerts')
-  assert.equal(resolveSwipeTarget('/trainees#top', 90), '/')
-  assert.equal(resolveSwipeTarget('/trainees/', -90), '/alerts')
+  assert.equal(resolveSwipeTarget('/trainees?filter=active', -90, COACH_SWIPE_ROUTES), '/alerts')
+  assert.equal(resolveSwipeTarget('/trainees#top', 90, COACH_SWIPE_ROUTES), '/')
+  assert.equal(resolveSwipeTarget('/trainees/', -90, COACH_SWIPE_ROUTES), '/alerts')
 })
 
 test('a zero or nonsense delta resolves to nothing', () => {
-  assert.equal(resolveSwipeTarget('/', 0), null)
-  assert.equal(resolveSwipeTarget('/', NaN), null)
-  assert.equal(resolveSwipeTarget('/', undefined), null)
-  assert.equal(resolveSwipeTarget(undefined, -90), null)
+  assert.equal(resolveSwipeTarget('/', 0, COACH_SWIPE_ROUTES), null)
+  assert.equal(resolveSwipeTarget('/', NaN, COACH_SWIPE_ROUTES), null)
+  assert.equal(resolveSwipeTarget('/', undefined, COACH_SWIPE_ROUTES), null)
+  assert.equal(resolveSwipeTarget(undefined, -90, COACH_SWIPE_ROUTES), null)
 })
 
 // ---------------------------------------------------------------------
@@ -117,4 +118,44 @@ test('the walk stops at the boundary, so the page container itself is not consul
 test('a plain element with no ancestors is safe', () => {
   assert.equal(startedInHorizontalScroller(el({}), null, readStyle), false)
   assert.equal(startedInHorizontalScroller(null, null, readStyle), false)
+})
+
+// ---------------------------------------------------------------------
+// The trainee portal has its own order
+// ---------------------------------------------------------------------
+
+test('the trainee swipe order matches its own bottom nav', () => {
+  assert.deepEqual(TRAINEE_SWIPE_ROUTES, [
+    '/trainee',
+    '/trainee/training',
+    '/trainee/nutrition',
+    '/trainee/progress',
+  ])
+})
+
+test('swiping works across all four trainee pages', () => {
+  assert.equal(resolveSwipeTarget('/trainee', -90, TRAINEE_SWIPE_ROUTES), '/trainee/training')
+  assert.equal(resolveSwipeTarget('/trainee/training', -90, TRAINEE_SWIPE_ROUTES), '/trainee/nutrition')
+  assert.equal(resolveSwipeTarget('/trainee/nutrition', -90, TRAINEE_SWIPE_ROUTES), '/trainee/progress')
+  assert.equal(resolveSwipeTarget('/trainee/progress', 90, TRAINEE_SWIPE_ROUTES), '/trainee/nutrition')
+})
+
+test('the two portals never leak into each other', () => {
+  // '/trainee' (the trainee home) must not be confused with '/trainees'
+  // (the coach's roster) -- one character apart, opposite portals.
+  assert.equal(resolveSwipeTarget('/trainee', -90, COACH_SWIPE_ROUTES), null)
+  assert.equal(resolveSwipeTarget('/trainees', -90, TRAINEE_SWIPE_ROUTES), null)
+  assert.equal(resolveSwipeTarget('/', -90, TRAINEE_SWIPE_ROUTES), null)
+})
+
+test('trainee pages outside the nav are not swipeable', () => {
+  for (const p of ['/trainee/measurements', '/trainee/notifications', '/trainee/login']) {
+    assert.equal(resolveSwipeTarget(p, -90, TRAINEE_SWIPE_ROUTES), null, p)
+  }
+})
+
+test('a missing or too-short route list is ignored rather than throwing', () => {
+  assert.equal(resolveSwipeTarget('/', -90, undefined), null)
+  assert.equal(resolveSwipeTarget('/', -90, []), null)
+  assert.equal(resolveSwipeTarget('/', -90, ['/']), null)
 })

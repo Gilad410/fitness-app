@@ -181,6 +181,27 @@ body {
 }
 
 /*
+ * Rest-timer bar (TraineeRestBar.vue). Sits just above whichever
+ * navigation this viewport actually has: clear of the fixed bottom nav on
+ * a phone, and near the bottom edge everywhere else, where no bottom nav
+ * is rendered at all.
+ */
+.ec-rest-bar {
+  bottom: 1rem;
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+}
+@media (max-width: 640px) and (pointer: coarse) {
+  .ec-rest-bar {
+    bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+/* The bar's progress fill drains continuously; the width changes once a
+   second, so it is eased rather than stepped. */
+.ec-rest-fill {
+  transition: width 1s linear;
+}
+
+/*
  * Swipe-between-pages slide (lib/useSwipeNavigation.js). The class is set
  * on <main> at the moment a swipe triggers a navigation and cleared on
  * animationend, so only a swipe animates -- tapping the bottom nav or
@@ -233,6 +254,9 @@ body {
   .ec-slide-from-start,
   .ec-slide-from-end {
     animation-duration: 0.01ms !important;
+  }
+  .ec-rest-fill {
+    transition: none !important;
   }
   @keyframes ec-slide-in {
     from {

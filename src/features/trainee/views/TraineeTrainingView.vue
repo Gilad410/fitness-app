@@ -7,6 +7,7 @@ import {
   validateSubmissionVideoFile,
 } from '../store/traineeExerciseSubmissions'
 import { workoutDisplayLabel } from '../../training/config/workoutDisplay'
+import { startRest, normalizeRestSeconds, restState } from '../lib/restTimer'
 
 // Read-only trainee view of their own active training program
 // (public.trainee_get_active_training_program(), 023_trainee_training_access.sql).
@@ -251,6 +252,40 @@ onMounted(() => {
                   <span v-if="exercise.weight_kg"> &middot; {{ exercise.weight_kg }} ק"ג</span>
                   <span v-if="exercise.rest_seconds"> &middot; מנוחה {{ exercise.rest_seconds }} שנ'</span>
                 </p>
+
+                <!-- Counts down the coach's own rest_seconds; nothing new
+                     is stored. The countdown itself renders in the sticky
+                     bar (TraineeRestBar.vue) so it stays visible while the
+                     trainee scrolls on to the next exercise. -->
+                <button
+                  type="button"
+                  class="mt-2 inline-flex min-h-11 items-center gap-2 rounded-lg border px-3 py-1.5 text-sm font-medium"
+                  :class="
+                    restState.running && restState.exerciseId === exercise.id
+                      ? 'border-brand-green bg-brand-green/10 text-brand-green-dark'
+                      : 'border-neutral-300 text-brand-black hover:bg-neutral-100'
+                  "
+                  @click="startRest(exercise)"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="size-4 shrink-0"
+                    aria-hidden="true"
+                  >
+                    <circle cx="12" cy="13" r="8" />
+                    <path d="M12 9v4l2 2M9 2h6" />
+                  </svg>
+                  {{
+                    restState.running && restState.exerciseId === exercise.id
+                      ? 'מנוחה פעילה'
+                      : `התחל מנוחה ${normalizeRestSeconds(exercise.rest_seconds)} שנ׳`
+                  }}
+                </button>
                 <p v-if="exercise.notes" class="mt-1 whitespace-pre-wrap text-sm text-neutral-600">
                   {{ exercise.notes }}
                 </p>

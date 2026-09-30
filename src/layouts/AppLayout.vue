@@ -5,6 +5,7 @@ import TheSidebar from '../components/layout/TheSidebar.vue'
 import TheBottomNavElectric from '../components/layout/TheBottomNavElectric.vue'
 import { useSelectedTraineeStore } from '../features/trainees/store/selectedTrainee'
 import { useSwipeNavigation } from '../lib/useSwipeNavigation'
+import { COACH_SWIPE_ROUTES } from '../lib/swipeNavigation'
 
 // Every coach screen (dashboard, trainees, nutrition, progress, training,
 // alerts) renders through this one shared layout, so applying the
@@ -35,7 +36,7 @@ useSelectedTraineeStore().restore()
 // change. See lib/useSwipeNavigation.js for why this navigates rather
 // than dragging a carousel.
 const mainRef = useTemplateRef('main')
-const { slideFrom } = useSwipeNavigation(mainRef)
+const { slideFrom } = useSwipeNavigation(mainRef, COACH_SWIPE_ROUTES)
 </script>
 
 <template>

@@ -1,31 +1,31 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import {
-  SWIPE_ROUTES,
   isHorizontalSwipe,
   resolveSwipeTarget,
   startedInHorizontalScroller,
 } from './swipeNavigation'
 
-// Swipe left/right to move between the coach portal's three main
-// destinations (בית / מתאמנים / התראות), mounted once by AppLayout.vue.
+// Swipe left/right to move between a portal's main destinations. Mounted
+// once per layout -- AppLayout.vue for the coach, TraineeLayout.vue for
+// the trainee -- each passing its own ordered route list.
 //
 // WHY A GESTURE AND NOT A CAROUSEL. A finger-following carousel needs the
-// outgoing and incoming pages rendered at the same time. Every coach
-// screen here is its own route, mounted and unmounted by vue-router, so
-// getting that would mean holding three routes alive at once and driving
-// the URL from scroll position -- which breaks deep links, the back
-// button, and per-page scroll restoration, on a production app, for a
-// navigation nicety. This instead recognises the gesture and performs a
-// normal router navigation, with a short slide so the movement still
-// reads as pages moving rather than pages blinking.
+// outgoing and incoming pages rendered at the same time. Every screen
+// here is its own route, mounted and unmounted by vue-router, so getting
+// that would mean holding several routes alive at once and driving the
+// URL from scroll position -- which breaks deep links, the back button,
+// and per-page scroll restoration, on a production app, for a navigation
+// nicety. This recognises the gesture and performs a normal router
+// navigation, with a short slide so the movement still reads as pages
+// moving rather than pages blinking.
 //
 // The listeners are touch-only on purpose: a mouse drag across a page is
 // a text selection, not a navigation, and stealing it would be worse than
 // not having the feature on desktop -- where the sidebar already exists.
-export function useSwipeNavigation(targetRef) {
+export function useSwipeNavigation(targetRef, routes) {
   const router = useRouter()
-  // Drives the CSS slide; read by AppLayout's <main> as a class.
+  // Drives the CSS slide; read by the layout's <main> as a class.
   const slideFrom = ref('')
 
   let startX = 0
@@ -50,16 +50,16 @@ export function useSwipeNavigation(targetRef) {
     if (!tracking) return
     tracking = false
     if (startedInScroller) return
-    // A gesture that ended with fingers still down (or none recorded) is
-    // not a completed single-finger swipe.
     const touch = event.changedTouches && event.changedTouches[0]
+    // Fingers still down, or none recorded: not a completed single-finger
+    // swipe.
     if (!touch || event.touches.length > 0) return
 
     const deltaX = touch.clientX - startX
     const deltaY = touch.clientY - startY
     if (!isHorizontalSwipe(deltaX, deltaY)) return
 
-    const target = resolveSwipeTarget(router.currentRoute.value.path, deltaX)
+    const target = resolveSwipeTarget(router.currentRoute.value.path, deltaX, routes)
     if (!target) return
 
     // The new page enters from the side the finger travelled towards, so
@@ -73,7 +73,7 @@ export function useSwipeNavigation(targetRef) {
   }
 
   // Clear the animation class once it has played, so a later navigation
-  // that did NOT come from a swipe (a nav tap, a back button) does not
+  // that did NOT come from a swipe (a nav tap, the back button) does not
   // inherit a stale slide direction.
   function onAnimationEnd() {
     slideFrom.value = ''
@@ -97,5 +97,5 @@ export function useSwipeNavigation(targetRef) {
     el.removeEventListener('animationend', onAnimationEnd)
   })
 
-  return { slideFrom, SWIPE_ROUTES }
+  return { slideFrom }
 }
