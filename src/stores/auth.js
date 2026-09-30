@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { supabase } from '../lib/supabaseClient'
 import { normalizeCoachAccessStatus } from '../features/auth/lib/coachAccessStatus'
+import { accessCheckDecision, accessCheckEntry } from '../lib/accessCheckCache'
 import { resolveLoginRoleOutcome } from '../features/auth/lib/loginRoleCheck'
 
 export const useAuthStore = defineStore('auth', {
@@ -18,6 +19,11 @@ export const useAuthStore = defineStore('auth', {
     role: null,
     roleLoaded: false,
     roleLoadPromise: null,
+    // Cached answers for the router guard's per-navigation access checks
+    // ({ value, at } | null). See lib/accessCheckCache.js for the policy
+    // and for why serving a few-seconds-old answer is safe here.
+    coachStatusCache: null,
+    traineeLinkCache: null,
   }),
 
   getters: {
@@ -245,6 +251,10 @@ export const useAuthStore = defineStore('auth', {
         this.role = null
         this.roleLoaded = false
         this.roleLoadPromise = null
+        // Never let one account's access answer survive into the next
+        // session on this device.
+        this.coachStatusCache = null
+        this.traineeLinkCache = null
       }
     },
 
@@ -263,9 +273,28 @@ export const useAuthStore = defineStore('auth', {
     // caller can fail closed without confusing "confirmed inactive" with
     // "couldn't check" (see router/index.js).
     async checkTraineeActiveLink() {
+      const decision = accessCheckDecision(this.traineeLinkCache, Date.now())
+      if (decision !== 'fetch') {
+        // Refresh in the background so the NEXT navigation is newer,
+        // without making this one wait for the network.
+        if (decision === 'use-and-refresh') this._refreshTraineeLink()
+        return this.traineeLinkCache.value
+      }
+      return this._fetchTraineeLink()
+    },
+
+    async _fetchTraineeLink() {
       const { data, error } = await supabase.rpc('trainee_get_auth_context')
       if (error) throw error
-      return Array.isArray(data) ? data.length > 0 : !!data
+      const value = Array.isArray(data) ? data.length > 0 : !!data
+      this.traineeLinkCache = accessCheckEntry(value, Date.now())
+      return value
+    },
+
+    // Fire-and-forget. A failed refresh leaves the existing entry in
+    // place; it ages out on its own and is then awaited properly.
+    _refreshTraineeLink() {
+      this._fetchTraineeLink().catch(() => {})
     },
 
     // The coach-side counterpart to checkTraineeActiveLink() above, added
@@ -296,13 +325,28 @@ export const useAuthStore = defineStore('auth', {
     // closed, but they are not the same event and should not claim to
     // be.
     async checkCoachAccessStatus() {
+      const decision = accessCheckDecision(this.coachStatusCache, Date.now())
+      if (decision !== 'fetch') {
+        if (decision === 'use-and-refresh') this._refreshCoachStatus()
+        return this.coachStatusCache.value
+      }
+      return this._fetchCoachStatus()
+    },
+
+    _refreshCoachStatus() {
+      this._fetchCoachStatus().catch(() => {})
+    },
+
+    async _fetchCoachStatus() {
       const { data, error } = await supabase.rpc('coach_get_own_status')
       if (error) throw error
       // Shape handling lives in a pure module so every payload variant
       // (array, bare row, empty array, null field, unrecognized value)
       // is covered by real tests -- this store cannot be loaded in a
       // node test because of the Supabase client import above.
-      return normalizeCoachAccessStatus(data)
+      const value = normalizeCoachAccessStatus(data)
+      this.coachStatusCache = accessCheckEntry(value, Date.now())
+      return value
     },
   },
 })
