@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "7290000208091",
+    "name": "אפונת גינה קטנה",
+    "brand": "יכין",
+    "storedCalories": 82,
+    "storedProtein": 5
+  },
+  {
+    "barcode": "7290000209388",
+    "name": "Sweet Corn",
+    "brand": "Yachin",
+    "storedCalories": 44.7154471544715,
+    "storedProtein": 1.89999997615814
+  },
+  {
+    "barcode": "7290000318479",
+    "name": "Viande grison",
+    "brand": "יחיעם",
+    "storedCalories": 268,
+    "storedProtein": 38
+  },
+  {
+    "barcode": "7290000318677",
+    "name": "סלמי סלוורול",
+    "brand": "יחיעם",
+    "storedCalories": 409,
+    "storedProtein": 27
+  },
+  {
+    "barcode": "7290000364858",
+    "name": "Hotdog",
+    "brand": "Tirat Tzvi",
+    "storedCalories": 252,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290000408354",
+    "name": "Yogurt With chocolate",
+    "brand": "Danone",
+    "storedCalories": 105.232558139535,
+    "storedProtein": 4.12790697674419
+  },
+  {
+    "barcode": "7290000467511",
+    "name": "ביסלי ברביקיו",
+    "brand": "אוסם",
+    "storedCalories": 501,
+    "storedProtein": 11
+  },
+  {
+    "barcode": "7290000474540",
+    "name": "Cottage cheese",
+    "brand": "Tara Diary",
+    "storedCalories": 103,
+    "storedProtein": 15.4
+  },
+  {
+    "barcode": "7290000480442",
+    "name": "שיבולת שועל הכנה מהירה",
+    "brand": "Quaker",
+    "storedCalories": 374,
+    "storedProtein": 11
+  },
+  {
+    "barcode": "7290000481029",
+    "name": "Pita Bread",
+    "brand": "Tan’ami מעדני תנעמי",
+    "storedCalories": 243,
+    "storedProtein": 7.2
+  },
+  {
+    "barcode": "7290000490601",
+    "name": "גלידל בטעם וניל",
+    "brand": "גלידות פלדמן",
+    "storedCalories": 100,
+    "storedProtein": 4.3
+  },
+  {
+    "barcode": "7290000497426",
+    "name": "לחם קל",
+    "brand": "ברמן",
+    "storedCalories": 213,
+    "storedProtein": 14
+  },
+  {
+    "barcode": "7290000554457",
+    "name": "צפתית גד 5%",
+    "brand": "מחלבות גד",
+    "storedCalories": 117,
+    "storedProtein": 12
+  },
+  {
+    "barcode": "7290000571478",
+    "name": "גאודה תום עזים פרוסה",
+    "brand": "המחלבה מבית יצחק",
+    "storedCalories": 373,
+    "storedProtein": 23
+  },
+  {
+    "barcode": "7290000598321",
+    "name": "מצה שמורה",
+    "brand": "חי רגעים",
+    "storedCalories": 375,
+    "storedProtein": 10.3
+  },
+  {
+    "barcode": "7290000652542",
+    "name": "פילה אמנון קפוא",
+    "brand": "תנובה",
+    "storedCalories": 85,
+    "storedProtein": 17
+  },
+  {
+    "barcode": "7290000663128",
+    "name": "בשר פלנצה",
+    "brand": "ג",
+    "storedCalories": 173,
+    "storedProtein": 18.5
+  },
+  {
+    "barcode": "7290000663777",
+    "name": "צ׳יפס סירות",
+    "brand": "תנובה",
+    "storedCalories": 142,
+    "storedProtein": 2.9
+  },
+  {
+    "barcode": "7290000664019",
+    "name": "Fish Nuggets נאגטס דג",
+    "brand": "דגי תנובה Tnuva",
+    "storedCalories": 222,
+    "storedProtein": 10.5
+  },
+  {
+    "barcode": "7290001567555",
+    "name": "פסטרמה גלילית עם דבש",
+    "brand": "יחיעם",
+    "storedCalories": 153,
+    "storedProtein": 12
+  },
+  {
+    "barcode": "7290001598276",
+    "name": "Sourdough bread",
+    "brand": null,
+    "storedCalories": 216,
+    "storedProtein": 12.4
+  },
+  {
+    "barcode": "7290001598580",
+    "name": "Buckwheats Pita Bread",
+    "brand": null,
+    "storedCalories": 159,
+    "storedProtein": 8.80000019073488
+  },
+  {
+    "barcode": "7290002026365",
+    "name": "Onion Rings",
+    "brand": "Aristo Crunch",
+    "storedCalories": 220,
+    "storedProtein": 3.4
+  },
+  {
+    "barcode": "7290002043072",
+    "name": "פרכוני אורז בציפוי שוקולד",
+    "brand": null,
+    "storedCalories": 484,
+    "storedProtein": 9.5
+  }
+]

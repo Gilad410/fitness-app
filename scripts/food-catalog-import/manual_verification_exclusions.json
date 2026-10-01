@@ -1,0 +1,142 @@
+[
+  {
+    "barcode": "7290000480107",
+    "name": "quaker",
+    "reason": "50-item review: cross-region comparison against Quaker's US site (quakeroats.com) suggested a possible protein discrepancy (~14%) but was inconclusive -- different regional product, not proof. Follow-up: fetched the CURRENT nutrition-label photo for this exact barcode (image_nutrition_url from the live product API, not the stale Search-a-licious reference). The photo confirms calories (374) exactly, but the protein figure is not clearly legible in the available photo (small/angled text). Still unresolved -- not confirmed wrong, not confirmed right. Kept quarantined pending a clearer photo or manufacturer confirmation.",
+    "excludedAt": "2026-09-20",
+    "status": "unresolved"
+  },
+  {
+    "barcode": "7290017973005",
+    "name": "Black currant preserves",
+    "reason": "CONFIRMED CONFLICT via current nutrition-label photo for this exact barcode. The real label states: serving size 1 Tablespoon (20g), Calories 50, Total Carbohydrate 12g, Protein 0g -- all PER SERVING (20g), not per 100g. Scaled to per-100g: ~250 kcal and ~60g carbohydrate. The stored candidate has caloriesPer100g=50 and carbsPer100g=12 -- i.e. the per-serving figures appear to have been recorded as if they were per-100g, a real ~5x error in the underlying Open Food Facts record (nutrition_data_per was stated as \"100g\" but the actual values are per-serving). Protein (0g) happens to round to 0 either way, so it alone would not have caught this -- the calorie/carb comparison is what exposed it. Excluded.",
+    "excludedAt": "2026-09-20",
+    "status": "confirmed_conflict"
+  },
+  {
+    "barcode": "7290002065555",
+    "name": "הלחמניה",
+    "reason": "CONFIRMED CONFLICT via current nutrition-label photo for this exact barcode. Stored: 262 kcal, 10.6g protein per 100g. Real label: 273 kcal, 9.2g protein per 100g -- a ~4% calorie and ~13% protein discrepancy, no clear single-field-swap explanation, just a genuine mismatch against the current label for this exact product. Excluded pending investigation of which figure (source record vs. label) is stale or mistranscribed.",
+    "excludedAt": "2026-09-20",
+    "status": "confirmed_conflict"
+  },
+  {
+    "barcode": "7290004120832",
+    "name": "Lait",
+    "reason": "CONFIRMED CONFLICT via current nutrition-label photo for this exact barcode -- a clear field-swap pattern. Real label (100ml column): protein 3.3g, carbohydrate 4.95g. Stored candidate: proteinPer100g=4.95 (matches the label's CARBOHYDRATE figure, not its protein figure), carbsPer100g=3.3 (matches the label's PROTEIN figure). The two values appear to be transposed in the underlying Open Food Facts record. Excluded -- importing this row as-is would log this milk as having 4.95g protein/100g when the real figure is 3.3g/100g.",
+    "excludedAt": "2026-09-20",
+    "status": "confirmed_conflict"
+  },
+  {
+    "barcode": "7290000078762",
+    "name": "Galette de riz au miel",
+    "reason": "CONFIRMED CONFLICT via current nutrition-label photo for this exact barcode. Stored: 386 kcal (label: 388, close, within rounding), 7.9g protein per 100g. Real label protein: 7.1g per 100g -- a real ~10% discrepancy. Excluded.",
+    "excludedAt": "2026-09-20",
+    "status": "confirmed_conflict"
+  },
+  {
+    "barcode": "7290017275345",
+    "name": "טחינה גולמית",
+    "reason": "CORRECTION (reconciliation pass): reported as one of 7 \"unresolved\" 50-item review outcomes and described as \"kept quarantined,\" but was never actually added to this exclusion list -- found present in accepted_candidates.json and supabase/sql/050 when reconciling. Fixing now: calories (667) confirmed exact against the current label photo; the protein row was cropped out of the photo, so protein remains unconfirmed. Excluded to match the stated status.",
+    "excludedAt": "2026-09-20",
+    "status": "unresolved"
+  },
+  {
+    "barcode": "7290110328627",
+    "name": "GO by Yoplait (banana)",
+    "reason": "CORRECTION (reconciliation pass): reported as unresolved/quarantined but not actually excluded until now. The available current-label photo shows the front marketing panel, not a per-100g nutrition facts table -- not directly comparable to the stored value. Excluded to match the stated status.",
+    "excludedAt": "2026-09-20",
+    "status": "unresolved"
+  },
+  {
+    "barcode": "7290000075204",
+    "name": "Crackers au ble complet",
+    "reason": "CORRECTION (reconciliation pass): reported as unresolved/quarantined but not actually excluded until now. Calories close (396 on the label vs. 400 stored, ~1%); the protein row was not confidently legible in a dense table. Excluded to match the stated status.",
+    "excludedAt": "2026-09-20",
+    "status": "unresolved"
+  },
+  {
+    "barcode": "7290019816911",
+    "name": "La Cremica cinnamon vanilla",
+    "reason": "CORRECTION (reconciliation pass): reported as unresolved/quarantined but not actually excluded until now. Calories (217) confirmed exact against the current label photo; the protein row was cropped out of the photo. Excluded to match the stated status.",
+    "excludedAt": "2026-09-20",
+    "status": "unresolved"
+  },
+  {
+    "barcode": "7290104061431",
+    "name": "Hummus with pine nuts",
+    "reason": "CORRECTION (reconciliation pass): reported as unresolved/quarantined but not actually excluded until now. Calories (205) confirmed exact against the current label photo; the protein row was cropped out of the photo. Excluded to match the stated status.",
+    "excludedAt": "2026-09-20",
+    "status": "unresolved"
+  },
+  {
+    "barcode": "7290012227998",
+    "name": "Beef Brisket, Thin Sliced",
+    "reason": "CORRECTION (reconciliation pass): reported as unresolved/quarantined but not actually excluded until now. The available current-label photo is too small/angled to read confidently -- not legible enough to confirm or deny the stored value. Excluded to match the stated status.",
+    "excludedAt": "2026-09-20",
+    "status": "unresolved"
+  },
+  {
+    "barcode": "8802241130261",
+    "name": "Seaweed Chips",
+    "reason": "RECLASSIFICATION under the stricter both-must-match standard: originally counted as a 'match' because protein matched exactly (26.67g/100g, scaled from the label's real per-4.5g-package figures: 1.2g protein / 4.5g). Re-audited: calories do NOT cleanly match -- the label's per-package figure (21.7 kcal / 4.5g) scales to ~482 kcal/100g, vs. the stored 466.67 kcal/100g, a real ~3.3% gap not explainable by rounding (466.67 does not round to a value consistent with 21.7 kcal at 4.5g). Protein alone matching is not sufficient under 'accept verification only when both calories and protein match'. Excluded.",
+    "excludedAt": "2026-09-20",
+    "status": "confirmed_conflict"
+  },
+  {
+    "barcode": "7613035635845",
+    "name": "גרנולה שוקולד",
+    "reason": "RECLASSIFICATION under the stricter both-must-match, no-inference standard: originally counted as a 'match' -- calories (436) are directly read and exact, but the protein figure was NEVER actually visible in the photo (the 100g-column protein value is cropped out of frame); the ~9.1g/100g figure previously cited was computed by scaling the visible 45g-serving-column value (4.1g), not read directly off the label. Per 'do not infer missing values,' a computed/inferred figure does not satisfy the readability requirement, so this item does not have two directly-read matching values. Falls under 'ambiguous' in the conflicting-or-ambiguous bucket. Excluded.",
+    "excludedAt": "2026-09-20",
+    "status": "ambiguous"
+  },
+  {
+    "barcode": "7290000066332",
+    "name": "Apropo",
+    "reason": "CONFIRMED CONFLICT, extension-sample review. Real label has two columns, 50g and 100g. Stored candidate (268 kcal, 2.3g protein) matches the label's 50g column (269 kcal, 2.3g) almost exactly, NOT the 100g column (538 kcal, 4.5g) -- the whole record appears to have been recorded at half the correct per-100g scale. Excluded.",
+    "excludedAt": "2026-09-20",
+    "status": "confirmed_conflict"
+  },
+  {
+    "barcode": "7290003078592",
+    "name": "Pereg",
+    "reason": "CONFIRMED CONFLICT, extension-sample review. The real label states its values are per 100ml of PREPARED drink (\"ל-100 מ\"ל משקה מוכן\"), not the as-sold dry mix -- a genuine preparation-basis concern. Also protein: label shows 0.26g, stored candidate claims an explicit zero (proteinExplicitlyZero=true) -- a real, if small, conflict on top of the basis concern. Excluded.",
+    "excludedAt": "2026-09-20",
+    "status": "confirmed_conflict"
+  },
+  {
+    "barcode": "7290014890572",
+    "name": "יוגורט עזים 3.5% ביו",
+    "reason": "CONFIRMED CONFLICT, extension-sample review. Stored 67 kcal / 4.4g protein per 100g vs. real label 58 kcal / 3.5g protein per 100g -- ~13% calorie and ~20% protein mismatch, both real and unexplained by rounding. Excluded.",
+    "excludedAt": "2026-09-20",
+    "status": "confirmed_conflict"
+  },
+  {
+    "barcode": "7290110325114",
+    "name": "GO shake Strawberry&Banana",
+    "reason": "AMBIGUOUS, extension-sample review. The available current-label photo (a curved bottle surface) is too blurry/warped to read the nutrition table confidently. Excluded.",
+    "excludedAt": "2026-09-20",
+    "status": "ambiguous"
+  },
+  {
+    "barcode": "7290000168173",
+    "name": "Branflakes Crunchim",
+    "reason": "AMBIGUOUS, extension-sample review. Calories (341, 100g column) confirmed exact against the current label; the protein row was not confidently legible in the photo. Excluded.",
+    "excludedAt": "2026-09-20",
+    "status": "ambiguous"
+  },
+  {
+    "barcode": "7290002332312",
+    "name": "מים בטעם ענבים",
+    "reason": "AMBIGUOUS, extension-sample review. Calories (15) confirmed exact against the current label; the label's visible crop does not show an explicit protein row at all (plausible for a flavored-water product, but not directly confirmed as read, only presumed) -- does not meet the both-metrics-readable bar. Excluded.",
+    "excludedAt": "2026-09-20",
+    "status": "ambiguous"
+  },
+  {
+    "barcode": "6253503475002",
+    "name": "Jerusalem Thyme",
+    "reason": "AMBIGUOUS, extension-sample review -- a genuinely interesting edge case. The current label itself carries CONTRADICTORY basis headers: the Arabic text states \"per 10g\" while the adjacent English text states \"per 100g\" for the same table. Cannot be used as clean verification either way until the source label's own basis ambiguity is resolved. Excluded.",
+    "excludedAt": "2026-09-20",
+    "status": "ambiguous"
+  }
+]

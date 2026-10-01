@@ -1,0 +1,212 @@
+[
+  {
+    "barcode": "7290100240632",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "as_sold",
+    "legible": false,
+    "notes": "Only front-of-package photos retrievable across all tried variants (1.jpg, 2.jpg, and nutrition_en.6.full.jpg all actually show the same box front of Osem 'Craquottes' 6-grain crackers, 250g - the 'nutrition_en' filename is mislabeled/miscategorized on the source). Front shows only a '21 calories per unit' marketing callout, not a per-100g table. Image 3.jpg returned 404; other numbered/nutrition variants (4, 5, he.1, he.2) could not be retrieved due to repeated connection failures to the image host. No nutrition facts panel was in frame in any image successfully retrieved."
+  },
+  {
+    "barcode": "7290119370177",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "as_sold",
+    "legible": false,
+    "notes": "Only front-of-cup photo retrievable (Danone PRO 20 yogurt, banana-toffee flavor - matches name). Front shows marketing claims '20 grams protein per container', '0% fat', '0% added sugar' but this is a front callout, not a full per-100g/serving nutrition table, and no calorie value is shown anywhere in frame. Additional variants (2.jpg, 3.jpg, nutrition_en/he full) could not be retrieved (404 or connection failures to the image host)."
+  },
+  {
+    "barcode": "7290015009393",
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Could not retrieve any image for this item. The image host (images.openfoodfacts.org) was unreachable for the remainder of this session (connection timeouts, then outright connection-refused errors confirmed from multiple independent network paths, including a server-side fetch tool). No visual data obtained; illegible due to fetch failure, not a confirmed absence of a nutrition panel."
+  },
+  {
+    "barcode": "7290006983763",
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Could not retrieve any image for this item. The image host (images.openfoodfacts.org) was unreachable for the remainder of this session (connection timeouts, then outright connection-refused errors confirmed from multiple independent network paths, including a server-side fetch tool). No visual data obtained; illegible due to fetch failure, not a confirmed absence of a nutrition panel."
+  },
+  {
+    "barcode": "7290114310338",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "as_sold",
+    "legible": false,
+    "notes": "Only a top/lid photo of the container retrievable (Meshek Tzuriel 'Tzfatit Meudenet 5%' soft cheese - brand and name match). No nutrition table in frame, only branding and a '5%' fat callout. Image index 2 returned 404; no other variants found before the image host became unreachable."
+  },
+  {
+    "barcode": "7290008175173",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "as_sold",
+    "legible": false,
+    "notes": "Only front wrapper photo retrievable (Valio butter, 'Master Butter Makers since 1905', 200g). No nutrition table in frame. Image index 2 returned 404; no other variants found before the image host became unreachable."
+  },
+  {
+    "barcode": "7290110557478",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "as_sold",
+    "legible": false,
+    "notes": "Only a top-down photo of an open hummus container retrievable (Achla 'Chumus Glili' 600g). No nutrition table in frame, just branding/product photo of the hummus itself."
+  },
+  {
+    "barcode": "7290002353836",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "as_sold",
+    "legible": false,
+    "notes": "Only front-of-can label retrievable (Robert brand sardines in olive oil, 2-5 fish, net wt 115g / drained wt 85g). Shows an Omega-3 claim ('contains omega 3 - 5.1g per 100g product after draining') but no calorie/protein nutrition table is in frame."
+  },
+  {
+    "barcode": "8715700423906",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "as_sold",
+    "legible": false,
+    "notes": "Only front bottle label retrievable (Heinz Tomato Ketchup 50%, '50% less sugar and sodium' claim visible). No nutrition table in frame."
+  },
+  {
+    "barcode": "7290112962904",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "as_sold",
+    "legible": false,
+    "notes": "Only front bag photo retrievable (Osem 'Shkedei Marak' soup almond rings, Kosher for Passover - matches name). No nutrition table in frame."
+  },
+  {
+    "barcode": "7290000062952",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "as_sold",
+    "legible": false,
+    "notes": "Only front bag photo retrievable (Osem 'Mini Croutons' with vegetables and herbs - matches name). No nutrition table in frame."
+  },
+  {
+    "barcode": "7290000311425",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "as_sold",
+    "legible": false,
+    "notes": "Only front bag photo retrievable (Man brand 'Vaflot Metzupim' coated wafers, 220g net, 10x22g units, Kosher Parve - matches name). No nutrition table in frame."
+  },
+  {
+    "barcode": "7290013453891",
+    "identityMatch": "yes",
+    "evidenceCalories": 354,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Photo of organic whole-chickpea-flour bag ('Kemach Chumus Male Organi' - matches name). Nutrition panel visible but rotated 90 degrees and the package is creased/folded. After rotating to reading orientation, the table header reads 'Nutritional labeling per 100g product' and the first row 'Energy (calories)' = 354. The photo is framed/creased such that it cuts off the table right after the fat row, before reaching the protein row, so evidenceProtein could not be read. Ingredients list confirms 'organic chickpea seeds' with a may-contain-gluten-traces allergen note, consistent with the product name."
+  },
+  {
+    "barcode": "7290005509445",
+    "identityMatch": "yes",
+    "evidenceCalories": 534,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Photo of a tub of butter-flavored mini cookies (Neriot 'Eini Cookies' / 'Ugiyot BeTaam Chemaa', 600g - matches name). Nutrition table per 100g is mostly readable: Energy (calories) 534, Total fat 26.3g (of which saturated fat 13g, trans fat 0-0.5g), Cholesterol 0mg, Sodium 97mg, Total carbohydrates 68.3g (of which sugars 22.9g). The bottom of the label, where the dietary fiber and protein rows would be, is physically covered by a pink shelf price-tag strip in the photo, so evidenceProtein could not be read despite the rest of the table being clear."
+  },
+  {
+    "barcode": "7290008425193",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "as_sold",
+    "legible": false,
+    "notes": "Only front jar label retrievable (Naot Smadar Organic Nabali Olives, 400g - matches 'Olives'). No nutrition table in frame. Tried alternate numbered and nutrition_en/nutrition_he filename variants; none existed (404s) before the image host became unreachable."
+  },
+  {
+    "barcode": "7290011378769",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "as_sold",
+    "legible": false,
+    "notes": "Only front box photo retrievable (halva snack bar, vanilla flavor, 7x18g=126g - matches 'Chalva BeKatana'). Front shows a '99 calories per unit' marketing callout and a '50% raw tahini' claim, but no per-100g/serving nutrition table with a protein value is in frame. Alternate image (2.jpg) returned 404."
+  },
+  {
+    "barcode": "7290011923013",
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Could not retrieve any image for this item before the image host (images.openfoodfacts.org) became unreachable (connection refused, confirmed via multiple independent network paths). No visual data obtained; illegible due to fetch failure, not a confirmed absence of a nutrition panel."
+  },
+  {
+    "barcode": "7290100659090",
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Could not retrieve any image for this item; the image host (images.openfoodfacts.org) was unreachable (connection refused) for the remainder of this session. No visual data obtained; illegible due to fetch failure, not a confirmed absence of a nutrition panel."
+  },
+  {
+    "barcode": "7290109580050",
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Could not retrieve any image for this item; the image host (images.openfoodfacts.org) was unreachable (connection refused) for the remainder of this session. No visual data obtained; illegible due to fetch failure, not a confirmed absence of a nutrition panel."
+  },
+  {
+    "barcode": "7290111602641",
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Could not retrieve any image for this item; the image host (images.openfoodfacts.org) was unreachable (connection refused) for the remainder of this session. No visual data obtained; illegible due to fetch failure, not a confirmed absence of a nutrition panel."
+  },
+  {
+    "barcode": "7290119670277",
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Could not retrieve any image for this item; the image host (images.openfoodfacts.org) was unreachable (connection refused) for the remainder of this session. No visual data obtained; illegible due to fetch failure, not a confirmed absence of a nutrition panel."
+  }
+]

@@ -1,0 +1,562 @@
+[
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "72917589",
+    "name": "מקופלת",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (536kcal/6.6g) does NOT match stored (536/6.8) at label precision (whole kcal, 0.1g protein) -- calMatch=true, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290006983176",
+    "name": "לחמית חיטה מלאה ושיפון",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (403kcal/13.5g) does NOT match stored (410.526315789474/13.6842105263158) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290107936309",
+    "name": "Greek yogurt",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (101kcal/5.5g) does NOT match stored (101.538461538462/5.53846153846154) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=true. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290119373352",
+    "name": "Energy",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (422kcal/5.9g) does NOT match stored (433.333333333333/6) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290112965684",
+    "name": "חטיף דגנים עם עשבי תיבול",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (476kcal/6.5g) does NOT match stored (478/6.5) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=true. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290112961464",
+    "name": "Fitness פירכיות מתובלות",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (434kcal/10.6g) does NOT match stored (433/10.8) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290110570040",
+    "name": "BARISTA ללא סוכר שקדים חלב",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (24kcal/0.6g) does NOT match stored (24/0.7) at label precision (whole kcal, 0.1g protein) -- calMatch=true, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290110558284",
+    "name": "MULTI Yogurt 3% fat",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (71kcal/6.5g) does NOT match stored (71.5/6.5) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=true. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290114969284",
+    "name": "אבקת חלבון בטעם וניל",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (387kcal/77g) does NOT match stored (376.470588235294/73.5294117647059) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "5740900403215",
+    "name": "ממרח חמאה לורפק בתוספת שמן לפתית",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (679kcal/0.5g) does NOT match stored (706/0.5) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=true. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "5202082002162",
+    "name": "Greek Yogurt 10% Fat",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (128kcal/6g) does NOT match stored (127.39006/5.6) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7296073205616",
+    "name": "medjool dates semi dry",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (267kcal/2.2g) does NOT match stored (0.267/2.2) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=true. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290002986218",
+    "name": "עוגיות יין חצי מצופות",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (544kcal/5.5g) does NOT match stored (468/6.6) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290111566332",
+    "name": "טבעול נקניקיות וינר צבחוניות",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (214kcal/18.3g) does NOT match stored (214.705882352941/18.2352941176471) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290011723101",
+    "name": "טחינה הר ברכה",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (699kcal/20.5g) does NOT match stored (691/20.5) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=true. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290016392531",
+    "name": "Vegan Protein Complex",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (373kcal/73.3g) does NOT match stored (384.375/75.3125) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290002769347",
+    "name": "Kaak",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (453kcal/4.8g) does NOT match stored (505/9.7) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290018835005",
+    "name": "Rice UP! Brown Rice Chips, Sea Salt and Black Pepper",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (449kcal/7.6g) does NOT match stored (450/7.66666666666667) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290112968807",
+    "name": "Fitness Thin",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (458kcal/12g) does NOT match stored (458/12.093023255814) at label precision (whole kcal, 0.1g protein) -- calMatch=true, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290112968821",
+    "name": "Fifness",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (459kcal/12g) does NOT match stored (459/11.5) at label precision (whole kcal, 0.1g protein) -- calMatch=true, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290110558314",
+    "name": "דנונה pro בטעם פיסטוק",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (55kcal/10g) does NOT match stored (55.5/10) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=true. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290120935495",
+    "name": "Creamy Core",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (373kcal/28g) does NOT match stored (373.809523809524/28.5714285714286) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290107942355",
+    "name": "Tapuchips Stickz",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (549kcal/5.9g) does NOT match stored (548.333333333333/6) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "0613008753351",
+    "name": "Arizona Pomegranate",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (34kcal/0g) does NOT match stored (21/0) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=true. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290112340122",
+    "name": "Rice cakes",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (388kcal/7.5g) does NOT match stored (411/8.8) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "0038000138430",
+    "name": "Original Light",
+    "before": "VERIFIED",
+    "after": "UNRESOLVED",
+    "reason": "UNCONVERTED_BASIS: evidence basis is \"serving\", not a per-100g/100ml figure -- must be deterministically converted from an explicit printed weight before it can be compared, not approved as-is."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "0038000138607",
+    "name": "Salt & Vinegar",
+    "before": "VERIFIED",
+    "after": "UNRESOLVED",
+    "reason": "UNCONVERTED_BASIS: evidence basis is \"serving\", not a per-100g/100ml figure -- must be deterministically converted from an explicit printed weight before it can be compared, not approved as-is."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290000467511",
+    "name": "ביסלי ברביקיו",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (528kcal/10g) does NOT match stored (501/11) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290000490601",
+    "name": "גלידל בטעם וניל",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (71kcal/4.3g) does NOT match stored (100/4.3) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=true. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290006775405",
+    "name": "מאפין",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (403kcal/5.2g) does NOT match stored (402.222222222222/5.11111111111111) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290010065332",
+    "name": "מחית תפוח עץ ובננה",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (56kcal/0.5g) does NOT match stored (68/0.5) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=true. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290012052507",
+    "name": "Hatif",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (410kcal/9.3g) does NOT match stored (410/9) at label precision (whole kcal, 0.1g protein) -- calMatch=true, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290017406374",
+    "name": "Jasmin rice",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (363kcal/6.8g) does NOT match stored (369/6.8) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=true. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290018237373",
+    "name": "פסטרמה עוף טוב גריל",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (99kcal/16g) does NOT match stored (99/18) at label precision (whole kcal, 0.1g protein) -- calMatch=true, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290105366047",
+    "name": "טחינה לבנה",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (321kcal/10.6g) does NOT match stored (316/10.6) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=true. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290018703076",
+    "name": "חטיף חלבון דאבל שוקולד",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (350kcal/33.3g) does NOT match stored (351.666666666667/33.3333333333333) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=true. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290019310006",
+    "name": "Whey Protein - Belgian Chocolate",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (380kcal/73g) does NOT match stored (378.787878787879/72.7272727272727) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290019310990",
+    "name": "Whey Protein Unflavored",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (392kcal/79g) does NOT match stored (390.909090909091/78.7878787878788) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290107649681",
+    "name": "טילון פסק זמן",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (347kcal/4.3g) does NOT match stored (346.875/4.375) at label precision (whole kcal, 0.1g protein) -- calMatch=true, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290110564339",
+    "name": "חומוס עשיר בטחינה גולמית",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (263kcal/10g) does NOT match stored (254/10.4) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290111566103",
+    "name": "Falafel vegan - Falafel vegan",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (220kcal/7.8g) does NOT match stored (160/8.9) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290114969307",
+    "name": "Whey, White Chocolate",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (385kcal/78g) does NOT match stored (387.878787878788/78.7878787878788) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290116932071",
+    "name": "GO Protein Powder -- Vanilla Caramel Flavour",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (387kcal/77g) does NOT match stored (386/77) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=true. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290116933009",
+    "name": "Chocolate And Cream Protein Bar",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (369kcal/33.4g) does NOT match stored (368.333333333333/33.3333333333333) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (no_photo)",
+    "barcode": "7290119373369",
+    "name": "פרכיות תפוחי אדמה",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (386kcal/7g) does NOT match stored (387.596899224806/7.75193798449612) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (with_photo)",
+    "barcode": "20443245",
+    "name": "Sauerkraut mit Räucherspeck und Röstzwiebel",
+    "before": "VERIFIED",
+    "after": "UNRESOLVED",
+    "reason": "PREP_STATE_UNCLEAR: raw/cooked (or as-sold/prepared) state could not be established, so the value cannot be confirmed as comparable to the stored basis."
+  },
+  {
+    "source": "976-cohort (with_photo)",
+    "barcode": "72992913",
+    "name": "קוקומן פצפוצי דגנים",
+    "before": "VERIFIED",
+    "after": "UNRESOLVED",
+    "reason": "PREP_STATE_UNCLEAR: raw/cooked (or as-sold/prepared) state could not be established, so the value cannot be confirmed as comparable to the stored basis."
+  },
+  {
+    "source": "976-cohort (with_photo)",
+    "barcode": "8434165466333",
+    "name": "Krit krititas galletas saladas",
+    "before": "VERIFIED",
+    "after": "UNRESOLVED",
+    "reason": "PREP_STATE_UNCLEAR: raw/cooked (or as-sold/prepared) state could not be established, so the value cannot be confirmed as comparable to the stored basis."
+  },
+  {
+    "source": "976-cohort (with_photo)",
+    "barcode": "7290008752244",
+    "name": "טפוצ׳יפס קראנץ׳ גריל",
+    "before": "VERIFIED",
+    "after": "UNRESOLVED",
+    "reason": "PREP_STATE_UNCLEAR: raw/cooked (or as-sold/prepared) state could not be established, so the value cannot be confirmed as comparable to the stored basis."
+  },
+  {
+    "source": "976-cohort (with_photo)",
+    "barcode": "7290112349668",
+    "name": "90% Cocoa Supreme Dark Chocolate",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (628kcal/9.4g) does NOT match stored (628.74251497006/9.58083832335329) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (with_photo)",
+    "barcode": "7290118426202",
+    "name": "ביסלי במבה מיקס",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (529kcal/13.5g) does NOT match stored (520/13.5714285714286) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (with_photo)",
+    "barcode": "7290008745239",
+    "name": "תפוצ׳יפס בטעם טבעי",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (549kcal/5.9g) does NOT match stored (548/6) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (with_photo)",
+    "barcode": "7290112494283",
+    "name": "Klik",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (515kcal/8.1g) does NOT match stored (513.846153846154/8.15384615384615) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (with_photo)",
+    "barcode": "7290108502985",
+    "name": "תפוחונים",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (387kcal/2.8g) does NOT match stored (386.818181818182/2.72727272727273) at label precision (whole kcal, 0.1g protein) -- calMatch=true, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (with_photo)",
+    "barcode": "7290116934020",
+    "name": "יוגורט מוקצף עם קפה",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (125kcal/20g) does NOT match stored (62.5/10) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (with_photo)",
+    "barcode": "7290004068172",
+    "name": "Goat yogurt",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (73kcal/2.9g) does NOT match stored (75/2.9) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=true. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (with_photo)",
+    "barcode": "7290019816331",
+    "name": "Crunch caramel waffle",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (317kcal/3.6g) does NOT match stored (317.204301075269/3.54838709677419) at label precision (whole kcal, 0.1g protein) -- calMatch=true, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (with_photo)",
+    "barcode": "7290000073767",
+    "name": "מנה חמה נודלס בטעם בקר",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (225kcal/7.1g) does NOT match stored (457.746478873239/10) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (with_photo)",
+    "barcode": "7394376616778",
+    "name": "Oat milk",
+    "before": "CORRECTION_PROPOSED",
+    "after": "UNRESOLVED",
+    "reason": "UNCONVERTED_BASIS: evidence basis is \"unclear\", not a per-100g/100ml figure -- must be deterministically converted from an explicit printed weight before it can be compared, not approved as-is."
+  },
+  {
+    "source": "976-cohort (with_photo)",
+    "barcode": "7290002129479",
+    "name": "פיצה איטלקית דקה",
+    "before": "VERIFIED",
+    "after": "UNRESOLVED",
+    "reason": "PREP_STATE_UNCLEAR: raw/cooked (or as-sold/prepared) state could not be established, so the value cannot be confirmed as comparable to the stored basis."
+  },
+  {
+    "source": "976-cohort (with_photo)",
+    "barcode": "7290006337993",
+    "name": "Beef dumplings",
+    "before": "CORRECTION_PROPOSED",
+    "after": "UNRESOLVED",
+    "reason": "PREP_STATE_UNCLEAR: raw/cooked (or as-sold/prepared) state could not be established, so the value cannot be confirmed as comparable to the stored basis."
+  },
+  {
+    "source": "976-cohort (with_photo)",
+    "barcode": "7290112963895",
+    "name": "קרקר דגנים",
+    "before": "VERIFIED",
+    "after": "CORRECTION_PROPOSED",
+    "reason": "Evidence (461kcal/17g) does NOT match stored (461/12.5) at label precision (whole kcal, 0.1g protein) -- calMatch=true, protMatch=false. No tolerance was applied to paper over this."
+  },
+  {
+    "source": "976-cohort (with_photo)",
+    "barcode": "4840008019521",
+    "name": "Butterfly Biscuits",
+    "before": "VERIFIED",
+    "after": "UNRESOLVED",
+    "reason": "UNCONVERTED_BASIS: evidence basis is \"serving\", not a per-100g/100ml figure -- must be deterministically converted from an explicit printed weight before it can be compared, not approved as-is."
+  },
+  {
+    "source": "976-cohort (with_photo)",
+    "barcode": "0814496020035",
+    "name": "Brownie batter",
+    "before": "VERIFIED",
+    "after": "UNRESOLVED",
+    "reason": "UNCONVERTED_BASIS: evidence basis is \"serving\", not a per-100g/100ml figure -- must be deterministically converted from an explicit printed weight before it can be compared, not approved as-is."
+  },
+  {
+    "source": "976-cohort (with_photo)",
+    "barcode": "0815871010009",
+    "name": "Potato chips",
+    "before": "CORRECTION_PROPOSED",
+    "after": "UNRESOLVED",
+    "reason": "UNCONVERTED_BASIS: evidence basis is \"serving\", not a per-100g/100ml figure -- must be deterministically converted from an explicit printed weight before it can be compared, not approved as-is."
+  },
+  {
+    "source": "976-cohort (with_photo)",
+    "barcode": "0850010353012",
+    "name": "Chocolate Flavored Protein Powder",
+    "before": "VERIFIED",
+    "after": "UNRESOLVED",
+    "reason": "UNCONVERTED_BASIS: evidence basis is \"serving\", not a per-100g/100ml figure -- must be deterministically converted from an explicit printed weight before it can be compared, not approved as-is."
+  },
+  {
+    "source": "976-cohort (with_photo)",
+    "barcode": "0898220011582",
+    "name": "Foods, Dark Chocolate, Nuts, & Sea Salt Snack Bars",
+    "before": "VERIFIED",
+    "after": "UNRESOLVED",
+    "reason": "UNCONVERTED_BASIS: evidence basis is \"serving\", not a per-100g/100ml figure -- must be deterministically converted from an explicit printed weight before it can be compared, not approved as-is."
+  },
+  {
+    "source": "976-cohort (with_photo)",
+    "barcode": "01002013",
+    "name": "Hazelnut & Oat Milk Chocolate",
+    "before": "VERIFIED",
+    "after": "UNRESOLVED",
+    "reason": "UNCONVERTED_BASIS: evidence basis is \"serving\", not a per-100g/100ml figure -- must be deterministically converted from an explicit printed weight before it can be compared, not approved as-is."
+  },
+  {
+    "source": "976-cohort (with_photo)",
+    "barcode": "6253014790076",
+    "name": "Qamar Dates",
+    "before": "VERIFIED",
+    "after": "UNRESOLVED",
+    "reason": "UNCONVERTED_BASIS: evidence basis is \"serving\", not a per-100g/100ml figure -- must be deterministically converted from an explicit printed weight before it can be compared, not approved as-is."
+  },
+  {
+    "source": "976-cohort (with_photo)",
+    "barcode": "6934731200078",
+    "name": "Fresh Ramen Noodles",
+    "before": "VERIFIED",
+    "after": "UNRESOLVED",
+    "reason": "PREP_STATE_UNCLEAR: raw/cooked (or as-sold/prepared) state could not be established, so the value cannot be confirmed as comparable to the stored basis."
+  }
+]

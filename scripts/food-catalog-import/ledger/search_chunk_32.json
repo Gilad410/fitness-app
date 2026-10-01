@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "7290112353412",
+    "name": "Skee white cheese",
+    "brand": "Shtraus",
+    "storedCalories": 96,
+    "storedProtein": 7.91999969482422
+  },
+  {
+    "barcode": "7290112353887",
+    "name": "Hazelnut coffee",
+    "brand": "Yutvata",
+    "storedCalories": 58,
+    "storedProtein": 3.20000004768372
+  },
+  {
+    "barcode": "7290112354174",
+    "name": "Pasta Rosa",
+    "brand": "Strauss",
+    "storedCalories": 366,
+    "storedProtein": 13.3000001907349
+  },
+  {
+    "barcode": "7290112357106",
+    "name": "Red beans",
+    "brand": null,
+    "storedCalories": 93,
+    "storedProtein": 6.7
+  },
+  {
+    "barcode": "7290112495761",
+    "name": "רוטב אלף האיים לייט",
+    "brand": "הלמנס",
+    "storedCalories": 166.666666666667,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290112496287",
+    "name": "Sweet potato chips",
+    "brand": null,
+    "storedCalories": 98,
+    "storedProtein": 1.20000004768372
+  },
+  {
+    "barcode": "7290112498922",
+    "name": "White Chocolate Mini Magnum",
+    "brand": "Strauss",
+    "storedCalories": 314,
+    "storedProtein": 3.8
+  },
+  {
+    "barcode": "7290112963321",
+    "name": "Gratify Gluten Free 300gm",
+    "brand": "אסם",
+    "storedCalories": 497,
+    "storedProtein": 6
+  },
+  {
+    "barcode": "7290112964502",
+    "name": "רוטב אלף האיים",
+    "brand": "אסם",
+    "storedCalories": 270,
+    "storedProtein": 0.6
+  },
+  {
+    "barcode": "7290113194090",
+    "name": "Calamata",
+    "brand": "Beit hachita",
+    "storedCalories": 163,
+    "storedProtein": 1.20000004768372
+  },
+  {
+    "barcode": "7290114310499",
+    "name": "יוגורט ביו עם שוקולד פקאן סיני",
+    "brand": "Muller",
+    "storedCalories": 140,
+    "storedProtein": 5.19999980926514
+  },
+  {
+    "barcode": "7290114310567",
+    "name": "לאבנה עזים משק צוריאל",
+    "brand": "משק צוריאל",
+    "storedCalories": 97,
+    "storedProtein": 6.09999990463257
+  },
+  {
+    "barcode": "7290114310574",
+    "name": "גבינת עזים 5% צוריאל",
+    "brand": "משק צוריאל",
+    "storedCalories": 109,
+    "storedProtein": 10.2
+  },
+  {
+    "barcode": "7290114311441",
+    "name": "Muller Active",
+    "brand": "Muller",
+    "storedCalories": 65,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290114604901",
+    "name": "רוטב שום מאסטר שף",
+    "brand": "Master Chef",
+    "storedCalories": 487,
+    "storedProtein": 1
+  },
+  {
+    "barcode": "7290114969307",
+    "name": "Whey, White Chocolate",
+    "brand": "Allin",
+    "storedCalories": 387.878787878788,
+    "storedProtein": 78.7878787878788
+  },
+  {
+    "barcode": "7290115203844",
+    "name": "Plant-based schnitzel",
+    "brand": "Hälsans Kök",
+    "storedCalories": 240,
+    "storedProtein": 12.3333333333333
+  },
+  {
+    "barcode": "7290115204582",
+    "name": "Tahini",
+    "brand": "Tzabar",
+    "storedCalories": 294,
+    "storedProtein": 9.39999961853027
+  },
+  {
+    "barcode": "7290115205633",
+    "name": "Vegetarian sausage",
+    "brand": "טבעול",
+    "storedCalories": 150,
+    "storedProtein": 13.0000005449568
+  },
+  {
+    "barcode": "7290115206333",
+    "name": "‏עוגיות מיני",
+    "brand": "אסם",
+    "storedCalories": 500,
+    "storedProtein": 4.83870967741935
+  },
+  {
+    "barcode": "7290115208245",
+    "name": "בייגלה סלק",
+    "brand": "Fitness",
+    "storedCalories": 399,
+    "storedProtein": 11.3
+  },
+  {
+    "barcode": "7290115208269",
+    "name": "בייגלה fitness",
+    "brand": "Nestlé",
+    "storedCalories": 399,
+    "storedProtein": 10.9
+  },
+  {
+    "barcode": "7290115209020",
+    "name": "Instant Mac And Cheese",
+    "brand": "Osem",
+    "storedCalories": 91.1764705882353,
+    "storedProtein": 2.64705882352941
+  },
+  {
+    "barcode": "7290115676051",
+    "name": "Yogurt  with oats",
+    "brand": "Activia",
+    "storedCalories": 52.8301886792453,
+    "storedProtein": 2.90566037735849
+  }
+]

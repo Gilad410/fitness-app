@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "72917367",
+    "name": "טעמי",
+    "brand": "עלית",
+    "storedCalories": 507.5,
+    "storedProtein": 6.25
+  },
+  {
+    "barcode": "72917589",
+    "name": "מקופלת",
+    "brand": "עלית",
+    "storedCalories": 536,
+    "storedProtein": 6.8
+  },
+  {
+    "barcode": "72947982",
+    "name": "Cookie luxury Chuck chocolaté",
+    "brand": "Dawn",
+    "storedCalories": 498,
+    "storedProtein": 4.90000009536743
+  },
+  {
+    "barcode": "72963746",
+    "name": "Shemint",
+    "brand": "Tnova",
+    "storedCalories": 159,
+    "storedProtein": 2.7
+  },
+  {
+    "barcode": "72986424",
+    "name": "Sweet Cream & Cookies Ice Cream",
+    "brand": "בן & ג׳ריס",
+    "storedCalories": 260,
+    "storedProtein": 4
+  },
+  {
+    "barcode": "72992920",
+    "name": "Shugi",
+    "brand": "Telma",
+    "storedCalories": 461.538461538462,
+    "storedProtein": 6.53846172186045
+  },
+  {
+    "barcode": "88544458",
+    "name": "Stickletti",
+    "brand": "Chio",
+    "storedCalories": 374,
+    "storedProtein": 11
+  },
+  {
+    "barcode": "7290000176420",
+    "name": "קפה נמס",
+    "brand": "Elite",
+    "storedCalories": 4,
+    "storedProtein": 0.12
+  },
+  {
+    "barcode": "7290000523224",
+    "name": "מלח ים דק",
+    "brand": "מלח הארץ",
+    "storedCalories": 0,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290110115463",
+    "name": "Fuze tea",
+    "brand": "Fuzetea",
+    "storedCalories": 8,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290000120836",
+    "name": "מיונז אמיתי",
+    "brand": "Hellmann's, Hellman's",
+    "storedCalories": 698,
+    "storedProtein": 1.2
+  },
+  {
+    "barcode": "7290004125455",
+    "name": "Original Sour Cream 15%",
+    "brand": "Tnuva",
+    "storedCalories": 159,
+    "storedProtein": 2.7
+  },
+  {
+    "barcode": "7290004125578",
+    "name": "משקה סויה מועשר אלטרנטיב",
+    "brand": "ALTERNATIVE",
+    "storedCalories": 46,
+    "storedProtein": 3.3
+  },
+  {
+    "barcode": "7290000043814",
+    "name": "Whipping Cream 38% שמנת להקצפה",
+    "brand": "תנובה Tnuva השף הלבן White Chef",
+    "storedCalories": 366,
+    "storedProtein": 2
+  },
+  {
+    "barcode": "7290110328764",
+    "name": "יוגורט גו במרקם סמיך תות",
+    "brand": "Yoplait",
+    "storedCalories": 54,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290110563462",
+    "name": "חלב נטול לקטוז מפוסטר",
+    "brand": "יטבתה",
+    "storedCalories": 52,
+    "storedProtein": 3.4
+  },
+  {
+    "barcode": "7290004125721",
+    "name": "Sour Cream 15%",
+    "brand": "Tnuva",
+    "storedCalories": 163,
+    "storedProtein": 2.8
+  },
+  {
+    "barcode": "7290000208329",
+    "name": "corn",
+    "brand": "yahin",
+    "storedCalories": 70,
+    "storedProtein": 2.4
+  },
+  {
+    "barcode": "7613035622623",
+    "name": "גרנולה דבש פיטנס",
+    "brand": "Nestlé",
+    "storedCalories": 429,
+    "storedProtein": 8.7
+  },
+  {
+    "barcode": "7290110577254",
+    "name": "PRO משקה קפה עם חלב",
+    "brand": "יטבתה",
+    "storedCalories": 37,
+    "storedProtein": 7.2
+  },
+  {
+    "barcode": "7290012226120",
+    "name": "קבנוס",
+    "brand": "זוגלובק",
+    "storedCalories": 364,
+    "storedProtein": 20
+  },
+  {
+    "barcode": "7290115203936",
+    "name": "קטשופ דל סוכר",
+    "brand": "אסם",
+    "storedCalories": 64,
+    "storedProtein": 2
+  },
+  {
+    "barcode": "7290002824640",
+    "name": "סקי 5%",
+    "brand": "שטראוס",
+    "storedCalories": 96,
+    "storedProtein": 7.9
+  },
+  {
+    "barcode": "7290000211503",
+    "name": "סוכר לבן",
+    "brand": "sugat",
+    "storedCalories": 400,
+    "storedProtein": 0
+  }
+]

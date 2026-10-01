@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "7290002868996",
+    "name": "קוטג׳ 5%",
+    "brand": "טרה",
+    "storedCalories": 97,
+    "storedProtein": 10.1
+  },
+  {
+    "barcode": "7290000446554",
+    "name": "חמאת בוטנים טבעית  (B&D)",
+    "brand": "B&D",
+    "storedCalories": 617,
+    "storedProtein": 28
+  },
+  {
+    "barcode": "7290107932080",
+    "name": "חלב מועשר",
+    "brand": "יטבתה",
+    "storedCalories": 60,
+    "storedProtein": 3.4
+  },
+  {
+    "barcode": "7290008645935",
+    "name": "Humus - אחלה - אחלה",
+    "brand": null,
+    "storedCalories": 186,
+    "storedProtein": 8.2
+  },
+  {
+    "barcode": "7290112491701",
+    "name": "ברנפלקס אקסטרה חלבון",
+    "brand": "תלמה",
+    "storedCalories": 348,
+    "storedProtein": 20
+  },
+  {
+    "barcode": "7290106576537",
+    "name": "חומוס מסעדה",
+    "brand": "צבר",
+    "storedCalories": 185,
+    "storedProtein": 7.9
+  },
+  {
+    "barcode": "7290000181103",
+    "name": "עד חצות סגול",
+    "brand": "Yarden",
+    "storedCalories": 485.029940119761,
+    "storedProtein": 7.18562874251497
+  },
+  {
+    "barcode": "7290000074184",
+    "name": "פתי בר קלאסי",
+    "brand": "אסם",
+    "storedCalories": 461.538461538462,
+    "storedProtein": 6.83760683760684
+  },
+  {
+    "barcode": "7290000068343",
+    "name": "قطع بريخونيم",
+    "brand": "אסם",
+    "storedCalories": 90,
+    "storedProtein": 1.9
+  },
+  {
+    "barcode": "7290110568276",
+    "name": "PRO 25",
+    "brand": "טובה (Tova)",
+    "storedCalories": 65,
+    "storedProtein": 7.2
+  },
+  {
+    "barcode": "7290013585233",
+    "name": "Sprite Zero",
+    "brand": "Coca-Cola",
+    "storedCalories": 1,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290000522319",
+    "name": "חלב טרי מהגולן",
+    "brand": "מחלבות רמת הגולן",
+    "storedCalories": 60,
+    "storedProtein": 3.3
+  },
+  {
+    "barcode": "7290000468747",
+    "name": "Bisli Grill",
+    "brand": "Osem",
+    "storedCalories": 507,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290013358530",
+    "name": "רוטב צ׳ילי מתוק",
+    "brand": "מאסטר שף",
+    "storedCalories": 140,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290000042855",
+    "name": "שוקו בסקית",
+    "brand": null,
+    "storedCalories": 49,
+    "storedProtein": 3.09999990463257
+  },
+  {
+    "barcode": "7290010066575",
+    "name": "Tuna water",
+    "brand": "Filtuna",
+    "storedCalories": 98,
+    "storedProtein": 23.2
+  },
+  {
+    "barcode": "7290003450602",
+    "name": "Mosturd",
+    "brand": "Heinz",
+    "storedCalories": 80,
+    "storedProtein": 4
+  },
+  {
+    "barcode": "7290107943369",
+    "name": "Quaker Oats Gluten Free",
+    "brand": "Quaker Oats",
+    "storedCalories": 408,
+    "storedProtein": 13.3
+  },
+  {
+    "barcode": "0037600309424",
+    "name": "חמאת בוטנים עם שברי בוטנים",
+    "brand": "Skippy",
+    "storedCalories": 597,
+    "storedProtein": 24
+  },
+  {
+    "barcode": "8000215204677",
+    "name": "Oat Drink Barista",
+    "brand": "Vitariz",
+    "storedCalories": 61,
+    "storedProtein": 1
+  },
+  {
+    "barcode": "0064144090020",
+    "name": "פאם תרסיס על בסיס שמן זית לבישול, טיגון ואפייה",
+    "brand": "Congra Brands",
+    "storedCalories": 877,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290000072630",
+    "name": "קטשופ חריף",
+    "brand": "אסם",
+    "storedCalories": 109,
+    "storedProtein": 1.8
+  },
+  {
+    "barcode": "7290017065137",
+    "name": "ריקוטה למריחה",
+    "brand": "גד",
+    "storedCalories": 87,
+    "storedProtein": 6
+  },
+  {
+    "barcode": "0016000423534",
+    "name": "Nature valley chocolat",
+    "brand": "נייצ'ר ואלי",
+    "storedCalories": 473.809523809524,
+    "storedProtein": 8.80952380952381
+  }
+]

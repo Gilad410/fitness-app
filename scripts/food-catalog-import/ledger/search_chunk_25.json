@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "7290012227912",
+    "name": "קבנוס מעודן",
+    "brand": "זוגלובק",
+    "storedCalories": 259.259259259259,
+    "storedProtein": 15.5555555555556
+  },
+  {
+    "barcode": "7290012244278",
+    "name": "עוגת היער השחור",
+    "brand": "גידרון",
+    "storedCalories": 327,
+    "storedProtein": 2.4
+  },
+  {
+    "barcode": "7290012251481",
+    "name": "פרימיום שרימפס",
+    "brand": "Sea World",
+    "storedCalories": 87,
+    "storedProtein": 18.7
+  },
+  {
+    "barcode": "7290012737626",
+    "name": "פנה כוסמין מלא אורגני",
+    "brand": "ניצת הדובדבן",
+    "storedCalories": 168,
+    "storedProtein": 5.3
+  },
+  {
+    "barcode": "7290012911422",
+    "name": "Red Curry Paste",
+    "brand": "Taste Of Asia",
+    "storedCalories": 117,
+    "storedProtein": 4
+  },
+  {
+    "barcode": "7290013028211",
+    "name": "MASSIVE GAINER",
+    "brand": "ProBody",
+    "storedCalories": 380,
+    "storedProtein": 9.4
+  },
+  {
+    "barcode": "7290013068286",
+    "name": "Tuna",
+    "brand": null,
+    "storedCalories": 145,
+    "storedProtein": 24.7
+  },
+  {
+    "barcode": "7290013159885",
+    "name": "Сухими, имитация ножек краба",
+    "brand": "Cancun",
+    "storedCalories": 105,
+    "storedProtein": 8
+  },
+  {
+    "barcode": "7290013187765",
+    "name": "ברוקולי מוקפא",
+    "brand": null,
+    "storedCalories": 20,
+    "storedProtein": 3
+  },
+  {
+    "barcode": "7290013187826",
+    "name": "כרוב ניצנים מוקפא",
+    "brand": "טבעפרוסט",
+    "storedCalories": 28,
+    "storedProtein": 3
+  },
+  {
+    "barcode": "7290013358493",
+    "name": "Crème coco",
+    "brand": null,
+    "storedCalories": 177,
+    "storedProtein": 0.9
+  },
+  {
+    "barcode": "7290013389114",
+    "name": "ניוקי תפוחי אדמה",
+    "brand": "La’ Pasta",
+    "storedCalories": 124,
+    "storedProtein": 3.3
+  },
+  {
+    "barcode": "7290013453082",
+    "name": "Chocolate cookies",
+    "brand": null,
+    "storedCalories": 379,
+    "storedProtein": 9.60000038146973
+  },
+  {
+    "barcode": "7290013453600",
+    "name": "עוגיות ביסקוטי שוקולד ואגוזי לוז",
+    "brand": "דני וגלית",
+    "storedCalories": 208.333333333333,
+    "storedProtein": 4.16666666666667
+  },
+  {
+    "barcode": "7290013521224",
+    "name": "Buckwheat Spaghetti",
+    "brand": "HaSadeh",
+    "storedCalories": 351,
+    "storedProtein": 11
+  },
+  {
+    "barcode": "7290013531759",
+    "name": "שעועית לבנה במים ומלח",
+    "brand": null,
+    "storedCalories": 109,
+    "storedProtein": 6.69999980926514
+  },
+  {
+    "barcode": "7290013677174",
+    "name": "אורז פרסי מלא",
+    "brand": "מיה",
+    "storedCalories": 107,
+    "storedProtein": 2.6
+  },
+  {
+    "barcode": "7290013702425",
+    "name": "Schweppes Berries",
+    "brand": null,
+    "storedCalories": 20,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290013906489",
+    "name": "Cabanus",
+    "brand": "טירת צבי",
+    "storedCalories": 384,
+    "storedProtein": 18
+  },
+  {
+    "barcode": "7290014046757",
+    "name": "سلامي تي",
+    "brand": "יחיעם",
+    "storedCalories": 196,
+    "storedProtein": 16
+  },
+  {
+    "barcode": "7290014095861",
+    "name": "White oats",
+    "brand": "Shkedia",
+    "storedCalories": 370,
+    "storedProtein": 12.1000003814697
+  },
+  {
+    "barcode": "7290014325425",
+    "name": "בורגול",
+    "brand": "אינדירה",
+    "storedCalories": 335,
+    "storedProtein": 12.5
+  },
+  {
+    "barcode": "7290014435704",
+    "name": "סלמון מעושן פרוס",
+    "brand": "שמיר",
+    "storedCalories": 173,
+    "storedProtein": 23.1
+  },
+  {
+    "barcode": "7290014628106",
+    "name": "Granola cacao",
+    "brand": null,
+    "storedCalories": 390,
+    "storedProtein": 11
+  }
+]

@@ -1,0 +1,52 @@
+[
+  {
+    "barcode": "7290000554532",
+    "name": "Delicate Tefalit cheese",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000554532.jpg"
+  },
+  {
+    "barcode": "7290003222094",
+    "name": "Pita Bis Teimani",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290003222094.jpg"
+  },
+  {
+    "barcode": "7290003229192",
+    "name": "פסטרמה כתף בקר מעושנת",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290003229192.jpg"
+  },
+  {
+    "barcode": "7290004122683",
+    "name": "אצבעות גבינה עמק",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290004122683.jpg"
+  },
+  {
+    "barcode": "7290011018467",
+    "name": "Fanta Exotic",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290011018467.jpg"
+  },
+  {
+    "barcode": "7290014471184",
+    "name": "Munchies",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290014471184.jpg"
+  },
+  {
+    "barcode": "7290014791565",
+    "name": "Grapes",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290014791565.jpg"
+  },
+  {
+    "barcode": "7290015161299",
+    "name": "פומודורו בסיס לבולונז – רוטב עגבניות אורגני להכנת פסטה",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290015161299.jpg"
+  },
+  {
+    "barcode": "7290016584004",
+    "name": "‏גיזרונים",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290016584004.jpg"
+  },
+  {
+    "barcode": "7290017617466",
+    "name": "טונה במים",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290017617466.jpg"
+  }
+]

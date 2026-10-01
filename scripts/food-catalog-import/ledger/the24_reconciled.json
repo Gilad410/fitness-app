@@ -1,0 +1,680 @@
+{
+  "7290004131074": {
+    "barcode": "7290004131074",
+    "name": "חלב טרי 3%",
+    "storedCalories": 60,
+    "storedProtein": 3.3,
+    "reader1": {
+      "barcode": "7290004131074",
+      "identityMatch": "unclear",
+      "evidenceCalories": 60,
+      "evidenceProtein": 3.3,
+      "basis": "100ml",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Crop shows only the nutrition table, no brand/product name visible. Header indicates per-100ml basis."
+    },
+    "reader2": {
+      "barcode": "7290004131074",
+      "identityMatch": "unclear",
+      "evidenceCalories": 60,
+      "evidenceProtein": 3.3,
+      "basis": "100ml",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Table only, no brand/product name visible."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently agree: 60kcal/3.3g per 100g, matching stored (60/3.3)."
+  },
+  "7290004127336": {
+    "barcode": "7290004127336",
+    "name": "קוטג' 9%",
+    "storedCalories": 128,
+    "storedProtein": 10.5,
+    "reader1": {
+      "barcode": "7290004127336",
+      "identityMatch": "unclear",
+      "evidenceCalories": 128,
+      "evidenceProtein": 10.5,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Crop shows only the nutrition table (header '100 גרם מזון'), no brand/product name visible."
+    },
+    "reader2": {
+      "barcode": "7290004127336",
+      "identityMatch": "unclear",
+      "evidenceCalories": 128,
+      "evidenceProtein": 10.5,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Table only, no brand/name visible."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently agree: 128kcal/10.5g per 100g, matching stored (128/10.5)."
+  },
+  "7290116931241": {
+    "barcode": "7290116931241",
+    "name": "קוטג' תנובה 12%",
+    "storedCalories": 153,
+    "storedProtein": 10,
+    "reader1": {
+      "barcode": "7290116931241",
+      "identityMatch": "unclear",
+      "evidenceCalories": 153,
+      "evidenceProtein": 10,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Full cup photographed but brand/name obscured by hand/glare; nutrition table clearly legible, per 100g."
+    },
+    "reader2": {
+      "barcode": "7290116931241",
+      "identityMatch": "unclear",
+      "evidenceCalories": 153,
+      "evidenceProtein": 10,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Cottage cheese tub, table only, no legible brand/name text."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently agree: 153kcal/10g per 100g, matching stored (153/10)."
+  },
+  "7290119377404": {
+    "barcode": "7290119377404",
+    "name": "Pro 25 Vanilla",
+    "storedCalories": 89,
+    "storedProtein": 11.6,
+    "reader1": {
+      "barcode": "7290119377404",
+      "identityMatch": "unclear",
+      "evidenceCalories": 191,
+      "evidenceProtein": 25,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two columns: 100g (191/25) and per-cup (89/11.6, serving weight not visible). Reported 100g. Only 'PR'/'25' branding fragments visible."
+    },
+    "reader2": {
+      "barcode": "7290119377404",
+      "identityMatch": "yes",
+      "evidenceCalories": 89,
+      "evidenceProtein": 11.6,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two columns: 100g (89/11.6) and per-cup (191/25, weight not printed). Used 100g. Partial 'PR'/'25' branding consistent with Danone Pro 25."
+    },
+    "finalOutcome": "CORRECTION_PROPOSED",
+    "justification": "[Manual third read, tie-breaker] Own direct read of the two-column label (100g / per-cup): 100g column clearly reads 191 kcal, 25g protein -- confirms reader1 exactly. Reader2 read the per-cup column (89/11.6) but reported it as the 100g column -- a column-selection error. Stored values (89/11.6) match the PER-CUP column, not per-100g -- the stored data itself used the wrong column. True per-100g: 191 kcal, 25g protein.",
+    "proposedCalories": 191,
+    "proposedProtein": 25
+  },
+  "7290000043890": {
+    "barcode": "7290000043890",
+    "name": "White yogurt",
+    "storedCalories": 45,
+    "storedProtein": 3.6,
+    "reader1": {
+      "barcode": "7290000043890",
+      "identityMatch": "yes",
+      "evidenceCalories": 45,
+      "evidenceProtein": 3.6,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Package text 'לבן 1.5% שומן' consistent with 'White yogurt'; Tnuva logo not clearly legible."
+    },
+    "reader2": {
+      "barcode": "7290000043890",
+      "identityMatch": "yes",
+      "evidenceCalories": 45,
+      "evidenceProtein": 3.6,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Product name 'לבן 1.5% שומן' matches given name."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently agree: 45kcal/3.6g per 100g, matching stored (45/3.6)."
+  },
+  "7290111352508": {
+    "barcode": "7290111352508",
+    "name": "סילאן 100% תמרים טבעי",
+    "storedCalories": 304,
+    "storedProtein": 0,
+    "reader1": {
+      "barcode": "7290111352508",
+      "identityMatch": "unclear",
+      "evidenceCalories": 304,
+      "evidenceProtein": 0,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Ingredients 'Dates (100%)' consistent with date syrup, but no brand/name visible. Explicitly labeled kcal not kJ."
+    },
+    "reader2": {
+      "barcode": "7290111352508",
+      "identityMatch": "unclear",
+      "evidenceCalories": 304,
+      "evidenceProtein": 0,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Bilingual, ingredients 'Dates (100%)', consistent with date syrup, brand not visible."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently agree: 304kcal/0g per 100g, matching stored (304/0)."
+  },
+  "7296073675167": {
+    "barcode": "7296073675167",
+    "name": "Soy Milk",
+    "storedCalories": 36,
+    "storedProtein": 3,
+    "reader1": {
+      "barcode": "7296073675167",
+      "identityMatch": "unclear",
+      "evidenceCalories": 36,
+      "evidenceProtein": 3,
+      "basis": "100ml",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Nutrition table only (header '100 מ\"ל מזון'); no brand/name visible."
+    },
+    "reader2": {
+      "barcode": "7296073675167",
+      "identityMatch": "unclear",
+      "evidenceCalories": 36,
+      "evidenceProtein": 3,
+      "basis": "100ml",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Table only, no product/brand visible."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently agree: 36kcal/3g per 100g, matching stored (36/3)."
+  },
+  "7290000174099": {
+    "barcode": "7290000174099",
+    "name": "Bafflot",
+    "storedCalories": 516,
+    "storedProtein": 4.6,
+    "reader1": {
+      "barcode": "7290000174099",
+      "identityMatch": "unclear",
+      "evidenceCalories": 516,
+      "evidenceProtein": 4.6,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two columns: 100g (516/4.6) and per-unit ~10.4g (54/0.5). Reported 100g. No brand/name visible."
+    },
+    "reader2": {
+      "barcode": "7290000174099",
+      "identityMatch": "unclear",
+      "evidenceCalories": 516,
+      "evidenceProtein": 4.6,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two columns: 100g (516/4.6) and per-unit ~10.4g (54/0.5). Used 100g. No brand/name visible."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently agree: 516kcal/4.6g per 100g, matching stored (516/4.6)."
+  },
+  "4007745058811": {
+    "barcode": "4007745058811",
+    "name": "חרדל אמיתי אורגני",
+    "storedCalories": 141,
+    "storedProtein": 8,
+    "reader1": {
+      "barcode": "4007745058811",
+      "identityMatch": "unclear",
+      "evidenceCalories": 141,
+      "evidenceProtein": 8,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Nutrition table only, no brand/name visible."
+    },
+    "reader2": {
+      "barcode": "4007745058811",
+      "identityMatch": "unclear",
+      "evidenceCalories": 141,
+      "evidenceProtein": 8,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "kcal labeled explicitly = 141. No brand/name visible."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently agree: 141kcal/8g per 100g, matching stored (141/8)."
+  },
+  "7290110328788": {
+    "barcode": "7290110328788",
+    "name": "GO by Yoplait Peach",
+    "storedCalories": 55,
+    "storedProtein": 10,
+    "reader1": {
+      "barcode": "7290110328788",
+      "identityMatch": "yes",
+      "evidenceCalories": 109,
+      "evidenceProtein": 20,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two columns: 100g (109/20) and per-cup (55/10, serving weight not visible). 'GO'/'by Yo...' branding visible, consistent with GO by Yoplait."
+    },
+    "reader2": {
+      "barcode": "7290110328788",
+      "identityMatch": "yes",
+      "evidenceCalories": 109,
+      "evidenceProtein": 20,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two columns: 100g (109/20) and per-cup (55/10, weight not legible). Partial GO/Yoplait branding."
+    },
+    "finalOutcome": "CORRECTION_PROPOSED",
+    "justification": "Both readers independently agree: 109kcal/20g per 100g, which does NOT match stored (55/10).",
+    "proposedCalories": 109,
+    "proposedProtein": 20
+  },
+  "7290115678550": {
+    "barcode": "7290115678550",
+    "name": "Danone - Yogurt Pro Pistachio",
+    "storedCalories": 55,
+    "storedProtein": 10,
+    "reader1": {
+      "barcode": "7290115678550",
+      "identityMatch": "unclear",
+      "evidenceCalories": 55,
+      "evidenceProtein": 10,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Only nutrition table visible, single 100g column, no branding in frame."
+    },
+    "reader2": {
+      "barcode": "7290115678550",
+      "identityMatch": "unclear",
+      "evidenceCalories": 55,
+      "evidenceProtein": 10,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Clean typed table, no brand/product name, no photographed texture."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently agree: 55kcal/10g per 100g, matching stored (55/10)."
+  },
+  "7290017065175": {
+    "barcode": "7290017065175",
+    "name": "מנצ'גו פרוס",
+    "storedCalories": 431,
+    "storedProtein": 25,
+    "reader1": {
+      "barcode": "7290017065175",
+      "identityMatch": "unclear",
+      "evidenceCalories": 431,
+      "evidenceProtein": 25,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Ingredient text 'חלב כבשים מפוסטר' (sheep milk) consistent with sheep cheese, but no explicit product/brand name visible."
+    },
+    "reader2": {
+      "barcode": "7290017065175",
+      "identityMatch": "unclear",
+      "evidenceCalories": 431,
+      "evidenceProtein": 25,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Table only, no brand/product name visible."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently agree: 431kcal/25g per 100g, matching stored (431/25)."
+  },
+  "7290116935614": {
+    "barcode": "7290116935614",
+    "name": "GO by Yoplait 25",
+    "storedCalories": 85.5,
+    "storedProtein": 12.5,
+    "reader1": {
+      "barcode": "7290116935614",
+      "identityMatch": "yes",
+      "evidenceCalories": 171,
+      "evidenceProtein": 25,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two columns: 100g (171/25) and per-cup (86/12.5, serving weight not visible). 'GO'/'by Yoplait' branding clearly visible."
+    },
+    "reader2": {
+      "barcode": "7290116935614",
+      "identityMatch": "yes",
+      "evidenceCalories": 171,
+      "evidenceProtein": 25,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two columns: 100g (171/25) and per-unit (86/12.5, weight not visible). GO/Yoplait branding partially visible."
+    },
+    "finalOutcome": "CORRECTION_PROPOSED",
+    "justification": "Both readers independently agree: 171kcal/25g per 100g, which does NOT match stored (85.5/12.5).",
+    "proposedCalories": 171,
+    "proposedProtein": 25
+  },
+  "7290010561407": {
+    "barcode": "7290010561407",
+    "name": "לחם פרוס EXTRA ויטמינים ומינרלים",
+    "storedCalories": 267,
+    "storedProtein": 5.4,
+    "reader1": {
+      "barcode": "7290010561407",
+      "identityMatch": "unclear",
+      "evidenceCalories": 267,
+      "evidenceProtein": 5.4,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two tables (per-100g and %RDA reference); used per-100g. No brand/name visible."
+    },
+    "reader2": {
+      "barcode": "7290010561407",
+      "identityMatch": "unclear",
+      "evidenceCalories": 267,
+      "evidenceProtein": 5.4,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Table plus separate %RDA table, no brand/name visible."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently agree: 267kcal/5.4g per 100g, matching stored (267/5.4)."
+  },
+  "7290114314053": {
+    "barcode": "7290114314053",
+    "name": "Simply Fruit Bio Mango Yogurt 3%",
+    "storedCalories": 86,
+    "storedProtein": 4.13333333333333,
+    "reader1": {
+      "barcode": "7290114314053",
+      "identityMatch": "yes",
+      "evidenceCalories": 86,
+      "evidenceProtein": 4.1,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "'Simply Fruit' branding, subtitle consistent with catalog name; Muller brand text not visible. Protein read from a dense row list."
+    },
+    "reader2": {
+      "barcode": "7290114314053",
+      "identityMatch": "yes",
+      "evidenceCalories": 86,
+      "evidenceProtein": 4.1,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Product name 'Simply Fruit יוגורט מוצק עם מנגו' matches given name. Row alignment somewhat uncertain due to faint labels but energy/calcium anchors support protein=4.1."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently agree: 86kcal/4.1g per 100g, matching stored (86/4.13333333333333)."
+  },
+  "7290011498917": {
+    "barcode": "7290011498917",
+    "name": "חטיף תמרים במילוי קוקוס ובציפוי שוקולד מריר 100%",
+    "storedCalories": 460,
+    "storedProtein": 5.2,
+    "reader1": {
+      "barcode": "7290011498917",
+      "identityMatch": "no",
+      "evidenceCalories": 460,
+      "evidenceProtein": 5,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two columns: 100g (460/5) and per-25g/6pc serving (115/1.3). Company name shown is 'שקד תבור' (Shaked Tavor), not 'Tamar' as in catalog -- possible brand mismatch."
+    },
+    "reader2": {
+      "barcode": "7290011498917",
+      "identityMatch": "unclear",
+      "evidenceCalories": 460,
+      "evidenceProtein": 5,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two columns: per-25g unit (115/1.3) and per-100g (460/~5). Contact text reads 'שקד תבור' (Shaked Tavor), not 'Tamar' brand -- possible mismatch, flagged unclear rather than confirmed no."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Both readers independently agree: 460kcal/5g per 100g, which does NOT match stored (460/5.2). [UPGRADED TO UNRESOLVED per identity-conflict policy: reader1 explicitly found identityMatch=no (package shows manufacturer contact 'שקד תבור' / Shaked Tavor, not the catalog's presumed brand), reader2 found identityMatch=unclear. A numeric near-match does not override an unconfirmed/conflicting product identity -- applying a correction here risks attaching evidence to the wrong barcode. Kept UNRESOLVED, not corrected.]"
+  },
+  "7290112492999": {
+    "barcode": "7290112492999",
+    "name": "מרק בטעם עוף",
+    "storedCalories": 283,
+    "storedProtein": 11.8,
+    "reader1": {
+      "barcode": "7290112492999",
+      "identityMatch": "yes",
+      "evidenceCalories": 283,
+      "evidenceProtein": 11.8,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two columns: per-100ml prepared soup (10/0.4) and per-100g powder (283/11.8). Reported powder/as-sold column. Product name 'מרק בטעם עוף' matches catalog exactly."
+    },
+    "reader2": {
+      "barcode": "7290112492999",
+      "identityMatch": "yes",
+      "evidenceCalories": 399,
+      "evidenceProtein": 11.8,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Product title 'מרק בטעם עוף' matches exactly. Used dry-powder per-100g column (399/11.8); prepared 100ml column much lower (~10/~0.4). Small print, moderate confidence on exact column mapping."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "[Manual third read, tie-breaker] Own direct read of the two-column label (100ml prepared / 100g powder): 100g-powder column reads 283 kcal, 11.8g protein -- confirms reader1 exactly and matches stored (283/11.8) exactly. Reader2 correctly read protein (11.8) from the right row but misread calories from an adjacent row (399, actually the sodium/mg-scale row) -- a row-alignment error, not a genuine value conflict."
+  },
+  "3245413058881": {
+    "barcode": "3245413058881",
+    "name": "Les Tablettes COEUR AU LAIT CHOCOLAT AU LAIT",
+    "storedCalories": 515,
+    "storedProtein": 6.3,
+    "reader1": {
+      "barcode": "3245413058881",
+      "identityMatch": "unclear",
+      "evidenceCalories": 515,
+      "evidenceProtein": 6.3,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Bilingual French/Dutch, both kJ and kcal shown (2155kJ/515kcal); used kcal. Also a per-biscuit column (80/1.0). No brand/name visible."
+    },
+    "reader2": {
+      "barcode": "3245413058881",
+      "identityMatch": "unclear",
+      "evidenceCalories": 515,
+      "evidenceProtein": 6.3,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "French/Dutch, kJ+kcal shown (2155kJ/515kcal), used kcal. Per-biscuit column also present. No brand/name visible."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently agree: 515kcal/6.3g per 100g, matching stored (515/6.3)."
+  },
+  "6223006710184": {
+    "barcode": "6223006710184",
+    "name": "Instant noodles",
+    "storedCalories": 435,
+    "storedProtein": 10,
+    "reader1": {
+      "barcode": "6223006710184",
+      "identityMatch": "unclear",
+      "evidenceCalories": 435,
+      "evidenceProtein": 10,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Header explicitly 'Amount per 100g ... Calories 435'. Brand/name text unclear/foreign, not confirmable."
+    },
+    "reader2": {
+      "barcode": "6223006710184",
+      "identityMatch": "unclear",
+      "evidenceCalories": 435,
+      "evidenceProtein": 10,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Multilingual label, 'Amount per 100g: Calories 435, Protein 10g'. Brand text low-res, not clearly Kellogg's -- flagged unclear."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently agree: 435kcal/10g per 100g, matching stored (435/10)."
+  },
+  "4251097407739": {
+    "barcode": "4251097407739",
+    "name": "Peperami snackbox",
+    "storedCalories": 453,
+    "storedProtein": 25.4,
+    "reader1": {
+      "barcode": "4251097407739",
+      "identityMatch": "unclear",
+      "evidenceCalories": 453,
+      "evidenceProtein": 25.4,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "English label states values for salami+cheese combo per 100g. Brand/name text not visible in this crop."
+    },
+    "reader2": {
+      "barcode": "4251097407739",
+      "identityMatch": "unclear",
+      "evidenceCalories": 453,
+      "evidenceProtein": 25.4,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Allergen statement + nutrition table, kJ+kcal shown (1878kJ/453kcal), used kcal. No Peperami brand visible in this crop."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently agree: 453kcal/25.4g per 100g, matching stored (453/25.4)."
+  },
+  "3663350121992": {
+    "barcode": "3663350121992",
+    "name": "Cara ´neige",
+    "storedCalories": 394,
+    "storedProtein": 0.7,
+    "reader1": {
+      "barcode": "3663350121992",
+      "identityMatch": "unclear",
+      "evidenceCalories": 394,
+      "evidenceProtein": 0.7,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "French/English bilingual; package weight 130g and barcode 3663350121992 visible, exactly matching catalog barcode (corroborates identity)."
+    },
+    "reader2": {
+      "barcode": "3663350121992",
+      "identityMatch": "unclear",
+      "evidenceCalories": 394,
+      "evidenceProtein": 0.7,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "French label, kJ+kcal shown (1668kJ/394kcal), used kcal. Net weight 130g visible, no product name visible."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently agree: 394kcal/0.7g per 100g, matching stored (394/0.7)."
+  },
+  "7290011587758": {
+    "barcode": "7290011587758",
+    "name": "egg noodles thin size",
+    "storedCalories": 350,
+    "storedProtein": 13,
+    "reader1": {
+      "barcode": "7290011587758",
+      "identityMatch": "unclear",
+      "evidenceCalories": 350,
+      "evidenceProtein": 13,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two columns: cooked/drained (88/3.4) and dry product (350/13). Reported dry/as-sold column. Ingredients consistent with egg noodles, no explicit brand/name visible."
+    },
+    "reader2": {
+      "barcode": "7290011587758",
+      "identityMatch": "unclear",
+      "evidenceCalories": 350,
+      "evidenceProtein": 13,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two states: as-sold dry (350/13) and cooked&drained (88/3.4). Used as-sold/dry. Ingredients consistent with egg noodles, no brand text visible."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently agree: 350kcal/13g per 100g, matching stored (350/13)."
+  },
+  "7290018023914": {
+    "barcode": "7290018023914",
+    "name": "Масло оливковое",
+    "storedCalories": 828,
+    "storedProtein": 0,
+    "reader1": {
+      "barcode": "7290018023914",
+      "identityMatch": "unclear",
+      "evidenceCalories": 828,
+      "evidenceProtein": 0,
+      "basis": "100ml",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Single-column table per 100ml; fat=92g, protein=0g, consistent with a pure oil product. No brand/name visible."
+    },
+    "reader2": {
+      "barcode": "7290018023914",
+      "identityMatch": "unclear",
+      "evidenceCalories": 828,
+      "evidenceProtein": 0,
+      "basis": "100ml",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Table only per 100ml: 828kcal, 92g fat, 0g protein, consistent with pure oil, no product name visible."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently agree: 828kcal/0g per 100g, matching stored (828/0)."
+  },
+  "7290019203926": {
+    "barcode": "7290019203926",
+    "name": "אורייה עדשים כתומות",
+    "storedCalories": 341,
+    "storedProtein": 13.7,
+    "reader1": {
+      "barcode": "7290019203926",
+      "identityMatch": "unclear",
+      "evidenceCalories": 341,
+      "evidenceProtein": 13.7,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two columns: per-35g-unit (119/4.8) and per-100g (341/13.7). Ingredients mention orange lentils, consistent with catalog name, no explicit brand visible."
+    },
+    "reader2": {
+      "barcode": "7290019203926",
+      "identityMatch": "unclear",
+      "evidenceCalories": 341,
+      "evidenceProtein": 13.7,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two columns: per-35g-unit (119/4.8) and per-100g (341/13.7). Used 100g. No brand/product name visible."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently agree: 341kcal/13.7g per 100g, matching stored (341/13.7)."
+  }
+}

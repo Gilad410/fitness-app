@@ -1,0 +1,7 @@
+[
+{"barcode":"7290004125417","identityMatch":"unclear","evidenceCalories":56,"evidenceProtein":3,"basis":"100g","prepState":"as_sold","legible":true,"notes":"56 kcal, 3g protein per 100g; brand text not confirmable."},
+{"barcode":"7290000120874","identityMatch":"unclear","evidenceCalories":null,"evidenceProtein":null,"basis":"unclear","prepState":"unclear","legible":false,"notes":"Side label 'Reduced calorie spread' visible, not a nutrition facts panel; doesn't explicitly say mayonnaise."},
+{"barcode":"7290105431516","identityMatch":"yes","evidenceCalories":396,"evidenceProtein":9.6,"basis":"100g","prepState":"as_sold","legible":true,"notes":"396 kcal, 9.6g protein per 100g; ingredients consistent with date-peanut snack."},
+{"barcode":"7290000574141","identityMatch":"yes","evidenceCalories":null,"evidenceProtein":null,"basis":"unclear","prepState":"as_sold","legible":false,"notes":"Package confirms whole wheat bread 750g; nutrition table too low-res to read."},
+{"barcode":"7622201401900","identityMatch":"unclear","evidenceCalories":null,"evidenceProtein":null,"basis":"unclear","prepState":"as_sold","legible":false,"notes":"Very low-resolution multilingual table, no readable digits or product name."}
+]

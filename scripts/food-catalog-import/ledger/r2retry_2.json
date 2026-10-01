@@ -1,0 +1,52 @@
+[
+  {
+    "barcode": "7290004125417",
+    "name": "גיל",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290004125417.jpg"
+  },
+  {
+    "barcode": "7290000120874",
+    "name": "Light Mayonnaise",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000120874.jpg"
+  },
+  {
+    "barcode": "7290105431516",
+    "name": "חטיף תמרים ושברי בוטנים",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290105431516.jpg"
+  },
+  {
+    "barcode": "7290000574141",
+    "name": "Whole Wheat Bread",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000574141.jpg"
+  },
+  {
+    "barcode": "7622201401900",
+    "name": "Sensations cookies Oreo cream",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7622201401900.jpg"
+  },
+  {
+    "barcode": "7290000055015",
+    "name": "פטה כבשים 5%",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000055015.jpg"
+  },
+  {
+    "barcode": "7290100700396",
+    "name": "Classic Jasmin Rice",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290100700396.jpg"
+  },
+  {
+    "barcode": "7290114310536",
+    "name": "יוגורט קרמי בטעם וניל",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290114310536.jpg"
+  },
+  {
+    "barcode": "7290000416045",
+    "name": "קרם שוקולד למריחה",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000416045.jpg"
+  },
+  {
+    "barcode": "7290116934020",
+    "name": "יוגורט מוקצף עם קפה",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290116934020.jpg"
+  }
+]

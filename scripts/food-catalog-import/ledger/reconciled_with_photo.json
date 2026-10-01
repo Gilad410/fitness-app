@@ -1,0 +1,3042 @@
+{
+  "20443245": {
+    "barcode": "20443245",
+    "name": "Sauerkraut mit Räucherspeck und Röstzwiebel",
+    "storedCalories": 36,
+    "storedProtein": 2,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "Label per-100g column: 36 kcal, 2.0g protein -- exact match."
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 36,
+      "evidenceProtein": 2,
+      "basis": "100g",
+      "prepState": "unclear",
+      "legible": true,
+      "notes": "German table headed 'pro 100g' clearly shows Energie 151kJ/36kcal and Eiweiß (protein) 2.0g; a 'pro Portion' (130g) column is also shown but not used; product name/brand not visible in this crop, only the nutrition panel."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "[Recalculated with fixed logic] PREP_STATE_UNCLEAR: raw/cooked (or as-sold/prepared) state could not be established, so the value cannot be confirmed as comparable to the stored basis. (Previous outcome was VERIFIED.) Prior justification: Both readers independently arrived at calories=36, protein=2 (basis=100g), matching stored (36/2)."
+  },
+  "72918388": {
+    "barcode": "72918388",
+    "name": "טוויסט",
+    "storedCalories": 480,
+    "storedProtein": 4.7,
+    "reader1": {
+      "outcome": "correction_proposed",
+      "reasonText": "calories 480 exact but label protein (100g column) reads 9g vs stored 4.7g -- a real ~2x mismatch"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 480,
+      "evidenceProtein": null,
+      "basis": "100g",
+      "prepState": "unclear",
+      "legible": true,
+      "notes": "Hebrew nutrition table with two columns (per ~24g unit and per 100g) is present; the 480 kcal/100g figure is legible but the protein row digit is too small/blurry to read with confidence, and the product brand name is not visible in this crop."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=true, calories=480, protein=null). Two independent legible readings are required. Reader1 originally recorded: correction_proposed."
+  },
+  "72992913": {
+    "barcode": "72992913",
+    "name": "קוקומן פצפוצי דגנים",
+    "storedCalories": 470,
+    "storedProtein": 7.4,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 470 exact, protein 7.4 exact"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 470,
+      "evidenceProtein": 7.4,
+      "basis": "100g",
+      "prepState": "unclear",
+      "legible": true,
+      "notes": "Clear two-column Hebrew table headed serving and 100g; used the 100g column (calories 470, protein 7.4g)."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "[Recalculated with fixed logic] PREP_STATE_UNCLEAR: raw/cooked (or as-sold/prepared) state could not be established, so the value cannot be confirmed as comparable to the stored basis. (Previous outcome was VERIFIED.) Prior justification: Both readers independently arrived at calories=470, protein=7.4 (basis=100g), matching stored (470/7.4)."
+  },
+  "80176800": {
+    "barcode": "80176800",
+    "name": "Nutella",
+    "storedCalories": 533.33,
+    "storedProtein": 6,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "photo too small/curved/blurry to read the nutrition table"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "unclear",
+      "legible": false,
+      "notes": "Text too small, angled, and blurry to read any figures."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290112494351": {
+    "barcode": "7290112494351",
+    "name": "Cornflakes Of Champions - Toasted Corn Flakes",
+    "storedCalories": 375,
+    "storedProtein": 7,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 375 exact, protein 7 exact (100g column)"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 375,
+      "evidenceProtein": 7,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Box clearly shows matching branding; used the 100g column (375 kcal, 7g protein)."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=375, protein=7 (basis=100g), matching stored (375/7)."
+  },
+  "7290110115777": {
+    "barcode": "7290110115777",
+    "name": "מים מינרלים",
+    "storedCalories": 0,
+    "storedProtein": 0,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "photo shows a mineral-content table (Ca/Mg/Na hardness), not a calories/protein nutrition facts table"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "unclear",
+      "legible": true,
+      "notes": "Label shows a minerals table, consistent with mineral water, but contains no calories or protein figures in this crop."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=true, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "5906485301012": {
+    "barcode": "5906485301012",
+    "name": "XL energy drink",
+    "storedCalories": 47,
+    "storedProtein": 0,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "photo is the front product image, not a nutrition facts label"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "unclear",
+      "legible": false,
+      "notes": "Photo shows only the front/branding; no nutrition facts table visible."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "8434165466333": {
+    "barcode": "8434165466333",
+    "name": "Krit krititas galletas saladas",
+    "storedCalories": 505,
+    "storedProtein": 6.5,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 505 exact, protein 6.5 exact"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 505,
+      "evidenceProtein": 6.5,
+      "basis": "100g",
+      "prepState": "unclear",
+      "legible": true,
+      "notes": "Clear multilingual table explicitly headed 'Per 100g': 505kcal, 6.5g protein."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "[Recalculated with fixed logic] PREP_STATE_UNCLEAR: raw/cooked (or as-sold/prepared) state could not be established, so the value cannot be confirmed as comparable to the stored basis. (Previous outcome was VERIFIED.) Prior justification: Both readers independently arrived at calories=505, protein=6.5 (basis=100g), matching stored (505/6.5)."
+  },
+  "7290000066318": {
+    "barcode": "7290000066318",
+    "name": "במבה",
+    "storedCalories": 535,
+    "storedProtein": 17,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "photo shows the ingredients list, not the nutrition facts table"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "unclear",
+      "legible": false,
+      "notes": "Photo shows ingredients list rather than the nutrition facts panel."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290011194246": {
+    "barcode": "7290011194246",
+    "name": "Strauss Ski and Cottage",
+    "storedCalories": 97,
+    "storedProtein": 10.2,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "nutrition table visible but too small/blurry to read numbers confidently"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "unclear",
+      "legible": false,
+      "notes": "Nutrition table visible but digits too small/blurry to read reliably."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "8715700419732": {
+    "barcode": "8715700419732",
+    "name": "מתבל עגבניות",
+    "storedCalories": 102,
+    "storedProtein": 1.2,
+    "reader1": {
+      "outcome": "correction_proposed",
+      "reasonText": "calories close (103 label vs 102 stored, ~1%, rounding-level); protein 0.9 label vs 1.2 stored, ~33% relative gap, not rounding"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 103,
+      "evidenceProtein": 0.9,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Single-column 100g table, clear."
+    },
+    "finalOutcome": "CORRECTION_PROPOSED",
+    "justification": "Both readers independently arrived at calories=103, protein=0.9 (basis=100g), which does NOT match stored (102/1.2).",
+    "proposedCalories": 103,
+    "proposedProtein": 0.9
+  },
+  "7290110325619": {
+    "barcode": "7290110325619",
+    "name": "BARISTA Alternative oat",
+    "storedCalories": 54,
+    "storedProtein": 1.1,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "nutrition table visible but too small/angled on curved packaging to read confidently"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "unclear",
+      "legible": false,
+      "notes": "Table present but too small/low-res."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290000446547": {
+    "barcode": "7290000446547",
+    "name": "חמאת בוטנים טבעית",
+    "storedCalories": 617,
+    "storedProtein": 28,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 617 exact, protein 28 exact"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 617,
+      "evidenceProtein": 28,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "100% peanuts ingredient text; energy first digit slightly blurry but reads 617."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=617, protein=28 (basis=100g), matching stored (617/28)."
+  },
+  "7290000056845": {
+    "barcode": "7290000056845",
+    "name": "Milk",
+    "storedCalories": 60,
+    "storedProtein": 3.3,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 60 exact, protein 3.3 exact"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 60,
+      "evidenceProtein": 3.3,
+      "basis": "100ml",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Tnuva branded; table states 100ml=100g equivalence."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=60, protein=3.3 (basis=100ml), matching stored (60/3.3)."
+  },
+  "7290000416021": {
+    "barcode": "7290000416021",
+    "name": "קרם מובחר למריחה",
+    "storedCalories": 504,
+    "storedProtein": 3.6,
+    "reader1": {
+      "outcome": "correction_proposed",
+      "reasonText": "calories 504 exact (100g column) but stored protein (3.6) matches the label's 25g-serving column, not its 100g column (14.2) -- a scale/column mixup, same defect class as the Apropo item found earlier"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 504,
+      "evidenceProtein": 3.6,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two-column (25g tbsp / 100g), used 100g column."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=504, protein=3.6 (basis=100g), matching stored (504/3.6)."
+  },
+  "7290000063140": {
+    "barcode": "7290000063140",
+    "name": "Osem Soup Cereals",
+    "storedCalories": 510,
+    "storedProtein": 9,
+    "reader1": {
+      "outcome": "correction_proposed",
+      "reasonText": "calories 522 on label vs 510 stored (~2.3%); protein 9.2 on label vs 9 stored (~2.2%) -- modest but real, not simple-rounding-explainable"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 522,
+      "evidenceProtein": 9.2,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two-column, ~5x ratio cross-check, used 100g column."
+    },
+    "finalOutcome": "CORRECTION_PROPOSED",
+    "justification": "Both readers independently arrived at calories=522, protein=9.2 (basis=100g), which does NOT match stored (510/9).",
+    "proposedCalories": 522,
+    "proposedProtein": 9.2
+  },
+  "8996001414002": {
+    "barcode": "8996001414002",
+    "name": "Torabika Cappuccino",
+    "storedCalories": 440,
+    "storedProtein": 4,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "photo is the front package only, no legible nutrition table"
+    },
+    "reader2": {
+      "identityMatch": "no",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "unclear",
+      "legible": false,
+      "notes": "Package clearly labeled KOPIKO Cappuccino, not Torabika -- brand mismatch; no nutrition table visible anyway."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290004127077": {
+    "barcode": "7290004127077",
+    "name": "3% cottage cheese",
+    "storedCalories": 77,
+    "storedProtein": 11,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "calories 77 confirmed exact but no protein row visible in this photo crop"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 77,
+      "evidenceProtein": null,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Calories/fat/sodium legible; cropped before protein row."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=true, calories=77, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290107646147": {
+    "barcode": "7290107646147",
+    "name": "שוגי תלמה",
+    "storedCalories": 476.923076923077,
+    "storedProtein": 6.53846153846154,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "dense multi-column table; calories plausibly match (~476 vs stored 476.9) but could not confidently identify the protein row at this resolution"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Telma Shugi confirmed by logo; energy/protein specific digits not confidently distinguishable from surrounding print."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=true, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290000574035": {
+    "barcode": "7290000574035",
+    "name": "דגנית עין בר",
+    "storedCalories": 298,
+    "storedProtein": 10.3,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 298 exact, protein 10.3 exact"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 298,
+      "evidenceProtein": 10.3,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Single-column 100g table, sharp."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=298, protein=10.3 (basis=100g), matching stored (298/10.3)."
+  },
+  "7290003075102": {
+    "barcode": "7290003075102",
+    "name": "לבנה טמרה",
+    "storedCalories": 155,
+    "storedProtein": 12,
+    "reader1": {
+      "outcome": "correction_proposed",
+      "reasonText": "protein 6g on label vs 12g stored -- a real ~2x mismatch"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 155,
+      "evidenceProtein": 2,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "155 kcal, protein 2g per 100g; no brand visible."
+    },
+    "finalOutcome": "CORRECTION_PROPOSED",
+    "justification": "[Manual third read, tie-breaker] Own direct read of the label image (single-column table, per 100g): אנרגיה(קלוריות)=155, פחמימות=2, מזה סוכרים=1.6, חלבונים=6, סידן=120. Confirms reader1's protein reading (6g) exactly. Reader2's reported protein=2 is the carbohydrates row, misread as the protein row (row-alignment error). Stored protein (12g) is roughly double the true label value -- a real, confirmed correction. Calories (155) already matched stored and both readers.",
+    "thirdRead": {
+      "evidenceCalories": 155,
+      "evidenceProtein": 6,
+      "basis": "100g"
+    },
+    "proposedCalories": 155,
+    "proposedProtein": 6
+  },
+  "7290112494221": {
+    "barcode": "7290112494221",
+    "name": "ביסקויט מצופה שוקולד חלב ושוקולד לבן",
+    "storedCalories": 520,
+    "storedProtein": 9,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 520 exact, protein 9 exact"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 520,
+      "evidenceProtein": 9,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "520 kcal, 9g protein per 100g."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=520, protein=9 (basis=100g), matching stored (520/9)."
+  },
+  "7290110565527": {
+    "barcode": "7290110565527",
+    "name": "דנונה PRO יוגורט 20 גר׳ חלבון 1.5% שומן",
+    "storedCalories": 70,
+    "storedProtein": 10,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 70 exact (100g column), protein 10 exact (100g column)"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 70,
+      "evidenceProtein": 10,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two-column (100g/200g cup): 70/140 kcal, 10.0/20g protein; matches product claims."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=70, protein=10 (basis=100g), matching stored (70/10)."
+  },
+  "7613037686906": {
+    "barcode": "7613037686906",
+    "name": "Fitness almond honey",
+    "storedCalories": 386,
+    "storedProtein": 10,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "calories 386 confirmed exact; protein row not confidently located before the vitamins/minerals section starts"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 386,
+      "evidenceProtein": null,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "116/386 kcal (30g/100g); protein row not confidently legible."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=true, calories=386, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290104508943": {
+    "barcode": "7290104508943",
+    "name": "بمبا اوسم بالفول السوداني 200gm",
+    "storedCalories": 534,
+    "storedProtein": 17,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "table structure unclear in this crop -- does not clearly show matching calories/protein rows for the stored values"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": false,
+      "notes": "Bamba branding confirmed; energy/protein rows obscured by logo crease."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290008752244": {
+    "barcode": "7290008752244",
+    "name": "טפוצ׳יפס קראנץ׳ גריל",
+    "storedCalories": 538,
+    "storedProtein": 6.2,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 537 label vs 538 stored (~0.2%, rounding); protein 6.3 label vs 6.2 stored (rounding) -- both within tolerance"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 537,
+      "evidenceProtein": 6.3,
+      "basis": "100g",
+      "prepState": "unclear",
+      "legible": true,
+      "notes": "100g column 537 kcal/6.3g protein, 50g-bag serving column also printed."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "[Recalculated with fixed logic] PREP_STATE_UNCLEAR: raw/cooked (or as-sold/prepared) state could not be established, so the value cannot be confirmed as comparable to the stored basis. (Previous outcome was VERIFIED.) Prior justification: Both readers independently arrived at calories=537, protein=6.3 (basis=100g), matching stored (538/6.2)."
+  },
+  "7290112330352": {
+    "barcode": "7290112330352",
+    "name": "Yogurt Pro 20",
+    "storedCalories": 65,
+    "storedProtein": 10,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 65 exact (100g column), protein 10 exact (100g column)"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 65,
+      "evidenceProtein": 10,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Partial PR branding; 20g protein per 200g cup = 10g/100g, matches 'Pro 20' name."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=65, protein=10 (basis=100g), matching stored (65/10)."
+  },
+  "7290004129101": {
+    "barcode": "7290004129101",
+    "name": "גבינת שמנת בטעם טבעי 25% שומן",
+    "storedCalories": 253,
+    "storedProtein": 4.3,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "calories 253 confirmed exact; protein row not confidently legible (photo blur)"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "unclear",
+      "legible": false,
+      "notes": "Yellow tub photo too blurry to read table digits."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290000136684": {
+    "barcode": "7290000136684",
+    "name": "7290000136684",
+    "storedCalories": 0,
+    "storedProtein": 0,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 0 exact, protein 0 exact (genuine near-zero beverage) -- note: product name itself is the literal barcode in the source record, a data-completeness gap unrelated to the nutrition figures"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 0,
+      "evidenceProtein": 0,
+      "basis": "100ml",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Per-100ml table: 0 kcal/0g protein; no product name visible."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=0, protein=0 (basis=100ml), matching stored (0/0)."
+  },
+  "7290110115623": {
+    "barcode": "7290110115623",
+    "name": "Fuce tea",
+    "storedCalories": 2,
+    "storedProtein": 0,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 2 exact, protein 0 exact"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 2,
+      "evidenceProtein": 0,
+      "basis": "100ml",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Per-100ml table: 2 kcal/0g protein; no brand visible."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=2, protein=0 (basis=100ml), matching stored (2/0)."
+  },
+  "7290116932774": {
+    "barcode": "7290116932774",
+    "name": "Yoplait GO 42 Banana Caramel Yogurt Drink",
+    "storedCalories": 50,
+    "storedProtein": 8,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "table too small/blurry on curved dark packaging to read confidently"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "as_sold",
+      "legible": false,
+      "notes": "Front matches banana-caramel flavor but table digits too small/blurred."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "00728441": {
+    "barcode": "00728441",
+    "name": "חטיף חלבון בטעם דאבל שוקולד",
+    "storedCalories": 372,
+    "storedProtein": 31,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "calories 372 confirmed exact (100g column); protein row (stored value 31g) not confidently identified in a dense two-table layout"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "unclear",
+      "legible": false,
+      "notes": "Row labels not clearly aligned with numeric columns."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290106663183": {
+    "barcode": "7290106663183",
+    "name": "צ׳יטוס Crunchy בטעם גבינה",
+    "storedCalories": 550,
+    "storedProtein": 5.4,
+    "reader1": {
+      "outcome": "correction_proposed",
+      "reasonText": "calories 550 on label vs 538 stored (~2.2%, not rounding-explainable); protein 5.4 exact on both"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 550,
+      "evidenceProtein": 5.4,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "100g column 550 kcal/5.4g protein; 65g-bag column 357/3.5 printed too."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=550, protein=5.4 (basis=100g), matching stored (550/5.4)."
+  },
+  "7290000057149": {
+    "barcode": "7290000057149",
+    "name": "Yoghurt Bio 3%",
+    "storedCalories": 64,
+    "storedProtein": 5.3,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "calories 64 confirmed exact (100g column); protein row not confidently identified in a dense table"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 128,
+      "evidenceProtein": 4,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two columns (128/4 and 64/2, ratio 2:1); larger assumed 100g column per standard layout."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader1 (calories 64 confirmed exact (100g column); protein row not confidently identified in a dense table) and reader2 (calories=128, protein=4) do not clearly state the same numbers -- calAgree=false, protAgree=true. Not resolved by majority vote; needs re-examination."
+  },
+  "7290000170077": {
+    "barcode": "7290000170077",
+    "name": "Elit Dark Chocolate",
+    "storedCalories": 508.982035928144,
+    "storedProtein": 5.38922155688623,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "apparent large gap (label read ~815 vs stored 508.98) but own reading confidence is moderate given small print -- not asserting a specific conflicting value without more confidence"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 515,
+      "evidenceProtein": 7,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Front confirms dark chocolate; 100g column 515 kcal/7g protein."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader1 (apparent large gap (label read ~815 vs stored 508.98) but own reading confidence is moderate given small print -- not asserting a specific conflicting value without more confidence) and reader2 (calories=515, protein=7) do not clearly state the same numbers -- calAgree=false, protAgree=false. Not resolved by majority vote; needs re-examination."
+  },
+  "7290102391301": {
+    "barcode": "7290102391301",
+    "name": "Muller natural",
+    "storedCalories": 53,
+    "storedProtein": 5.4,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 53 exact, protein 5.4 exact"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 53,
+      "evidenceProtein": 5.4,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Single-column 100g table, 53 kcal/5.4g protein."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=53, protein=5.4 (basis=100g), matching stored (53/5.4)."
+  },
+  "7290110554095": {
+    "barcode": "7290110554095",
+    "name": "Honey",
+    "storedCalories": 320,
+    "storedProtein": 0,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 320 exact, protein 0 exact"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 320,
+      "evidenceProtein": 0,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "100g column 320 kcal/0g protein; per-teaspoon column also printed."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=320, protein=0 (basis=100g), matching stored (320/0)."
+  },
+  "7290004125585": {
+    "barcode": "7290004125585",
+    "name": "Soy Drink Vanilla",
+    "storedCalories": 50,
+    "storedProtein": 3.3,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 50 exact, protein 3.3 exact"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 50,
+      "evidenceProtein": null,
+      "basis": "100ml",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "50 kcal/100ml legible; protein row not visible in crop."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=true, calories=50, protein=null). Two independent legible readings are required. Reader1 originally recorded: verified."
+  },
+  "7290008750677": {
+    "barcode": "7290008750677",
+    "name": "ממולדה",
+    "storedCalories": 472,
+    "storedProtein": 6.9,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "dense red-background table; plausible matching numbers visible but row alignment not confidently legible at this resolution"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "unclear",
+      "legible": false,
+      "notes": "White text on red background too low-contrast to read."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290000523804": {
+    "barcode": "7290000523804",
+    "name": "מלח הארץ",
+    "storedCalories": 0,
+    "storedProtein": 0,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 0 exact, protein 0 exact (salt, genuinely zero)"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 0,
+      "evidenceProtein": 0,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "0 kcal/0g protein/39000mg sodium -- consistent with salt."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=0, protein=0 (basis=100g), matching stored (0/0)."
+  },
+  "7290107954976": {
+    "barcode": "7290107954976",
+    "name": "משקה חלב עם חלבון",
+    "storedCalories": 63,
+    "storedProtein": 7.2,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 63 exact, protein 7.2 exact"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 63,
+      "evidenceProtein": 7.2,
+      "basis": "100ml",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Per-100ml table only, no brand visible."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=63, protein=7.2 (basis=100ml), matching stored (63/7.2)."
+  },
+  "7290014760141": {
+    "barcode": "7290014760141",
+    "name": "משקה שקדים",
+    "storedCalories": 38,
+    "storedProtein": 1,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "calories 38 confirmed exact; protein row not clearly distinguished from fat rows in this compressed crop"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 38,
+      "evidenceProtein": 0.75,
+      "basis": "100ml",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Small/blurry Tnuva-branded per-100ml table."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader1 (calories 38 confirmed exact; protein row not clearly distinguished from fat rows in this compressed crop) and reader2 (calories=38, protein=0.75) do not clearly state the same numbers -- calAgree=true, protAgree=false. Not resolved by majority vote; needs re-examination."
+  },
+  "7290119377480": {
+    "barcode": "7290119377480",
+    "name": "Pro 20 with cereal",
+    "storedCalories": 118,
+    "storedProtein": 11.1999998092651,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "calories close (120 label vs 118 stored, rounding-level); protein row mapping genuinely uncertain in a compressed two-column table with a highlighted row of unclear scope"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 215,
+      "evidenceProtein": 12.7,
+      "basis": "100g",
+      "prepState": "unclear",
+      "legible": true,
+      "notes": "Two-column table, pink-highlighted row; alignment moderately confident."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader1 (calories close (120 label vs 118 stored, rounding-level); protein row mapping genuinely uncertain in a compressed two-column table with a highlighted row of unclear scope) and reader2 (calories=215, protein=12.7) do not clearly state the same numbers -- calAgree=false, protAgree=false. Not resolved by majority vote; needs re-examination."
+  },
+  "7290102399796": {
+    "barcode": "7290102399796",
+    "name": "Muller Active - 25g protein",
+    "storedCalories": 82,
+    "storedProtein": 12.5,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "calories 82 plausible match; protein figure ambiguous between a per-100g and a per-container reading on a blurry curved-surface photo"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 82,
+      "evidenceProtein": null,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Per-100g table; protein obscured by fingers."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=true, calories=82, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "0029424000793": {
+    "barcode": "0029424000793",
+    "name": "Chocolate Coated Wafers",
+    "storedCalories": 522,
+    "storedProtein": 3.4,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "photo shows front package/ingredients area, not the nutrition facts table"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "unclear",
+      "legible": false,
+      "notes": "Front package only, no nutrition table."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "0016000507777": {
+    "barcode": "0016000507777",
+    "name": "Crunchy",
+    "storedCalories": 473.809523809524,
+    "storedProtein": 8.80952380952381,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "photo shows an ingredients/allergen panel, not the nutrition facts table"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "unclear",
+      "legible": false,
+      "notes": "Ingredients list and date code, not a nutrition table."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290106524439": {
+    "barcode": "7290106524439",
+    "name": "פופס אפוי",
+    "storedCalories": 500,
+    "storedProtein": 9,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 501 label vs 500 stored (rounding); protein 9.0 exact"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 501,
+      "evidenceProtein": null,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two-column table, 100g column =501 kcal; protein row not confidently located."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=true, calories=501, protein=null). Two independent legible readings are required. Reader1 originally recorded: verified."
+  },
+  "7290110566975": {
+    "barcode": "7290110566975",
+    "name": "יוגורט דנונה פרו בטעם תות",
+    "storedCalories": 65,
+    "storedProtein": 10,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 65 exact (100g column), protein 10 exact (100g column)"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 65,
+      "evidenceProtein": 10,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two-column (100g/200g cup), used 100g highlighted row."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=65, protein=10 (basis=100g), matching stored (65/10)."
+  },
+  "7290010117970": {
+    "barcode": "7290010117970",
+    "name": "בטעם טבעי",
+    "storedCalories": 461,
+    "storedProtein": 16.1,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "photo is the front package only, no nutrition facts table visible"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "unclear",
+      "legible": false,
+      "notes": "Prep icons and date code visible, no nutrition table."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290112349668": {
+    "barcode": "7290112349668",
+    "name": "90% Cocoa Supreme Dark Chocolate",
+    "storedCalories": 628.74251497006,
+    "storedProtein": 9.58083832335329,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 628 label vs 628.74 stored (rounding); protein 9.4 label vs 9.58 stored (~1.9%, within tolerance)"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 628,
+      "evidenceProtein": 9.4,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Box confirms 90% cocoa dark chocolate; two-column table, used 100g column."
+    },
+    "finalOutcome": "CORRECTION_PROPOSED",
+    "justification": "[Recalculated with fixed logic] Evidence (628kcal/9.4g) does NOT match stored (628.74251497006/9.58083832335329) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this. (Previous outcome was VERIFIED.) Prior justification: Both readers independently arrived at calories=628, protein=9.4 (basis=100g), matching stored (628.74251497006/9.58083832335329)."
+  },
+  "5900020046833": {
+    "barcode": "5900020046833",
+    "name": "Cheerios",
+    "storedCalories": 383.333333333333,
+    "storedProtein": 10.6666666666667,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "photo small/blurry; calories plausibly close but protein row mapping not confident enough to assert"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "as_sold",
+      "legible": false,
+      "notes": "Digits too blurred/low-resolution even after zoom."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290118426202": {
+    "barcode": "7290118426202",
+    "name": "ביסלי במבה מיקס",
+    "storedCalories": 520,
+    "storedProtein": 13.5714285714286,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 520 exact (100g column), protein 13.5 vs 13.57 stored (rounding)"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 529,
+      "evidenceProtein": 13.5,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two-column table, 100g column used, cross-checked consistent with serving column."
+    },
+    "finalOutcome": "CORRECTION_PROPOSED",
+    "justification": "[Recalculated with fixed logic] Evidence (529kcal/13.5g) does NOT match stored (520/13.5714285714286) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this. (Previous outcome was VERIFIED.) Prior justification: [Manual third read, tie-breaker] Own direct read of the label image: protein=13.5g per 100g confirmed by both readers and by this third read, matching stored (13.57, rounding). The calories digit is genuinely hard to read with full certainty (520 vs 529 -- readers split on this); the gap (~1.7%) is within normal label-rounding/reading tolerance and does not indicate a real nutritional discrepancy. Stored value (520) accepted; no correction warranted.",
+    "thirdRead": {
+      "evidenceCalories": "520-529 (digit not fully certain)",
+      "evidenceProtein": 13.5,
+      "basis": "100g"
+    }
+  },
+  "7290013038432": {
+    "barcode": "7290013038432",
+    "name": "AquaNova",
+    "storedCalories": 0,
+    "storedProtein": 0,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "photo shows a mineral-content table (hardness), not calories/protein"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "unclear",
+      "legible": true,
+      "notes": "Mineral-content table only (bottled water), no energy/protein figures printed at all."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=true, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290008745239": {
+    "barcode": "7290008745239",
+    "name": "תפוצ׳יפס בטעם טבעי",
+    "storedCalories": 548,
+    "storedProtein": 6,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 549 label vs 548 stored (rounding); protein 5.9 label vs 6 stored (rounding)"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 549,
+      "evidenceProtein": 5.9,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two-column table, 100g column, internally consistent with 50g column."
+    },
+    "finalOutcome": "CORRECTION_PROPOSED",
+    "justification": "[Recalculated with fixed logic] Evidence (549kcal/5.9g) does NOT match stored (548/6) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this. (Previous outcome was VERIFIED.) Prior justification: Both readers independently arrived at calories=549, protein=5.9 (basis=100g), matching stored (548/6)."
+  },
+  "7290001594155": {
+    "barcode": "7290001594155",
+    "name": "Coca-Cola",
+    "storedCalories": 42,
+    "storedProtein": 0,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 42 exact, protein 0 exact -- consistent with the earlier manufacturer-domain verification for this same barcode"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 42,
+      "evidenceProtein": 0,
+      "basis": "100ml",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Per-100ml table: 42 kcal, 0 protein; red background consistent with Coca-Cola but no explicit brand text."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=42, protein=0 (basis=100ml), matching stored (42/0)."
+  },
+  "7290111564291": {
+    "barcode": "7290111564291",
+    "name": "Craquottes fined",
+    "storedCalories": 390,
+    "storedProtein": 8.8,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 390 exact, protein 8.8 exact"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 390,
+      "evidenceProtein": 8.8,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two-column table, 100g column, consistent with 20g-serving column."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=390, protein=8.8 (basis=100g), matching stored (390/8.8)."
+  },
+  "7290100850916": {
+    "barcode": "7290100850916",
+    "name": "דוריטוס חמוץ חריף",
+    "storedCalories": 528,
+    "storedProtein": 8.2,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 528 exact, protein 8.2 exact"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 528,
+      "evidenceProtein": 8.2,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two-column table, 100g column, consistent with 70g-bag column."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=528, protein=8.2 (basis=100g), matching stored (528/8.2)."
+  },
+  "7290000408316": {
+    "barcode": "7290000408316",
+    "name": "יוגורט ביו שטראוס 3 אחו",
+    "storedCalories": 70,
+    "storedProtein": 5.2,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 70 exact (100g column), protein 5.2 exact (100g column)"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 70,
+      "evidenceProtein": 5.2,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Front text matches (Bifidus 3%); two-column table, 100g column, exactly double the 200g-cup column."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=70, protein=5.2 (basis=100g), matching stored (70/5.2)."
+  },
+  "7290112494283": {
+    "barcode": "7290112494283",
+    "name": "Klik",
+    "storedCalories": 513.846153846154,
+    "storedProtein": 8.15384615384615,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 515 label vs 513.85 stored (rounding); protein 8.1 label vs 8.15 stored (rounding)"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 515,
+      "evidenceProtein": 8.1,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Bilingual two-column table, 100g column, consistent with 65g column."
+    },
+    "finalOutcome": "CORRECTION_PROPOSED",
+    "justification": "[Recalculated with fixed logic] Evidence (515kcal/8.1g) does NOT match stored (513.846153846154/8.15384615384615) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this. (Previous outcome was VERIFIED.) Prior justification: Both readers independently arrived at calories=515, protein=8.1 (basis=100g), matching stored (513.846153846154/8.15384615384615)."
+  },
+  "7290108502985": {
+    "barcode": "7290108502985",
+    "name": "תפוחונים",
+    "storedCalories": 386.818181818182,
+    "storedProtein": 2.72727272727273,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 387 label vs 386.82 stored (rounding); protein 2.8 label vs 2.73 stored (rounding)"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 387,
+      "evidenceProtein": 2.8,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Front text confirms dried apples; two-column table, 100g column, consistent with 22g column."
+    },
+    "finalOutcome": "CORRECTION_PROPOSED",
+    "justification": "[Recalculated with fixed logic] Evidence (387kcal/2.8g) does NOT match stored (386.818181818182/2.72727272727273) at label precision (whole kcal, 0.1g protein) -- calMatch=true, protMatch=false. No tolerance was applied to paper over this. (Previous outcome was VERIFIED.) Prior justification: Both readers independently arrived at calories=387, protein=2.8 (basis=100g), matching stored (386.818181818182/2.72727272727273)."
+  },
+  "7290004125417": {
+    "barcode": "7290004125417",
+    "name": "גיל",
+    "storedCalories": 56,
+    "storedProtein": 3,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "calories 56 confirmed exact; protein row not confidently located among the visible rows"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 56,
+      "evidenceProtein": 3,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "56 kcal, 3g protein per 100g; brand text not confirmable."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader1 (calories 56 confirmed exact; protein row not confidently located among the visible rows) and reader2 (calories=56, protein=3) do not clearly state the same numbers -- calAgree=true, protAgree=false. Not resolved by majority vote; needs re-examination."
+  },
+  "7290000120874": {
+    "barcode": "7290000120874",
+    "name": "Light Mayonnaise",
+    "storedCalories": 35,
+    "storedProtein": 0,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "photo shows cap/batch-code area, not the nutrition facts table"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "unclear",
+      "legible": false,
+      "notes": "Side label 'Reduced calorie spread' visible, not a nutrition facts panel; doesn't explicitly say mayonnaise."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290105431516": {
+    "barcode": "7290105431516",
+    "name": "חטיף תמרים ושברי בוטנים",
+    "storedCalories": 396,
+    "storedProtein": 9.6,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 396 exact, protein 9.6 exact"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 396,
+      "evidenceProtein": 9.6,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "396 kcal, 9.6g protein per 100g; ingredients consistent with date-peanut snack."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=396, protein=9.6 (basis=100g), matching stored (396/9.6)."
+  },
+  "7290000574141": {
+    "barcode": "7290000574141",
+    "name": "Whole Wheat Bread",
+    "storedCalories": 250,
+    "storedProtein": 10.8,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "photo is the front/side package view, no legible nutrition facts table"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "as_sold",
+      "legible": false,
+      "notes": "Package confirms whole wheat bread 750g; nutrition table too low-res to read."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7622201401900": {
+    "barcode": "7622201401900",
+    "name": "Sensations cookies Oreo cream",
+    "storedCalories": 520,
+    "storedProtein": 4.2,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "multilingual table too small/compressed to read specific values confidently"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "as_sold",
+      "legible": false,
+      "notes": "Very low-resolution multilingual table, no readable digits or product name."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290000055015": {
+    "barcode": "7290000055015",
+    "name": "פטה כבשים 5%",
+    "storedCalories": 122,
+    "storedProtein": 18,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 122 exact, protein 18 exact"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 122,
+      "evidenceProtein": 18,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "122 kcal, 18g protein per 100g; no brand text visible."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=122, protein=18 (basis=100g), matching stored (122/18)."
+  },
+  "7290100700396": {
+    "barcode": "7290100700396",
+    "name": "Classic Jasmin Rice",
+    "storedCalories": 333,
+    "storedProtein": 7.2,
+    "reader1": {
+      "outcome": "correction_proposed",
+      "reasonText": "label shows 350 kcal/100g (moderate reading confidence on column alignment) vs 333 stored, ~5% gap, not rounding"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 350,
+      "evidenceProtein": null,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two-column table: 350 (dry/as-sold) and 163 (likely cooked); protein not confidently legible."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=true, calories=350, protein=null). Two independent legible readings are required. Reader1 originally recorded: correction_proposed."
+  },
+  "7290114310536": {
+    "barcode": "7290114310536",
+    "name": "יוגורט קרמי בטעם וניל",
+    "storedCalories": 68,
+    "storedProtein": 12.5,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "photo is the front package only (25 PROTEIN marketing panel), no per-100g facts table visible"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 136,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "as_sold",
+      "legible": false,
+      "notes": "Front panel shows '136'/'0%' marketing badges only, no nutrition facts table visible; basis unconfirmed."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=136, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290000416045": {
+    "barcode": "7290000416045",
+    "name": "קרם שוקולד למריחה",
+    "storedCalories": 504,
+    "storedProtein": 3.6,
+    "reader1": {
+      "outcome": "correction_proposed",
+      "reasonText": "calories 504 exact (100g column) but stored protein (3.6) matches the label 25g-serving column, not its 100g column (14.2) -- same scale/column-mixup defect class as two earlier items"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 504,
+      "evidenceProtein": 14.2,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two-column table (25g serving/100g): 504 kcal, 14.2g protein per 100g column."
+    },
+    "finalOutcome": "CORRECTION_PROPOSED",
+    "justification": "Both readers independently arrived at calories=504, protein=14.2 (basis=100g), which does NOT match stored (504/3.6).",
+    "proposedCalories": 504,
+    "proposedProtein": 14.2
+  },
+  "7290116934020": {
+    "barcode": "7290116934020",
+    "name": "יוגורט מוקצף עם קפה",
+    "storedCalories": 62.5,
+    "storedProtein": 10,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 63 exact (100g column), protein 10 exact (100g column)"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 125,
+      "evidenceProtein": 20,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two-column table (serving/100g as labeled by reader): 125 kcal, 20g protein."
+    },
+    "finalOutcome": "CORRECTION_PROPOSED",
+    "justification": "[Recalculated with fixed logic] Evidence (125kcal/20g) does NOT match stored (62.5/10) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this. (Previous outcome was VERIFIED.) Prior justification: [Manual third read, tie-breaker] Own direct read of the two-column label (100g-cup and per-100g columns; every left-column value is exactly double the corresponding right-column value, e.g. 125/63, 60/30, 20/10, 206/103 -- confirms right column = per 100g, left column = per 200g cup). Per-100g column: calories=63, protein=10, matching stored (62.5/10) exactly and matching reader1. Reader2's reported values (125/20) are the per-200g-cup column, misidentified as '100g' in their notes -- a column-selection error, not a genuine data conflict. No correction warranted.",
+    "thirdRead": {
+      "evidenceCalories": 63,
+      "evidenceProtein": 10,
+      "basis": "100g"
+    }
+  },
+  "7290014758681": {
+    "barcode": "7290014758681",
+    "name": "Cottage 1%",
+    "storedCalories": 62,
+    "storedProtein": 11.5,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 62 exact, protein 11.5 exact"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 62,
+      "evidenceProtein": 11.5,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Nutrition table only, no brand visible; 62 kcal, 11.5g protein per 100g."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=62, protein=11.5 (basis=100g), matching stored (62/11.5)."
+  },
+  "8690777206051": {
+    "barcode": "8690777206051",
+    "name": "Roasted Eggplant",
+    "storedCalories": 34,
+    "storedProtein": 1,
+    "reader1": {
+      "outcome": "correction_proposed",
+      "reasonText": "label protein 0g vs 1g stored -- a real, if small, discrepancy"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 34,
+      "evidenceProtein": 0,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Nutrition table only; 34 kcal, 0g protein per 100g."
+    },
+    "finalOutcome": "CORRECTION_PROPOSED",
+    "justification": "[Manual third read, tie-breaker] Own direct read of the label (clear single-column per-100g table): אנרגיה(קלוריות)=34, פחמימות=8, חלבונים=0, שומנים=0, כולסטרול=0, נתרן=460. Protein=0g confirmed by all three independent readings (reader1, reader2, and this third read). Stored protein (1g) does not match any of the three readings -- a real, triply-confirmed correction. Calories (34) already matched stored.",
+    "thirdRead": {
+      "evidenceCalories": 34,
+      "evidenceProtein": 0,
+      "basis": "100g"
+    },
+    "proposedCalories": 34,
+    "proposedProtein": 0
+  },
+  "8715700110141": {
+    "barcode": "8715700110141",
+    "name": "Spread Mayonnaise",
+    "storedCalories": 644,
+    "storedProtein": 0.8,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 644 exact, protein 0.8 exact"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 644,
+      "evidenceProtein": 0.8,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Package confirms HEINZ SPREAD; per-100g table 644 kcal, 0.8g protein."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=644, protein=0.8 (basis=100g), matching stored (644/0.8)."
+  },
+  "7290102396672": {
+    "barcode": "7290102396672",
+    "name": "נעם",
+    "storedCalories": 202,
+    "storedProtein": 30,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "table layout/small print made row-by-row mapping not confident despite a plausibly-matching 30 figure visible"
+    },
+    "reader2": {
+      "identityMatch": "no",
+      "evidenceCalories": 201,
+      "evidenceProtein": 30,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Package reads 'Tara' semi-hard cheese slices, NOT 'נעם' -- name mismatch though barcode matches; per-100g table 201 kcal, 30g protein."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader1 (table layout/small print made row-by-row mapping not confident despite a plausibly-matching 30 figure visible) and reader2 (calories=201, protein=30) do not clearly state the same numbers -- calAgree=false, protAgree=true. Not resolved by majority vote; needs re-examination."
+  },
+  "0064144090051": {
+    "barcode": "0064144090051",
+    "name": "תרסיס שמן קנולה",
+    "storedCalories": 819,
+    "storedProtein": 0,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "spray-can label too small/dense to read a formatted nutrition table confidently"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "unclear",
+      "legible": false,
+      "notes": "Canola oil spray can, table present but out of focus/too small."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290017677804": {
+    "barcode": "7290017677804",
+    "name": "Sauce soja",
+    "storedCalories": 71,
+    "storedProtein": 10.6,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 71 exact, protein 10.6 exact"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 71,
+      "evidenceProtein": 10.6,
+      "basis": "100ml",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Bottle confirms Kikkoman soy sauce; per-100ml table 71 kcal, 10.6g protein."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=71, protein=10.6 (basis=100ml), matching stored (71/10.6)."
+  },
+  "7290004068172": {
+    "barcode": "7290004068172",
+    "name": "Goat yogurt",
+    "storedCalories": 75,
+    "storedProtein": 2.9,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 73 exact, protein 2.9 exact"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 73,
+      "evidenceProtein": 2.9,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Tub confirms goat yogurt; per-100g table 73 kcal, 2.9g protein, macro math internally consistent."
+    },
+    "finalOutcome": "CORRECTION_PROPOSED",
+    "justification": "[Recalculated with fixed logic] Evidence (73kcal/2.9g) does NOT match stored (75/2.9) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=true. No tolerance was applied to paper over this. (Previous outcome was VERIFIED.) Prior justification: Both readers independently arrived at calories=73, protein=2.9 (basis=100g), matching stored (75/2.9)."
+  },
+  "7290113192515": {
+    "barcode": "7290113192515",
+    "name": "מלפפונים במלח קטנים מאד",
+    "storedCalories": 12,
+    "storedProtein": 1,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "calories 12 plausibly matches; protein row not confidently identified on curved can surface"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 12,
+      "evidenceProtein": 0,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Brand visible but product identity (cucumbers vs peppers) uncertain from photo; per-100g table 12 kcal, 0g protein."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader1 (calories 12 plausibly matches; protein row not confidently identified on curved can surface) and reader2 (calories=12, protein=0) do not clearly state the same numbers -- calAgree=true, protAgree=false. Not resolved by majority vote; needs re-examination."
+  },
+  "7290113192577": {
+    "barcode": "7290113192577",
+    "name": "Salted Cabbage",
+    "storedCalories": 15,
+    "storedProtein": 0.8,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "photo shows an ingredients/ordering panel, not the nutrition facts table"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "unclear",
+      "legible": false,
+      "notes": "Ingredients confirm salted cabbage but no nutrition table visible."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290110329952": {
+    "barcode": "7290110329952",
+    "name": "Yoplait go youghurt coco",
+    "storedCalories": 57,
+    "storedProtein": 10,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 57 exact, protein 10 exact"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 57,
+      "evidenceProtein": 10,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Branding confirms Yoplait Go coconut; per-100g table 57 kcal, 10g protein."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=57, protein=10 (basis=100g), matching stored (57/10)."
+  },
+  "7290112336712": {
+    "barcode": "7290112336712",
+    "name": "Pro yogurt",
+    "storedCalories": 58,
+    "storedProtein": 10.5,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "Photo shows the cup's nutrition table at an angle, too small/blurry to read; only a marketing badge ('21', likely per-container not per-100g) is legible."
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "unclear",
+      "legible": false,
+      "notes": "PRO branding visible with a '21' badge (likely per-container protein marketing claim, not a 100g table figure); actual facts table not legible."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290107879521": {
+    "barcode": "7290107879521",
+    "name": "לה פרוטה תות שדה",
+    "storedCalories": 106.666666666667,
+    "storedProtein": 0,
+    "reader1": {
+      "outcome": "correction_proposed",
+      "reasonText": "Label 100g column: 102 kcal (60g-serving column shows 64). Stored calories (106.67) matches neither cleanly -- appears derived from the 60g column, not the label 100g figure. Label shows no protein row at all, so stored protein=0 is unconfirmed."
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 102,
+      "evidenceProtein": null,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two-column table (60g serving / 100g), scaling confirmed via sodium and carbs rows; calories=102 from the 100g column; protein row not visible in crop."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=true, calories=102, protein=null). Two independent legible readings are required. Reader1 originally recorded: correction_proposed."
+  },
+  "7290119370955": {
+    "barcode": "7290119370955",
+    "name": "יוגורט בטעם וניל עוגיות",
+    "storedCalories": 56,
+    "storedProtein": 10,
+    "reader1": {
+      "outcome": "correction_proposed",
+      "reasonText": "Label 100g column: 112 kcal / 20g protein. Stored values (56 kcal / 10g) match the per-serving (~50g) column, not the 100g column -- a scale/column mixup."
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 112,
+      "evidenceProtein": 20,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two-column table, right column consistently half the left (matches a ~50g serving vs 100g); used 100g (left) column: 112 kcal, 20g protein."
+    },
+    "finalOutcome": "CORRECTION_PROPOSED",
+    "justification": "Both readers independently arrived at calories=112, protein=20 (basis=100g), which does NOT match stored (56/10).",
+    "proposedCalories": 112,
+    "proposedProtein": 20
+  },
+  "8423207206488": {
+    "barcode": "8423207206488",
+    "name": "Tortitas de maiz",
+    "storedCalories": 407,
+    "storedProtein": 9.2,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "Label 'Por 100 g' column: 407 kcal, 9.2g protein -- exact match."
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 407,
+      "evidenceProtein": 9.2,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Table labeled 'Por 100 g': 407 kcal, 9.2g protein."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=407, protein=9.2 (basis=100g), matching stored (407/9.2)."
+  },
+  "7290004137311": {
+    "barcode": "7290004137311",
+    "name": "גבינה עמק 9%",
+    "storedCalories": 201,
+    "storedProtein": 30,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "Small red nutrition label too blurry to read confidently."
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "unclear",
+      "legible": false,
+      "notes": "Only a price/barcode sticker visible, no nutrition table present in this photo."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290000074696": {
+    "barcode": "7290000074696",
+    "name": "Cream Cracker",
+    "storedCalories": 448,
+    "storedProtein": 11,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "Label 100g column: 448 kcal, 11.0g protein -- exact match."
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 448,
+      "evidenceProtein": 11,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two-column table, scaling confirms 100g column; 448 kcal, 11.0g protein."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=448, protein=11 (basis=100g), matching stored (448/11)."
+  },
+  "7290112967381": {
+    "barcode": "7290112967381",
+    "name": "חטיף פריכיות דגנים עם קטניות",
+    "storedCalories": 430,
+    "storedProtein": 11.3333333333333,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "Nutrition table present but text too small/blurry to read digits or confirm the 100g column."
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "unclear",
+      "legible": false,
+      "notes": "Nestle-branded bag with a table present but too small/blurry to read reliably."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290018296868": {
+    "barcode": "7290018296868",
+    "name": "PRO לחם מיוחד - מועשר בחלבון",
+    "storedCalories": 245.454545454545,
+    "storedProtein": 28.1818181818182,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "Nutrition table too small/blurry to read the repeating-decimal stored values (245.45 kcal / 28.18g) against."
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "unclear",
+      "legible": false,
+      "notes": "PRO-branded bread matches name; nutrition sticker present but digits too small/low-res to extract."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290003078066": {
+    "barcode": "7290003078066",
+    "name": "Minced Garlic",
+    "storedCalories": 322,
+    "storedProtein": 3.8,
+    "reader1": {
+      "outcome": "correction_proposed",
+      "reasonText": "Label: 332 kcal (vs 322 stored, ~3% gap); protein 3.8g exact match."
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 332,
+      "evidenceProtein": null,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Jar labeled 'ערכי תזונה ל-100 גרם מוצר', energy row=332 kcal; ingredient text confirms minced garlic; protein row not clearly legible, left null rather than guessed."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=true, calories=332, protein=null). Two independent legible readings are required. Reader1 originally recorded: correction_proposed."
+  },
+  "7290016877021": {
+    "barcode": "7290016877021",
+    "name": "לחם הרים שחום ורך",
+    "storedCalories": 72,
+    "storedProtein": 2.8,
+    "reader1": {
+      "outcome": "correction_proposed",
+      "reasonText": "Label 100g column: 179 kcal / 1.8g protein -- stored (72 kcal / 2.8g) matches neither; calories appear to match a 40g-slice column instead."
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 179,
+      "evidenceProtein": null,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Product name printed above a two-column table (100g / 40g slice), scaling confirmed; calories=179 from 100g column; final numeric row label unclear (may be iron not protein), so protein left null."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=true, calories=179, protein=null). Two independent legible readings are required. Reader1 originally recorded: correction_proposed."
+  },
+  "7290011142407": {
+    "barcode": "7290011142407",
+    "name": "Whole wheat bread with grains",
+    "storedCalories": 252,
+    "storedProtein": 8,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "Label: 253 kcal (rounding of 252), 8.0g protein exact."
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 253,
+      "evidenceProtein": null,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Calories clear (253); protein row not confidently located."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=true, calories=253, protein=null). Two independent legible readings are required. Reader1 originally recorded: verified."
+  },
+  "7290018515129": {
+    "barcode": "7290018515129",
+    "name": "Yellow Curry Sauce",
+    "storedCalories": 138,
+    "storedProtein": 0.9,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "Label 100g column: 138 kcal, 0.9g protein -- exact match."
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 138,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "unclear",
+      "legible": true,
+      "notes": "Front matches name exactly; table blurry, column/protein digit uncertain."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=true, calories=138, protein=null). Two independent legible readings are required. Reader1 originally recorded: verified."
+  },
+  "7290019816331": {
+    "barcode": "7290019816331",
+    "name": "Crunch caramel waffle",
+    "storedCalories": 317.204301075269,
+    "storedProtein": 3.54838709677419,
+    "reader1": {
+      "outcome": "correction_proposed",
+      "reasonText": "Label 100g protein: 3.6g vs stored 3.548 (rounds to 3.5 at label precision) -- small but real mismatch; calories match."
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 317,
+      "evidenceProtein": 3.6,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two-column (serving/100g), used 100g column."
+    },
+    "finalOutcome": "CORRECTION_PROPOSED",
+    "justification": "[Recalculated with fixed logic] Evidence (317kcal/3.6g) does NOT match stored (317.204301075269/3.54838709677419) at label precision (whole kcal, 0.1g protein) -- calMatch=true, protMatch=false. No tolerance was applied to paper over this. (Previous outcome was VERIFIED.) Prior justification: [Manual third read, tie-breaker] Own direct read of the two-column label (per-28g-unit and per-100g columns): per-100g column reads calories=317, protein=3.6 -- matching both reader1 and reader2 exactly, and matching stored (317.2/3.548) within normal label-rounding precision (label prints one decimal place; the ~0.05g protein gap is not a real discrepancy). No correction warranted.",
+    "thirdRead": {
+      "evidenceCalories": 317,
+      "evidenceProtein": 3.6,
+      "basis": "100g"
+    }
+  },
+  "7290000363288": {
+    "barcode": "7290000363288",
+    "name": "Snacknix",
+    "storedCalories": 371,
+    "storedProtein": 25,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "Label 100g column: 371 kcal, 25g protein -- exact match."
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 371,
+      "evidenceProtein": 25,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two-column (60g package/100g), used 100g column."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=371, protein=25 (basis=100g), matching stored (371/25)."
+  },
+  "7290114313278": {
+    "barcode": "7290114313278",
+    "name": "משקה קפה עם חלבוני חלב",
+    "storedCalories": 45,
+    "storedProtein": 7.15,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 45 exact, protein 7.15 exact"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 45,
+      "evidenceProtein": 7.15,
+      "basis": "100ml",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Single-column per-100ml table."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=45, protein=7.15 (basis=100ml), matching stored (45/7.15)."
+  },
+  "7290108502541": {
+    "barcode": "7290108502541",
+    "name": "Cream chees",
+    "storedCalories": 198,
+    "storedProtein": 4.5,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 198 exact, protein 4.5 exact"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 198,
+      "evidenceProtein": null,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Front reads 'גבינה לבנה' 18% (white cheese spread); table legible except protein row cropped out."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=true, calories=198, protein=null). Two independent legible readings are required. Reader1 originally recorded: verified."
+  },
+  "7290013027399": {
+    "barcode": "7290013027399",
+    "name": "לחם אנג׳ל 100 קל בתוספת שיפון",
+    "storedCalories": 216,
+    "storedProtein": 10.8,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 216 exact, protein 10.8 exact"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 216,
+      "evidenceProtein": 10.8,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Clean single-column 100g table."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=216, protein=10.8 (basis=100g), matching stored (216/10.8)."
+  },
+  "7290000044248": {
+    "barcode": "7290000044248",
+    "name": "רויון",
+    "storedCalories": 45,
+    "storedProtein": 3.6,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 45 exact, protein 3.6 exact"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 45,
+      "evidenceProtein": 3.6,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Leben-style dairy drink; brand text blurry but table legible."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=45, protein=3.6 (basis=100g), matching stored (45/3.6)."
+  },
+  "7290002008224": {
+    "barcode": "7290002008224",
+    "name": "סוכריות צבעוניות לקישוט",
+    "storedCalories": 388,
+    "storedProtein": 0,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "calories 388 confirmed exact; no protein row visible in this photo crop"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 388,
+      "evidenceProtein": null,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Paragraph-style nutrition info; protein figure cut off at photo bottom."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=true, calories=388, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290003903788": {
+    "barcode": "7290003903788",
+    "name": "קפוצינו וניל",
+    "storedCalories": 424,
+    "storedProtein": 4,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 424 exact (100g column); protein 4.0 exact (100g column)"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 424,
+      "evidenceProtein": 4,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Front matches (vanilla cappuccino powder); two-column table, used 100g column."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=424, protein=4 (basis=100g), matching stored (424/4)."
+  },
+  "7290000073767": {
+    "barcode": "7290000073767",
+    "name": "מנה חמה נודלס בטעם בקר",
+    "storedCalories": 457.746478873239,
+    "storedProtein": 10,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 454 label (dry/100g column) vs 457.75 stored (~0.7%, rounding); protein 10 exact on the same column -- confirms the as-sold/dry basis was correctly matched, not the prepared-liquid column"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 225,
+      "evidenceProtein": 7.1,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Three-column table (100g dry/100ml prepared/portion), used 100g dry-powder column."
+    },
+    "finalOutcome": "CORRECTION_PROPOSED",
+    "justification": "[Recalculated with fixed logic] Evidence (225kcal/7.1g) does NOT match stored (457.746478873239/10) at label precision (whole kcal, 0.1g protein) -- calMatch=false, protMatch=false. No tolerance was applied to paper over this. (Previous outcome was VERIFIED.) Prior justification: [Manual third read, tie-breaker] Own direct read of the three-column label (100ml-prepared / per-portion / 100g-dry columns, left to right in the photo): per-100g-dry column reads calories=454, protein=10 -- matching reader1 exactly and matching stored (457.75/10) within normal rounding (~0.8%). The 100ml-prepared column reads calories=225, protein=7.1 -- exactly what reader2 reported, confirming reader2 read the prepared-soup column while mislabeling it '100g dry' in their notes. Column-selection error, not a genuine value conflict. No correction warranted.",
+    "thirdRead": {
+      "evidenceCalories": 454,
+      "evidenceProtein": 10,
+      "basis": "100g",
+      "prepState": "as_sold (dry)"
+    }
+  },
+  "7290000075143": {
+    "barcode": "7290000075143",
+    "name": "עוגיות שוקוצ׳יפס קלאסי",
+    "storedCalories": 514,
+    "storedProtein": 5.3,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 514 exact (100g column), protein 5.3 exact (100g column)"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 514,
+      "evidenceProtein": 5.3,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Per-cookie and per-100g columns; used 100g column directly."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=514, protein=5.3 (basis=100g), matching stored (514/5.3)."
+  },
+  "7394376616778": {
+    "barcode": "7394376616778",
+    "name": "Oat milk",
+    "storedCalories": 61,
+    "storedProtein": 1.1,
+    "reader1": {
+      "outcome": "correction_proposed",
+      "reasonText": "label 59 kcal vs 61 stored (~3.3%); protein 1.0g vs 1.1g stored (~9%) -- both modest but real, not clean rounding"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 59,
+      "evidenceProtein": 1,
+      "basis": "unclear",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Clear table (247kJ/59kcal, 1.0g protein) but basis header and brand outside this crop."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "[Recalculated with fixed logic] UNCONVERTED_BASIS: evidence basis is \"unclear\", not a per-100g/100ml figure -- must be deterministically converted from an explicit printed weight before it can be compared, not approved as-is. (Previous outcome was CORRECTION_PROPOSED.) Prior justification: Both readers independently arrived at calories=59, protein=1 (basis=unclear), which does NOT match stored (61/1.1).",
+    "proposedCalories": 59,
+    "proposedProtein": 1
+  },
+  "7290000057477": {
+    "barcode": "7290000057477",
+    "name": "Молоко",
+    "storedCalories": 60,
+    "storedProtein": 3.3,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "small carton nutrition table too blurry to read confidently"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "unclear",
+      "legible": false,
+      "notes": "Tnuva carton front visible but table too blurry to read."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290002129479": {
+    "barcode": "7290002129479",
+    "name": "פיצה איטלקית דקה",
+    "storedCalories": 234,
+    "storedProtein": 9.5,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 234 exact, protein 9.5 exact"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 234,
+      "evidenceProtein": 9.5,
+      "basis": "100g",
+      "prepState": "unclear",
+      "legible": true,
+      "notes": "Single-column table explicitly per 100g."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "[Recalculated with fixed logic] PREP_STATE_UNCLEAR: raw/cooked (or as-sold/prepared) state could not be established, so the value cannot be confirmed as comparable to the stored basis. (Previous outcome was VERIFIED.) Prior justification: Both readers independently arrived at calories=234, protein=9.5 (basis=100g), matching stored (234/9.5)."
+  },
+  "7290006337993": {
+    "barcode": "7290006337993",
+    "name": "Beef dumplings",
+    "storedCalories": 214,
+    "storedProtein": 10.4,
+    "reader1": {
+      "outcome": "correction_proposed",
+      "reasonText": "label calories 294 vs stored 214 -- a real ~37% mismatch; protein row not confidently legible either"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 294,
+      "evidenceProtein": 7.5,
+      "basis": "100g",
+      "prepState": "unclear",
+      "legible": true,
+      "notes": "Clear table explicitly per 100g food."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "[Recalculated with fixed logic] PREP_STATE_UNCLEAR: raw/cooked (or as-sold/prepared) state could not be established, so the value cannot be confirmed as comparable to the stored basis. (Previous outcome was CORRECTION_PROPOSED.) Prior justification: [Manual third read, tie-breaker] Own direct read of the label (single-column per-100g table): אנרגיה(קלוריות)=294, ...חלבונים(protein, last row)=7.5. Confirms reader2's exact reading; reader1 independently confirmed the calorie figure (294) but could not read the protein row confidently. Stored values (214 kcal / 10.4g protein) do not match the confirmed label values on either metric -- a real, evidence-backed correction on both calories and protein.",
+    "thirdRead": {
+      "evidenceCalories": 294,
+      "evidenceProtein": 7.5,
+      "basis": "100g"
+    },
+    "proposedCalories": 294,
+    "proposedProtein": 7.5
+  },
+  "7290000047546": {
+    "barcode": "7290000047546",
+    "name": "Tvorog",
+    "storedCalories": 133,
+    "storedProtein": 18.6,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "calories plausibly close (130 vs 133 stored) but protein row not confidently identified in a compressed/blurry table"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "unclear",
+      "legible": false,
+      "notes": "Two-column table visible but digits too blurry/obscured."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "0856591000062": {
+    "barcode": "0856591000062",
+    "name": "עוגיוצ מזרחי",
+    "storedCalories": 452,
+    "storedProtein": 10.7,
+    "reader1": {
+      "outcome": "correction_proposed",
+      "reasonText": "label is per-serving (2 pieces/25g: 120 kcal, 2g protein); scaled to 100g = 480 kcal/8g protein vs stored 452/10.7 -- real gaps, basis not directly confirmable as 100g on this label"
+    },
+    "reader2": {
+      "identityMatch": "no",
+      "evidenceCalories": 480,
+      "evidenceProtein": 8,
+      "basis": "serving",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Package reads 'Crispy Bagels - Salt Flavor' by Abadi Yosef, NOT 'עוגיוצ מזרחי' -- identity mismatch. Per-serving (25g: 120kcal/2g) converted x4 to 480kcal/8g."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "[Manual third read, tie-breaker] Both readers independently converted the printed 25g-serving evidence (120 kcal/2g protein) to the same per-100g figures (480 kcal/8g protein), which does not match stored (452/10.7) -- a numerically real gap. But reader2 flagged a genuine identity concern: the package reads 'Crispy Bagels - Salt Flavor' by Abadi Yosef, not the stored product name 'עוגיוצ מזרחי'. As with barcode 0075442100229 (Puffed rice/praline), applying a numeric correction here risks attaching the wrong product's evidence to this barcode, so this stays UNRESOLVED pending confirmation of product identity rather than being resolved as a correction.",
+    "thirdRead": {
+      "evidenceCaloriesPerServing": 120,
+      "evidenceProteinPerServing": 2,
+      "servingWeightG": 25,
+      "note": "identity conflict, not a value conflict -- reader2's evidenceCalories/evidenceProtein (480/8) were already their own converted-to-100g figures, not raw-serving values needing division by 25g again."
+    }
+  },
+  "7290010627004": {
+    "barcode": "7290010627004",
+    "name": "Thina Jerusalem",
+    "storedCalories": 670,
+    "storedProtein": 25,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 670 exact, protein 25 exact"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 670,
+      "evidenceProtein": null,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Front confirms Tahini Jerusalem; energy 670 legible, protein row not confidently identified."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=true, calories=670, protein=null). Two independent legible readings are required. Reader1 originally recorded: verified."
+  },
+  "7290013521569": {
+    "barcode": "7290013521569",
+    "name": "רסק תפוח בננה אורגני",
+    "storedCalories": 59.4,
+    "storedProtein": 0.5,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 59.4 exact, protein 0.5 exact"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 59.4,
+      "evidenceProtein": 0.5,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Front matches Organic Apple Banana Sauce exactly; explicit per-100g label."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=59.4, protein=0.5 (basis=100g), matching stored (59.4/0.5)."
+  },
+  "7290002026440": {
+    "barcode": "7290002026440",
+    "name": "Hot Pretzel",
+    "storedCalories": 300,
+    "storedProtein": 7.5,
+    "reader1": {
+      "outcome": "correction_proposed",
+      "reasonText": "label 280 kcal vs 300 stored (~7%, not rounding); protein 7.5 exact"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 280,
+      "evidenceProtein": 7.5,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Nutritional value per 100gr table: 280 Cal, 7.5g protein; no product name/brand visible in this crop."
+    },
+    "finalOutcome": "CORRECTION_PROPOSED",
+    "justification": "Both readers independently arrived at calories=280, protein=7.5 (basis=100g), which does NOT match stored (300/7.5).",
+    "proposedCalories": 280,
+    "proposedProtein": 7.5
+  },
+  "4820199870019": {
+    "barcode": "4820199870019",
+    "name": "ბუბლიკი",
+    "storedCalories": 392,
+    "storedProtein": 9,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "label text too small/compressed (Cyrillic/Georgian) to read confidently"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "unclear",
+      "legible": false,
+      "notes": "Blurry/low-resolution; only net weight and barcode legible."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "7290112963895": {
+    "barcode": "7290112963895",
+    "name": "קרקר דגנים",
+    "storedCalories": 461,
+    "storedProtein": 12.5,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 461 exact, protein 12.5 exact"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 461,
+      "evidenceProtein": 17,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two-column table, per-100g column used (461 kcal, 17g protein)."
+    },
+    "finalOutcome": "CORRECTION_PROPOSED",
+    "justification": "[Recalculated with fixed logic] Evidence (461kcal/17g) does NOT match stored (461/12.5) at label precision (whole kcal, 0.1g protein) -- calMatch=true, protMatch=false. No tolerance was applied to paper over this. (Previous outcome was VERIFIED.) Prior justification: [Manual third read, tie-breaker] Own direct read of the two-column label (per-21.8g-serving and per-100g columns): per-100g column reads calories=461, protein=12.5 -- matching stored exactly and matching reader1 exactly. Reader2's reported protein=17 corresponds to the total-fat row (3.7/17g), misread as the protein row; their calories figure (461) was read from the correct row. Row-alignment error, not a genuine value conflict. No correction warranted.",
+    "thirdRead": {
+      "evidenceCalories": 461,
+      "evidenceProtein": 12.5,
+      "basis": "100g"
+    }
+  },
+  "4840008019521": {
+    "barcode": "4840008019521",
+    "name": "Butterfly Biscuits",
+    "storedCalories": 466.66666666667,
+    "storedProtein": 6.6666666666667,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "label per-serving (140 kcal, 2g protein) with no explicit gram weight in this crop; both stored per-100g values (466.67 kcal, 6.67g protein) reverse-engineer consistently to the same ~30g serving weight for both metrics independently -- strong cross-validating evidence, though the serving weight itself is not directly visible on this label crop"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 466.7,
+      "evidenceProtein": 6.7,
+      "basis": "serving",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Per-serving printed (3 pieces/30g: 140 Cal, 2g protein); converted to 100g explicitly using the printed 30g weight."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "[Recalculated with fixed logic] UNCONVERTED_BASIS: evidence basis is \"serving\", not a per-100g/100ml figure -- must be deterministically converted from an explicit printed weight before it can be compared, not approved as-is. (Previous outcome was VERIFIED.) Prior justification: [Manual third read, tie-breaker] Reader1 and reader2 both independently read the printed serving as 140 kcal / 2g protein per 30g (3 pieces), deterministically converting via the explicit printed serving weight to 466.67 kcal / 6.67g protein per 100g -- an exact match to stored on both metrics. A plausibility check confirms this: the alternative reading of 7g protein per 30g serving would convert to 23.3g protein per 100g, which is nutritionally implausible for a 140-kcal butter biscuit and does not appear anywhere else in the evidence. Two independent agreeing reads plus the implausibility of the alternative resolve this as VERIFIED; no correction warranted.",
+    "thirdRead": {
+      "evidenceCaloriesPerServing": 140,
+      "servingWeightG": 30,
+      "note": "protein digit in this crop (2g vs 7g) not independently legible on this pass; deferring to two prior agreeing independent reads"
+    }
+  },
+  "7296073405863": {
+    "barcode": "7296073405863",
+    "name": "טחינה גולמית מעודנת",
+    "storedCalories": 691,
+    "storedProtein": 23,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 691 exact, protein 23 exact"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 691,
+      "evidenceProtein": 23,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Per-100g table: 691 kcal, 23g protein."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=691, protein=23 (basis=100g), matching stored (691/23)."
+  },
+  "0038527591053": {
+    "barcode": "0038527591053",
+    "name": "Oatmeal Squares",
+    "storedCalories": 363,
+    "storedProtein": 11,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "Label only shows per-serving (30g: 106 kcal, 2.6g protein); no per-100g column printed."
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 353.3,
+      "evidenceProtein": null,
+      "basis": "serving",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Serving 30g: 106 Cal as-sold; converted to 100g (353.3 kcal); protein gram figure not legible."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=true, calories=353.3, protein=null). Two independent legible readings are required. Reader1 originally recorded: unresolved."
+  },
+  "0075442100229": {
+    "barcode": "0075442100229",
+    "name": "Puffed rice",
+    "storedCalories": 55,
+    "storedProtein": 0,
+    "reader1": {
+      "outcome": "correction_proposed",
+      "reasonText": "Label per-serving only (10g: 55 kcal); stored calories (55) matches the 10g serving figure, not a true per-100g value -- wrong column."
+    },
+    "reader2": {
+      "identityMatch": "no",
+      "evidenceCalories": 550,
+      "evidenceProtein": 0,
+      "basis": "serving",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Serving 10g/1 praline: 55 Cal, 0g protein; converted to 100g (550 kcal, 0g protein); 'praline' text inconsistent with 'Puffed rice' name -- possible identity mismatch."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "[Manual third read, tie-breaker] Reader2 flagged a genuine identity concern: the visible label text reads 'Serving size: 1 praline (10g)' -- 'praline' is a chocolate/confectionery term, inconsistent with the stored product name 'Puffed rice'. The numeric evidence itself is internally consistent (55 kcal / 0g protein per 10g serving, deterministically converting to 550 kcal / 0g protein per 100g), and reader1's flag that stored (55) equals the unconverted per-serving figure rather than a true per-100g value is also correct. But because product identity cannot be confirmed from this crop (no product name/brand visible, and 'praline' contradicts the catalog name), this stays UNRESOLVED per the identity-conflict rule rather than being resolved as a correction -- resolving the numbers would risk correcting the wrong product's data onto this barcode.",
+    "thirdRead": {
+      "note": "identity conflict confirmed, not a value conflict"
+    }
+  },
+  "0814496020035": {
+    "barcode": "0814496020035",
+    "name": "Brownie batter",
+    "storedCalories": 360.65573770492,
+    "storedProtein": 65.573770491803,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "Supplement Facts panel, per-serving only (30.5g scoop: 110 kcal, 20g protein); no per-100g figure printed -- the implausible stored value (65.57g protein/100g) cannot be confirmed or refuted from this label."
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 360.7,
+      "evidenceProtein": 65.6,
+      "basis": "serving",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Supplement Facts, serving 30.5g: 110 Cal, 20g protein; converted to 100g (360.7 kcal, 65.6g protein); no brand/flavor visible to confirm 'Brownie batter' name."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "[Recalculated with fixed logic] UNCONVERTED_BASIS: evidence basis is \"serving\", not a per-100g/100ml figure -- must be deterministically converted from an explicit printed weight before it can be compared, not approved as-is. (Previous outcome was VERIFIED.) Prior justification: [Manual third read, tie-breaker] Reader2's raw printed evidence (Supplement Facts, 30.5g scoop: 110 kcal, 20g protein) converts deterministically to 360.7 kcal / 65.6g protein per 100g -- an exact match to stored (360.66/65.57). Reader1 independently transcribed the same raw serving figures and explicitly flagged the resulting protein density as 'implausible' without being able to confirm or refute it; the deterministic conversion resolves that flag as a real, if unusually high, but internally consistent and confirmed value (plausible for a protein-supplement 'brownie batter' mix product, not a plain food). No correction warranted.",
+    "thirdRead": {
+      "evidenceCaloriesPerServing": 110,
+      "evidenceProteinPerServing": 20,
+      "servingWeightG": 30.5,
+      "note": "reader2's structured evidenceCalories/evidenceProtein fields (360.7/65.6) were ALREADY their own converted-to-100g figures despite basis:'serving' -- their notes explicitly say 'converted to 100g (360.7 kcal, 65.6g protein)'. Not re-divided by the 30.5g serving weight a second time."
+    }
+  },
+  "0815871010009": {
+    "barcode": "0815871010009",
+    "name": "Potato chips",
+    "storedCalories": 564,
+    "storedProtein": 7.05,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "Label per-serving only (28g: 150 kcal, 2g protein); no per-100g column printed."
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 535.7,
+      "evidenceProtein": 7.1,
+      "basis": "serving",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Serving 28g/1oz: 150 Cal, 2g protein; converted to 100g (535.7 kcal, 7.1g protein)."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "[Recalculated with fixed logic] UNCONVERTED_BASIS: evidence basis is \"serving\", not a per-100g/100ml figure -- must be deterministically converted from an explicit printed weight before it can be compared, not approved as-is. (Previous outcome was CORRECTION_PROPOSED.) Prior justification: [Manual third read, tie-breaker] Reader2's raw printed evidence (28g/1oz serving: 150 kcal, 2g protein) converts deterministically to 535.7 kcal / 7.1g protein per 100g. Reader1 independently transcribed the same raw serving figures without computing the conversion. Stored calories (564) do not match the converted evidence (535.7, ~5% gap) -- a real, if modest, correction; stored protein (7.05) already closely matches (7.1, within rounding) and needs no change.",
+    "proposedCalories": 535.7,
+    "proposedProtein": 7.1,
+    "thirdRead": {
+      "evidenceCaloriesPerServing": 150,
+      "evidenceProteinPerServing": 2,
+      "servingWeightG": 28,
+      "note": "reader2's evidenceCalories/evidenceProtein (535.7/7.1) were already their own converted-to-100g figures ('converted to 100g (535.7 kcal, 7.1g protein)' in notes) -- not re-divided by 28g a second time."
+    }
+  },
+  "0850010353012": {
+    "barcode": "0850010353012",
+    "name": "Chocolate Flavored Protein Powder",
+    "storedCalories": 400,
+    "storedProtein": 46.6666666666667,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "Label per-serving only (15g scoop: 60 kcal, 7g protein); no per-100g figure printed."
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 400,
+      "evidenceProtein": 46.7,
+      "basis": "serving",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Serving 15g/1 scoop: 60 Cal, 7g protein; converted to 100g (400 kcal, 46.7g protein); ingredients consistent with chocolate vegan protein powder."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "[Recalculated with fixed logic] UNCONVERTED_BASIS: evidence basis is \"serving\", not a per-100g/100ml figure -- must be deterministically converted from an explicit printed weight before it can be compared, not approved as-is. (Previous outcome was VERIFIED.) Prior justification: [Manual third read, tie-breaker] Reader2's raw printed evidence (15g scoop: 60 kcal, 7g protein) converts deterministically to 400 kcal / 46.7g protein per 100g -- an exact match to stored (400/46.67). Reader1 independently transcribed the same raw serving figures. No correction warranted.",
+    "thirdRead": {
+      "evidenceCaloriesPerServing": 60,
+      "evidenceProteinPerServing": 7,
+      "servingWeightG": 15,
+      "note": "reader2's evidenceCalories/evidenceProtein (400/46.7) were already their own converted-to-100g figures ('converted to 100g (400 kcal, 46.7g protein)' in notes) -- not re-divided by 15g a second time."
+    }
+  },
+  "0898220011582": {
+    "barcode": "0898220011582",
+    "name": "Foods, Dark Chocolate, Nuts, & Sea Salt Snack Bars",
+    "storedCalories": 475,
+    "storedProtein": 15,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "Label per-serving only (40g bar: 190 kcal, 6g protein); no per-100g column printed."
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 190,
+      "evidenceProtein": 6,
+      "basis": "serving",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Serving 40g bar: 190 Cal, 6g protein; allergen line consistent with dark chocolate nut bar."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "[Recalculated with fixed logic] UNCONVERTED_BASIS: evidence basis is \"serving\", not a per-100g/100ml figure -- must be deterministically converted from an explicit printed weight before it can be compared, not approved as-is. (Previous outcome was VERIFIED.) Prior justification: Both readers independently arrived at calories=475, protein=15 (basis=serving) (converted from the printed 40g serving: 190kcal/6g -> 475kcal/15g per 100g), matching stored (475/15)."
+  },
+  "01002013": {
+    "barcode": "01002013",
+    "name": "Hazelnut & Oat Milk Chocolate",
+    "storedCalories": 490.90909090909,
+    "storedProtein": 14.545454545455,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "Label per-serving only (55g bar: 270 kcal, 8g protein); no per-100g figure printed."
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 270,
+      "evidenceProtein": 8,
+      "basis": "serving",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Serving 55g bar: 270 Cal, 8g protein; no brand/name visible to confirm identity."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "[Recalculated with fixed logic] UNCONVERTED_BASIS: evidence basis is \"serving\", not a per-100g/100ml figure -- must be deterministically converted from an explicit printed weight before it can be compared, not approved as-is. (Previous outcome was VERIFIED.) Prior justification: Both readers independently arrived at calories=490.9, protein=14.5 (basis=serving) (converted from the printed 55g serving: 270kcal/8g -> 490.9kcal/14.5g per 100g), matching stored (490.90909090909/14.545454545455)."
+  },
+  "0026400298960": {
+    "barcode": "0026400298960",
+    "name": "Lowfat Milk",
+    "storedCalories": 380,
+    "storedProtein": 8.2,
+    "reader1": {
+      "outcome": "correction_proposed",
+      "reasonText": "Label confirms an ordinary liquid milk carton (236mL, 110 kcal/serving, 9g protein) -- the stored 380 kcal/100g is implausible for real liquid milk and does not match; a real data error, not just a legibility gap."
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 110,
+      "evidenceProtein": 9,
+      "basis": "serving",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Serving 236ml carton: 110 Cal, 9g protein; Grade A Pasteurized lowfat milk confirmed."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 reported a per-serving basis (Serving 236ml carton: 110 Cal, 9g protein; Grade A Pasteurized lowfat milk confirmed.) but no explicit GRAM weight could be parsed to deterministically convert to per-100g (a volume/ml serving is never converted, since that would require assuming a density). Reader1: correction_proposed (Label confirms an ordinary liquid milk carton (236mL, 110 kcal/serving, 9g protein) -- the stored 380 kcal/100g is implausible for real liquid milk and does not match; a real data error, not just a legibility gap.). Cannot compare against the per-100g stored value without guessing -- needs a label crop that shows the basis unambiguously, or a manual review."
+  },
+  "04725600": {
+    "barcode": "04725600",
+    "name": "גבינה סקנדינבית",
+    "storedCalories": 373,
+    "storedProtein": 23.5,
+    "reader1": {
+      "outcome": "correction_proposed",
+      "reasonText": "Label per-100g: ~395 kcal, 23.5g protein. Protein matches stored exactly; calories (373 stored) do not match the label (~395, last digit clearly 5)."
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "as_sold",
+      "legible": false,
+      "notes": "Package confirms Scandinavian semi-hard cheese 31% fat; table too small/blurry to read."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: correction_proposed."
+  },
+  "5902670052028": {
+    "barcode": "5902670052028",
+    "name": "פרוסות לטוסט",
+    "storedCalories": 290,
+    "storedProtein": 12.8,
+    "reader1": {
+      "outcome": "correction_proposed",
+      "reasonText": "calories 290 exact; protein 7.8 on label vs 12.8 stored -- significant real gap"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 290,
+      "evidenceProtein": null,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Barcode confirmed on package; per-100g energy=290 legible, protein row alignment not confident."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=true, calories=290, protein=null). Two independent legible readings are required. Reader1 originally recorded: correction_proposed."
+  },
+  "6253014790076": {
+    "barcode": "6253014790076",
+    "name": "Qamar Dates",
+    "storedCalories": 300,
+    "storedProtein": 2.5,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "label states an explicit 40g serving (120 kcal, 1g protein); scaled to 100g reproduces stored values (300 kcal, 2.5g protein) exactly -- a legitimate explicit-serving-weight conversion, not inference"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 120,
+      "evidenceProtein": 1,
+      "basis": "serving",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Serving 40g (2-3 dates): 120 Cal, 1g protein. No brand/name visible in crop; identity not confirmable from image alone. Only kcal shown."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "[Recalculated with fixed logic] UNCONVERTED_BASIS: evidence basis is \"serving\", not a per-100g/100ml figure -- must be deterministically converted from an explicit printed weight before it can be compared, not approved as-is. (Previous outcome was VERIFIED.) Prior justification: Both readers independently arrived at calories=300, protein=2.5 (basis=serving) (converted from the printed 40g serving: 120kcal/1g -> 300kcal/2.5g per 100g), matching stored (300/2.5)."
+  },
+  "6934731200078": {
+    "barcode": "6934731200078",
+    "name": "Fresh Ramen Noodles",
+    "storedCalories": 144,
+    "storedProtein": 3.9,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 144 exact, protein 3.9 exact"
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 144,
+      "evidenceProtein": 3.9,
+      "basis": "100g",
+      "prepState": "unclear",
+      "legible": true,
+      "notes": "Per-100g table: energy=144, protein=3.9. Package text '...amen Noodles' visible, consistent with Fresh Ramen Noodles. Basis (dry vs prepared) not specified on label."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "[Recalculated with fixed logic] PREP_STATE_UNCLEAR: raw/cooked (or as-sold/prepared) state could not be established, so the value cannot be confirmed as comparable to the stored basis. (Previous outcome was VERIFIED.) Prior justification: Both readers independently arrived at calories=144, protein=3.9 (basis=100g), matching stored (144/3.9)."
+  },
+  "6942836720216": {
+    "barcode": "6942836720216",
+    "name": "Cookies 'n' Mint",
+    "storedCalories": 527,
+    "storedProtein": 5.7,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 527 exact, protein 5.7 exact"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 527,
+      "evidenceProtein": 20.8,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Per 100g: Energy 2220kJ/527kcal, Protein 20.8g. No brand/name visible in this crop, only nutrition table + allergens."
+    },
+    "finalOutcome": "CORRECTION_PROPOSED",
+    "justification": "[Manual third read, tie-breaker] Own direct read of the label image: 'TYPICAL VALUES PER 100G: Energy 2220kJ/527Kcal ... PROTEIN 20.8G' -- clearly printed and unambiguous. Confirms reader2's reading exactly. Reader1's recorded reason ('protein 5.7 exact') does not match anything visible on this label and appears to be a transcription or cross-product error. Calories (527) already matched stored; protein is a real, confirmed correction (20.8g, not 5.7g stored).",
+    "thirdRead": {
+      "evidenceCalories": 527,
+      "evidenceProtein": 20.8,
+      "basis": "100g"
+    },
+    "proposedCalories": 527,
+    "proposedProtein": 20.8
+  },
+  "7290000048437": {
+    "barcode": "7290000048437",
+    "name": "גבינה מלוחה 5%. מחלב בקר",
+    "storedCalories": 135,
+    "storedProtein": 18.5,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 135 exact, protein 18.5 exact"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 135,
+      "evidenceProtein": 18.5,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Per-100g Hebrew table: energy=135, protein=18.5. Row alignment inferred from position (dense small text); fat=5g consistent with '5%' name claim. No product name visible in crop."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=135, protein=18.5 (basis=100g), matching stored (135/18.5)."
+  },
+  "7290000049557": {
+    "barcode": "7290000049557",
+    "name": "Emek",
+    "storedCalories": 344,
+    "storedProtein": 23,
+    "reader1": {
+      "outcome": "unresolved",
+      "reasonText": "calories 344 confirmed exact; protein row not confidently identified among visible figures"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 344,
+      "evidenceProtein": 17,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Angled/partly blurred photo, per-100g: energy=344, protein=17 (moderate confidence on protein due to blur). No 'Emek' brand text visible in crop."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader1 (calories 344 confirmed exact; protein row not confidently identified among visible figures) and reader2 (calories=344, protein=17) do not clearly state the same numbers -- calAgree=true, protAgree=false. Not resolved by majority vote; needs re-examination."
+  },
+  "7290000554532": {
+    "barcode": "7290000554532",
+    "name": "Delicate Tefalit cheese",
+    "storedCalories": 117,
+    "storedProtein": 12,
+    "reader1": {
+      "outcome": "verified",
+      "reasonText": "calories 117 exact, protein 12 exact"
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 117,
+      "evidenceProtein": 12,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Per-100g table (after straining/סינון): 117 kcal, 12g protein."
+    },
+    "finalOutcome": "VERIFIED",
+    "justification": "Both readers independently arrived at calories=117, protein=12 (basis=100g), matching stored (117/12)."
+  },
+  "7290003222094": {
+    "barcode": "7290003222094",
+    "name": "Pita Bis Teimani",
+    "storedCalories": 243,
+    "storedProtein": 7.08,
+    "reader1": {
+      "outcome": null,
+      "reasonText": null
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 243,
+      "evidenceProtein": 7.08,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Per-100g sticker: 243 kcal, 7.08g protein; no brand text visible."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader1 () and reader2 (calories=243, protein=7.08) do not clearly state the same numbers -- calAgree=false, protAgree=false. Not resolved by majority vote; needs re-examination."
+  },
+  "7290003229192": {
+    "barcode": "7290003229192",
+    "name": "פסטרמה כתף בקר מעושנת",
+    "storedCalories": 98,
+    "storedProtein": 17,
+    "reader1": {
+      "outcome": null,
+      "reasonText": null
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": null,
+      "evidenceProtein": null,
+      "basis": "unclear",
+      "prepState": "unclear",
+      "legible": false,
+      "notes": "Front matches name (smoked beef pastrami) but nutrition table too small/low-res to read numbers."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=false, calories=null, protein=null). Two independent legible readings are required. Reader1 originally recorded: null."
+  },
+  "7290004122683": {
+    "barcode": "7290004122683",
+    "name": "אצבעות גבינה עמק",
+    "storedCalories": 344,
+    "storedProtein": 23,
+    "reader1": {
+      "outcome": null,
+      "reasonText": null
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 344,
+      "evidenceProtein": 23,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Two-column table (100g / 21.5g stick), scaling internally consistent; used 100g column (344 kcal, 23g protein)."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader1 () and reader2 (calories=344, protein=23) do not clearly state the same numbers -- calAgree=false, protAgree=false. Not resolved by majority vote; needs re-examination."
+  },
+  "7290011018467": {
+    "barcode": "7290011018467",
+    "name": "Fanta Exotic",
+    "storedCalories": 44,
+    "storedProtein": 0,
+    "reader1": {
+      "outcome": null,
+      "reasonText": null
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 44,
+      "evidenceProtein": 0,
+      "basis": "100ml",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Table explicitly per 100ml: 44 kcal, 0g protein; no brand visible to confirm 'Fanta Exotic' identity."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader1 () and reader2 (calories=44, protein=0) do not clearly state the same numbers -- calAgree=false, protAgree=false. Not resolved by majority vote; needs re-examination."
+  },
+  "7290014471184": {
+    "barcode": "7290014471184",
+    "name": "Munchies",
+    "storedCalories": 401,
+    "storedProtein": 11.8,
+    "reader1": {
+      "outcome": null,
+      "reasonText": null
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 401,
+      "evidenceProtein": 11.8,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Front text 'Peanuts and Puffed rice Snack'; table explicitly per 100g: 401 kcal, 11.8g protein."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader1 () and reader2 (calories=401, protein=11.8) do not clearly state the same numbers -- calAgree=false, protAgree=false. Not resolved by majority vote; needs re-examination."
+  },
+  "7290014791565": {
+    "barcode": "7290014791565",
+    "name": "Grapes",
+    "storedCalories": 24,
+    "storedProtein": 0,
+    "reader1": {
+      "outcome": null,
+      "reasonText": null
+    },
+    "reader2": {
+      "identityMatch": "no",
+      "evidenceCalories": 24,
+      "evidenceProtein": 0,
+      "basis": "100ml",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Table per 100ml with 'teaspoons of sugar' and 'contains fruit' -- indicates a liquid/drink, not whole grapes as catalog name suggests. Likely identity mismatch."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader1 () and reader2 (calories=24, protein=0) do not clearly state the same numbers -- calAgree=false, protAgree=false. Not resolved by majority vote; needs re-examination."
+  },
+  "7290015161299": {
+    "barcode": "7290015161299",
+    "name": "פומודורו בסיס לבולונז – רוטב עגבניות אורגני להכנת פסטה",
+    "storedCalories": 28,
+    "storedProtein": 1.1,
+    "reader1": {
+      "outcome": null,
+      "reasonText": null
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 28,
+      "evidenceProtein": 1.1,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Ingredients consistent with tomato pasta sauce; per-100g table: 28 kcal, 1.1g protein; no brand/name text visible."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader1 () and reader2 (calories=28, protein=1.1) do not clearly state the same numbers -- calAgree=false, protAgree=false. Not resolved by majority vote; needs re-examination."
+  },
+  "7290016584004": {
+    "barcode": "7290016584004",
+    "name": "‏גיזרונים",
+    "storedCalories": 27,
+    "storedProtein": 0.6,
+    "reader1": {
+      "outcome": null,
+      "reasonText": null
+    },
+    "reader2": {
+      "identityMatch": "yes",
+      "evidenceCalories": 27,
+      "evidenceProtein": null,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Baby carrots bag matches product type; per-100g table shows energy=27 kcal clearly; protein row obscured by a logo overlay, not legible."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader2 could not read both values (legible=true, calories=27, protein=null). Two independent legible readings are required. Reader1 originally recorded: null."
+  },
+  "7290017617466": {
+    "barcode": "7290017617466",
+    "name": "טונה במים",
+    "storedCalories": 104,
+    "storedProtein": 24.8,
+    "reader1": {
+      "outcome": null,
+      "reasonText": null
+    },
+    "reader2": {
+      "identityMatch": "unclear",
+      "evidenceCalories": 104,
+      "evidenceProtein": 24.8,
+      "basis": "100g",
+      "prepState": "as_sold",
+      "legible": true,
+      "notes": "Table labeled 'per 100 gr. D.W. / לאחר סינון' (drained weight): 104 kcal, 24.8g protein -- consistent with canned tuna in water, drained basis."
+    },
+    "finalOutcome": "UNRESOLVED",
+    "justification": "Reader1 () and reader2 (calories=104, protein=24.8) do not clearly state the same numbers -- calAgree=false, protAgree=false. Not resolved by majority vote; needs re-examination."
+  }
+}

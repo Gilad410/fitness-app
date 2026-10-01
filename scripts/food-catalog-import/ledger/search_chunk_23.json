@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "7290004128333",
+    "name": "לאבנה אסלית 9%",
+    "brand": "פיראוס",
+    "storedCalories": 127,
+    "storedProtein": 8
+  },
+  {
+    "barcode": "7290004128340",
+    "name": "Cream cheese",
+    "brand": "Tnova",
+    "storedCalories": 111,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290004131814",
+    "name": "גבינה צפתית 5%",
+    "brand": "פיראוס תנובה",
+    "storedCalories": 131,
+    "storedProtein": 16.5
+  },
+  {
+    "barcode": "7290004135614",
+    "name": "בולגרית",
+    "brand": "פיראוס",
+    "storedCalories": 103,
+    "storedProtein": 11.5
+  },
+  {
+    "barcode": "7290004257491",
+    "name": "Ground Beef",
+    "brand": "Atara",
+    "storedCalories": 178,
+    "storedProtein": 17
+  },
+  {
+    "barcode": "7290004339937",
+    "name": "סייטן אמרנט",
+    "brand": "טבע",
+    "storedCalories": 150,
+    "storedProtein": 20.2000007629395
+  },
+  {
+    "barcode": "7290004645748",
+    "name": "פילה אמנון ללא עור קפוא 90% דג",
+    "brand": "רוזנרס פיש",
+    "storedCalories": 96,
+    "storedProtein": 20.08
+  },
+  {
+    "barcode": "7290004762070",
+    "name": "Pâtes patte d’oiseaux",
+    "brand": null,
+    "storedCalories": 402,
+    "storedProtein": 12.6999998092651
+  },
+  {
+    "barcode": "7290005503061",
+    "name": "Lentilles corail cuites",
+    "brand": null,
+    "storedCalories": 160,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290005992735",
+    "name": "לאבנה גבינה 5% שומן",
+    "brand": null,
+    "storedCalories": 87,
+    "storedProtein": 8.5
+  },
+  {
+    "barcode": "7290005996276",
+    "name": "פסטרמה ברביקיו דק",
+    "brand": "יחיעם",
+    "storedCalories": 107,
+    "storedProtein": 17
+  },
+  {
+    "barcode": "7290006241191",
+    "name": "אגוזי מלך קלופים",
+    "brand": "קליית גת",
+    "storedCalories": 687,
+    "storedProtein": 15
+  },
+  {
+    "barcode": "7290006243577",
+    "name": "Potato BOUREKAS",
+    "brand": null,
+    "storedCalories": 285,
+    "storedProtein": 4
+  },
+  {
+    "barcode": "7290006264831",
+    "name": "Pain cosmin",
+    "brand": null,
+    "storedCalories": 208,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290006306159",
+    "name": "Four Cheese Chilled Lasagna",
+    "brand": "Pasta Nonna",
+    "storedCalories": 140,
+    "storedProtein": 6.5
+  },
+  {
+    "barcode": "7290006492432",
+    "name": "Baby mozzarella",
+    "brand": "גד",
+    "storedCalories": 230,
+    "storedProtein": 17
+  },
+  {
+    "barcode": "7290006496317",
+    "name": "גרנולה בתוספת שקדים",
+    "brand": "משקד",
+    "storedCalories": 404,
+    "storedProtein": 12.5
+  },
+  {
+    "barcode": "7290006664310",
+    "name": "סקי 3%",
+    "brand": "שטראוס",
+    "storedCalories": 79,
+    "storedProtein": 8.69999980926514
+  },
+  {
+    "barcode": "7290006739544",
+    "name": "כתף בקר",
+    "brand": "זובלובק",
+    "storedCalories": 108.666666666667,
+    "storedProtein": 15
+  },
+  {
+    "barcode": "7290006775405",
+    "name": "מאפין",
+    "brand": "אחוה",
+    "storedCalories": 402.222222222222,
+    "storedProtein": 5.11111111111111
+  },
+  {
+    "barcode": "7290006908698",
+    "name": "קשיו קלוי ענק",
+    "brand": "פיצוחי חממה",
+    "storedCalories": 328.4,
+    "storedProtein": 8.4
+  },
+  {
+    "barcode": "7290006920843",
+    "name": "Mozzarella",
+    "brand": "כפיר",
+    "storedCalories": 261,
+    "storedProtein": 25
+  },
+  {
+    "barcode": "7290008335560",
+    "name": "סיגרים",
+    "brand": "שלושת האופים",
+    "storedCalories": 226,
+    "storedProtein": 10.7
+  },
+  {
+    "barcode": "7290008409100",
+    "name": "אצבעות שניצל שומשום",
+    "brand": "מאמא עוף",
+    "storedCalories": 218,
+    "storedProtein": 15
+  }
+]

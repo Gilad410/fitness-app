@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "0710497378000",
+    "name": "Milk Chocolate Kadayif Pistachio",
+    "brand": "Dubai Chocolate",
+    "storedCalories": 552,
+    "storedProtein": 9.9
+  },
+  {
+    "barcode": "7290120935495",
+    "name": "Creamy Core",
+    "brand": "Allin",
+    "storedCalories": 373.809523809524,
+    "storedProtein": 28.5714285714286
+  },
+  {
+    "barcode": "7290107944472",
+    "name": "סימפוניה שום שמיר",
+    "brand": "סימפוניה, שטראוס",
+    "storedCalories": 109,
+    "storedProtein": 9.8
+  },
+  {
+    "barcode": "5900020026552",
+    "name": "Honey nut cheerios",
+    "brand": "Ossem",
+    "storedCalories": 378,
+    "storedProtein": 8.7
+  },
+  {
+    "barcode": "7290106720626",
+    "name": "شيبس جبنه Cheetos 80gm",
+    "brand": "Cheetos",
+    "storedCalories": 552,
+    "storedProtein": 5.40000009536743
+  },
+  {
+    "barcode": "7290110329846",
+    "name": "Alternative bio yogurt",
+    "brand": "Alternative",
+    "storedCalories": 48,
+    "storedProtein": 4
+  },
+  {
+    "barcode": "7290002353836",
+    "name": "סרדינים בשמן זית",
+    "brand": "ROBERT",
+    "storedCalories": 303.529411764706,
+    "storedProtein": 22
+  },
+  {
+    "barcode": "7290112335500",
+    "name": "פריכיות חומוס, אורז ו עדשים שחורות וקטניות קטנה",
+    "brand": "Strauss",
+    "storedCalories": 399,
+    "storedProtein": 16.9
+  },
+  {
+    "barcode": "7290115205176",
+    "name": "Fitness",
+    "brand": "Nestle Fitness",
+    "storedCalories": 461,
+    "storedProtein": 12.5
+  },
+  {
+    "barcode": "7290008775816",
+    "name": "عرجليوت اوسم 300gm",
+    "brand": "אסם",
+    "storedCalories": 417,
+    "storedProtein": 4.5
+  },
+  {
+    "barcode": "8076809513739",
+    "name": "Tomate y Badilico",
+    "brand": "Barilla",
+    "storedCalories": 64,
+    "storedProtein": 1.6
+  },
+  {
+    "barcode": "7290107942355",
+    "name": "Tapuchips Stickz",
+    "brand": "עלית",
+    "storedCalories": 548.333333333333,
+    "storedProtein": 6
+  },
+  {
+    "barcode": "7290003864478",
+    "name": "סרדינים בשמן סויה",
+    "brand": "ויליפוד",
+    "storedCalories": 153,
+    "storedProtein": 25
+  },
+  {
+    "barcode": "7290112495228",
+    "name": "קורנפלקס דבש",
+    "brand": "תלמה",
+    "storedCalories": 387,
+    "storedProtein": 6.7
+  },
+  {
+    "barcode": "7290112330390",
+    "name": "יוגורט חלבון פירות יער",
+    "brand": "דנונה",
+    "storedCalories": 65,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "8715700423906",
+    "name": "Tomato Ketchup 50%",
+    "brand": "Heinz",
+    "storedCalories": 64,
+    "storedProtein": 1.4
+  },
+  {
+    "barcode": "7290000043944",
+    "name": "Yogurt 4%",
+    "brand": "Tnuv",
+    "storedCalories": 63,
+    "storedProtein": 3.2
+  },
+  {
+    "barcode": "5701932026971",
+    "name": "HotPop",
+    "brand": "Hotpop",
+    "storedCalories": 480,
+    "storedProtein": 7.8
+  },
+  {
+    "barcode": "7290002543046",
+    "name": "Kellogg's Frosties 750",
+    "brand": "קלוג'ס",
+    "storedCalories": 375,
+    "storedProtein": 4.5
+  },
+  {
+    "barcode": "0613008753351",
+    "name": "Arizona Pomegranate",
+    "brand": "Arizona",
+    "storedCalories": 21,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "4007745058804",
+    "name": "מיונז אמיתי אורגני",
+    "brand": "Horrlein, Naturafood, נטורפוד",
+    "storedCalories": 757,
+    "storedProtein": 1.2
+  },
+  {
+    "barcode": "8001505000313",
+    "name": "ממרח אגוזי לוז אורגני",
+    "brand": "Rigoni Di Asiago",
+    "storedCalories": 544,
+    "storedProtein": 8
+  },
+  {
+    "barcode": "7290112962904",
+    "name": "Soup Almond Rings - Kosher For Passover",
+    "brand": "אוסם",
+    "storedCalories": 525,
+    "storedProtein": 2
+  },
+  {
+    "barcode": "7290008830676",
+    "name": "שיבולת שועל דקה",
+    "brand": "מטעמי השוק",
+    "storedCalories": 370,
+    "storedProtein": 12.1
+  }
+]

@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "7290002057123",
+    "name": "Green olives",
+    "brand": "Kvuzat yavne",
+    "storedCalories": 150,
+    "storedProtein": 1.20000004768372
+  },
+  {
+    "barcode": "7290002077725",
+    "name": "Smoked Salmon",
+    "brand": "Vking",
+    "storedCalories": 205,
+    "storedProtein": 21
+  },
+  {
+    "barcode": "7290002079477",
+    "name": "לחם מקמח חיטה כהה",
+    "brand": "דוידוביץ",
+    "storedCalories": 238,
+    "storedProtein": 8.8
+  },
+  {
+    "barcode": "7290002107798",
+    "name": "בולגרית מעודנת 5%",
+    "brand": "משק צוריאל",
+    "storedCalories": 108,
+    "storedProtein": 12
+  },
+  {
+    "barcode": "7290002319078",
+    "name": "שומשום",
+    "brand": "מיה",
+    "storedCalories": 657,
+    "storedProtein": 20
+  },
+  {
+    "barcode": "7290002331124",
+    "name": "נביעות+ תפוח עדין",
+    "brand": "נביעות",
+    "storedCalories": 15,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290002371533",
+    "name": "Honey Turkey Pastrami",
+    "brand": "Tirat Zvi",
+    "storedCalories": 98,
+    "storedProtein": 16
+  },
+  {
+    "barcode": "7290002587200",
+    "name": "חטיפי כרובית",
+    "brand": "ויליגר טבע",
+    "storedCalories": 193,
+    "storedProtein": 3
+  },
+  {
+    "barcode": "7290002657866",
+    "name": "Talapia",
+    "brand": "Delidag",
+    "storedCalories": 103,
+    "storedProtein": 20
+  },
+  {
+    "barcode": "7290002661153",
+    "name": "לחם פרוס חיטה מלאה ושיפון",
+    "brand": "לחם דני",
+    "storedCalories": 219,
+    "storedProtein": 15.1
+  },
+  {
+    "barcode": "7290002954200",
+    "name": "ارز ياسمين مطبوخ",
+    "brand": null,
+    "storedCalories": 117,
+    "storedProtein": 2.35
+  },
+  {
+    "barcode": "7290002963950",
+    "name": "אגוזי פקאן קלופים",
+    "brand": "אגוז הכפר",
+    "storedCalories": 740,
+    "storedProtein": 9.2
+  },
+  {
+    "barcode": "7290002971962",
+    "name": "Whole Wheat Flour",
+    "brand": "Stibel",
+    "storedCalories": 361,
+    "storedProtein": 12
+  },
+  {
+    "barcode": "7290003126712",
+    "name": "Goat Milk Yogurt",
+    "brand": "Zuriel Farms",
+    "storedCalories": 77,
+    "storedProtein": 3.4
+  },
+  {
+    "barcode": "7290003189076",
+    "name": "פיצרלה",
+    "brand": "כפיר",
+    "storedCalories": 298,
+    "storedProtein": 19
+  },
+  {
+    "barcode": "7290003268252",
+    "name": "לחם חיטה מלאה",
+    "brand": "דגנית עין הבר",
+    "storedCalories": 225,
+    "storedProtein": 11.5
+  },
+  {
+    "barcode": "7290003726141",
+    "name": "Tofu",
+    "brand": "Gaya",
+    "storedCalories": 151,
+    "storedProtein": 16
+  },
+  {
+    "barcode": "7290004030100",
+    "name": "מיץ תפוזים סחוט טבעי",
+    "brand": "פריניב",
+    "storedCalories": 43,
+    "storedProtein": 0.52
+  },
+  {
+    "barcode": "7290004030612",
+    "name": "Apple Pear Kiwi 90% Juice",
+    "brand": "Priniv",
+    "storedCalories": 43,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290004033712",
+    "name": "לחם עם פרוסות עבות מקמח חיטה מלא",
+    "brand": "ברמן",
+    "storedCalories": 222,
+    "storedProtein": 11.1000003815
+  },
+  {
+    "barcode": "7290004033736",
+    "name": "לחם לבן בסגנון בריוש",
+    "brand": "עננים",
+    "storedCalories": 263,
+    "storedProtein": 8.5
+  },
+  {
+    "barcode": "7290004119973",
+    "name": "Carlo",
+    "brand": null,
+    "storedCalories": 82,
+    "storedProtein": 3.40000009536743
+  },
+  {
+    "barcode": "7290004122119",
+    "name": "פתיתי גבע פרמזן",
+    "brand": "תנובה",
+    "storedCalories": 335,
+    "storedProtein": 32
+  },
+  {
+    "barcode": "7290004124168",
+    "name": "Yoplait",
+    "brand": "Tnuva",
+    "storedCalories": 64.6666666666667,
+    "storedProtein": 5.33333333333333
+  }
+]

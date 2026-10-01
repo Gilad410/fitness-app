@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import test from 'node:test'
 
-const sql = fs.readFileSync(new URL('./057_owner_mfa_enforcement.sql', import.meta.url), 'utf8')
+const sql = fs.readFileSync(new URL('./058_owner_mfa_enforcement.sql', import.meta.url), 'utf8')
 
 test('057 is atomic and replaces only the owner authorization function', () => {
   assert.match(sql, /^\s*--[\s\S]*?\bbegin\s*;/i)

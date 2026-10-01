@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "7290104728310",
+    "name": "שמנת להקצפה 38%",
+    "brand": "יטבתה",
+    "storedCalories": 364,
+    "storedProtein": 2
+  },
+  {
+    "barcode": "7290006983763",
+    "name": "עוגת הבית בטעם שוקולד",
+    "brand": "אסם",
+    "storedCalories": 411,
+    "storedProtein": 5.3
+  },
+  {
+    "barcode": "7290112968807",
+    "name": "Fitness Thin",
+    "brand": "Fitness",
+    "storedCalories": 458,
+    "storedProtein": 12.093023255814
+  },
+  {
+    "barcode": "7290105695994",
+    "name": "Soy sauce",
+    "brand": "Osem",
+    "storedCalories": 34,
+    "storedProtein": 2.20000004768372
+  },
+  {
+    "barcode": "7290000208428",
+    "name": "Chickpeas",
+    "brand": "יכין",
+    "storedCalories": 145,
+    "storedProtein": 8
+  },
+  {
+    "barcode": "0037600207188",
+    "name": "סקיפי",
+    "brand": "אלגוד",
+    "storedCalories": 626,
+    "storedProtein": 25
+  },
+  {
+    "barcode": "7290004129545",
+    "name": "גבינה לבנה 3%",
+    "brand": "תנובה",
+    "storedCalories": 82,
+    "storedProtein": 9.5
+  },
+  {
+    "barcode": "7290001780428",
+    "name": "ארטיק",
+    "brand": "Nestlé",
+    "storedCalories": 87,
+    "storedProtein": 3.84615384615385
+  },
+  {
+    "barcode": "7290114310338",
+    "name": "צפתית מעודנת 5%",
+    "brand": "משק צוריאל",
+    "storedCalories": 111,
+    "storedProtein": 11.5
+  },
+  {
+    "barcode": "7290117261545",
+    "name": "סלמון אטלנטי ברוטב טריאקי",
+    "brand": "ויליפוד",
+    "storedCalories": 196,
+    "storedProtein": 15
+  },
+  {
+    "barcode": "7290008409216",
+    "name": "שניצל דק",
+    "brand": "מאמא עוף",
+    "storedCalories": 248,
+    "storedProtein": 14
+  },
+  {
+    "barcode": "7290112968821",
+    "name": "Fifness",
+    "brand": "אסם",
+    "storedCalories": 459,
+    "storedProtein": 11.5
+  },
+  {
+    "barcode": "7290008753364",
+    "name": "Doritos grill",
+    "brand": "Doritos",
+    "storedCalories": 532.727272727273,
+    "storedProtein": 8.36363636363636
+  },
+  {
+    "barcode": "7290110558314",
+    "name": "דנונה pro בטעם פיסטוק",
+    "brand": "דנונה",
+    "storedCalories": 55.5,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290109358765",
+    "name": "Crunch",
+    "brand": "Nestlé",
+    "storedCalories": 438,
+    "storedProtein": 7.8
+  },
+  {
+    "barcode": "7290106578692",
+    "name": "ביסלי במבה mix",
+    "brand": null,
+    "storedCalories": 510,
+    "storedProtein": 13.5
+  },
+  {
+    "barcode": "7290008175173",
+    "name": "Butter with no additional salt",
+    "brand": "Valid",
+    "storedCalories": 731,
+    "storedProtein": 0.600000023841858
+  },
+  {
+    "barcode": "7290102390465",
+    "name": "Yogurt froop 3%",
+    "brand": "Muller",
+    "storedCalories": 87.3333333333333,
+    "storedProtein": 4.2
+  },
+  {
+    "barcode": "7290112495006",
+    "name": "Kariot",
+    "brand": "Telma",
+    "storedCalories": 463.333333333333,
+    "storedProtein": 7
+  },
+  {
+    "barcode": "7290110557478",
+    "name": "חומוס",
+    "brand": "אחלה",
+    "storedCalories": 204,
+    "storedProtein": 8.6
+  },
+  {
+    "barcode": "7290004125509",
+    "name": "שמנת חמוצה",
+    "brand": "תנובה",
+    "storedCalories": 159,
+    "storedProtein": 2.7
+  },
+  {
+    "barcode": "7290018925065",
+    "name": "מיץ תפוזים סחוט",
+    "brand": "פרימור",
+    "storedCalories": 47,
+    "storedProtein": 0.7
+  },
+  {
+    "barcode": "7290017918563",
+    "name": "Roasted Peeled Chestnuts",
+    "brand": "Bikorey HaSadeh",
+    "storedCalories": 189,
+    "storedProtein": 4.2
+  },
+  {
+    "barcode": "7290003075553",
+    "name": "לבנה אסלי",
+    "brand": "רג׳ב",
+    "storedCalories": 155,
+    "storedProtein": 12
+  }
+]

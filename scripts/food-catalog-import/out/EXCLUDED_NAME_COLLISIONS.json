@@ -1,0 +1,152 @@
+[
+  {
+    "barcode": "7290000051352",
+    "name": "Milk",
+    "reason": "Case-insensitive name collision with a PRESERVED (independently verified) product -- excluded to keep the preserved group intact, per instruction."
+  },
+  {
+    "barcode": "7290011435226",
+    "name": "Honey",
+    "reason": "Case-insensitive name collision with a PRESERVED (independently verified) product -- excluded to keep the preserved group intact, per instruction."
+  },
+  {
+    "barcode": "7290110001841",
+    "name": "Peanut butter",
+    "reason": "Case-insensitive name collision with a PRESERVED (independently verified) product -- excluded to keep the preserved group intact, per instruction."
+  },
+  {
+    "barcode": "7290000379104",
+    "name": "לחם אחיד פרוס",
+    "reason": "Case-insensitive name collision with a PRESERVED (independently verified) product -- excluded to keep the preserved group intact, per instruction."
+  },
+  {
+    "barcode": "7290004132552",
+    "name": "Soy milk",
+    "reason": "Case-insensitive name collision with a PRESERVED (independently verified) product -- excluded to keep the preserved group intact, per instruction."
+  },
+  {
+    "barcode": "7290000068343",
+    "name": "قطع بريخونيم",
+    "reason": "Case-insensitive name collision with another new source-provided candidate (7290000069364) -- both set aside for manual disambiguation, not arbitrarily picked."
+  },
+  {
+    "barcode": "7290000069364",
+    "name": "قطع بريخونيم",
+    "reason": "Case-insensitive name collision with another new source-provided candidate (7290000068343) -- both set aside for manual disambiguation, not arbitrarily picked."
+  },
+  {
+    "barcode": "7290112497994",
+    "name": "Protein granola",
+    "reason": "Case-insensitive name collision with another new source-provided candidate (7290116532769) -- both set aside for manual disambiguation, not arbitrarily picked."
+  },
+  {
+    "barcode": "7290116532769",
+    "name": "protein granola",
+    "reason": "Case-insensitive name collision with another new source-provided candidate (7290112497994) -- both set aside for manual disambiguation, not arbitrarily picked."
+  },
+  {
+    "barcode": "7290110559014",
+    "name": "Black beans",
+    "reason": "Case-insensitive name collision with another new source-provided candidate (0011182700954) -- both set aside for manual disambiguation, not arbitrarily picked."
+  },
+  {
+    "barcode": "0011182700954",
+    "name": "Black Beans",
+    "reason": "Case-insensitive name collision with another new source-provided candidate (7290110559014) -- both set aside for manual disambiguation, not arbitrarily picked."
+  },
+  {
+    "barcode": "7290110000493",
+    "name": "Natural peanut butter",
+    "reason": "Case-insensitive name collision with another new source-provided candidate (7290012737091) -- both set aside for manual disambiguation, not arbitrarily picked."
+  },
+  {
+    "barcode": "7290012737091",
+    "name": "Natural Peanut Butter",
+    "reason": "Case-insensitive name collision with another new source-provided candidate (7290110000493) -- both set aside for manual disambiguation, not arbitrarily picked."
+  },
+  {
+    "barcode": "7290013472892",
+    "name": "Bulgarian cheese",
+    "reason": "Case-insensitive name collision with another new source-provided candidate (7290006448149) -- both set aside for manual disambiguation, not arbitrarily picked."
+  },
+  {
+    "barcode": "7290006448149",
+    "name": "Bulgarian Cheese",
+    "reason": "Case-insensitive name collision with another new source-provided candidate (7290013472892) -- both set aside for manual disambiguation, not arbitrarily picked."
+  },
+  {
+    "barcode": "7290015446891",
+    "name": "Cookie Crunch Protein Bar",
+    "reason": "Case-insensitive name collision with another new source-provided candidate (7290111604935) -- both set aside for manual disambiguation, not arbitrarily picked."
+  },
+  {
+    "barcode": "7290111604935",
+    "name": "Cookie Crunch Protein Bar",
+    "reason": "Case-insensitive name collision with another new source-provided candidate (7290015446891) -- both set aside for manual disambiguation, not arbitrarily picked."
+  },
+  {
+    "barcode": "7290111933462",
+    "name": "צ'ילי מתוק",
+    "reason": "Case-insensitive name collision with another new source-provided candidate (7290013725646) -- both set aside for manual disambiguation, not arbitrarily picked."
+  },
+  {
+    "barcode": "7290013725646",
+    "name": "צ'ילי מתוק",
+    "reason": "Case-insensitive name collision with another new source-provided candidate (7290111933462) -- both set aside for manual disambiguation, not arbitrarily picked."
+  },
+  {
+    "barcode": "80176800",
+    "name": "Nutella",
+    "reason": "Case-insensitive name collision with another new source-provided candidate (80177173) -- both set aside for manual disambiguation, not arbitrarily picked."
+  },
+  {
+    "barcode": "80177173",
+    "name": "Nutella",
+    "reason": "Case-insensitive name collision with another new source-provided candidate (80176800) -- both set aside for manual disambiguation, not arbitrarily picked."
+  },
+  {
+    "barcode": "7290000066318",
+    "name": "במבה",
+    "reason": "Case-insensitive name collision with another new source-provided candidate (7290111565083) -- both set aside for manual disambiguation, not arbitrarily picked."
+  },
+  {
+    "barcode": "7290111565083",
+    "name": "במבה",
+    "reason": "Case-insensitive name collision with another new source-provided candidate (7290000066318) -- both set aside for manual disambiguation, not arbitrarily picked."
+  },
+  {
+    "barcode": "7290000120836",
+    "name": "מיונז אמיתי",
+    "reason": "Case-insensitive name collision with another new source-provided candidate (7290100243084,8683130052945) -- both set aside for manual disambiguation, not arbitrarily picked."
+  },
+  {
+    "barcode": "7290100243084",
+    "name": "מיונז אמיתי",
+    "reason": "Case-insensitive name collision with another new source-provided candidate (7290000120836,8683130052945) -- both set aside for manual disambiguation, not arbitrarily picked."
+  },
+  {
+    "barcode": "8683130052945",
+    "name": "מיונז אמיתי",
+    "reason": "Case-insensitive name collision with another new source-provided candidate (7290000120836,7290100243084) -- both set aside for manual disambiguation, not arbitrarily picked."
+  },
+  {
+    "barcode": "7290111593697",
+    "name": "דבש טהור מפרחי בר",
+    "reason": "Case-insensitive name collision with another new source-provided candidate (7290002130581) -- both set aside for manual disambiguation, not arbitrarily picked."
+  },
+  {
+    "barcode": "7290002130581",
+    "name": "דבש טהור מפרחי בר",
+    "reason": "Case-insensitive name collision with another new source-provided candidate (7290111593697) -- both set aside for manual disambiguation, not arbitrarily picked."
+  },
+  {
+    "barcode": "7290017275345",
+    "name": "טחינה גולמית",
+    "reason": "Case-insensitive name collision with another new source-provided candidate (7296073596387) -- both set aside for manual disambiguation, not arbitrarily picked."
+  },
+  {
+    "barcode": "7296073596387",
+    "name": "טחינה גולמית",
+    "reason": "Case-insensitive name collision with another new source-provided candidate (7290017275345) -- both set aside for manual disambiguation, not arbitrarily picked."
+  }
+]

@@ -1,0 +1,52 @@
+[
+  {
+    "barcode": "7290002026440",
+    "name": "Hot Pretzel",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290002026440.jpg"
+  },
+  {
+    "barcode": "4820199870019",
+    "name": "ბუბლიკი",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/4820199870019.jpg"
+  },
+  {
+    "barcode": "7290112963895",
+    "name": "קרקר דגנים",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290112963895.jpg"
+  },
+  {
+    "barcode": "4840008019521",
+    "name": "Butterfly Biscuits",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/4840008019521.jpg"
+  },
+  {
+    "barcode": "7296073405863",
+    "name": "טחינה גולמית מעודנת",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7296073405863.jpg"
+  },
+  {
+    "barcode": "0038527591053",
+    "name": "Oatmeal Squares",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/0038527591053.jpg"
+  },
+  {
+    "barcode": "0075442100229",
+    "name": "Puffed rice",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/0075442100229.jpg"
+  },
+  {
+    "barcode": "0814496020035",
+    "name": "Brownie batter",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/0814496020035.jpg"
+  },
+  {
+    "barcode": "0815871010009",
+    "name": "Potato chips",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/0815871010009.jpg"
+  },
+  {
+    "barcode": "0850010353012",
+    "name": "Chocolate Flavored Protein Powder",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/0850010353012.jpg"
+  }
+]

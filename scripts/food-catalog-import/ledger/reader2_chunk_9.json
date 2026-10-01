@@ -1,0 +1,52 @@
+[
+  {
+    "barcode": "7290011142407",
+    "name": "Whole wheat bread with grains",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290011142407.jpg"
+  },
+  {
+    "barcode": "7290018515129",
+    "name": "Yellow Curry Sauce",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290018515129.jpg"
+  },
+  {
+    "barcode": "7290019816331",
+    "name": "Crunch caramel waffle",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290019816331.jpg"
+  },
+  {
+    "barcode": "7290000363288",
+    "name": "Snacknix",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000363288.jpg"
+  },
+  {
+    "barcode": "7290114313278",
+    "name": "משקה קפה עם חלבוני חלב",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290114313278.jpg"
+  },
+  {
+    "barcode": "7290108502541",
+    "name": "Cream chees",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290108502541.jpg"
+  },
+  {
+    "barcode": "7290013027399",
+    "name": "לחם אנג׳ל 100 קל בתוספת שיפון",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290013027399.jpg"
+  },
+  {
+    "barcode": "7290000044248",
+    "name": "רויון",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000044248.jpg"
+  },
+  {
+    "barcode": "7290002008224",
+    "name": "סוכריות צבעוניות לקישוט",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290002008224.jpg"
+  },
+  {
+    "barcode": "7290003903788",
+    "name": "קפוצינו וניל",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290003903788.jpg"
+  }
+]

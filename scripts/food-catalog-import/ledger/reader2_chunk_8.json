@@ -1,0 +1,52 @@
+[
+  {
+    "barcode": "7290112336712",
+    "name": "Pro yogurt",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290112336712.jpg"
+  },
+  {
+    "barcode": "7290107879521",
+    "name": "לה פרוטה תות שדה",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290107879521.jpg"
+  },
+  {
+    "barcode": "7290119370955",
+    "name": "יוגורט בטעם וניל עוגיות",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290119370955.jpg"
+  },
+  {
+    "barcode": "8423207206488",
+    "name": "Tortitas de maiz",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/8423207206488.jpg"
+  },
+  {
+    "barcode": "7290004137311",
+    "name": "גבינה עמק 9%",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290004137311.jpg"
+  },
+  {
+    "barcode": "7290000074696",
+    "name": "Cream Cracker",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000074696.jpg"
+  },
+  {
+    "barcode": "7290112967381",
+    "name": "חטיף פריכיות דגנים עם קטניות",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290112967381.jpg"
+  },
+  {
+    "barcode": "7290018296868",
+    "name": "PRO לחם מיוחד - מועשר בחלבון",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290018296868.jpg"
+  },
+  {
+    "barcode": "7290003078066",
+    "name": "Minced Garlic",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290003078066.jpg"
+  },
+  {
+    "barcode": "7290016877021",
+    "name": "לחם הרים שחום ורך",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290016877021.jpg"
+  }
+]

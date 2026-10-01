@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "7290001817728",
+    "name": "ציטוס Puff",
+    "brand": "עלית",
+    "storedCalories": 529.090909090909,
+    "storedProtein": 5.45454545454545
+  },
+  {
+    "barcode": "7290112490032",
+    "name": "Soupe au maïs",
+    "brand": "Knorr",
+    "storedCalories": 407,
+    "storedProtein": 5.3
+  },
+  {
+    "barcode": "7290105363572",
+    "name": "קראנצ׳ שוקולד חלב ביסקוויט",
+    "brand": "עלית",
+    "storedCalories": 539,
+    "storedProtein": 8.1
+  },
+  {
+    "barcode": "7290119373352",
+    "name": "Energy",
+    "brand": "Energy",
+    "storedCalories": 433.333333333333,
+    "storedProtein": 6
+  },
+  {
+    "barcode": "7290119372997",
+    "name": "יוגורט בטעם רול קינמון 0% שומן",
+    "brand": "Danone",
+    "storedCalories": 56,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290107646062",
+    "name": "אבקת מרק בצל",
+    "brand": "קנור",
+    "storedCalories": 349,
+    "storedProtein": 9.8
+  },
+  {
+    "barcode": "7290000040042",
+    "name": "יוגורט עם תות 3% שומן",
+    "brand": "Yoplait",
+    "storedCalories": 85,
+    "storedProtein": 3.1
+  },
+  {
+    "barcode": "7290102392889",
+    "name": "Yaourt bio 1,2% muller",
+    "brand": "Muller",
+    "storedCalories": 55,
+    "storedProtein": 6
+  },
+  {
+    "barcode": "7290008806305",
+    "name": "ארטיק כוכב",
+    "brand": "שטראוס",
+    "storedCalories": 244.444444444444,
+    "storedProtein": 1.55555555555556
+  },
+  {
+    "barcode": "7290112343260",
+    "name": "שמנת 9%",
+    "brand": "יטבתה",
+    "storedCalories": 121,
+    "storedProtein": 3.1
+  },
+  {
+    "barcode": "7290016304596",
+    "name": "לחמניות קמח לבן",
+    "brand": "דבידוביץ",
+    "storedCalories": 277,
+    "storedProtein": 9
+  },
+  {
+    "barcode": "7290106724488",
+    "name": "דנונה bio",
+    "brand": "דנונה",
+    "storedCalories": 55.3333333333333,
+    "storedProtein": 5.26666666666667
+  },
+  {
+    "barcode": "7290017928821",
+    "name": "גריסיני קלאסי",
+    "brand": "Meir Bagle",
+    "storedCalories": 411,
+    "storedProtein": 11.3
+  },
+  {
+    "barcode": "7290105691248",
+    "name": "חטיפי טורטיה תירס",
+    "brand": "אסם",
+    "storedCalories": 439,
+    "storedProtein": 7.19999980926514
+  },
+  {
+    "barcode": "7290006681065",
+    "name": "Ta'mkour Xl",
+    "brand": "Shtraws",
+    "storedCalories": 284,
+    "storedProtein": 6.1
+  },
+  {
+    "barcode": "7290112965684",
+    "name": "חטיף דגנים עם עשבי תיבול",
+    "brand": "אסם, נסטלה, פיטנס",
+    "storedCalories": 478,
+    "storedProtein": 6.5
+  },
+  {
+    "barcode": "7290016967074",
+    "name": "לחם מלא פרוס",
+    "brand": "אנגל",
+    "storedCalories": 225,
+    "storedProtein": 13.3333333333333
+  },
+  {
+    "barcode": "5060517886486",
+    "name": "Monster energy",
+    "brand": "Monster",
+    "storedCalories": 47,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7296073441335",
+    "name": "פריכיות אורז מלא",
+    "brand": "שופרסל",
+    "storedCalories": 400,
+    "storedProtein": 8.75
+  },
+  {
+    "barcode": "7290001216101",
+    "name": "טחינה אל ארז שומשום מלא",
+    "brand": "אל ארז",
+    "storedCalories": 655,
+    "storedProtein": 25
+  },
+  {
+    "barcode": "7290017304885",
+    "name": "לחם שיפון וחיטה מלאה אנג’ל",
+    "brand": "אנג’ל",
+    "storedCalories": 228,
+    "storedProtein": 12.5
+  },
+  {
+    "barcode": "7290018333952",
+    "name": "חטיף אגוזים חמוציות",
+    "brand": "רפאלס",
+    "storedCalories": 481,
+    "storedProtein": 14.1000003814697
+  },
+  {
+    "barcode": "7290112498007",
+    "name": "Granola protein",
+    "brand": "Sherut uniliver",
+    "storedCalories": 413.333333333333,
+    "storedProtein": 23.6666666666667
+  },
+  {
+    "barcode": "7290111602979",
+    "name": "פריכיות תירס דקות",
+    "brand": "לייף life",
+    "storedCalories": 372,
+    "storedProtein": 7.6
+  }
+]

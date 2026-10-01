@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "4820015165206",
+    "name": "Ice Cream",
+    "brand": "Plombir",
+    "storedCalories": 320,
+    "storedProtein": 6.42857142857143
+  },
+  {
+    "barcode": "4820077161932",
+    "name": "Mango Macaron Ice Cream",
+    "brand": "Delce",
+    "storedCalories": 337,
+    "storedProtein": 6.8
+  },
+  {
+    "barcode": "5000159561228",
+    "name": "minis",
+    "brand": "Twix",
+    "storedCalories": 487,
+    "storedProtein": 3.8
+  },
+  {
+    "barcode": "5014271002675",
+    "name": "Apple Cinnamon Jam",
+    "brand": "St Dalfour",
+    "storedCalories": 203,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "5202302020020",
+    "name": "Kalamata olive",
+    "brand": "Lelia",
+    "storedCalories": 184,
+    "storedProtein": 1.9
+  },
+  {
+    "barcode": "5601008200468",
+    "name": "Biscuits Coated with White Chocolate",
+    "brand": "Goodies, Vieira",
+    "storedCalories": 100,
+    "storedProtein": 1.2
+  },
+  {
+    "barcode": "0056800666526",
+    "name": "יוגורט 1.5% שומן אקטיביה",
+    "brand": "דנונה",
+    "storedCalories": 60,
+    "storedProtein": 3.5
+  },
+  {
+    "barcode": "5900259130679",
+    "name": "Lays Grilled Bacon",
+    "brand": "Lay's",
+    "storedCalories": 517,
+    "storedProtein": 6.4
+  },
+  {
+    "barcode": "6253353300752",
+    "name": "פסטה פנה יבשה",
+    "brand": "Pasta Mamma",
+    "storedCalories": 354,
+    "storedProtein": 12
+  },
+  {
+    "barcode": "0065633280267",
+    "name": "Barre granola érable et cassonade",
+    "brand": "Nature Valley, Val Nature",
+    "storedCalories": 363,
+    "storedProtein": 5
+  },
+  {
+    "barcode": "0070470419473",
+    "name": "Go Peach by Yoplait",
+    "brand": "Tnuva",
+    "storedCalories": 111.764705882353,
+    "storedProtein": 2.94117647058824
+  },
+  {
+    "barcode": "0070470474038",
+    "name": "Yoplait go big lf ygrt mixed berry/strwbry",
+    "brand": null,
+    "storedCalories": 88,
+    "storedProtein": 3.54
+  },
+  {
+    "barcode": "7290000000572",
+    "name": "1.5% Yogurt",
+    "brand": "Tnuva",
+    "storedCalories": 55.5,
+    "storedProtein": 5.2
+  },
+  {
+    "barcode": "7290000041407",
+    "name": "Leben gil",
+    "brand": "Tnuva",
+    "storedCalories": 56,
+    "storedProtein": 3
+  },
+  {
+    "barcode": "7290000051758",
+    "name": "יוגורט עם אפרסק 3% שומן",
+    "brand": "Yoplait",
+    "storedCalories": 84,
+    "storedProtein": 3.1
+  },
+  {
+    "barcode": "7290000060071",
+    "name": "פריכונים",
+    "brand": "אסם",
+    "storedCalories": 384,
+    "storedProtein": 8.5
+  },
+  {
+    "barcode": "7290000062952",
+    "name": "מיני קרוטונים",
+    "brand": "אסם",
+    "storedCalories": 556,
+    "storedProtein": 9
+  },
+  {
+    "barcode": "7290000063157",
+    "name": "קמח תופח",
+    "brand": "אוסם",
+    "storedCalories": 345,
+    "storedProtein": 11
+  },
+  {
+    "barcode": "7290000068299",
+    "name": "Hot Meal",
+    "brand": "אסם",
+    "storedCalories": 430,
+    "storedProtein": 7.5
+  },
+  {
+    "barcode": "7290000078212",
+    "name": "קרוטונים",
+    "brand": "אסם",
+    "storedCalories": 556,
+    "storedProtein": 9
+  },
+  {
+    "barcode": "7290000101934",
+    "name": "Fruits des bois, congeler",
+    "brand": "Sanfrost",
+    "storedCalories": 51,
+    "storedProtein": 1.79999995231628
+  },
+  {
+    "barcode": "7290000103839",
+    "name": "מרק כתום מוכן",
+    "brand": "סנפרוסט",
+    "storedCalories": 32,
+    "storedProtein": 0.7
+  },
+  {
+    "barcode": "7290000161358",
+    "name": "Mayonnaise",
+    "brand": "Telma",
+    "storedCalories": 600,
+    "storedProtein": 0.666666676600774
+  },
+  {
+    "barcode": "7290000161648",
+    "name": "KLIK In",
+    "brand": "KLIK",
+    "storedCalories": 520,
+    "storedProtein": 8
+  }
+]

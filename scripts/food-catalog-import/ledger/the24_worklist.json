@@ -1,0 +1,194 @@
+[
+  {
+    "barcode": "7290004131074",
+    "name": "חלב טרי 3%",
+    "brand": "תנובה",
+    "imagePath": "scripts/food-catalog-import/label_photos/fresh_7290004131074.jpg",
+    "storedCalories": 60,
+    "storedProtein": 3.3
+  },
+  {
+    "barcode": "7290004127336",
+    "name": "קוטג' 9%",
+    "brand": "תנובה",
+    "imagePath": "scripts/food-catalog-import/label_photos/fresh_7290004127336.jpg",
+    "storedCalories": 128,
+    "storedProtein": 10.5
+  },
+  {
+    "barcode": "7290116931241",
+    "name": "קוטג' תנובה 12%",
+    "brand": "Tnuva, תנובה",
+    "imagePath": "scripts/food-catalog-import/label_photos/ext_7290116931241.jpg",
+    "storedCalories": 153,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290119377404",
+    "name": "Pro 25 Vanilla",
+    "brand": "דנונה",
+    "imagePath": "scripts/food-catalog-import/label_photos/fresh_7290119377404.jpg",
+    "storedCalories": 89,
+    "storedProtein": 11.6
+  },
+  {
+    "barcode": "7290000043890",
+    "name": "White yogurt",
+    "brand": "Tnuva",
+    "imagePath": "scripts/food-catalog-import/label_photos/fresh_7290000043890.jpg",
+    "storedCalories": 45,
+    "storedProtein": 3.6
+  },
+  {
+    "barcode": "7290111352508",
+    "name": "סילאן 100% תמרים טבעי",
+    "brand": "קליית גת",
+    "imagePath": "scripts/food-catalog-import/label_photos/ext_7290111352508.jpg",
+    "storedCalories": 304,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7296073675167",
+    "name": "Soy Milk",
+    "brand": "Shufersal Green",
+    "imagePath": "scripts/food-catalog-import/label_photos/fresh_7296073675167.jpg",
+    "storedCalories": 36,
+    "storedProtein": 3
+  },
+  {
+    "barcode": "7290000174099",
+    "name": "Bafflot",
+    "brand": "Strauss Group",
+    "imagePath": "scripts/food-catalog-import/label_photos/ext_7290000174099.jpg",
+    "storedCalories": 516,
+    "storedProtein": 4.6
+  },
+  {
+    "barcode": "4007745058811",
+    "name": "חרדל אמיתי אורגני",
+    "brand": "Horrlein, Naturafood, נטורפוד",
+    "imagePath": "scripts/food-catalog-import/label_photos/ext_4007745058811.jpg",
+    "storedCalories": 141,
+    "storedProtein": 8
+  },
+  {
+    "barcode": "7290110328788",
+    "name": "GO by Yoplait Peach",
+    "brand": "Yoplait",
+    "imagePath": "scripts/food-catalog-import/label_photos/fresh_7290110328788.jpg",
+    "storedCalories": 55,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290115678550",
+    "name": "Danone - Yogurt Pro Pistachio",
+    "brand": "דנונה",
+    "imagePath": "scripts/food-catalog-import/label_photos/fresh_7290115678550.jpg",
+    "storedCalories": 55,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290017065175",
+    "name": "מנצ'גו פרוס",
+    "brand": "גד",
+    "imagePath": "scripts/food-catalog-import/label_photos/fresh_7290017065175.jpg",
+    "storedCalories": 431,
+    "storedProtein": 25
+  },
+  {
+    "barcode": "7290116935614",
+    "name": "GO by Yoplait 25",
+    "brand": "Yoplait",
+    "imagePath": "scripts/food-catalog-import/label_photos/fresh_7290116935614.jpg",
+    "storedCalories": 85.5,
+    "storedProtein": 12.5
+  },
+  {
+    "barcode": "7290010561407",
+    "name": "לחם פרוס EXTRA ויטמינים ומינרלים",
+    "brand": "Barili",
+    "imagePath": "scripts/food-catalog-import/label_photos/fresh_7290010561407.jpg",
+    "storedCalories": 267,
+    "storedProtein": 5.4
+  },
+  {
+    "barcode": "7290114314053",
+    "name": "Simply Fruit Bio Mango Yogurt 3%",
+    "brand": "Muller",
+    "imagePath": "scripts/food-catalog-import/label_photos/fresh_7290114314053.jpg",
+    "storedCalories": 86,
+    "storedProtein": 4.13333333333333
+  },
+  {
+    "barcode": "7290011498917",
+    "name": "חטיף תמרים במילוי קוקוס ובציפוי שוקולד מריר 100%",
+    "brand": "Tamar",
+    "imagePath": "scripts/food-catalog-import/label_photos/fresh_7290011498917.jpg",
+    "storedCalories": 460,
+    "storedProtein": 5.2
+  },
+  {
+    "barcode": "7290112492999",
+    "name": "מרק בטעם עוף",
+    "brand": "Knorr",
+    "imagePath": "scripts/food-catalog-import/label_photos/fresh_7290112492999.jpg",
+    "storedCalories": 283,
+    "storedProtein": 11.8
+  },
+  {
+    "barcode": "3245413058881",
+    "name": "Les Tablettes COEUR AU LAIT CHOCOLAT AU LAIT",
+    "brand": "Carrefour",
+    "imagePath": "scripts/food-catalog-import/label_photos/ext_3245413058881.jpg",
+    "storedCalories": 515,
+    "storedProtein": 6.3
+  },
+  {
+    "barcode": "6223006710184",
+    "name": "Instant noodles",
+    "brand": "Kellogg's",
+    "imagePath": "scripts/food-catalog-import/label_photos/fresh_6223006710184.jpg",
+    "storedCalories": 435,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "4251097407739",
+    "name": "Peperami snackbox",
+    "brand": "peperami",
+    "imagePath": "scripts/food-catalog-import/label_photos/ext_4251097407739.jpg",
+    "storedCalories": 453,
+    "storedProtein": 25.4
+  },
+  {
+    "barcode": "3663350121992",
+    "name": "Cara ´neige",
+    "brand": null,
+    "imagePath": "scripts/food-catalog-import/label_photos/ext_3663350121992.jpg",
+    "storedCalories": 394,
+    "storedProtein": 0.7
+  },
+  {
+    "barcode": "7290011587758",
+    "name": "egg noodles thin size",
+    "brand": "tomer",
+    "imagePath": "scripts/food-catalog-import/label_photos/ext_7290011587758.jpg",
+    "storedCalories": 350,
+    "storedProtein": 13
+  },
+  {
+    "barcode": "7290018023914",
+    "name": "Масло оливковое",
+    "brand": null,
+    "imagePath": "scripts/food-catalog-import/label_photos/ext_7290018023914.jpg",
+    "storedCalories": 828,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290019203926",
+    "name": "אורייה עדשים כתומות",
+    "brand": "Mima",
+    "imagePath": "scripts/food-catalog-import/label_photos/ext_7290019203926.jpg",
+    "storedCalories": 341,
+    "storedProtein": 13.7
+  }
+]

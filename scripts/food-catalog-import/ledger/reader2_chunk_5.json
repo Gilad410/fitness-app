@@ -1,0 +1,52 @@
+[
+  {
+    "barcode": "5900020046833",
+    "name": "Cheerios",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/5900020046833.jpg"
+  },
+  {
+    "barcode": "7290118426202",
+    "name": "ביסלי במבה מיקס",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290118426202.jpg"
+  },
+  {
+    "barcode": "7290013038432",
+    "name": "AquaNova",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290013038432.jpg"
+  },
+  {
+    "barcode": "7290008745239",
+    "name": "תפוצ׳יפס בטעם טבעי",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290008745239.jpg"
+  },
+  {
+    "barcode": "7290001594155",
+    "name": "Coca-Cola",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290001594155.jpg"
+  },
+  {
+    "barcode": "7290111564291",
+    "name": "Craquottes fined",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290111564291.jpg"
+  },
+  {
+    "barcode": "7290100850916",
+    "name": "דוריטוס חמוץ חריף",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290100850916.jpg"
+  },
+  {
+    "barcode": "7290000408316",
+    "name": "יוגורט ביו שטראוס 3 אחו",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000408316.jpg"
+  },
+  {
+    "barcode": "7290112494283",
+    "name": "Klik",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290112494283.jpg"
+  },
+  {
+    "barcode": "7290108502985",
+    "name": "תפוחונים",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290108502985.jpg"
+  }
+]

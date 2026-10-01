@@ -1,0 +1,242 @@
+[
+  {
+    "barcode": "7290002079477",
+    "identityMatch": "yes",
+    "evidenceCalories": 238,
+    "evidenceProtein": 8.8,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Label clearly headed 'סימון תזונתי ב-100 גרם מזון'. Single column. Fat 1.3g, sodium 400mg, carbs 46.2g (sugars 1.6g), fiber 3g, protein 8.8g."
+  },
+  {
+    "barcode": "7290002107798",
+    "identityMatch": "yes",
+    "evidenceCalories": 108,
+    "evidenceProtein": 12,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Header specifies 'ב-100 גרם (לאחר סינון)' i.e. per 100g after draining. Fat 5g (matches '5%' in name), saturated 3g, cholesterol 15mg, sodium 1000mg, carbs 2.5g (all sugars), calcium 130mg. Single column, no serving ambiguity."
+  },
+  {
+    "barcode": "7290002331124",
+    "identityMatch": "yes",
+    "evidenceCalories": 15,
+    "evidenceProtein": 0,
+    "basis": "100ml",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Header 'סימון תזונתי ב-100 מ״ל מזון'. Fat 0g, sodium 0mg, carbs 3.8g all sugars, protein 0g. Low-calorie flavored water, consistent with 'תפוח עדין' (gentle apple) variant."
+  },
+  {
+    "barcode": "7290000318479",
+    "identityMatch": "yes",
+    "evidenceCalories": 268,
+    "evidenceProtein": 38,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Barcode 7290000318479 visible on pack, matches ledger. Product labeled 'פרושטו בקר' (beef prosciutto/bresaola) = Viande Grison. Per 100g: fat 8g, sat 3g, trans <0.5g, cholesterol 95mg, sodium 2400mg, carbs 11g, sugars 7g, protein 38g. Single column table."
+  },
+  {
+    "barcode": "7290000467511",
+    "identityMatch": "yes",
+    "evidenceCalories": 528,
+    "evidenceProtein": 10,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Table has two columns: per 100g and per 55g bag. Used per-100g column: fat 26g, sat 2.9g, sodium 470mg, carbs 63.5g, sugars 1.2g, protein 10g. Per-bag (55g) values: 290 kcal, 5.5g protein - consistent (55/100*528≈290)."
+  },
+  {
+    "barcode": "7290000490601",
+    "identityMatch": "yes",
+    "evidenceCalories": 71,
+    "evidenceProtein": 4.3,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Reduced-calorie no-added-sugar vanilla ice pop ('שלגון חלבי מופחת קלוריות בטעם וניל'). Two columns: per 100g and per 50g unit. Per 100g: fat 0.5g, sodium 73mg, carbs 14.8g (sugars 7g + sugar alcohols 6g), protein 4.3g, calcium 168mg."
+  },
+  {
+    "barcode": "7290006243577",
+    "identityMatch": "yes",
+    "evidenceCalories": 285,
+    "evidenceProtein": 4,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Header explicitly states 'Valeur énergétique pour 100 g (avant la cuisson)' = per 100g BEFORE cooking, i.e. raw/frozen as-sold bourekas. Fat 16.5g, sat 7.7g, trans <0.5g, cholesterol <2.5mg, fiber 0g, sodium 455mg, salt 1.17g, carbs 30g, sugars 0.8g, protein 4g. Package instructs baking at 190°C before eating, but the printed nutrition basis is pre-cook/as_sold."
+  },
+  {
+    "barcode": "7290006492432",
+    "identityMatch": "yes",
+    "evidenceCalories": 230,
+    "evidenceProtein": 17,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Barcode 7290006492432 visible on label, matches ledger. Header 'ב-100 גרם מזון לאחר סינון' (per 100g after draining). Fat 18g (42% milk fat solids per ingredients), sat 12g, trans 0.52g, cholesterol 54mg, sodium 250mg, carbs 0g, protein 17g, calcium 300mg."
+  },
+  {
+    "barcode": "7290006775405",
+    "identityMatch": "yes",
+    "evidenceCalories": 403,
+    "evidenceProtein": 5.2,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Trilingual (EN/HE) label reading 'Cupcake with Chocochips' confirms muffin/מאפין identity. Per 100g: total fat 19.1g, saturated 10.5g, trans 0.5g, cholesterol 60mg, sodium 186mg, carbs 51.8g, sugars 27g (6.75 tsp), fiber 1.6g, protein 5.2g."
+  },
+  {
+    "barcode": "7290008644235",
+    "identityMatch": "yes",
+    "evidenceCalories": 21,
+    "evidenceProtein": 2.3,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Product 'עלי בייבי' with printed ingredients 'עלי תרד, עלי רוקולה, עלי סלק' (baby spinach, arugula, beet leaves) exactly matching the given name. Per 100g: fat 0g, sodium 177mg, carbs 1.0g, sugars 0.8g, fiber 2.3g, protein 2.3g."
+  },
+  {
+    "barcode": "7290008644945",
+    "identityMatch": "unclear",
+    "evidenceCalories": 22,
+    "evidenceProtein": 1.2,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Barcode 7290008644945 on pack matches ledger exactly, but printed product description reads 'לקט חסות, כרוב סגול, גזר, וכרוב לבן' (lettuce/cabbage/carrot mix) rather than the given name 'סלט המושבה' - could be a differently-branded SKU sharing this barcode or a generic ingredient descriptor under the retail name. Nutrition per 100g: fat 0g, sodium 28mg, carbs 3.4g, sugars 2.6g, fiber 1.8g, protein 1.2g (used full-res re-download to resolve an initially blurry crop)."
+  },
+  {
+    "barcode": "7290010065332",
+    "identityMatch": "yes",
+    "evidenceCalories": 56,
+    "evidenceProtein": 0.5,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Ingredients list apple purée ~76%, banana purée ~9.8%, plus apricot purée ~14%, consistent with the given name (apple & banana puree) though a third fruit (apricot) is also present. Per 100g: fat 0g, sodium 0mg, carbs 13.1g, sugars 10.8g, protein 0.5g, vitamin C 18mg."
+  },
+  {
+    "barcode": "7290012052507",
+    "identityMatch": "unclear",
+    "evidenceCalories": 410,
+    "evidenceProtein": 9.3,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Given name 'Hatif' is generic (Hebrew for 'snack'); actual printed product name is 'פופיטים - חטיפי אנרגיה חיטבית' (cocoa/hazelnut energy bar). Table has per-100g and per-bar columns; used per-100g: protein 9.3g, carbs 56g (sugars 26g), fiber 6.0g, fat 18g (sat 8.0g), sodium 16mg, iron 4.4mg."
+  },
+  {
+    "barcode": "7290013028211",
+    "identityMatch": "yes",
+    "evidenceCalories": 380,
+    "evidenceProtein": 9.4,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Vanilla-flavored mass gainer powder, 3 columns: per 100g powder (as sold), per 240g serving (~3 scoops), and per 100ml ready-to-drink. Used per-100g powder column: fat 0.6g, sat 0.3g, cholesterol 15mg, sodium 63mg, carbs 84.3g, sugars 31.8g, protein 9.4g. Per-serving (240g powder): 912 kcal / 22.6g protein; per-100ml made-up drink: 130 kcal / 3.2g protein."
+  },
+  {
+    "barcode": "7290013531759",
+    "identityMatch": "yes",
+    "evidenceCalories": 109,
+    "evidenceProtein": 6.7,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Header 'ב-100 גרם מזון לאחר סינון' (per 100g after draining). Fat 0g, sodium 160mg, carbs 18g, sugars 0g, fiber 4.9g, protein 6.7g, iron 1.8mg."
+  },
+  {
+    "barcode": "7290017406374",
+    "identityMatch": "yes",
+    "evidenceCalories": 363,
+    "evidenceProtein": 6.8,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Rami Levy store-brand 100% jasmine rice. Table has two columns: 'לפני בישול' (before cooking/dry) and 'מבושל' (cooked). Used the dry/as-sold column: fat 0.9g, sodium 0mg, carbs 83g, sugars 0g, fiber 2g, protein 6.8g. Cooked-basis values also printed: 121 kcal, 2.2g protein per 100g cooked."
+  },
+  {
+    "barcode": "7290017894119",
+    "identityMatch": "yes",
+    "evidenceCalories": 355,
+    "evidenceProtein": 6.8,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Dry gluten-free rice-corn fusilli, ingredients 50% corn flour + 49.5% rice flour. Per 100g: fat 2g, sodium 0mg, carbs 76g, sugars 0.5g, protein 6.8g. Single column, dry/uncooked basis."
+  },
+  {
+    "barcode": "7290018043134",
+    "identityMatch": "yes",
+    "evidenceCalories": 347,
+    "evidenceProtein": 29.2,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Exact name match printed on pack 'Protein Bar White Chocolate Cookie Flavor'. Two columns per 100g and per 60g bar. Used per-100g: fat 13.4g (sat 6.2g), cholesterol 11.8mg, sodium 218mg, carbs 28.8g (sugars 3.5g, sugar alcohols 23.8g), fiber 16.6g, protein 29.2g; also lists leucine/isoleucine/valine amino acids."
+  },
+  {
+    "barcode": "7290018237373",
+    "identityMatch": "yes",
+    "evidenceCalories": 99,
+    "evidenceProtein": 16,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Barcode 7290018237373 on pack matches ledger. Bilingual Hebrew/Arabic label for grilled chicken pastrami ('פסטרמה עוף'). Per 100g: fat 2g, sat 1g, trans <0.5g, cholesterol 55mg, sodium 950mg, carbs 4g, sugars 1g, protein 16g."
+  },
+  {
+    "barcode": "7290015493215",
+    "identityMatch": "yes",
+    "evidenceCalories": 0,
+    "evidenceProtein": 0,
+    "basis": "100ml",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Header 'סימון תזונתי ב-100 מ״ל'. Printed values: energy 0 kcal, fat 0g, sodium 0mg, carbs 1.6g, sugars 0g, protein 0g - a near-zero-calorie flavored water consistent with 'עדין' (light/gentle) peach variant. Energy prints as 0 despite 1.6g carbs, as printed."
+  },
+  {
+    "barcode": "7290015597548",
+    "identityMatch": "yes",
+    "evidenceCalories": 224,
+    "evidenceProtein": 4.0,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Cremissimo ice cream. Per 100g: protein 4.0g, carbs 30.9g (sugars 25.1g), fat 9.4g (sat 6.5g, trans <0.5g), cholesterol 6.0mg, sodium 52mg. Single column."
+  },
+  {
+    "barcode": "7290015673204",
+    "identityMatch": "yes",
+    "evidenceCalories": 203,
+    "evidenceProtein": 13.7,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "BBQ Kebab. Per 100g: fat 11g (sat 1.2g, trans <0.5g), cholesterol 0mg, sodium 512mg, carbs 12.3g, sugars 1g, fiber 5g, protein 13.7g. Single column; used full-res image to disambiguate row order."
+  },
+  {
+    "barcode": "7290019545576",
+    "identityMatch": "yes",
+    "evidenceCalories": 507,
+    "evidenceProtein": 4.3,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Mini chocolate-chip cookies. Per 100g: fat 24.3g (sat 12.5g, trans <0.5g), cholesterol 0mg, sodium 239mg, carbs 66.8g (sugars 34g), fiber 1.9g, protein reads as '4.3' but the decimal point is slightly obscured in the photo (could misread as 43) - 4.3g is by far the more plausible value for a cookie product and consistent with the other macros."
+  },
+  {
+    "barcode": "7290100704684",
+    "identityMatch": "yes",
+    "evidenceCalories": 355,
+    "evidenceProtein": 13.2,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Yeast spelt flour mix ('קמח שמרים כוסמין', 95.4% white spelt flour + 2.9% dry yeast). Two columns: 'תערובת יבשה' (dry mix, as-sold) and '*לחם אפוי' (baked bread). Used dry-mix column: fat 2.2g, sat 0.6g, trans <0.5g, sodium 520mg, carbs 70.6g, sugars 0.6g, protein 13.2g. Baked-bread basis also printed: 244 kcal, 9.1g protein per 100g baked."
+  }
+]

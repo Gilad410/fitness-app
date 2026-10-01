@@ -1,0 +1,52 @@
+[
+  {
+    "barcode": "7290116932774",
+    "name": "Yoplait GO 42 Banana Caramel Yogurt Drink",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290116932774.jpg"
+  },
+  {
+    "barcode": "00728441",
+    "name": "חטיף חלבון בטעם דאבל שוקולד",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/00728441.jpg"
+  },
+  {
+    "barcode": "7290106663183",
+    "name": "צ׳יטוס Crunchy בטעם גבינה",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290106663183.jpg"
+  },
+  {
+    "barcode": "7290000057149",
+    "name": "Yoghurt Bio 3%",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000057149.jpg"
+  },
+  {
+    "barcode": "7290000170077",
+    "name": "Elit Dark Chocolate",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000170077.jpg"
+  },
+  {
+    "barcode": "7290102391301",
+    "name": "Muller natural",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290102391301.jpg"
+  },
+  {
+    "barcode": "7290110554095",
+    "name": "Honey",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290110554095.jpg"
+  },
+  {
+    "barcode": "7290004125585",
+    "name": "Soy Drink Vanilla",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290004125585.jpg"
+  },
+  {
+    "barcode": "7290008750677",
+    "name": "ממולדה",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290008750677.jpg"
+  },
+  {
+    "barcode": "7290000523804",
+    "name": "מלח הארץ",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000523804.jpg"
+  }
+]

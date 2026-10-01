@@ -1,0 +1,7 @@
+[
+{"barcode":"6253014790076","identityMatch":"unclear","evidenceCalories":120,"evidenceProtein":1,"basis":"serving","prepState":"as_sold","legible":true,"notes":"Serving 40g (2-3 dates): 120 Cal, 1g protein. No brand/name visible in crop; identity not confirmable from image alone. Only kcal shown."},
+{"barcode":"6934731200078","identityMatch":"yes","evidenceCalories":144,"evidenceProtein":3.9,"basis":"100g","prepState":"unclear","legible":true,"notes":"Per-100g table: energy=144, protein=3.9. Package text '...amen Noodles' visible, consistent with Fresh Ramen Noodles. Basis (dry vs prepared) not specified on label."},
+{"barcode":"6942836720216","identityMatch":"unclear","evidenceCalories":527,"evidenceProtein":20.8,"basis":"100g","prepState":"as_sold","legible":true,"notes":"Per 100g: Energy 2220kJ/527kcal, Protein 20.8g. No brand/name visible in this crop, only nutrition table + allergens."},
+{"barcode":"7290000048437","identityMatch":"unclear","evidenceCalories":135,"evidenceProtein":18.5,"basis":"100g","prepState":"as_sold","legible":true,"notes":"Per-100g Hebrew table: energy=135, protein=18.5. Row alignment inferred from position (dense small text); fat=5g consistent with '5%' name claim. No product name visible in crop."},
+{"barcode":"7290000049557","identityMatch":"unclear","evidenceCalories":344,"evidenceProtein":17,"basis":"100g","prepState":"as_sold","legible":true,"notes":"Angled/partly blurred photo, per-100g: energy=344, protein=17 (moderate confidence on protein due to blur). No 'Emek' brand text visible in crop."}
+]

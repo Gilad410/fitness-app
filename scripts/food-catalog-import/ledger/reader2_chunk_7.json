@@ -1,0 +1,52 @@
+[
+  {
+    "barcode": "7290014758681",
+    "name": "Cottage 1%",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290014758681.jpg"
+  },
+  {
+    "barcode": "8690777206051",
+    "name": "Roasted Eggplant",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/8690777206051.jpg"
+  },
+  {
+    "barcode": "8715700110141",
+    "name": "Spread Mayonnaise",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/8715700110141.jpg"
+  },
+  {
+    "barcode": "7290102396672",
+    "name": "נעם",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290102396672.jpg"
+  },
+  {
+    "barcode": "0064144090051",
+    "name": "תרסיס שמן קנולה",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/0064144090051.jpg"
+  },
+  {
+    "barcode": "7290017677804",
+    "name": "Sauce soja",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290017677804.jpg"
+  },
+  {
+    "barcode": "7290004068172",
+    "name": "Goat yogurt",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290004068172.jpg"
+  },
+  {
+    "barcode": "7290113192515",
+    "name": "מלפפונים במלח קטנים מאד",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290113192515.jpg"
+  },
+  {
+    "barcode": "7290113192577",
+    "name": "Salted Cabbage",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290113192577.jpg"
+  },
+  {
+    "barcode": "7290110329952",
+    "name": "Yoplait go youghurt coco",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290110329952.jpg"
+  }
+]

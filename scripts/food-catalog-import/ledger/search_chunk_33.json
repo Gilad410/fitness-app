@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "7290116930282",
+    "name": "ארוחה בקטנה",
+    "brand": "תנובה",
+    "storedCalories": 183,
+    "storedProtein": 8
+  },
+  {
+    "barcode": "7290116931289",
+    "name": "Go alfahores",
+    "brand": "Yoplait",
+    "storedCalories": 54,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290116932040",
+    "name": "Pear yoghurt",
+    "brand": "Top last",
+    "storedCalories": 38,
+    "storedProtein": 4.30000019073486
+  },
+  {
+    "barcode": "7290116932071",
+    "name": "GO Protein Powder -- Vanilla Caramel Flavour",
+    "brand": "TNUVA",
+    "storedCalories": 386,
+    "storedProtein": 77
+  },
+  {
+    "barcode": "7290116932538",
+    "name": "Peach 20p",
+    "brand": "Go",
+    "storedCalories": 98.5,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290116933009",
+    "name": "Chocolate And Cream Protein Bar",
+    "brand": "Go by Tnuva",
+    "storedCalories": 368.333333333333,
+    "storedProtein": 33.3333333333333
+  },
+  {
+    "barcode": "7290116933023",
+    "name": "Go20 חטיף חלבון עם שקדים ומלח",
+    "brand": "Tnuva",
+    "storedCalories": 380,
+    "storedProtein": 33.3333333333333
+  },
+  {
+    "barcode": "7290117380871",
+    "name": "Slim delis",
+    "brand": "Fiber",
+    "storedCalories": 368,
+    "storedProtein": 4
+  },
+  {
+    "barcode": "7290117382318",
+    "name": "Slimdelis pro 33",
+    "brand": "Slim Delis",
+    "storedCalories": 225.6,
+    "storedProtein": 20
+  },
+  {
+    "barcode": "7290118423522",
+    "name": "Petiber Finger Biscuits With Salted Caramel Cream",
+    "brand": "Osem",
+    "storedCalories": 503,
+    "storedProtein": 6
+  },
+  {
+    "barcode": "7290118423683",
+    "name": "Shtuhonim Flat Bagles With (Sweet& Sour)",
+    "brand": "Osem",
+    "storedCalories": 448,
+    "storedProtein": 10
+  },
+  {
+    "barcode": "7290119371105",
+    "name": "Pro white chocolate protein bar",
+    "brand": null,
+    "storedCalories": 407,
+    "storedProtein": 28
+  },
+  {
+    "barcode": "7290119373369",
+    "name": "פרכיות תפוחי אדמה",
+    "brand": "שטראוס",
+    "storedCalories": 387.596899224806,
+    "storedProtein": 7.75193798449612
+  },
+  {
+    "barcode": "7290119375332",
+    "name": "יוגורט Skyr תותים",
+    "brand": "דנונה",
+    "storedCalories": 86.6666666666667,
+    "storedProtein": 7.73333333333333
+  },
+  {
+    "barcode": "7290119377022",
+    "name": "Doritos Tako",
+    "brand": "Doritos",
+    "storedCalories": 529.090909090909,
+    "storedProtein": 8.18181818181818
+  },
+  {
+    "barcode": "7290119670277",
+    "name": "Natural Flavored Popcorn",
+    "brand": "Rami Levy",
+    "storedCalories": 448,
+    "storedProtein": 9
+  },
+  {
+    "barcode": "7290353924310",
+    "name": "Malbuner Krustenschinken",
+    "brand": "Malbuner",
+    "storedCalories": 187,
+    "storedProtein": 19
+  },
+  {
+    "barcode": "7296058000298",
+    "name": "פרכיות אורז מלא",
+    "brand": "רמי לוי",
+    "storedCalories": 386,
+    "storedProtein": 8.5
+  },
+  {
+    "barcode": "7296073049043",
+    "name": "פסטרמה ברביקיו מעושנת",
+    "brand": "שופרסל",
+    "storedCalories": 108,
+    "storedProtein": 18
+  },
+  {
+    "barcode": "7296073124399",
+    "name": "Spaghetti",
+    "brand": "Shufersal",
+    "storedCalories": 174,
+    "storedProtein": 6
+  },
+  {
+    "barcode": "7296073146957",
+    "name": "Mile Chocolate",
+    "brand": "Shufersal",
+    "storedCalories": 561,
+    "storedProtein": 5.6
+  },
+  {
+    "barcode": "7296073163107",
+    "name": "Hot dogs",
+    "brand": null,
+    "storedCalories": 190,
+    "storedProtein": 12
+  },
+  {
+    "barcode": "7296073219958",
+    "name": "חטיף דגנים עם שוקולד מריר",
+    "brand": "שופרסל",
+    "storedCalories": 373.913043478261,
+    "storedProtein": 6.08695652173913
+  },
+  {
+    "barcode": "7296073224587",
+    "name": "כרוב סגול אדום במיונז",
+    "brand": null,
+    "storedCalories": 230,
+    "storedProtein": 1.1
+  }
+]

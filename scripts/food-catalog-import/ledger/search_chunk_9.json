@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "7290116534886",
+    "name": "מיוקל",
+    "brand": "תלמה",
+    "storedCalories": 144,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "3662444002766",
+    "name": "בריוש צרפתי פרוס",
+    "brand": "ליאל",
+    "storedCalories": 346,
+    "storedProtein": 7.7
+  },
+  {
+    "barcode": "7290108505603",
+    "name": "טונה",
+    "brand": "ויליפוד",
+    "storedCalories": 147,
+    "storedProtein": 28
+  },
+  {
+    "barcode": "7290111930935",
+    "name": "Poof",
+    "brand": "Poof",
+    "storedCalories": 482.5,
+    "storedProtein": 3.5
+  },
+  {
+    "barcode": "7290111933462",
+    "name": "צ'ילי מתוק",
+    "brand": "מאסטר שף",
+    "storedCalories": 164,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290014762831",
+    "name": "גבינת שמנת עם פלפל חלפינו",
+    "brand": "תנובה",
+    "storedCalories": 247,
+    "storedProtein": 4.3
+  },
+  {
+    "barcode": "7290112126122",
+    "name": "Shredded Cheese",
+    "brand": "Hakfar Halavan",
+    "storedCalories": 346,
+    "storedProtein": 22
+  },
+  {
+    "barcode": "7290018925539",
+    "name": "מיץ מנדרינה מרכז",
+    "brand": "פרימור",
+    "storedCalories": 46,
+    "storedProtein": 0.6
+  },
+  {
+    "barcode": "7290002757139",
+    "name": "מלוואח",
+    "brand": "שלושת האופים",
+    "storedCalories": 314,
+    "storedProtein": 6.5
+  },
+  {
+    "barcode": "7290019310037",
+    "name": "Vanilla Protein Powder",
+    "brand": "All In",
+    "storedCalories": 387.878787878788,
+    "storedProtein": 75.7575757575758
+  },
+  {
+    "barcode": "7290003864492",
+    "name": "סרדינים בשמן סויה עם פלפל צ'ילי",
+    "brand": "ויליפוד",
+    "storedCalories": 193,
+    "storedProtein": 25
+  },
+  {
+    "barcode": "7290117384572",
+    "name": "Cookies And Cream Protein Bar",
+    "brand": "Today Protein",
+    "storedCalories": 315.384615384615,
+    "storedProtein": 33.5384615384615
+  },
+  {
+    "barcode": "7290002692768",
+    "name": "תרסיס שמן",
+    "brand": "עץ הזית",
+    "storedCalories": 828,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7296073146940",
+    "name": "שוקולד חלב אוורירי",
+    "brand": "שופרסל",
+    "storedCalories": 557,
+    "storedProtein": 6.4
+  },
+  {
+    "barcode": "7290018441473",
+    "name": "סורבה פסיפלןרה פירות יער",
+    "brand": "Ben & Jerrys",
+    "storedCalories": 132,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "5740900403215",
+    "name": "ממרח חמאה לורפק בתוספת שמן לפתית",
+    "brand": "Luprak",
+    "storedCalories": 706,
+    "storedProtein": 0.5
+  },
+  {
+    "barcode": "7290018441466",
+    "name": "Vanilla Icecream",
+    "brand": "Ben & Jerrys",
+    "storedCalories": 230,
+    "storedProtein": 4
+  },
+  {
+    "barcode": "7290004126674",
+    "name": "Tal HaEmek 9%",
+    "brand": "Tnuva",
+    "storedCalories": 201,
+    "storedProtein": 30
+  },
+  {
+    "barcode": "7290015130493",
+    "name": "חטיף חלבון פיסטוק",
+    "brand": "Win",
+    "storedCalories": 455,
+    "storedProtein": 34
+  },
+  {
+    "barcode": "7290018527610",
+    "name": "פיתות כוסמין",
+    "brand": "שאשא לחמים",
+    "storedCalories": 189,
+    "storedProtein": 7
+  },
+  {
+    "barcode": "7290000663067",
+    "name": "Shawarma By Tnuva",
+    "brand": "Tnuva",
+    "storedCalories": 164,
+    "storedProtein": 20
+  },
+  {
+    "barcode": "7290114604949",
+    "name": "Barbecue sauce",
+    "brand": null,
+    "storedCalories": 134,
+    "storedProtein": 1.3
+  },
+  {
+    "barcode": "7290004121280",
+    "name": "Cottage Cheese 9% Fat Free",
+    "brand": "Tnuva",
+    "storedCalories": 114,
+    "storedProtein": 3.5
+  },
+  {
+    "barcode": "7290112331946",
+    "name": "רבע לשבע טורטית",
+    "brand": "עלית",
+    "storedCalories": 500,
+    "storedProtein": 8
+  }
+]

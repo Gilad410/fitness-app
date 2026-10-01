@@ -1,0 +1,27 @@
+[
+  {
+    "barcode": "6253014790076",
+    "name": "Qamar Dates",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/6253014790076.jpg"
+  },
+  {
+    "barcode": "6934731200078",
+    "name": "Fresh Ramen Noodles",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/6934731200078.jpg"
+  },
+  {
+    "barcode": "6942836720216",
+    "name": "Cookies 'n' Mint",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/6942836720216.jpg"
+  },
+  {
+    "barcode": "7290000048437",
+    "name": "גבינה מלוחה 5%. מחלב בקר",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000048437.jpg"
+  },
+  {
+    "barcode": "7290000049557",
+    "name": "Emek",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000049557.jpg"
+  }
+]

@@ -1,0 +1,52 @@
+[
+  {
+    "barcode": "7290107954976",
+    "name": "משקה חלב עם חלבון",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290107954976.jpg"
+  },
+  {
+    "barcode": "7290014760141",
+    "name": "משקה שקדים",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290014760141.jpg"
+  },
+  {
+    "barcode": "7290119377480",
+    "name": "Pro 20 with cereal",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290119377480.jpg"
+  },
+  {
+    "barcode": "7290102399796",
+    "name": "Muller Active - 25g protein",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290102399796.jpg"
+  },
+  {
+    "barcode": "0029424000793",
+    "name": "Chocolate Coated Wafers",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/0029424000793.jpg"
+  },
+  {
+    "barcode": "0016000507777",
+    "name": "Crunchy",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/0016000507777.jpg"
+  },
+  {
+    "barcode": "7290106524439",
+    "name": "פופס אפוי",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290106524439.jpg"
+  },
+  {
+    "barcode": "7290110566975",
+    "name": "יוגורט דנונה פרו בטעם תות",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290110566975.jpg"
+  },
+  {
+    "barcode": "7290010117970",
+    "name": "בטעם טבעי",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290010117970.jpg"
+  },
+  {
+    "barcode": "7290112349668",
+    "name": "90% Cocoa Supreme Dark Chocolate",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290112349668.jpg"
+  }
+]

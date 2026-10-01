@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "7290102397891",
+    "name": "גבינה מותכת",
+    "brand": "משק צוריאל",
+    "storedCalories": 229,
+    "storedProtein": 15
+  },
+  {
+    "barcode": "7290017516318",
+    "name": "Protein",
+    "brand": "פנגיאה",
+    "storedCalories": 393,
+    "storedProtein": 38.4
+  },
+  {
+    "barcode": "7290115678376",
+    "name": "מעדן הגולן שוקולד",
+    "brand": "שטראוס",
+    "storedCalories": 116,
+    "storedProtein": 4
+  },
+  {
+    "barcode": "7290101112556",
+    "name": "גלידת פרי",
+    "brand": "פלדמן",
+    "storedCalories": 22,
+    "storedProtein": 0.100000001490116
+  },
+  {
+    "barcode": "7290112197474",
+    "name": "שוקולד מריר עם אגוזי לוז",
+    "brand": "TRU",
+    "storedCalories": 434,
+    "storedProtein": 7.2
+  },
+  {
+    "barcode": "7290000208213",
+    "name": "White Kidney Beans In Tomato Sauce",
+    "brand": "Yachin",
+    "storedCalories": 100,
+    "storedProtein": 5.1
+  },
+  {
+    "barcode": "7290112197467",
+    "name": "Dark Chocolate",
+    "brand": "TRU",
+    "storedCalories": 406,
+    "storedProtein": 6.5
+  },
+  {
+    "barcode": "7290015130325",
+    "name": "Protein Bar",
+    "brand": "Win 20",
+    "storedCalories": 375,
+    "storedProtein": 31.25
+  },
+  {
+    "barcode": "7290015446891",
+    "name": "Cookie Crunch Protein Bar",
+    "brand": "Allin",
+    "storedCalories": 344,
+    "storedProtein": 37.5
+  },
+  {
+    "barcode": "4750022716019",
+    "name": "Tatarski Sauce",
+    "brand": "Spilva",
+    "storedCalories": 265,
+    "storedProtein": 0.5
+  },
+  {
+    "barcode": "7290116932620",
+    "name": "Go Natural by Yoplait Without Lactose",
+    "brand": "Tnuva",
+    "storedCalories": 86,
+    "storedProtein": 12.5
+  },
+  {
+    "barcode": "7290011498351",
+    "name": "חמאת לוז",
+    "brand": "שקד תבוד",
+    "storedCalories": 673,
+    "storedProtein": 15
+  },
+  {
+    "barcode": "7290110325121",
+    "name": "Pineapple shake",
+    "brand": "Yoplait",
+    "storedCalories": 52,
+    "storedProtein": 8
+  },
+  {
+    "barcode": "7290018471401",
+    "name": "אננס בננה כורכום",
+    "brand": "Fruit&Veg",
+    "storedCalories": 42,
+    "storedProtein": 0
+  },
+  {
+    "barcode": "7290107937542",
+    "name": "Activia Probiotic",
+    "brand": "Danone",
+    "storedCalories": 123,
+    "storedProtein": 7.19999980926514
+  },
+  {
+    "barcode": "7290106577541",
+    "name": "Red Cabbage Salad",
+    "brand": "Zabar",
+    "storedCalories": 186,
+    "storedProtein": 0.8
+  },
+  {
+    "barcode": "7290019354895",
+    "name": "Granola",
+    "brand": "Nitzat Haduvdevan",
+    "storedCalories": 405,
+    "storedProtein": 11.5
+  },
+  {
+    "barcode": "7290118209164",
+    "name": "Whey Protein With Banana Flavor",
+    "brand": "Allin Life",
+    "storedCalories": 389,
+    "storedProtein": 78
+  },
+  {
+    "barcode": "7290119377275",
+    "name": "Doritos After Dark Felafel Flavor",
+    "brand": "Doritos",
+    "storedCalories": 529,
+    "storedProtein": 8.1
+  },
+  {
+    "barcode": "4810168058999",
+    "name": "Lightly Salted Herring Fillets In Oil",
+    "brand": "Santa Bremor",
+    "storedCalories": 177,
+    "storedProtein": 13.3
+  },
+  {
+    "barcode": "7290112357083",
+    "name": "Afouna",
+    "brand": "Taam hateva",
+    "storedCalories": 73,
+    "storedProtein": 4.69999980926514
+  },
+  {
+    "barcode": "0037600311571",
+    "name": "No Added Suger Skippy",
+    "brand": "Skippy",
+    "storedCalories": 577,
+    "storedProtein": 25
+  },
+  {
+    "barcode": "7290000066264",
+    "name": "dubonim",
+    "brand": "osem",
+    "storedCalories": 534,
+    "storedProtein": 3
+  },
+  {
+    "barcode": "7290001482094",
+    "name": "פרמז'נו",
+    "brand": "Zanelli",
+    "storedCalories": 393,
+    "storedProtein": 32
+  }
+]

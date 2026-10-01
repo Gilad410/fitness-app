@@ -15,6 +15,15 @@ export default [
     },
   },
   {
-    ignores: ['dist/**', 'node_modules/**'],
+    // One-off Node tooling (data-import scripts, local schema tests) --
+    // never shipped to the browser bundle, so the Node global env
+    // applies here instead of globals.browser above.
+    files: ['scripts/**/*.mjs'],
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
+  {
+    ignores: ['dist/**', 'node_modules/**', 'scripts/**/node_modules/**'],
   },
 ]

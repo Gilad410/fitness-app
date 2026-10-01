@@ -1,0 +1,170 @@
+[
+  {
+    "barcode": "7290018359716",
+    "name": "Pizza sauce",
+    "brand": "Yahin",
+    "storedCalories": 88,
+    "storedProtein": 1.89999997615814
+  },
+  {
+    "barcode": "7290018399422",
+    "name": "Choco chips cake",
+    "brand": "Ariel bakery &  pâtisserie",
+    "storedCalories": 433,
+    "storedProtein": 3.40000009536743
+  },
+  {
+    "barcode": "7290018517154",
+    "name": "פופקורן להכנה",
+    "brand": "Popcorn",
+    "storedCalories": 219,
+    "storedProtein": 4.5
+  },
+  {
+    "barcode": "7290018534588",
+    "name": "Whey Isolate Vanilla",
+    "brand": "ISOONE",
+    "storedCalories": 372.727272727273,
+    "storedProtein": 84.8484848484848
+  },
+  {
+    "barcode": "7290018546253",
+    "name": "Protein Tortilla",
+    "brand": "Sher Fitness",
+    "storedCalories": 308,
+    "storedProtein": 8
+  },
+  {
+    "barcode": "7290018554876",
+    "name": "פטריות שמפניון חתוכות משומרות",
+    "brand": "פרי חן",
+    "storedCalories": 18,
+    "storedProtein": 2.1
+  },
+  {
+    "barcode": "7290018571866",
+    "name": "פרוטי",
+    "brand": "מיה",
+    "storedCalories": 355,
+    "storedProtein": 1
+  },
+  {
+    "barcode": "7290018703076",
+    "name": "חטיף חלבון דאבל שוקולד",
+    "brand": "All in",
+    "storedCalories": 351.666666666667,
+    "storedProtein": 33.3333333333333
+  },
+  {
+    "barcode": "7290018703489",
+    "name": "חטיף חלבון בננה טופי",
+    "brand": null,
+    "storedCalories": 348,
+    "storedProtein": 30
+  },
+  {
+    "barcode": "7290018752340",
+    "name": "גרנולה עשירה",
+    "brand": "כרם",
+    "storedCalories": 504,
+    "storedProtein": 15.8100004196167
+  },
+  {
+    "barcode": "7290018893012",
+    "name": "60% Dark Chocolate",
+    "brand": "Rami Levy",
+    "storedCalories": 509,
+    "storedProtein": 9.2
+  },
+  {
+    "barcode": "7290019196051",
+    "name": "טונה בהירה במי מלח",
+    "brand": "Filtuna",
+    "storedCalories": 98,
+    "storedProtein": 23.2
+  },
+  {
+    "barcode": "7290019204183",
+    "name": "נגיסי עוף",
+    "brand": "עוף טוב",
+    "storedCalories": 179,
+    "storedProtein": 15
+  },
+  {
+    "barcode": "7290019204800",
+    "name": "Chongo Super Crunch",
+    "brand": "Of Tov",
+    "storedCalories": 210,
+    "storedProtein": 14
+  },
+  {
+    "barcode": "7290019293590",
+    "name": "ארטיק 99 קלוריות בטעם שוקולד אגוזים",
+    "brand": "נסטלה",
+    "storedCalories": 230.232558139535,
+    "storedProtein": 3.48837209302326
+  },
+  {
+    "barcode": "7290019310006",
+    "name": "Whey Protein - Belgian Chocolate",
+    "brand": "All-In",
+    "storedCalories": 378.787878787879,
+    "storedProtein": 72.7272727272727
+  },
+  {
+    "barcode": "7290019310266",
+    "name": "Whey protein",
+    "brand": "Alllin",
+    "storedCalories": 387.878787878788,
+    "storedProtein": 75.7575757575758
+  },
+  {
+    "barcode": "7290019310280",
+    "name": "Protein bar cinnamon roll",
+    "brand": "Allin",
+    "storedCalories": 346,
+    "storedProtein": 29.2
+  },
+  {
+    "barcode": "7290019310372",
+    "name": "Protein Powder",
+    "brand": "allin",
+    "storedCalories": 359.375,
+    "storedProtein": 84.375
+  },
+  {
+    "barcode": "7290019310655",
+    "name": "Whey Protein Banana Flavor",
+    "brand": "Allin",
+    "storedCalories": 369.090909090909,
+    "storedProtein": 27.2727272727273
+  },
+  {
+    "barcode": "7290019310686",
+    "name": "Extra Soft שוקולד לבן בוטנים קרמל",
+    "brand": "allin",
+    "storedCalories": 383.636363636364,
+    "storedProtein": 27.2727272727273
+  },
+  {
+    "barcode": "7290019310969",
+    "name": "חטיף חלבון לוז",
+    "brand": "Proud",
+    "storedCalories": 390,
+    "storedProtein": 30.6
+  },
+  {
+    "barcode": "7290019310976",
+    "name": "Coconut White Choclate",
+    "brand": "Proud",
+    "storedCalories": 380,
+    "storedProtein": 31
+  },
+  {
+    "barcode": "7290019310990",
+    "name": "Whey Protein Unflavored",
+    "brand": "Allin",
+    "storedCalories": 390.909090909091,
+    "storedProtein": 78.7878787878788
+  }
+]

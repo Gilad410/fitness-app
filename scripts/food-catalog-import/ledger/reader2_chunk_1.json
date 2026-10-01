@@ -1,0 +1,52 @@
+[
+  {
+    "barcode": "8715700419732",
+    "name": "מתבל עגבניות",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/8715700419732.jpg"
+  },
+  {
+    "barcode": "7290110325619",
+    "name": "BARISTA Alternative oat",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290110325619.jpg"
+  },
+  {
+    "barcode": "7290000446547",
+    "name": "חמאת בוטנים טבעית",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000446547.jpg"
+  },
+  {
+    "barcode": "7290000056845",
+    "name": "Milk",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000056845.jpg"
+  },
+  {
+    "barcode": "7290000416021",
+    "name": "קרם מובחר למריחה",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000416021.jpg"
+  },
+  {
+    "barcode": "7290000063140",
+    "name": "Osem Soup Cereals",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000063140.jpg"
+  },
+  {
+    "barcode": "8996001414002",
+    "name": "Torabika Cappuccino",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/8996001414002.jpg"
+  },
+  {
+    "barcode": "7290004127077",
+    "name": "3% cottage cheese",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290004127077.jpg"
+  },
+  {
+    "barcode": "7290107646147",
+    "name": "שוגי תלמה",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290107646147.jpg"
+  },
+  {
+    "barcode": "7290000574035",
+    "name": "דגנית עין בר",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000574035.jpg"
+  }
+]

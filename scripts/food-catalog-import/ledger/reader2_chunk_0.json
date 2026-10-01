@@ -1,0 +1,52 @@
+[
+  {
+    "barcode": "20443245",
+    "name": "Sauerkraut mit Räucherspeck und Röstzwiebel",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/20443245.jpg"
+  },
+  {
+    "barcode": "72918388",
+    "name": "טוויסט",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/72918388.jpg"
+  },
+  {
+    "barcode": "72992913",
+    "name": "קוקומן פצפוצי דגנים",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/72992913.jpg"
+  },
+  {
+    "barcode": "80176800",
+    "name": "Nutella",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/80176800.jpg"
+  },
+  {
+    "barcode": "7290112494351",
+    "name": "Cornflakes Of Champions - Toasted Corn Flakes",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290112494351.jpg"
+  },
+  {
+    "barcode": "7290110115777",
+    "name": "מים מינרלים",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290110115777.jpg"
+  },
+  {
+    "barcode": "5906485301012",
+    "name": "XL energy drink",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/5906485301012.jpg"
+  },
+  {
+    "barcode": "8434165466333",
+    "name": "Krit krititas galletas saladas",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/8434165466333.jpg"
+  },
+  {
+    "barcode": "7290000066318",
+    "name": "במבה",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290000066318.jpg"
+  },
+  {
+    "barcode": "7290011194246",
+    "name": "Strauss Ski and Cottage",
+    "imagePath": "scripts/food-catalog-import/label_photos/audit/7290011194246.jpg"
+  }
+]

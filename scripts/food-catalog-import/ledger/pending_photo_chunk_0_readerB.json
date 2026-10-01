@@ -1,0 +1,222 @@
+[
+  {
+    "barcode": "7290111602979",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Fetched nutrition_ar.4.full.jpg (600x500). OFF metadata shows the 'nutrition_ar' crop uses the SAME raw photo (imgid 1) as the front image - there is no separate nutrition-panel photo for this product. The photo shows the front of the box (Life Wellness, פריכיות תירס דקות, gluten-free corn crisps, matches name) with only a thin unreadable sliver of a side panel visible at the left edge. No calorie/protein figures visible. Not legible."
+  },
+  {
+    "barcode": "7290000068084",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Only image on file for this barcode is a front-of-box photo (Osem 'פתי בר קלאסי' biscuits, price tag 1.75 ₪/kg, allergen-update sticker). No nutrition-facts photo exists on OFF for this product (only one raw/front image uploaded). Not legible."
+  },
+  {
+    "barcode": "7290106668577",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Only image on file is a front bottle photo ('יד מרדכי' - Yad Mordechai - 100% natural lemon juice, 250ml, no added sugar/preservatives/colors). Matches item name. No nutrition-table photo exists for this barcode on OFF (only a front_fr image uploaded). Not legible."
+  },
+  {
+    "barcode": "7290019310037",
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Fetched nutrition_en.5.full.jpg (590x1280, full resolution as given). This IS the raw photo tagged 'nutrition' on OFF, but it only shows the tub's bottom disclaimer panel: a flavor list (Ice Coffee, Banana, Belgian Chocolate), storage/allergy warning text, a kosher-dairy mark, and the barcode - NOT an actual Nutrition Facts table with calorie/protein numbers. No macro values are visible anywhere in the photo. Brand ('All In Whey Protein') is confirmed but the specific 'Vanilla' flavor named in the catalog is not visible in this crop (other flavors are listed), so identity is only partially confirmed."
+  },
+  {
+    "barcode": "7290004129545",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Only image on file is a close-up of the blue foil lid (3% fat logo, house/tree graphic) of a white-cheese tub, consistent with 'גבינה לבנה 3%'. OFF metadata confirms no nutrition-facts photo exists for this barcode (only one front image uploaded). Not legible."
+  },
+  {
+    "barcode": "7290008753364",
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Only image on file is a front bag photo of purple 'דוריטוס' (Doritos) chips held in hand (price tag ₪8.00, best-before 28.06.24 visible). Brand name is clearly legible but the flavor text below the logo is obscured by the price sticker/hand, so the 'grill' flavor could not be fully confirmed. No nutrition-facts photo exists for this barcode on OFF (only a front image uploaded). Not legible."
+  },
+  {
+    "barcode": "7290112495006",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Only image on file is a front box photo (Telma 'כריות נוגט' - Kariot filled pastry pillows, nougat flavor, 686g, '3 teaspoons sugar per serving' claim). Matches item name. No nutrition-facts table photo exists for this barcode on OFF (only front image uploaded). Not legible."
+  },
+  {
+    "barcode": "7290106720626",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Fetched the full-resolution ingredients_he.7 photo (Hebrew ingredients panel), which shows the ingredient list (corn flour 61%, vegetable oil, cheese-containing ingredients, salted whey blend, flavor enhancers E627/E631, colors) and allergen info (contains milk; may contain peanuts) confirming this is 'Crunchy' Cheetos, cheese flavor - matches 'شيبس جبنه Cheetos 80gm'. However NO nutrition-facts numbers (calories/protein) are visible in this photo, and no separate nutrition-table image exists for this barcode on OFF. Not legible for calorie/protein values."
+  },
+  {
+    "barcode": "7290112495228",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Only image on file is a front box photo (Telma corn flakes, honey flavor - 'קורנפלקס דבש', 448g). Matches item name exactly. No nutrition-facts photo exists for this barcode on OFF (only front image uploaded). Not legible."
+  },
+  {
+    "barcode": "5701932026971",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Only image on file is a front box photo of microwave popcorn (text appears mirrored, shot through glass/plastic; '6' bags and 'Microwave Popcorn' text visible), consistent with 'HotPop'. No nutrition-facts photo exists for this barcode on OFF (only front image uploaded). Not legible."
+  },
+  {
+    "barcode": "5000159561228",
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Fetched ingredients_en.4.full.jpg (2400x3199, full resolution as given). The photo is a close-up of a curved wrapper explicitly identified by its own ingredient text as TWIX ('ביסקוויט...קרמל (32%)...שוקולד חלב (35%)...TWIX'), showing a partial nutrition table, but most of it is cut off by the wrapper's curvature/framing. Legible fragments only: piece weight '~15.5 גרם' ('משקל חתיך'), three unlabeled numeric values '50.7 / 12.75 / 8.7' (column headers not in frame, meaning unclear), and at the very bottom the start of a per-100g table header ('סימון תזונתי ב-100 גרם מזון') with only truncated trailing digits '...93' and '...7' visible for the first two rows - leading digits are outside the photographed area. No usable calorie or protein figure could be extracted. The catalog item name 'minis' is generic while the photographed unit is specifically Twix-branded, so identity is uncertain (could be a Twix-only bag or a mixed-brand 'minis' assortment)."
+  },
+  {
+    "barcode": "7613034792785",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Only image on file is a large front-of-box photo (Nestle Cheerios Multi, 5 whole-grain types, 565g) - text matches 'Cheerios Multi - דגנים מלאים' exactly. No nutrition-facts panel is visible (the back-of-box table was never photographed); only one raw image exists for this barcode on OFF. Not legible."
+  },
+  {
+    "barcode": "7290012737534",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Checked both available images for this barcode: the front label (organic certification marks, '18 amino acids' claim, net weight 300g, matches 'זרעי צ'יאה אורגניים'/Organic Chia Seeds) and the ingredients_he.7 photo (reads only 'רכיבים: זרעי צ'יאה אורגנית' - ingredients: organic chia seeds). Neither shows a nutrition-facts numbers table, and no dedicated nutrition photo exists for this barcode on OFF. Not legible."
+  },
+  {
+    "barcode": "7792860006218",
+    "identityMatch": "yes",
+    "evidenceCalories": 392,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Full-resolution package photo (barcode 7792860006218 printed on the pack matches the input exactly; 'baby doll' / LHERITIER fruit-flavored sugar-coated ice-pop sticks) shows a per-100g nutrition table header ('סימון תזונתי ל-100 גרם מוצר'). Energy = 392 kcal/100g is clearly legible. The protein row ('חלבונים (גרם)') value is fully covered by the person's thumb holding the package and could not be read even after multiple zoomed crops of the full-resolution source - the digit is physically hidden, not a resolution issue. Other rows are also partly finger-obscured: sodium ≈24 mg, total carbs and sugars each show only a trailing '...8' with the leading digit hidden, teaspoons of sugar ≈24.5."
+  },
+  {
+    "barcode": "7290017406367",
+    "identityMatch": "yes",
+    "evidenceCalories": 363,
+    "evidenceProtein": null,
+    "basis": "100g",
+    "prepState": "as_sold",
+    "legible": true,
+    "notes": "Full-resolution raw photo (3024x4032, imgid 2 on OFF) shows a per-100g nutrition table explicitly labeled 'לפני בישול' (before cooking / as-sold - NOT cooked): Energy 363 kcal, Total fat 0.9 g, Sodium 0 mg, Total carbohydrate 81.3 g, of which Sugars 0 g. The Protein ('חלבונים') row shows '...48' with the leading whole-number digit hidden inside a fold/crease of the plastic bag right at the edge of the photographed area; a targeted crop/zoom of the fold did not recover it. NOTE: the catalog item name says 'מבושל' (cooked) but the photographed label explicitly states these values are for the product BEFORE cooking (raw/dry basis) - possible prepState mismatch between the catalog name and this photo (setting prepState to 'as_sold' to reflect what the label itself states, not the catalog name)."
+  },
+  {
+    "barcode": "7290010066582",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Only image on file is a top-down photo of the can lid (FilTuna brand; Hebrew text 'נתחי טונה בהירה בשמן קנולה' matches item name exactly; Israeli flag graphic; dates 13-02-2024/2025 printed). No nutrition-facts panel is visible in the photo (only a front_en.3.400.jpg exists for this barcode on OFF). Not legible."
+  },
+  {
+    "barcode": "7290011499303",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Only image on file is a front tub photo ('פעה' feta cheese tub, 5% fat, on a wooden table). Consistent with 'Feta cheese'. No nutrition-facts photo exists for this barcode on OFF (only front image uploaded). Not legible."
+  },
+  {
+    "barcode": "7290011971618",
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Only image on file is a top-down photo of an opened red tub with its foil lid peeled back, showing a dark red paste - no legible brand or product text is visible in the frame to confirm this is tomato puree, and no nutrition-facts panel is visible. Only one front image exists for this barcode on OFF. Not legible."
+  },
+  {
+    "barcode": "7290108505207",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": 11.4,
+    "basis": "serving",
+    "prepState": "as_sold",
+    "legible": false,
+    "notes": "Front cup photo ('Euro' Greek yogurt with blueberries, 5% fat) matches 'Yaourt grec'. A front-of-pack blue badge shows a protein callout '11.4' next to the word 'חלבון' (protein), with a 'קלוריות' (calories) header partially visible just above it, but the calorie number itself and the exact basis (per cup/serving vs. per 100g) are cut off / not visible - only a 400x400 image is available for this barcode and repeated attempts to fetch a larger native file (600x600) from the source timed out. Reporting 11.4 as a front-pack protein claim of uncertain basis (best guess: per serving/cup), not a confirmed 100g Nutrition-Facts value - marking as not fully legible overall since calories are missing and basis is unconfirmed."
+  },
+  {
+    "barcode": "7290110554118",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Only image on file is a front pack photo ('דיפו' brand noodles, 'נודלס בסגנון מלזי חריף' matches 'Spicy Malaysian style', chopsticks in bowl shown, 350g). No nutrition-facts photo exists for this barcode on OFF (only front image uploaded). Not legible."
+  },
+  {
+    "barcode": "7290116931289",
+    "identityMatch": "unclear",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Fetched both raw images for this barcode at native full resolution (600x600 each, the source's maximum - both are essentially the same crop). Both are badly out-of-focus close-ups of front-of-pack badges over a cookie photo. The numbers '20', '0.1%', and '107' plus a 'BCAA' logo are discernible, but the small icon/label text next to each number is too blurry to read even at 4x zoom, so it is unclear which number represents protein vs. calories vs. sugar %, and no per-100g/serving basis is legible. Product name/brand text is not visible in either crop. Values not reported as reliable evidence due to blur (not a size/resolution problem - this is the source's native resolution)."
+  },
+  {
+    "barcode": "7296073124399",
+    "identityMatch": "yes",
+    "evidenceCalories": null,
+    "evidenceProtein": null,
+    "basis": null,
+    "prepState": "unclear",
+    "legible": false,
+    "notes": "Fetched the raw image at full resolution (2046x4000, plain '1.jpg' rather than the given 400px thumbnail). Shows only a front-of-pack photo ('שופרסל' Spaghetti, 100% durum wheat semolina, 500g, 'Italy' sourcing badge) - matches item name. No nutrition-facts panel is visible on the front; the back-of-pack table was never photographed for this barcode on OFF. Not legible."
+  }
+]
