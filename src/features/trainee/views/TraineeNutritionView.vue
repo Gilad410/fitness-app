@@ -11,13 +11,17 @@ import TraineeLayout from '../layouts/TraineeLayout.vue'
 import ExternalChainLink from '../../nutrition/components/ExternalChainLink.vue'
 import { externalChainLinks } from '../../nutrition/config/externalChainLinks'
 import { useTraineeNutritionStore } from '../store/traineeNutrition'
+import { useTraineeCustomFoodsStore } from '../store/traineeCustomFoods'
 import TraineeNutritionPlanSection from '../components/TraineeNutritionPlanSection.vue'
 import BarcodeFoodEntry from '../../nutrition/components/BarcodeFoodEntry.vue'
 import { useFoodsStore } from '../../nutrition/store/foods'
 import { useFoodReferenceCatalogStore } from '../../nutrition/store/foodReferenceCatalog'
 import { useRestaurantFoodItemsStore } from '../../nutrition/store/restaurantFoodItems'
 import { formatNutritionAmount } from '../../../lib/formatNumber'
-import { startRetentionClock, stopRetentionClock } from '../../nutrition/lib/nutritionRetentionClock'
+import {
+  startRetentionClock,
+  stopRetentionClock,
+} from '../../nutrition/lib/nutritionRetentionClock'
 import { israelCalendarDate } from '../../nutrition/lib/nutritionLogRetention.js'
 import { entryDisplayName, entryQuantityLabel } from '../../nutrition/lib/entryDisplay.js'
 import { searchPanelState } from '../../../lib/searchPanelState.js'
@@ -57,6 +61,7 @@ const NAME_SEARCH_DEBOUNCE_MS = 300
 const NAME_SEARCH_MIN_LENGTH = 2
 
 const nutritionStore = useTraineeNutritionStore()
+const customFoodsStore = useTraineeCustomFoodsStore()
 const foodsStore = useFoodsStore()
 const referenceCatalogStore = useFoodReferenceCatalogStore()
 const restaurantStore = useRestaurantFoodItemsStore()
@@ -108,6 +113,7 @@ onMounted(async () => {
   try {
     await Promise.all([
       nutritionStore.fetchAll(),
+      customFoodsStore.fetchAll(),
       foodsStore.ensureLoaded(),
       restaurantStore.ensureChainsLoaded(),
     ])
@@ -121,7 +127,9 @@ onMounted(async () => {
 const entriesForDate = computed(() => nutritionStore.forDate(selectedDate.value))
 const dailyTotal = computed(() => nutritionStore.dailyTotalFor(selectedDate.value))
 const dailyProteinTotal = computed(() => nutritionStore.dailyProteinTotalFor(selectedDate.value))
-const dailyProteinUnknown = computed(() => nutritionStore.dailyProteinUnknownFor(selectedDate.value))
+const dailyProteinUnknown = computed(() =>
+  nutritionStore.dailyProteinUnknownFor(selectedDate.value),
+)
 
 // ---- Barcode entry -- mirrors NutritionSection.vue's (the coach's)
 // barcode wiring exactly, reusing the same BarcodeFoodEntry.vue
@@ -175,17 +183,21 @@ function handleBarcodeCancel() {
 
 // ---- Add entry form ----
 const showAddEntry = ref(false)
-// 'coach' = trainee's own coach's active foods (grams). 'reference' =
-// shared food_reference_catalog (grams). 'restaurant' = restaurant_food_items
-// (servings). No "custom food" option -- a trainee can never type a name
-// or a calorie/protein number; the server only ever accepts an existing
-// catalog id (see trainee_log_nutrition_entry()).
+// 'coach' = trainee's coach foods. 'personal' = reusable foods visible
+// only to this trainee. 'reference' and 'restaurant' are shared catalogs.
 const entrySource = ref('coach')
 
 const foodSearchTerm = ref('')
 const entryFoodId = ref('')
 const entryGrams = ref('')
 const entryDate = ref(selectedDate.value)
+
+const NEW_PERSONAL_FOOD_VALUE = '__new_personal_food__'
+const personalFoodId = ref('')
+const personalFoodName = ref('')
+const personalFoodCalories = ref('')
+const personalFoodProtein = ref('')
+const personalFoods = computed(() => customFoodsStore.active)
 
 const referenceSearchTerm = ref('')
 const referenceResults = ref([])
@@ -364,6 +376,10 @@ function setEntrySource(source) {
   entrySource.value = source
   validationError.value = ''
   entryFoodId.value = ''
+  personalFoodId.value = ''
+  personalFoodName.value = ''
+  personalFoodCalories.value = ''
+  personalFoodProtein.value = ''
   foodSearchTerm.value = ''
   entryGrams.value = ''
   referenceSearchTerm.value = ''
@@ -376,6 +392,11 @@ function setEntrySource(source) {
   restaurantSearchTerm.value = ''
   selectedRestaurantItemId.value = ''
   entryServings.value = '1'
+}
+
+function cancelAddEntry() {
+  showAddEntry.value = false
+  resetForm()
 }
 
 function resetForm() {
@@ -412,7 +433,55 @@ async function handleAddEntry() {
       validationError.value = 'יש להזין כמות גרמים תקינה (מספר חיובי).'
       return
     }
-    if (entrySource.value === 'reference') {
+    if (entrySource.value === 'personal') {
+      if (!personalFoodId.value) {
+        validationError.value = 'יש לבחור מאכל אישי או ליצור מאכל חדש.'
+        return
+      }
+      if (personalFoodId.value === NEW_PERSONAL_FOOD_VALUE) {
+        const name = personalFoodName.value.trim()
+        const calories = Number(personalFoodCalories.value)
+        const protein = Number(personalFoodProtein.value)
+        if (!name) {
+          validationError.value = 'יש להזין שם למאכל.'
+          return
+        }
+        if (
+          !personalFoodCalories.value ||
+          !Number.isFinite(calories) ||
+          calories <= 0 ||
+          calories > 900
+        ) {
+          validationError.value = 'יש להזין קלוריות תקינות ל-100 גרם.'
+          return
+        }
+        if (
+          personalFoodProtein.value === '' ||
+          !Number.isFinite(protein) ||
+          protein < 0 ||
+          protein > 100
+        ) {
+          validationError.value = 'יש להזין חלבון תקין ל-100 גרם.'
+          return
+        }
+        try {
+          const food = await customFoodsStore.create({
+            name,
+            caloriesPer100g: calories,
+            proteinPer100g: protein,
+          })
+          payload.traineeCustomFoodId = food.id
+        } catch (error) {
+          validationError.value =
+            error.code === '23505'
+              ? 'כבר שמרת מאכל אישי בשם הזה.'
+              : 'שמירת המאכל האישי נכשלה. יש לנסות שוב.'
+          return
+        }
+      } else {
+        payload.traineeCustomFoodId = personalFoodId.value
+      }
+    } else if (entrySource.value === 'reference') {
       if (!selectedReference.value) {
         validationError.value = 'יש לבחור מאכל מהמאגר.'
         return
@@ -470,7 +539,10 @@ const dateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
 
       <p v-if="checking" class="text-neutral-600" role="status">טוען...</p>
 
-      <div v-else-if="loadError" class="flex flex-col items-start gap-3 rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm">
+      <div
+        v-else-if="loadError"
+        class="flex flex-col items-start gap-3 rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm"
+      >
         <p role="alert" class="text-sm text-status-red">{{ loadError }}</p>
         <button
           type="button"
@@ -484,7 +556,9 @@ const dateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
       <template v-else>
         <TraineeNutritionPlanSection />
 
-        <section class="mb-6 flex flex-col gap-4 rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm sm:p-6">
+        <section
+          class="mb-6 flex flex-col gap-4 rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm sm:p-6"
+        >
           <div class="flex flex-wrap items-end justify-between gap-4">
             <label class="flex flex-col gap-1">
               <span class="text-sm text-neutral-600">תאריך</span>
@@ -545,8 +619,12 @@ const dateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
                 @resolved="handleBarcodeResolved"
                 @cancel="handleBarcodeCancel"
               />
-              <p v-if="nutritionStore.adding" class="text-sm text-neutral-600">שומר ביומן התזונה...</p>
-              <p v-if="barcodeSaveError" role="alert" class="text-sm text-status-red">{{ barcodeSaveError }}</p>
+              <p v-if="nutritionStore.adding" class="text-sm text-neutral-600">
+                שומר ביומן התזונה...
+              </p>
+              <p v-if="barcodeSaveError" role="alert" class="text-sm text-status-red">
+                {{ barcodeSaveError }}
+              </p>
             </template>
           </div>
 
@@ -560,17 +638,25 @@ const dateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
                showing -- so this stays a plain, honest total display. -->
           <div class="flex flex-wrap items-baseline gap-x-5 gap-y-1">
             <span class="inline-flex items-baseline gap-1.5">
-              <span class="ec-num text-2xl" style="color: var(--color-brand-green)">{{ formatNutritionAmount(dailyTotal) }}</span>
+              <span class="ec-num text-2xl" style="color: var(--color-brand-green)">{{
+                formatNutritionAmount(dailyTotal)
+              }}</span>
               <span class="text-sm text-neutral-600">קק"ל</span>
             </span>
             <span class="inline-flex items-baseline gap-1.5">
-              <span class="ec-num text-2xl" style="color: var(--ec-violet)">{{ formatNutritionAmount(dailyProteinTotal) }}</span>
+              <span class="ec-num text-2xl" style="color: var(--ec-violet)">{{
+                formatNutritionAmount(dailyProteinTotal)
+              }}</span>
               <span class="text-sm text-neutral-600">גר' חלבון</span>
             </span>
-            <span v-if="dailyProteinUnknown" class="text-xs text-neutral-500">(לא כולל פריט/ים עם חלבון לא ידוע)</span>
+            <span v-if="dailyProteinUnknown" class="text-xs text-neutral-500"
+              >(לא כולל פריט/ים עם חלבון לא ידוע)</span
+            >
           </div>
 
-          <p v-if="successMessage" role="status" class="text-sm text-brand-green">{{ successMessage }}</p>
+          <p v-if="successMessage" role="status" class="text-sm text-brand-green">
+            {{ successMessage }}
+          </p>
         </section>
 
         <!-- Inline add-entry form, in its original place in the page flow
@@ -584,283 +670,435 @@ const dateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
             class="mb-6 flex flex-col gap-4 rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm sm:p-6"
             @submit.prevent="handleAddEntry"
           >
-          <div class="flex flex-col gap-1">
-            <span class="text-sm text-neutral-600">מקור המאכל</span>
-            <div class="flex flex-wrap gap-2">
-              <button
-                type="button"
-:aria-pressed="entrySource === 'coach' ? 'true' : 'false'"
-                :class="[
-                  'inline-flex min-h-11 items-center justify-center rounded-lg border px-3 py-1.5 text-sm font-medium',
-                  entrySource === 'coach'
-                    ? 'border-brand-green bg-brand-green text-brand-white'
-                    : 'border-neutral-300 text-brand-black hover:bg-neutral-100',
-                ]"
-                @click="setEntrySource('coach')"
-              >
-                המאכלים של המאמן/ת
-              </button>
-              <button
-                type="button"
-:aria-pressed="entrySource === 'reference' ? 'true' : 'false'"
-                :class="[
-                  'inline-flex min-h-11 items-center justify-center rounded-lg border px-3 py-1.5 text-sm font-medium',
-                  entrySource === 'reference'
-                    ? 'border-brand-green bg-brand-green text-brand-white'
-                    : 'border-neutral-300 text-brand-black hover:bg-neutral-100',
-                ]"
-                @click="setEntrySource('reference')"
-              >
-                מאגר מאכלים
-              </button>
-              <button
-                type="button"
-:aria-pressed="entrySource === 'restaurant' ? 'true' : 'false'"
-                :class="[
-                  'inline-flex min-h-11 items-center justify-center rounded-lg border px-3 py-1.5 text-sm font-medium',
-                  entrySource === 'restaurant'
-                    ? 'border-brand-green bg-brand-green text-brand-white'
-                    : 'border-neutral-300 text-brand-black hover:bg-neutral-100',
-                ]"
-                @click="setEntrySource('restaurant')"
-              >
-                רשתות מזון
-              </button>
-            </div>
-          </div>
-
-          <!-- Coach's own foods -->
-          <template v-if="entrySource === 'coach'">
-            <label class="flex flex-col gap-1">
-              <span class="text-sm text-neutral-600">חיפוש מאכל</span>
-              <input
-                v-model="foodSearchTerm"
-                type="text"
-                placeholder="לדוגמה: חזה עוף, אורז..."
-                class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
-              />
-            </label>
-
-            <div
-              role="listbox"
-              aria-label="בחירת מאכל"
-              class="flex max-h-64 flex-col gap-1 overflow-y-auto rounded-lg border border-neutral-300 p-2"
-            >
-              <button
-                v-for="food in coachFoods"
-                :key="food.id"
-                type="button"
-                role="option"
-                :aria-selected="entryFoodId === food.id"
-                :class="[
-                  'w-full rounded-md border-s-4 border-transparent px-2 py-3 text-start text-sm hover:bg-neutral-100',
-                  entryFoodId === food.id ? 'border-brand-green bg-brand-green/10 font-medium text-brand-black' : '',
-                ]"
-                @click="entryFoodId = food.id"
-              >
-                {{ food.name }} ({{ food.calories_per_100g }} קק"ל, {{ proteinLabel(food.protein_per_100g) }})
-              </button>
-              <p v-if="coachFoods.length === 0" class="px-2 py-1.5 text-sm text-neutral-600">
-                לא נמצאו מאכלים תואמים
-              </p>
-            </div>
-
-            <label class="flex flex-col gap-1">
-              <span class="text-sm text-neutral-600">כמות (גרם)</span>
-              <input
-                v-model="entryGrams"
-                type="number"
-                step="0.1"
-                min="0.1"
-                dir="ltr"
-                inputmode="decimal"
-                class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
-              />
-            </label>
-          </template>
-
-          <!-- Shared reference catalog -->
-          <template v-else-if="entrySource === 'reference'">
-            <label class="flex flex-col gap-1">
-              <span class="text-sm text-neutral-600">חיפוש במאגר המאכלים</span>
-              <input
-                v-model="referenceSearchTerm"
-                type="text"
-                placeholder="לדוגמה: תפוח, אורז לבן מבושל..."
-                class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
-              />
-            </label>
-
-            <p v-if="selectedReference" class="rounded-lg bg-brand-green/10 px-3 py-2 text-sm text-brand-black">
-              נבחר: {{ selectedReference.name }} ({{ selectedReference.calories_per_100g }} קק"ל,
-              {{ selectedReference.protein_per_100g }} ג' חלבון ל-100 גרם)
-            </p>
-
-            <p v-if="referenceSearchPanel === 'searching'" role="status" class="text-sm text-neutral-600">
-              מחפש...
-            </p>
-
-            <div v-else-if="referenceSearchPanel === 'error'" role="alert" class="flex flex-col items-start gap-2">
-              <p class="text-sm text-status-red">
-                החיפוש במאגר המאכלים נכשל. יש לבדוק את החיבור לאינטרנט ולנסות שוב.
-              </p>
-              <button
-                type="button"
-                class="inline-flex min-h-11 items-center justify-center rounded-lg border border-neutral-300 px-3 py-1.5 text-sm font-medium text-brand-black hover:bg-neutral-100"
-                @click="retryReferenceSearch"
-              >
-                ניסיון חוזר
-              </button>
-            </div>
-
-            <ul
-              v-else-if="referenceSearchPanel === 'results'"
-              class="flex flex-col gap-1 rounded-lg border border-neutral-300 p-2"
-            >
-              <li v-for="item in referenceResults" :key="item.id">
+            <div class="flex flex-col gap-1">
+              <span class="text-sm text-neutral-600">מקור המאכל</span>
+              <div class="flex flex-wrap gap-2">
                 <button
                   type="button"
-                  class="w-full rounded-md px-2 py-3 text-start text-sm hover:bg-neutral-100"
-                  @click="pickReference(item)"
+                  :aria-pressed="entrySource === 'coach' ? 'true' : 'false'"
+                  :class="[
+                    'inline-flex min-h-11 items-center justify-center rounded-lg border px-3 py-1.5 text-sm font-medium',
+                    entrySource === 'coach'
+                      ? 'border-brand-green bg-brand-green text-brand-white'
+                      : 'border-neutral-300 text-brand-black hover:bg-neutral-100',
+                  ]"
+                  @click="setEntrySource('coach')"
                 >
-                  {{ item.name }}
-                  <span class="text-neutral-600">
-                    ({{ item.calories_per_100g }} קק"ל, {{ item.protein_per_100g }} ג' חלבון ל-100 גרם)
-                  </span>
+                  המאכלים של המאמן/ת
                 </button>
-              </li>
-            </ul>
-            <p v-else-if="referenceSearchPanel === 'empty' && !selectedReference" class="text-sm text-neutral-600">
-              לא נמצאו תוצאות במאגר.
-            </p>
-
-            <label class="flex flex-col gap-1">
-              <span class="text-sm text-neutral-600">כמות (גרם)</span>
-              <input
-                v-model="entryGrams"
-                type="number"
-                step="0.1"
-                min="0.1"
-                dir="ltr"
-                inputmode="decimal"
-                class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
-              />
-            </label>
-          </template>
-
-          <!-- Restaurant / chain items -->
-          <template v-else>
-            <div class="flex flex-col gap-2 rounded-lg border border-dashed border-neutral-300 bg-neutral-50 p-3">
-              <p class="text-sm font-medium text-brand-black">קישורים רשמיים לתפריטי רשתות</p>
-              <ExternalChainLink v-for="link in externalChainLinks" :key="link.chainName" :link="link" />
+                <button
+                  type="button"
+                  :aria-pressed="entrySource === 'reference' ? 'true' : 'false'"
+                  :class="[
+                    'inline-flex min-h-11 items-center justify-center rounded-lg border px-3 py-1.5 text-sm font-medium',
+                    entrySource === 'reference'
+                      ? 'border-brand-green bg-brand-green text-brand-white'
+                      : 'border-neutral-300 text-brand-black hover:bg-neutral-100',
+                  ]"
+                  @click="setEntrySource('reference')"
+                >
+                  מאגר מאכלים
+                </button>
+                <button
+                  type="button"
+                  :aria-pressed="entrySource === 'personal' ? 'true' : 'false'"
+                  :class="[
+                    'inline-flex min-h-11 items-center justify-center rounded-lg border px-3 py-1.5 text-sm font-medium',
+                    entrySource === 'personal'
+                      ? 'border-brand-green bg-brand-green text-brand-white'
+                      : 'border-neutral-300 text-brand-black hover:bg-neutral-100',
+                  ]"
+                  @click="setEntrySource('personal')"
+                >
+                  המאכלים שלי
+                </button>
+                <button
+                  type="button"
+                  :aria-pressed="entrySource === 'restaurant' ? 'true' : 'false'"
+                  :class="[
+                    'inline-flex min-h-11 items-center justify-center rounded-lg border px-3 py-1.5 text-sm font-medium',
+                    entrySource === 'restaurant'
+                      ? 'border-brand-green bg-brand-green text-brand-white'
+                      : 'border-neutral-300 text-brand-black hover:bg-neutral-100',
+                  ]"
+                  @click="setEntrySource('restaurant')"
+                >
+                  רשתות מזון
+                </button>
+              </div>
             </div>
 
-            <label class="flex flex-col gap-1">
-              <span class="text-sm text-neutral-600">רשת</span>
-              <select
-                v-model="selectedChain"
-                class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
-              >
-                <option value="" disabled>בחר/י רשת</option>
-                <option v-for="chain in restaurantStore.chains" :key="chain" :value="chain">
-                  {{ chain }}
-                </option>
-              </select>
-            </label>
-
-            <template v-if="selectedChain">
+            <!-- Coach's own foods -->
+            <template v-if="entrySource === 'coach'">
               <label class="flex flex-col gap-1">
-                <span class="text-sm text-neutral-600">חיפוש פריט בתפריט</span>
+                <span class="text-sm text-neutral-600">חיפוש מאכל</span>
                 <input
-                  v-model="restaurantSearchTerm"
+                  v-model="foodSearchTerm"
                   type="text"
-                  placeholder="לדוגמה: קפוצ'ינו, כריך..."
+                  placeholder="לדוגמה: חזה עוף, אורז..."
                   class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
                 />
               </label>
 
-              <ul class="flex max-h-64 flex-col gap-1 overflow-y-auto rounded-lg border border-neutral-300 p-2">
-                <li v-for="item in filteredRestaurantItems" :key="item.id">
-                  <button
-                    type="button"
-                    :class="[
-                      'w-full rounded-md border-s-4 border-transparent px-2 py-3 text-start text-sm hover:bg-neutral-100',
-                      selectedRestaurantItemId === item.id ? 'border-brand-green bg-brand-green/10 font-medium text-brand-black' : '',
-                    ]"
-                    @click="selectedRestaurantItemId = item.id"
-                  >
-                    {{ item.item_name }}
-                    <span class="text-neutral-600">· {{ item.serving_description }}</span>
-                    <span class="block text-neutral-600">
-                      {{ item.calories_per_serving }} קק"ל
-                      <template v-if="item.protein_per_serving !== null"> · {{ item.protein_per_serving }} ג' חלבון</template>
-                      <template v-else> · חלבון לא ידוע</template>
-                    </span>
-                  </button>
-                </li>
-                <li v-if="filteredRestaurantItems.length === 0" class="px-2 py-1.5 text-sm text-neutral-600">
-                  לא נמצאו פריטים
-                </li>
-              </ul>
+              <div
+                role="listbox"
+                aria-label="בחירת מאכל"
+                class="flex max-h-64 flex-col gap-1 overflow-y-auto rounded-lg border border-neutral-300 p-2"
+              >
+                <button
+                  v-for="food in coachFoods"
+                  :key="food.id"
+                  type="button"
+                  role="option"
+                  :aria-selected="entryFoodId === food.id"
+                  :class="[
+                    'w-full rounded-md border-s-4 border-transparent px-2 py-3 text-start text-sm hover:bg-neutral-100',
+                    entryFoodId === food.id
+                      ? 'border-brand-green bg-brand-green/10 font-medium text-brand-black'
+                      : '',
+                  ]"
+                  @click="entryFoodId = food.id"
+                >
+                  {{ food.name }} ({{ food.calories_per_100g }} קק"ל,
+                  {{ proteinLabel(food.protein_per_100g) }})
+                </button>
+                <p v-if="coachFoods.length === 0" class="px-2 py-1.5 text-sm text-neutral-600">
+                  לא נמצאו מאכלים תואמים
+                </p>
+              </div>
 
-              <label v-if="selectedRestaurantItem" class="flex flex-col gap-1">
-                <span class="text-sm text-neutral-600">כמות מנות</span>
+              <label class="flex flex-col gap-1">
+                <span class="text-sm text-neutral-600">כמות (גרם)</span>
                 <input
-                  v-model="entryServings"
+                  v-model="entryGrams"
                   type="number"
-                  step="0.5"
-                  min="0.5"
+                  step="0.1"
+                  min="0.1"
                   dir="ltr"
                   inputmode="decimal"
                   class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
                 />
               </label>
-
-              <p v-if="selectedRestaurantItem" class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <span class="text-sm text-neutral-600">סה"כ:</span>
-                <span class="ec-num text-sm" style="color: var(--color-brand-green)">{{ restaurantPreviewCalories }} קק"ל</span>
-                <span v-if="restaurantPreviewProtein !== null" class="ec-num text-sm" style="color: var(--ec-violet)">
-                  {{ restaurantPreviewProtein }} ג' חלבון
-                </span>
-                <span v-else class="text-xs text-neutral-500">חלבון לא ידוע</span>
-              </p>
             </template>
-          </template>
 
-          <label class="flex flex-col gap-1">
-            <span class="text-sm text-neutral-600">תאריך</span>
-            <input
-              v-model="entryDate"
-              type="date"
-              class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
-            />
-          </label>
+            <!-- Trainee-private reusable foods -->
+            <template v-else-if="entrySource === 'personal'">
+              <div
+                role="listbox"
+                aria-label="בחירת מאכל אישי"
+                class="flex max-h-64 flex-col gap-1 overflow-y-auto rounded-lg border border-neutral-300 p-2"
+              >
+                <button
+                  v-for="food in personalFoods"
+                  :key="food.id"
+                  type="button"
+                  role="option"
+                  :aria-selected="personalFoodId === food.id"
+                  :class="[
+                    'w-full rounded-md border-s-4 border-transparent px-2 py-3 text-start text-sm hover:bg-neutral-100',
+                    personalFoodId === food.id
+                      ? 'border-brand-green bg-brand-green/10 font-medium text-brand-black'
+                      : '',
+                  ]"
+                  @click="personalFoodId = food.id"
+                >
+                  {{ food.name }} ({{ food.calories_per_100g }} קק"ל, {{ food.protein_per_100g }} ג'
+                  חלבון ל-100 גרם)
+                </button>
+                <button
+                  type="button"
+                  role="option"
+                  :aria-selected="personalFoodId === NEW_PERSONAL_FOOD_VALUE"
+                  :class="[
+                    'w-full rounded-md border-s-4 border-transparent px-2 py-3 text-start text-sm font-medium hover:bg-neutral-100',
+                    personalFoodId === NEW_PERSONAL_FOOD_VALUE
+                      ? 'border-brand-green bg-brand-green/10 text-brand-black'
+                      : 'text-brand-green-dark',
+                  ]"
+                  @click="personalFoodId = NEW_PERSONAL_FOOD_VALUE"
+                >
+                  + הוספת מאכל אישי חדש
+                </button>
+              </div>
 
-          <p v-if="validationError" role="alert" class="text-sm text-status-red">{{ validationError }}</p>
-          <p v-if="nutritionStore.addError" role="alert" class="text-sm text-status-red">{{ nutritionStore.addError }}</p>
+              <template v-if="personalFoodId === NEW_PERSONAL_FOOD_VALUE">
+                <label class="flex flex-col gap-1">
+                  <span class="text-sm text-neutral-600">שם המאכל</span>
+                  <input
+                    v-model="personalFoodName"
+                    type="text"
+                    class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
+                  />
+                </label>
+                <label class="flex flex-col gap-1">
+                  <span class="text-sm text-neutral-600">קלוריות ל-100 גרם</span>
+                  <input
+                    v-model="personalFoodCalories"
+                    type="number"
+                    min="0.1"
+                    max="900"
+                    step="0.1"
+                    inputmode="decimal"
+                    dir="ltr"
+                    class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+                  />
+                </label>
+                <label class="flex flex-col gap-1">
+                  <span class="text-sm text-neutral-600">חלבון (גרם) ל-100 גרם</span>
+                  <input
+                    v-model="personalFoodProtein"
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="0.1"
+                    inputmode="decimal"
+                    dir="ltr"
+                    class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+                  />
+                </label>
+              </template>
 
-          <div class="flex flex-wrap gap-3">
-            <button
-              type="submit"
-              :disabled="nutritionStore.adding"
-              class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {{ nutritionStore.adding ? 'שומר...' : 'שמור' }}
-            </button>
-            <button
-              type="button"
-              :disabled="nutritionStore.adding"
-              class="inline-flex min-h-11 items-center justify-center rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-60"
-              @click="showAddEntry = false; resetForm()"
-            >
-              ביטול
-            </button>
-          </div>
+              <label class="flex flex-col gap-1">
+                <span class="text-sm text-neutral-600">כמות (גרם)</span>
+                <input
+                  v-model="entryGrams"
+                  type="number"
+                  step="0.1"
+                  min="0.1"
+                  dir="ltr"
+                  inputmode="decimal"
+                  class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+                />
+              </label>
+            </template>
+
+            <!-- Shared reference catalog -->
+            <template v-else-if="entrySource === 'reference'">
+              <label class="flex flex-col gap-1">
+                <span class="text-sm text-neutral-600">חיפוש במאגר המאכלים</span>
+                <input
+                  v-model="referenceSearchTerm"
+                  type="text"
+                  placeholder="לדוגמה: תפוח, אורז לבן מבושל..."
+                  class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
+                />
+              </label>
+
+              <p
+                v-if="selectedReference"
+                class="rounded-lg bg-brand-green/10 px-3 py-2 text-sm text-brand-black"
+              >
+                נבחר: {{ selectedReference.name }} ({{ selectedReference.calories_per_100g }} קק"ל,
+                {{ selectedReference.protein_per_100g }} ג' חלבון ל-100 גרם)
+              </p>
+
+              <p
+                v-if="referenceSearchPanel === 'searching'"
+                role="status"
+                class="text-sm text-neutral-600"
+              >
+                מחפש...
+              </p>
+
+              <div
+                v-else-if="referenceSearchPanel === 'error'"
+                role="alert"
+                class="flex flex-col items-start gap-2"
+              >
+                <p class="text-sm text-status-red">
+                  החיפוש במאגר המאכלים נכשל. יש לבדוק את החיבור לאינטרנט ולנסות שוב.
+                </p>
+                <button
+                  type="button"
+                  class="inline-flex min-h-11 items-center justify-center rounded-lg border border-neutral-300 px-3 py-1.5 text-sm font-medium text-brand-black hover:bg-neutral-100"
+                  @click="retryReferenceSearch"
+                >
+                  ניסיון חוזר
+                </button>
+              </div>
+
+              <ul
+                v-else-if="referenceSearchPanel === 'results'"
+                class="flex flex-col gap-1 rounded-lg border border-neutral-300 p-2"
+              >
+                <li v-for="item in referenceResults" :key="item.id">
+                  <button
+                    type="button"
+                    class="w-full rounded-md px-2 py-3 text-start text-sm hover:bg-neutral-100"
+                    @click="pickReference(item)"
+                  >
+                    {{ item.name }}
+                    <span class="text-neutral-600">
+                      ({{ item.calories_per_100g }} קק"ל, {{ item.protein_per_100g }} ג' חלבון ל-100
+                      גרם)
+                    </span>
+                  </button>
+                </li>
+              </ul>
+              <p
+                v-else-if="referenceSearchPanel === 'empty' && !selectedReference"
+                class="text-sm text-neutral-600"
+              >
+                לא נמצאו תוצאות במאגר.
+              </p>
+
+              <label class="flex flex-col gap-1">
+                <span class="text-sm text-neutral-600">כמות (גרם)</span>
+                <input
+                  v-model="entryGrams"
+                  type="number"
+                  step="0.1"
+                  min="0.1"
+                  dir="ltr"
+                  inputmode="decimal"
+                  class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+                />
+              </label>
+            </template>
+
+            <!-- Restaurant / chain items -->
+            <template v-else>
+              <div
+                class="flex flex-col gap-2 rounded-lg border border-dashed border-neutral-300 bg-neutral-50 p-3"
+              >
+                <p class="text-sm font-medium text-brand-black">קישורים רשמיים לתפריטי רשתות</p>
+                <ExternalChainLink
+                  v-for="link in externalChainLinks"
+                  :key="link.chainName"
+                  :link="link"
+                />
+              </div>
+
+              <label class="flex flex-col gap-1">
+                <span class="text-sm text-neutral-600">רשת</span>
+                <select
+                  v-model="selectedChain"
+                  class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
+                >
+                  <option value="" disabled>בחר/י רשת</option>
+                  <option v-for="chain in restaurantStore.chains" :key="chain" :value="chain">
+                    {{ chain }}
+                  </option>
+                </select>
+              </label>
+
+              <template v-if="selectedChain">
+                <label class="flex flex-col gap-1">
+                  <span class="text-sm text-neutral-600">חיפוש פריט בתפריט</span>
+                  <input
+                    v-model="restaurantSearchTerm"
+                    type="text"
+                    placeholder="לדוגמה: קפוצ'ינו, כריך..."
+                    class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
+                  />
+                </label>
+
+                <ul
+                  class="flex max-h-64 flex-col gap-1 overflow-y-auto rounded-lg border border-neutral-300 p-2"
+                >
+                  <li v-for="item in filteredRestaurantItems" :key="item.id">
+                    <button
+                      type="button"
+                      :class="[
+                        'w-full rounded-md border-s-4 border-transparent px-2 py-3 text-start text-sm hover:bg-neutral-100',
+                        selectedRestaurantItemId === item.id
+                          ? 'border-brand-green bg-brand-green/10 font-medium text-brand-black'
+                          : '',
+                      ]"
+                      @click="selectedRestaurantItemId = item.id"
+                    >
+                      {{ item.item_name }}
+                      <span class="text-neutral-600">· {{ item.serving_description }}</span>
+                      <span class="block text-neutral-600">
+                        {{ item.calories_per_serving }} קק"ל
+                        <template v-if="item.protein_per_serving !== null">
+                          · {{ item.protein_per_serving }} ג' חלבון</template
+                        >
+                        <template v-else> · חלבון לא ידוע</template>
+                      </span>
+                    </button>
+                  </li>
+                  <li
+                    v-if="filteredRestaurantItems.length === 0"
+                    class="px-2 py-1.5 text-sm text-neutral-600"
+                  >
+                    לא נמצאו פריטים
+                  </li>
+                </ul>
+
+                <label v-if="selectedRestaurantItem" class="flex flex-col gap-1">
+                  <span class="text-sm text-neutral-600">כמות מנות</span>
+                  <input
+                    v-model="entryServings"
+                    type="number"
+                    step="0.5"
+                    min="0.5"
+                    dir="ltr"
+                    inputmode="decimal"
+                    class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+                  />
+                </label>
+
+                <p
+                  v-if="selectedRestaurantItem"
+                  class="flex flex-wrap items-baseline gap-x-3 gap-y-1"
+                >
+                  <span class="text-sm text-neutral-600">סה"כ:</span>
+                  <span class="ec-num text-sm" style="color: var(--color-brand-green)"
+                    >{{ restaurantPreviewCalories }} קק"ל</span
+                  >
+                  <span
+                    v-if="restaurantPreviewProtein !== null"
+                    class="ec-num text-sm"
+                    style="color: var(--ec-violet)"
+                  >
+                    {{ restaurantPreviewProtein }} ג' חלבון
+                  </span>
+                  <span v-else class="text-xs text-neutral-500">חלבון לא ידוע</span>
+                </p>
+              </template>
+            </template>
+
+            <label class="flex flex-col gap-1">
+              <span class="text-sm text-neutral-600">תאריך</span>
+              <input
+                v-model="entryDate"
+                type="date"
+                class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
+              />
+            </label>
+
+            <p v-if="validationError" role="alert" class="text-sm text-status-red">
+              {{ validationError }}
+            </p>
+            <p v-if="nutritionStore.addError" role="alert" class="text-sm text-status-red">
+              {{ nutritionStore.addError }}
+            </p>
+
+            <div class="flex flex-wrap gap-3">
+              <button
+                type="submit"
+                :disabled="nutritionStore.adding"
+                class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {{ nutritionStore.adding ? 'שומר...' : 'שמור' }}
+              </button>
+              <button
+                type="button"
+                :disabled="nutritionStore.adding"
+                class="inline-flex min-h-11 items-center justify-center rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-brand-black hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-60"
+                @click="cancelAddEntry"
+              >
+                ביטול
+              </button>
+            </div>
           </form>
         </Transition>
 
         <section class="rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm sm:p-6">
-          <h2 class="mb-3 font-semibold text-brand-black">{{ dateFormatter.format(new Date(selectedDate)) }}</h2>
+          <h2 class="mb-3 font-semibold text-brand-black">
+            {{ dateFormatter.format(new Date(selectedDate)) }}
+          </h2>
 
           <p v-if="nutritionStore.deleteError" role="alert" class="mb-3 text-sm text-status-red">
             {{ nutritionStore.deleteError }}
@@ -881,7 +1119,9 @@ const dateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
                 <p class="text-sm text-neutral-600">{{ entryQuantityLabel(log) }}</p>
                 <p class="mt-0.5 flex items-baseline gap-3">
                   <span class="inline-flex items-baseline gap-1">
-                    <span class="ec-num text-sm" style="color: var(--color-brand-green)">{{ log.calories }}</span>
+                    <span class="ec-num text-sm" style="color: var(--color-brand-green)">{{
+                      log.calories
+                    }}</span>
                     <span class="text-xs text-neutral-500">קק"ל</span>
                   </span>
                   <span class="inline-flex items-baseline gap-1">
@@ -889,7 +1129,9 @@ const dateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
                       <span class="text-xs text-neutral-500">חלבון לא ידוע</span>
                     </template>
                     <template v-else>
-                      <span class="ec-num text-sm" style="color: var(--ec-violet)">{{ log.protein }}</span>
+                      <span class="ec-num text-sm" style="color: var(--ec-violet)">{{
+                        log.protein
+                      }}</span>
                       <span class="text-xs text-neutral-500">גר' חלבון</span>
                     </template>
                   </span>

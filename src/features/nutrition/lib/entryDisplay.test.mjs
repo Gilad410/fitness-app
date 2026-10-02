@@ -22,6 +22,18 @@ test('a food entry with no embedded food row (e.g. RLS-hidden) falls back to an 
   assert.equal(entryDisplayName(entry), '')
 })
 
+test('trainee personal food: display name clearly marks it as personal', () => {
+  const entry = {
+    trainee_custom_food_id: 'personal-1',
+    grams: 85,
+    food: null,
+    restaurant_food_item: null,
+    trainee_custom_food: { name: 'הדייסה שלי' },
+  }
+  assert.equal(entryDisplayName(entry), 'הדייסה שלי (אישי)')
+  assert.equal(entryQuantityLabel(entry), '85 גרם')
+})
+
 // ---------------------------------------------------------------------
 // A restaurant-item entry (servings-based)
 // ---------------------------------------------------------------------
@@ -29,15 +41,23 @@ test('restaurant item: display name is "<item> (<chain>)"', () => {
   const entry = {
     restaurant_food_item_id: 'r1',
     servings: 1,
-    restaurant_food_item: { item_name: 'ביג מק', chain_name: 'מקדונלד\'ס', serving_description: 'מנה רגילה' },
+    restaurant_food_item: {
+      item_name: 'ביג מק',
+      chain_name: "מקדונלד'ס",
+      serving_description: 'מנה רגילה',
+    },
   }
-  assert.equal(entryDisplayName(entry), 'ביג מק (מקדונלד\'ס)')
+  assert.equal(entryDisplayName(entry), "ביג מק (מקדונלד'ס)")
 })
 
 test('restaurant item: quantity label uses מנה (singular) for exactly 1 serving', () => {
   const entry = {
     servings: 1,
-    restaurant_food_item: { item_name: 'ביג מק', chain_name: 'מקדונלד\'ס', serving_description: 'מנה רגילה' },
+    restaurant_food_item: {
+      item_name: 'ביג מק',
+      chain_name: "מקדונלד'ס",
+      serving_description: 'מנה רגילה',
+    },
   }
   assert.equal(entryQuantityLabel(entry), '1 מנה · מנה רגילה')
 })
@@ -45,7 +65,11 @@ test('restaurant item: quantity label uses מנה (singular) for exactly 1 servi
 test('restaurant item: quantity label uses מנות (plural) for a non-1 integer serving count', () => {
   const entry = {
     servings: 2,
-    restaurant_food_item: { item_name: 'ביג מק', chain_name: 'מקדונלד\'ס', serving_description: 'מנה רגילה' },
+    restaurant_food_item: {
+      item_name: 'ביג מק',
+      chain_name: "מקדונלד'ס",
+      serving_description: 'מנה רגילה',
+    },
   }
   assert.equal(entryQuantityLabel(entry), '2 מנות · מנה רגילה')
 })
@@ -53,7 +77,11 @@ test('restaurant item: quantity label uses מנות (plural) for a non-1 integer
 test('restaurant item: a fractional serving count is shown with one decimal, not as an integer', () => {
   const entry = {
     servings: 0.5,
-    restaurant_food_item: { item_name: 'קפוצ׳ינו', chain_name: 'ארומה', serving_description: 'גדול' },
+    restaurant_food_item: {
+      item_name: 'קפוצ׳ינו',
+      chain_name: 'ארומה',
+      serving_description: 'גדול',
+    },
   }
   assert.equal(entryQuantityLabel(entry), '0.5 מנות · גדול')
 })
@@ -82,7 +110,11 @@ test('a barcode entry is checked before the restaurant/food branches -- a malfor
     barcode: '4006381333931',
     barcode_product_name: 'דגני בוקר לדוגמה',
     grams: 40,
-    restaurant_food_item: { item_name: 'should not be used', chain_name: 'x', serving_description: 'x' },
+    restaurant_food_item: {
+      item_name: 'should not be used',
+      chain_name: 'x',
+      serving_description: 'x',
+    },
   }
   assert.equal(entryDisplayName(entry), 'דגני בוקר לדוגמה (ברקוד)')
 })

@@ -3,6 +3,7 @@ import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useOwnerCoachesStore } from '../store/ownerCoaches'
 import { useAuthStore } from '../../../stores/auth'
+import { useFoodReferenceCatalogStore } from '../../nutrition/store/foodReferenceCatalog'
 import { performOwnerLogout } from '../lib/ownerLogout'
 import {
   validateInviteEmail,
@@ -29,6 +30,7 @@ import {
 // comment). RTL Hebrew throughout, matching the rest of the app.
 const store = useOwnerCoachesStore()
 const authStore = useAuthStore()
+const foodCatalogStore = useFoodReferenceCatalogStore()
 const router = useRouter()
 
 const searchTerm = ref('')
@@ -36,6 +38,51 @@ const inviteEmail = ref('')
 const inviteSubmitting = ref(false)
 const inviteError = ref('')
 const inviteSuccess = ref('')
+
+const globalFoodName = ref('')
+const globalFoodCalories = ref('')
+const globalFoodProtein = ref('')
+const globalFoodSaving = ref(false)
+const globalFoodError = ref('')
+const globalFoodSuccess = ref('')
+
+async function addGlobalFood() {
+  globalFoodError.value = ''
+  globalFoodSuccess.value = ''
+  const name = globalFoodName.value.trim()
+  const calories = Number(globalFoodCalories.value)
+  const protein = Number(globalFoodProtein.value)
+  if (
+    !name ||
+    !Number.isFinite(calories) ||
+    calories <= 0 ||
+    calories > 900 ||
+    !Number.isFinite(protein) ||
+    protein < 0 ||
+    protein > 100
+  ) {
+    globalFoodError.value = 'יש למלא שם, קלוריות וחלבון תקינים ל-100 גרם.'
+    return
+  }
+  globalFoodSaving.value = true
+  try {
+    await foodCatalogStore.createGlobal({
+      name,
+      caloriesPer100g: calories,
+      proteinPer100g: protein,
+    })
+    globalFoodName.value = ''
+    globalFoodCalories.value = ''
+    globalFoodProtein.value = ''
+    globalFoodSuccess.value = 'המאכל נוסף למאגר הכללי וזמין בכל האפליקציה.'
+  } catch (error) {
+    globalFoodError.value = error.message?.includes('already exists')
+      ? 'כבר קיים מאכל בשם הזה במאגר הכללי.'
+      : 'הוספת המאכל נכשלה. יש לנסות שוב.'
+  } finally {
+    globalFoodSaving.value = false
+  }
+}
 
 // Confirmation + reason state for a pending status change -- one at a
 // time, keyed by the coach being acted on, so a second click on a
@@ -312,6 +359,75 @@ async function confirmStatusChange() {
         </button>
       </div>
     </div>
+
+    <form
+      class="flex flex-col gap-3 rounded-xl border border-brand-green/30 bg-brand-green/5 p-4"
+      aria-labelledby="global-food-heading"
+      @submit.prevent="addGlobalFood"
+    >
+      <div>
+        <h2 id="global-food-heading" class="text-lg font-bold text-brand-black">
+          הוספת מאכל למאגר הכללי
+        </h2>
+        <p class="text-sm text-neutral-600">
+          רק חשבון הבעלים יכול להוסיף מאכל שיהיה זמין לכל המאמנים והמתאמנים.
+        </p>
+      </div>
+      <div class="grid gap-3 sm:grid-cols-3">
+        <label class="flex flex-col gap-1">
+          <span class="text-sm text-neutral-600">שם המאכל</span>
+          <input
+            v-model="globalFoodName"
+            type="text"
+            required
+            class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
+          />
+        </label>
+        <label class="flex flex-col gap-1">
+          <span class="text-sm text-neutral-600">קלוריות ל-100 גרם</span>
+          <input
+            v-model="globalFoodCalories"
+            type="number"
+            inputmode="decimal"
+            min="0.1"
+            max="900"
+            step="0.1"
+            required
+            dir="ltr"
+            class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+          />
+        </label>
+        <label class="flex flex-col gap-1">
+          <span class="text-sm text-neutral-600">חלבון ל-100 גרם</span>
+          <input
+            v-model="globalFoodProtein"
+            type="number"
+            inputmode="decimal"
+            min="0"
+            max="100"
+            step="0.1"
+            required
+            dir="ltr"
+            class="rounded-lg border border-neutral-300 px-3 py-2 text-left focus:border-brand-green focus:outline-none"
+          />
+        </label>
+      </div>
+      <div class="flex flex-wrap items-center gap-3">
+        <button
+          type="submit"
+          :disabled="globalFoodSaving"
+          class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-green px-4 py-2 font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+        >
+          {{ globalFoodSaving ? 'שומר...' : 'הוספה למאגר הכללי' }}
+        </button>
+        <p v-if="globalFoodError" role="alert" class="text-sm text-status-red">
+          {{ globalFoodError }}
+        </p>
+        <p v-if="globalFoodSuccess" role="status" class="text-sm text-brand-green">
+          {{ globalFoodSuccess }}
+        </p>
+      </div>
+    </form>
 
     <!-- Counts -->
     <div class="grid grid-cols-3 gap-3">

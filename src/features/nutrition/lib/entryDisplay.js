@@ -27,6 +27,9 @@ export function entryDisplayName(entry) {
   if (entry.restaurant_food_item) {
     return `${entry.restaurant_food_item.item_name} (${entry.restaurant_food_item.chain_name})`
   }
+  if (entry.trainee_custom_food) {
+    return `${entry.trainee_custom_food.name} (אישי)`
+  }
   return entry.food?.name ?? ''
 }
 

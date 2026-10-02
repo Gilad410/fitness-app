@@ -48,7 +48,8 @@ export const useTraineeNutritionStore = defineStore('traineeNutrition', {
     // Only sums entries with a known protein value -- an entry logged
     // against a food with unset protein is excluded, not treated as 0
     // (matches the coach's nutritionLogs.js dailyProteinTotalFor).
-    dailyProteinTotalFor: (state) => (date) => dailyProteinTotal(state.logs, date, retentionCutoff.value),
+    dailyProteinTotalFor: (state) => (date) =>
+      dailyProteinTotal(state.logs, date, retentionCutoff.value),
 
     dailyProteinUnknownFor: (state) => (date) =>
       dailyHasUnknownProtein(state.logs, date, retentionCutoff.value),
@@ -68,7 +69,7 @@ export const useTraineeNutritionStore = defineStore('traineeNutrition', {
         const { data, error } = await supabase
           .from('trainee_nutrition_logs')
           .select(
-            '*, food:foods(name), restaurant_food_item:restaurant_food_items(item_name, chain_name, serving_description)',
+            '*, food:foods(name), trainee_custom_food:trainee_custom_foods(name), restaurant_food_item:restaurant_food_items(item_name, chain_name, serving_description)',
           )
           .order('logged_at', { ascending: false })
           .order('created_at', { ascending: false })
@@ -88,7 +89,15 @@ export const useTraineeNutritionStore = defineStore('traineeNutrition', {
     // exactly the matching grams (foodId/referenceFoodId) or servings
     // (restaurantFoodItemId). trainee_log_nutrition_entry() re-validates
     // all of this server-side regardless.
-    async addEntry({ loggedAt, foodId, referenceFoodId, restaurantFoodItemId, grams, servings }) {
+    async addEntry({
+      loggedAt,
+      foodId,
+      referenceFoodId,
+      restaurantFoodItemId,
+      traineeCustomFoodId,
+      grams,
+      servings,
+    }) {
       this.adding = true
       this.addError = null
       try {
@@ -96,6 +105,7 @@ export const useTraineeNutritionStore = defineStore('traineeNutrition', {
           p_food_id: foodId ?? null,
           p_reference_food_id: referenceFoodId ?? null,
           p_restaurant_food_item_id: restaurantFoodItemId ?? null,
+          p_trainee_custom_food_id: traineeCustomFoodId ?? null,
           p_grams: grams ?? null,
           p_servings: servings ?? null,
           p_logged_at: loggedAt,
@@ -186,6 +196,8 @@ const HEBREW_MESSAGES = {
     'יש לבחור פריט אחד לרישום.',
   'Exactly one of food, reference food, restaurant item, or barcode must be provided.':
     'יש לבחור פריט אחד לרישום.',
+  'Exactly one nutrition source must be provided.': 'יש לבחור פריט אחד לרישום.',
+  'Personal food not found.': 'המאכל האישי לא נמצא או אינו זמין.',
   'Servings must be a positive number.': 'כמות המנות חייבת להיות מספר חיובי.',
   'Restaurant item not found.': 'הפריט לא נמצא.',
   'Grams must be a positive number.': 'כמות הגרמים חייבת להיות מספר חיובי.',

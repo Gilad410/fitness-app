@@ -25,7 +25,8 @@ export const useNutritionLogsStore = defineStore('nutritionLogs', {
     // NutritionSection.vue keeps the clock running. Server-side RLS
     // (038_trainee_nutrition_log_retention.sql) remains the actual
     // enforcement -- this is a client-side courtesy layer on top of it.
-    logsFor: (state) => (traineeId) => retainedLogs(state.logsByTrainee[traineeId], retentionCutoff.value),
+    logsFor: (state) => (traineeId) =>
+      retainedLogs(state.logsByTrainee[traineeId], retentionCutoff.value),
 
     dailyTotalFor: (state) => (traineeId, date) =>
       dailyCaloriesTotal(state.logsByTrainee[traineeId], date, retentionCutoff.value),
@@ -63,7 +64,9 @@ export const useNutritionLogsStore = defineStore('nutritionLogs', {
       this.error[traineeId] = null
       const { data, error } = await supabase
         .from('trainee_nutrition_logs')
-        .select('*, food:foods(name), restaurant_food_item:restaurant_food_items(item_name, chain_name, serving_description)')
+        .select(
+          '*, food:foods(name), trainee_custom_food:trainee_custom_foods(name), restaurant_food_item:restaurant_food_items(item_name, chain_name, serving_description)',
+        )
         .eq('trainee_id', traineeId)
         .order('logged_at', { ascending: false })
         .order('created_at', { ascending: false })
@@ -83,7 +86,9 @@ export const useNutritionLogsStore = defineStore('nutritionLogs', {
       const { data, error } = await supabase
         .from('trainee_nutrition_logs')
         .insert({ ...payload, trainee_id: traineeId, coach_id: authStore.user.id })
-        .select('*, food:foods(name), restaurant_food_item:restaurant_food_items(item_name, chain_name, serving_description)')
+        .select(
+          '*, food:foods(name), trainee_custom_food:trainee_custom_foods(name), restaurant_food_item:restaurant_food_items(item_name, chain_name, serving_description)',
+        )
         .single()
       if (error) throw error
 
