@@ -13,6 +13,7 @@ import { externalChainLinks } from '../../nutrition/config/externalChainLinks'
 import { useTraineeNutritionStore } from '../store/traineeNutrition'
 import { useTraineeCustomFoodsStore } from '../store/traineeCustomFoods'
 import TraineeNutritionPlanSection from '../components/TraineeNutritionPlanSection.vue'
+import TraineeNutritionDateStrip from '../components/TraineeNutritionDateStrip.vue'
 import BarcodeFoodEntry from '../../nutrition/components/BarcodeFoodEntry.vue'
 import { useFoodsStore } from '../../nutrition/store/foods'
 import { useFoodReferenceCatalogStore } from '../../nutrition/store/foodReferenceCatalog'
@@ -559,15 +560,9 @@ const dateFormatter = new Intl.DateTimeFormat('he-IL', { dateStyle: 'long' })
         <section
           class="mb-6 flex flex-col gap-4 rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm sm:p-6"
         >
-          <div class="flex flex-wrap items-end justify-between gap-4">
-            <label class="flex flex-col gap-1">
-              <span class="text-sm text-neutral-600">תאריך</span>
-              <input
-                v-model="selectedDate"
-                type="date"
-                class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
-              />
-            </label>
+          <TraineeNutritionDateStrip v-model="selectedDate" :today="todayIsoDate()" />
+
+          <div class="flex flex-wrap items-center justify-between gap-4">
             <div v-if="!showAddEntry && !showBarcodeEntry" class="flex flex-wrap gap-2">
               <button
                 type="button"
