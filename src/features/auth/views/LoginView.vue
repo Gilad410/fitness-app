@@ -170,5 +170,6 @@ async function handleSubmit() {
       מתאמן/ת שקיבל/ה הזמנה מהמאמן/ת?
       <RouterLink to="/trainee/login" class="text-brand-green-dark hover:underline">כניסת מתאמנים</RouterLink>
     </p>
+    <RouterLink to="/privacy" class="text-xs text-neutral-500 underline">מדיניות פרטיות</RouterLink>
   </section>
 </template>

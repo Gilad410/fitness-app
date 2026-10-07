@@ -12,8 +12,6 @@
  * here -- both noted inline below.
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;800&display=swap');
-
 .tempo-preview {
   --tp-navy: #12153a;
   --tp-blue: #2f6fed; /* calories -- one metric, one color */
@@ -27,7 +25,7 @@
   --tp-ink-soft: #5b6178; /* secondary text on light surfaces */
   --tp-border: #e2e5f5;
 
-  font-family: 'Heebo', 'Segoe UI', system-ui, sans-serif;
+  font-family: 'Heebo', Arial, 'Segoe UI', system-ui, sans-serif;
   background: var(--tp-lavender);
   color: var(--tp-navy);
   direction: rtl;

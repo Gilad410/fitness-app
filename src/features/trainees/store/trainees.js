@@ -53,7 +53,12 @@ export const useTraineesStore = defineStore('trainees', {
         .insert({ ...payload, coach_id: authStore.user.id })
         .select()
         .single()
-      if (error) throw error
+      if (error) {
+        if (error.message?.includes('Trainee limit reached')) {
+          throw new Error('הגעת למכסת המתאמנים שלך. יש לפנות לבעל המערכת להגדלת המכסה.')
+        }
+        throw error
+      }
       this.trainees.unshift(data)
       return data
     },

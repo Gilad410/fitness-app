@@ -3,6 +3,8 @@ import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '../../../stores/auth'
 import { supabase } from '../../../lib/supabaseClient'
+import PrivacyConsent from '../../privacy/components/PrivacyConsent.vue'
+import { PRIVACY_POLICY_VERSION, recordPrivacyAcceptance } from '../../privacy/privacy'
 
 // Minimum password length -- mirrors src/features/auth/views/SignupView.vue's
 // existing `minlength="6"`, i.e. the same Supabase project password
@@ -48,6 +50,7 @@ const newPassword = ref('')
 const confirmNewPassword = ref('')
 const settingPassword = ref(false)
 const setPasswordError = ref('')
+const privacyAccepted = ref(false)
 
 onMounted(async () => {
   await authStore.init()
@@ -62,6 +65,7 @@ function validateNewPassword() {
     return `הסיסמה חייבת לכלול לפחות ${MIN_PASSWORD_LENGTH} תווים.`
   }
   if (newPassword.value !== confirmNewPassword.value) return 'הסיסמאות אינן תואמות.'
+  if (!privacyAccepted.value) return 'יש לקרוא ולאשר את מדיניות הפרטיות.'
   return ''
 }
 
@@ -81,6 +85,7 @@ async function handleSetPassword() {
   }
   settingPassword.value = true
   try {
+    await recordPrivacyAcceptance()
     const { error: updateError } = await supabase.auth.updateUser({ password: newPassword.value })
     if (updateError) throw updateError
     await authStore.signOut()
@@ -99,6 +104,7 @@ function validate() {
     return `הסיסמה חייבת לכלול לפחות ${MIN_PASSWORD_LENGTH} תווים.`
   }
   if (password.value !== confirmPassword.value) return 'הסיסמאות אינן תואמות.'
+  if (!privacyAccepted.value) return 'יש לקרוא ולאשר את מדיניות הפרטיות.'
   return ''
 }
 
@@ -143,7 +149,12 @@ async function handleSubmit() {
     // opaque lookup key -- nothing here asserts it's valid, that the
     // email matches, or that anything is linked. The database trigger is
     // the sole authority on all of that (see the comment above).
-    await authStore.signUpTrainee(email.value.trim(), password.value, token.value)
+    await authStore.signUpTrainee(
+      email.value.trim(),
+      password.value,
+      token.value,
+      PRIVACY_POLICY_VERSION,
+    )
     submitted.value = true
   } catch (err) {
     error.value = safeErrorMessage(err)
@@ -193,6 +204,8 @@ async function handleSubmit() {
             class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
           />
         </label>
+
+        <PrivacyConsent v-model="privacyAccepted" />
 
         <p v-if="setPasswordError" class="text-sm text-status-red">{{ setPasswordError }}</p>
 
@@ -356,6 +369,8 @@ async function handleSubmit() {
           </button>
         </div>
       </label>
+
+      <PrivacyConsent v-model="privacyAccepted" />
 
       <p v-if="error" class="text-sm text-status-red">{{ error }}</p>
 

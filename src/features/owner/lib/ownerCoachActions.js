@@ -155,6 +155,21 @@ export function noteEditIsDirty(note, coach) {
   return emptyToNull(note) !== (coach?.owner_note ?? null)
 }
 
+export function validateTraineeLimit(value, currentCount = 0) {
+  const limit = Number(value)
+  if (!Number.isInteger(limit) || limit < 0 || limit > 100000) {
+    return 'יש להזין מכסת מתאמנים שלמה בין 0 ל-100,000.'
+  }
+  if (limit < Number(currentCount ?? 0)) {
+    return `לא ניתן לקבוע מכסה נמוכה ממספר המתאמנים הקיים (${currentCount}).`
+  }
+  return ''
+}
+
+export function traineeLimitIsDirty(value, coach) {
+  return Number(value) !== Number(coach?.trainee_limit)
+}
+
 // ---------------------------------------------------------------------
 // Pending invitations
 // ---------------------------------------------------------------------

@@ -18,6 +18,8 @@ import {
   formatDateHe,
   toDateString,
   NOTE_MAX_LENGTH,
+  validateTraineeLimit,
+  traineeLimitIsDirty,
 } from './ownerCoachActions.js'
 
 test('validateInviteEmail: rejects empty/whitespace-only', () => {
@@ -244,6 +246,24 @@ test('noteEditIsDirty: whitespace-only edit of an empty note is not a change', (
 test('noteEditIsDirty: clearing an existing note IS a change', () => {
   assert.equal(noteEditIsDirty('', STORED), true)
   assert.equal(noteEditIsDirty('הערה', STORED), false)
+})
+
+test('validateTraineeLimit: accepts whole limits at or above current usage', () => {
+  assert.equal(validateTraineeLimit(3, 3), '')
+  assert.equal(validateTraineeLimit('4', 3), '')
+  assert.equal(validateTraineeLimit(0, 0), '')
+})
+
+test('validateTraineeLimit: rejects reductions below usage and invalid values', () => {
+  assert.notEqual(validateTraineeLimit(2, 3), '')
+  assert.notEqual(validateTraineeLimit(-1, 0), '')
+  assert.notEqual(validateTraineeLimit(1.5, 0), '')
+  assert.notEqual(validateTraineeLimit('not-a-number', 0), '')
+})
+
+test('traineeLimitIsDirty: compares numeric form values to the saved limit', () => {
+  assert.equal(traineeLimitIsDirty('3', { trainee_limit: 3 }), false)
+  assert.equal(traineeLimitIsDirty('4', { trainee_limit: 3 }), true)
 })
 
 // ---------------------------------------------------------------------

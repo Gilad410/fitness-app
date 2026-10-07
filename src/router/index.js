@@ -42,6 +42,7 @@ const CoachPendingApprovalView = () => import('../features/auth/views/CoachPendi
 const OwnerCoachesView = () => import('../features/owner/views/OwnerCoachesView.vue')
 const OwnerMfaSetupView = () => import('../features/auth/views/OwnerMfaSetupView.vue')
 const OwnerMfaChallengeView = () => import('../features/auth/views/OwnerMfaChallengeView.vue')
+const PrivacyPolicyView = () => import('../features/privacy/views/PrivacyPolicyView.vue')
 import { useAuthStore } from '../stores/auth'
 import { clearCoachDataCaches } from '../features/owner/lib/clearCoachDataCaches'
 import { resolveCoachAccessRoute } from '../features/auth/lib/coachAccessRouting'
@@ -75,6 +76,7 @@ const router = createRouter({
     // guard otherwise governs. Same reasoning as /trainee/join above.
     { path: '/forgot-password', name: 'forgot-password', component: ForgotPasswordView },
     { path: '/reset-password', name: 'reset-password', component: ResetPasswordView },
+    { path: '/privacy', name: 'privacy', component: PrivacyPolicyView },
     {
       path: '/trainees',
       name: 'trainees',

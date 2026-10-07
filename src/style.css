@@ -1,9 +1,9 @@
-/* Heebo -- the "Tempo" visual direction's one type family (see
-   src/features/designPreview/, the isolated source of truth this
-   rollout follows). Carried with real weight range (400/600/800) rather
-   than pairing in a second Latin-only display face -- @import must
-   precede every other rule, including Tailwind's own, per the CSS spec. */
-@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;800&display=swap');
+/* Keep the approved Hebrew typeface inside the application bundle so a
+   visitor's browser never contacts a third-party font service. */
+@import '@fontsource/heebo/400.css';
+@import '@fontsource/heebo/500.css';
+@import '@fontsource/heebo/600.css';
+@import '@fontsource/heebo/800.css';
 @import 'tailwindcss';
 
 /*
@@ -13,7 +13,7 @@
  * so no custom spacing tokens are needed here.
  */
 @theme {
-  --font-sans: 'Heebo', 'Rubik', 'Segoe UI', system-ui, sans-serif;
+  --font-sans: 'Heebo', Arial, 'Segoe UI', system-ui, sans-serif;
 
   --color-brand-black: #0a0a0a;
   --color-brand-white: #ffffff;

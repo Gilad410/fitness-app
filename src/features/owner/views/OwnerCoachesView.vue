@@ -12,6 +12,8 @@ import {
   validateOwnerNote,
   paymentEditIsDirty,
   noteEditIsDirty,
+  validateTraineeLimit,
+  traineeLimitIsDirty,
   emptyToNull,
   accessStatusLabelHe,
   paymentStatusLabelHe,
@@ -102,6 +104,9 @@ const paymentSuccess = ref('')
 const noteDraft = ref('')
 const noteError = ref('')
 const noteSuccess = ref('')
+const traineeLimitDraft = ref('0')
+const traineeLimitError = ref('')
+const traineeLimitSuccess = ref('')
 
 // Pending-invitation actions, keyed by invitation id so two rows never
 // share a confirmation or a message.
@@ -167,6 +172,9 @@ const paymentDirty = computed(() =>
 const noteDirty = computed(() =>
   editingCoach.value ? noteEditIsDirty(noteDraft.value, editingCoach.value) : false,
 )
+const traineeLimitDirty = computed(() =>
+  editingCoach.value ? traineeLimitIsDirty(traineeLimitDraft.value, editingCoach.value) : false,
+)
 
 async function handleInvite() {
   inviteError.value = ''
@@ -204,10 +212,13 @@ function openEditor(coach) {
     paidThrough: coach.paid_through ?? '',
   }
   noteDraft.value = coach.owner_note ?? ''
+  traineeLimitDraft.value = String(coach.trainee_limit ?? 0)
   paymentError.value = ''
   paymentSuccess.value = ''
   noteError.value = ''
   noteSuccess.value = ''
+  traineeLimitError.value = ''
+  traineeLimitSuccess.value = ''
 }
 
 function closeEditor() {
@@ -216,6 +227,8 @@ function closeEditor() {
   paymentSuccess.value = ''
   noteError.value = ''
   noteSuccess.value = ''
+  traineeLimitError.value = ''
+  traineeLimitSuccess.value = ''
 }
 
 async function savePayment() {
@@ -256,6 +269,27 @@ async function saveNote() {
     if (applied) noteSuccess.value = 'ההערה נשמרה.'
   } catch (err) {
     noteError.value = err.message || 'שמירת ההערה נכשלה.'
+  }
+}
+
+async function saveTraineeLimit() {
+  traineeLimitError.value = ''
+  traineeLimitSuccess.value = ''
+  if (!editingFor.value || !editingCoach.value) return
+  const validationError = validateTraineeLimit(
+    traineeLimitDraft.value,
+    editingCoach.value.trainee_count,
+  )
+  if (validationError) {
+    traineeLimitError.value = validationError
+    return
+  }
+  try {
+    const limit = Number(traineeLimitDraft.value)
+    const applied = await store.setTraineeLimit(editingFor.value.userId, limit)
+    if (applied) traineeLimitSuccess.value = 'מכסת המתאמנים נשמרה.'
+  } catch (err) {
+    traineeLimitError.value = err.message || 'שמירת מכסת המתאמנים נכשלה.'
   }
 }
 
@@ -667,7 +701,9 @@ async function confirmStatusChange() {
             >
               <td class="p-2 font-medium text-brand-black">{{ coach.email }}</td>
               <td class="p-2 text-neutral-600">{{ formatDate(coach.created_at) }}</td>
-              <td class="p-2 text-neutral-600">{{ coach.trainee_count }}</td>
+              <td class="p-2 text-neutral-600">
+                {{ coach.trainee_count }} מתוך {{ coach.trainee_limit }}
+              </td>
               <td class="p-2">
                 <span
                   class="rounded-full px-2 py-1 text-xs font-medium"
@@ -712,10 +748,10 @@ async function confirmStatusChange() {
                     type="button"
                     :disabled="!!store.pendingActionFor[coach.user_id]"
                     class="rounded-lg border border-neutral-300 px-2 py-1 text-xs font-medium text-brand-black hover:bg-neutral-100 disabled:opacity-60"
-                    :aria-label="`עריכת תשלום והערה עבור ${coach.email}`"
+                    :aria-label="`עריכת תשלום, מכסה והערה עבור ${coach.email}`"
                     @click="openEditor(coach)"
                   >
-                    תשלום והערה
+                    תשלום ומכסה
                   </button>
                 </div>
               </td>
@@ -744,7 +780,7 @@ async function confirmStatusChange() {
             <dt>הצטרפות</dt>
             <dd>{{ formatDate(coach.created_at) }}</dd>
             <dt>מתאמנים</dt>
-            <dd>{{ coach.trainee_count }}</dd>
+            <dd>{{ coach.trainee_count }} מתוך {{ coach.trainee_limit }}</dd>
             <dt>תשלום</dt>
             <dd>{{ PAYMENT_LABEL(coach.payment_status) }}</dd>
             <dt>בתוקף עד</dt>
@@ -782,10 +818,10 @@ async function confirmStatusChange() {
               type="button"
               :disabled="!!store.pendingActionFor[coach.user_id]"
               class="rounded-lg border border-neutral-300 px-3 py-1.5 text-xs font-medium text-brand-black disabled:opacity-60"
-              :aria-label="`עריכת תשלום והערה עבור ${coach.email}`"
+              :aria-label="`עריכת תשלום, מכסה והערה עבור ${coach.email}`"
               @click="openEditor(coach)"
             >
-              תשלום והערה
+              תשלום ומכסה
             </button>
           </div>
         </div>
@@ -854,7 +890,7 @@ async function confirmStatusChange() {
     >
       <div class="my-8 w-full max-w-md rounded-xl bg-brand-white p-5">
         <h2 id="coach-editor-heading" class="mb-1 text-lg font-bold text-brand-black">
-          תשלום והערה פרטית
+          תשלום, מכסת מתאמנים והערה פרטית
         </h2>
         <p class="mb-4 break-all text-sm text-neutral-600">{{ editingFor.email }}</p>
 
@@ -901,6 +937,43 @@ async function confirmStatusChange() {
               class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
             >
               {{ editBusy ? 'שומר...' : 'שמירת פרטי תשלום' }}
+            </button>
+          </div>
+        </form>
+
+        <form
+          class="mb-5 flex flex-col gap-3 border-b border-neutral-200 pb-5"
+          @submit.prevent="saveTraineeLimit"
+        >
+          <label class="flex flex-col gap-1">
+            <span class="text-sm text-neutral-600">מכסת מתאמנים ששולמה</span>
+            <input
+              v-model="traineeLimitDraft"
+              type="number"
+              inputmode="numeric"
+              min="0"
+              max="100000"
+              step="1"
+              required
+              class="rounded-lg border border-neutral-300 px-3 py-2 focus:border-brand-green focus:outline-none"
+            />
+          </label>
+          <p class="text-xs text-neutral-500">
+            כרגע בשימוש: {{ editingCoach?.trainee_count ?? 0 }}. מתאמן בארכיון אינו תופס מקום.
+          </p>
+          <p v-if="traineeLimitError" class="text-sm text-status-red" role="alert">
+            {{ traineeLimitError }}
+          </p>
+          <p v-else-if="traineeLimitSuccess" class="text-sm text-brand-green" role="status">
+            {{ traineeLimitSuccess }}
+          </p>
+          <div class="flex justify-end">
+            <button
+              type="submit"
+              :disabled="editBusy || !traineeLimitDirty"
+              class="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-brand-white hover:bg-brand-green-dark disabled:opacity-60"
+            >
+              {{ editBusy ? 'שומר...' : 'שמירת המכסה' }}
             </button>
           </div>
         </form>

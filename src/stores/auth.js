@@ -124,12 +124,16 @@ export const useAuthStore = defineStore('auth', {
     // normal case is no session yet (confirmation required), and this.user
     // is deliberately left untouched so the app doesn't believe the
     // browser is "logged in" before the account is even confirmed.
-    async signUpTrainee(email, password, inviteToken) {
+    async signUpTrainee(email, password, inviteToken, privacyPolicyVersion = null) {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          data: { trainee_invite_token: inviteToken },
+          data: {
+            trainee_invite_token: inviteToken,
+            privacy_policy_version: privacyPolicyVersion,
+            privacy_accepted_at: privacyPolicyVersion ? new Date().toISOString() : null,
+          },
           // Sends the trainee back to their own login screen (not the
           // general coach /login) after they click the confirmation link
           // in the email, instead of Supabase's default Site URL. This

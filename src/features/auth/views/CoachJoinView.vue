@@ -3,6 +3,8 @@ import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../../stores/auth'
 import { supabase } from '../../../lib/supabaseClient'
+import PrivacyConsent from '../../privacy/components/PrivacyConsent.vue'
+import { recordPrivacyAcceptance } from '../../privacy/privacy'
 
 // Onboarding landing page for an owner-issued coach invitation
 // (owner_get_or_invite_coach / link_coach_on_email_confirmed,
@@ -27,6 +29,7 @@ const showNewPassword = ref(false)
 const showConfirmNewPassword = ref(false)
 const settingPassword = ref(false)
 const setPasswordError = ref('')
+const privacyAccepted = ref(false)
 
 onMounted(async () => {
   await authStore.init()
@@ -41,6 +44,7 @@ function validateNewPassword() {
     return `הסיסמה חייבת לכלול לפחות ${MIN_PASSWORD_LENGTH} תווים.`
   }
   if (newPassword.value !== confirmNewPassword.value) return 'הסיסמאות אינן תואמות.'
+  if (!privacyAccepted.value) return 'יש לקרוא ולאשר את מדיניות הפרטיות.'
   return ''
 }
 
@@ -63,6 +67,7 @@ async function handleSetPassword() {
   }
   settingPassword.value = true
   try {
+    await recordPrivacyAcceptance()
     const { error: updateError } = await supabase.auth.updateUser({ password: newPassword.value })
     if (updateError) throw updateError
     await authStore.signOut()
@@ -197,6 +202,8 @@ async function handleSetPassword() {
             </button>
           </div>
         </label>
+
+        <PrivacyConsent v-model="privacyAccepted" />
 
         <p v-if="setPasswordError" class="text-sm text-status-red">{{ setPasswordError }}</p>
 

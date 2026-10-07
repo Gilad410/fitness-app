@@ -165,6 +165,23 @@ export const useOwnerCoachesStore = defineStore('ownerCoaches', {
       }
     },
 
+    async setTraineeLimit(coachUserId, traineeLimit) {
+      if (this.pendingActionFor[coachUserId]) return false
+      this.pendingActionFor = { ...this.pendingActionFor, [coachUserId]: true }
+      try {
+        const { error } = await supabase.rpc('owner_set_coach_trainee_limit', {
+          p_coach_user_id: coachUserId,
+          p_trainee_limit: traineeLimit,
+        })
+        if (error) throw error
+        const coach = this.coaches.find((c) => c.user_id === coachUserId)
+        if (coach) coach.trainee_limit = traineeLimit
+        return true
+      } finally {
+        this.pendingActionFor = omitKey(this.pendingActionFor, coachUserId)
+      }
+    },
+
     // The owner's private note. Same guarantee as setPaymentStatus: no
     // access_status involvement on either side of the wire. The server
     // normalizes blank/whitespace to NULL, so the local row mirrors that
