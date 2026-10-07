@@ -14,10 +14,10 @@ import { PRIVACY_POLICY_VERSION } from '../privacy'
       <section class="mt-8 space-y-3 leading-relaxed">
         <h2 class="text-xl font-bold">מי מפעיל את השירות</h2>
         <p>
-          Fitness App היא פלטפורמה לניהול אימונים ותזונה עבור מאמנים ומתאמנים. לפניות פרטיות,
-          עיון, תיקון או מחיקה ניתן לפנות לכתובת
-          <a class="text-brand-green underline" href="mailto:privacy@fitness-app.online">
-            privacy@fitness-app.online
+          השירות Fitness App מופעל בידי גילעד מכלוף, בעל השליטה במידע. לפניות בנושא פרטיות,
+          עיון, תיקון או מחיקה ניתן לפנות לכתובת האימייל הפעילה של מפעיל השירות:
+          <a class="text-brand-green underline" href="mailto:giladma2006@gmail.com">
+            giladma2006@gmail.com
           </a>.
         </p>
       </section>
