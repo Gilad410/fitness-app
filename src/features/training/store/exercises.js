@@ -135,6 +135,13 @@ export const useWorkoutExercisesStore = defineStore('workoutExercises', {
       const exercises = this.exercisesByWorkout[workoutId] ?? []
       const current = exercises.find((e) => e.id === exerciseId)
 
+      // A logged workout is permanent trainee history. Check before touching
+      // Storage so a blocked row deletion does not erase its coaching video.
+      const { data: loggedSet, error: historyError } = await supabase
+        .from('trainee_workout_set_logs').select('id').eq('exercise_id', exerciseId).limit(1)
+      if (historyError) throw new Error('לא ניתן לבדוק את היסטוריית התרגיל כרגע. התרגיל לא נמחק.')
+      if (loggedSet.length) throw new Error('יש לתרגיל ביצועים שמורים. לא ניתן למחוק אותו בלי למחוק היסטוריית אימון.')
+
       if (current?.video_storage_path) {
         const { error: removeVideoError } = await supabase.storage
           .from(VIDEO_BUCKET)
@@ -152,7 +159,7 @@ export const useWorkoutExercisesStore = defineStore('workoutExercises', {
         // silently orphaned by an unrelated exercise-management action.
         if (error.code === '23503') {
           throw new Error(
-            'לתרגיל זה יש סרטון ביצוע שהעלה המתאמן/ת. יש למחוק את סרטון הביצוע לפני מחיקת התרגיל.',
+            'לתרגיל יש היסטוריית ביצועים או סרטון ביצוע של המתאמן/ת, ולכן לא ניתן למחוק אותו.',
           )
         }
         throw error
