@@ -78,6 +78,7 @@ export const useTrainingWorkoutsStore = defineStore('trainingWorkouts', {
 
     async remove(programId, workoutId) {
       const { error } = await supabase.from('trainee_program_workouts').delete().eq('id', workoutId)
+      if (error?.code === '23503') throw new Error('לא ניתן למחוק אימון שכבר נשמרה עבורו היסטוריית ביצועים.')
       if (error) throw error
 
       const workouts = this.workoutsByProgram[programId] ?? []

@@ -4,6 +4,7 @@ import { useWorkoutExercisesStore, validateExerciseVideoFile } from '../store/ex
 import { useExerciseSubmissionsStore } from '../store/exerciseSubmissions'
 import { useExerciseReferenceCatalogStore } from '../store/exerciseReferenceCatalog'
 import { EXERCISE_CATEGORIES } from '../config/exerciseCategories'
+import CoachWorkoutHistory from './CoachWorkoutHistory.vue'
 
 const props = defineProps({
   workoutId: { type: String, required: true },
@@ -1066,5 +1067,6 @@ async function move(exerciseId, direction) {
         </template>
       </li>
     </ul>
+    <CoachWorkoutHistory :workout-id="workoutId" :trainee-id="traineeId" :exercises="exercises" />
   </div>
 </template>

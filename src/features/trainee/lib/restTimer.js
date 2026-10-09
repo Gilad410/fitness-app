@@ -60,6 +60,7 @@ export const restState = reactive({
   total: 0,
   exerciseName: '',
   exerciseId: null,
+  startedCount: 0,
 })
 
 let handle = null
@@ -80,6 +81,7 @@ export function startRest(exercise) {
   restState.exerciseId = exercise?.id ?? null
   restState.running = true
   restState.finished = false
+  restState.startedCount += 1
 
   handle = setInterval(() => {
     restState.remaining -= 1

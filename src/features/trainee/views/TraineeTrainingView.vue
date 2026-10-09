@@ -6,7 +6,7 @@
 // re-mounted and re-fetched on every swipe.
 defineOptions({ name: 'TraineeTrainingView' })
 
-import { onMounted, reactive, ref } from 'vue'
+import { computed, onActivated, onDeactivated, onMounted, onUnmounted, reactive, ref } from 'vue'
 import TraineeLayout from '../layouts/TraineeLayout.vue'
 import { useTraineeTrainingProgramStore } from '../store/traineeTrainingProgram'
 import {
@@ -15,6 +15,9 @@ import {
 } from '../store/traineeExerciseSubmissions'
 import { workoutDisplayLabel } from '../../training/config/workoutDisplay'
 import { startRest, normalizeRestSeconds, restState } from '../lib/restTimer'
+import { useWorkoutSessionsStore } from '../store/workoutSessions'
+import { formatWorkoutDuration, workoutSummary } from '../lib/workoutSummary'
+import WorkoutSetEntry from '../components/WorkoutSetEntry.vue'
 
 // Read-only trainee view of their own active training program
 // (public.trainee_get_active_training_program(), 023_trainee_training_access.sql).
@@ -33,6 +36,47 @@ import { startRest, normalizeRestSeconds, restState } from '../lib/restTimer'
 // that video is the trainee's own to manage.
 const programStore = useTraineeTrainingProgramStore()
 const submissionsStore = useTraineeExerciseSubmissionsStore()
+const workoutSessionsStore = useWorkoutSessionsStore()
+const expandedWorkoutId = ref(null)
+const workoutActionBusy = ref(false)
+const workoutActionError = ref('')
+const completedSession = ref(null)
+const now = ref(Date.now())
+let elapsedInterval
+const activeSession = computed(() => workoutSessionsStore.activeSession)
+const completedSets = computed(() => completedSession.value
+  ? workoutSessionsStore.setsForSession(completedSession.value.id) : [])
+const completedSummary = computed(() => workoutSummary(completedSession.value, completedSets.value))
+
+function elapsedFor(session) {
+  return formatWorkoutDuration(Math.floor((now.value - Date.parse(session.started_at)) / 1000))
+}
+
+async function startWorkout(workout) {
+  workoutActionError.value = ''
+  workoutActionBusy.value = true
+  try {
+    await workoutSessionsStore.start(workout.id)
+    expandedWorkoutId.value = workout.id
+  } catch (err) {
+    workoutActionError.value = err.message
+  } finally {
+    workoutActionBusy.value = false
+  }
+}
+
+async function finishWorkout() {
+  if (!activeSession.value) return
+  workoutActionError.value = ''
+  workoutActionBusy.value = true
+  try {
+    completedSession.value = await workoutSessionsStore.finish(activeSession.value.id)
+  } catch (err) {
+    workoutActionError.value = err.message
+  } finally {
+    workoutActionBusy.value = false
+  }
+}
 
 // Mirrors the coach's own ExercisesSection.vue playback-error handling: a
 // <video> element failing to play (e.g. an expired signed URL) sets this
@@ -152,6 +196,10 @@ function retrySubmissionVideoLoad(exercise, storagePath) {
 }
 
 onMounted(() => {
+  elapsedInterval = setInterval(() => { now.value = Date.now() }, 1000)
+  workoutSessionsStore.loadMine().then(() => {
+    if (activeSession.value) expandedWorkoutId.value = activeSession.value.workout_id
+  }).catch(() => {})
   programStore
     .fetchActiveProgram()
     .then(async () => {
@@ -184,6 +232,13 @@ onMounted(() => {
       // surfaced via programStore.error below
     })
 })
+onActivated(() => {
+  now.value = Date.now()
+  clearInterval(elapsedInterval)
+  elapsedInterval = setInterval(() => { now.value = Date.now() }, 1000)
+})
+onDeactivated(() => clearInterval(elapsedInterval))
+onUnmounted(() => clearInterval(elapsedInterval))
 </script>
 
 <template>
@@ -192,6 +247,18 @@ onMounted(() => {
       <section class="mb-6 sm:mb-8">
         <h1 class="text-2xl font-bold text-brand-black sm:text-3xl">תוכנית האימונים שלי</h1>
         <p class="mt-1 text-sm text-neutral-600">התרגילים, הסטים והחזרות שהמאמן/ת הגדיר/ה עבורך</p>
+      </section>
+
+      <section v-if="activeSession && (programStore.error || !programStore.program?.workouts?.some((workout) => workout.id === activeSession.workout_id))" class="mb-4 rounded-2xl border border-brand-green/30 bg-brand-green/5 p-4">
+        <p class="font-semibold text-brand-black">אימון פעיל: {{ activeSession.workout_name }}</p>
+        <p class="mt-1 text-sm text-neutral-600">התוכנית השתנתה מאז שהתחלת. אפשר לסיים את האימון ולשמור את מה שתיעדת.</p>
+        <div class="mt-3 flex items-center justify-between gap-3">
+          <span class="ec-num text-xl text-brand-green-dark" dir="ltr">{{ elapsedFor(activeSession) }}</span>
+          <button type="button" :disabled="workoutActionBusy" class="min-h-11 rounded-lg bg-brand-green px-4 text-sm font-semibold text-brand-white disabled:opacity-60" @click="finishWorkout">
+            {{ workoutActionBusy ? 'שומר...' : 'סיים אימון' }}
+          </button>
+        </div>
+        <p v-if="workoutActionError" role="alert" class="mt-2 text-sm text-status-red">{{ workoutActionError }}</p>
       </section>
 
       <p v-if="programStore.loading && !programStore.loaded" role="status" class="text-neutral-600">טוען...</p>
@@ -222,6 +289,11 @@ onMounted(() => {
       </div>
 
       <template v-else>
+        <p v-if="workoutSessionsStore.error" role="alert" class="mb-4 text-sm text-status-red">
+          {{ workoutSessionsStore.error }}
+          <button type="button" class="underline" @click="workoutSessionsStore.loadMine()">נסה שוב</button>
+        </p>
+        <p v-if="workoutActionError" role="alert" class="mb-4 text-sm text-status-red">{{ workoutActionError }}</p>
         <section class="mb-6 rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm sm:p-6">
           <h2 class="text-xl font-bold text-brand-black">{{ programStore.program.name }}</h2>
           <p v-if="programStore.program.notes" class="mt-2 whitespace-pre-wrap text-sm text-neutral-600">
@@ -242,10 +314,43 @@ onMounted(() => {
             :key="workout.id"
             class="rounded-2xl border border-neutral-300 bg-brand-white p-5 shadow-sm sm:p-6"
           >
-            <h3 class="font-semibold text-brand-black">{{ workoutDisplayLabel(workout.name, workoutIndex) }}</h3>
+            <button
+              type="button"
+              class="flex min-h-11 w-full items-center justify-between gap-3 text-start"
+              :aria-expanded="expandedWorkoutId === workout.id"
+              @click="expandedWorkoutId = expandedWorkoutId === workout.id ? null : workout.id"
+            >
+              <span class="font-semibold text-brand-black">{{ workoutDisplayLabel(workout.name, workoutIndex) }}</span>
+              <span class="flex items-center gap-2 text-xs text-brand-green-dark">
+                <span v-if="activeSession?.workout_id === workout.id">פעיל · {{ elapsedFor(activeSession) }}</span>
+                <span v-else>{{ workout.exercises.length }} תרגילים</span>
+                <span aria-hidden="true">{{ expandedWorkoutId === workout.id ? '⌃' : '⌄' }}</span>
+              </span>
+            </button>
+            <div v-if="expandedWorkoutId === workout.id">
             <p v-if="workout.notes" class="mt-1 whitespace-pre-wrap text-sm text-neutral-600">
               {{ workout.notes }}
             </p>
+
+            <div class="mt-4 rounded-xl border border-brand-green/20 bg-brand-green/5 p-3">
+              <template v-if="activeSession?.workout_id === workout.id">
+                <div class="flex items-center justify-between gap-3">
+                  <div>
+                    <p class="text-sm font-semibold text-brand-black">האימון שלך פעיל</p>
+                    <p class="ec-num text-2xl text-brand-green-dark" dir="ltr">{{ elapsedFor(activeSession) }}</p>
+                  </div>
+                  <button type="button" :disabled="workoutActionBusy" class="min-h-11 rounded-lg bg-brand-green px-4 text-sm font-semibold text-brand-white disabled:opacity-60" @click="finishWorkout">
+                    {{ workoutActionBusy ? 'שומר...' : 'סיים אימון' }}
+                  </button>
+                </div>
+              </template>
+              <template v-else>
+                <button type="button" :disabled="workoutActionBusy || Boolean(activeSession) || workoutSessionsStore.loading || workout.exercises.length === 0" class="min-h-11 rounded-lg bg-brand-green px-4 text-sm font-semibold text-brand-white disabled:opacity-60" @click="startWorkout(workout)">
+                  התחל אימון
+                </button>
+                <p v-if="activeSession" class="mt-1 text-xs text-neutral-600">יש אימון אחר פעיל. יש לסיים אותו לפני שמתחילים אימון חדש.</p>
+              </template>
+            </div>
 
             <p v-if="workout.exercises.length === 0" class="mt-3 text-sm text-neutral-600">
               אין עדיין תרגילים באימון הזה.
@@ -296,6 +401,11 @@ onMounted(() => {
                 <p v-if="exercise.notes" class="mt-1 whitespace-pre-wrap text-sm text-neutral-600">
                   {{ exercise.notes }}
                 </p>
+
+                <WorkoutSetEntry
+                  :exercise="exercise"
+                  :session="activeSession?.workout_id === workout.id ? activeSession : null"
+                />
 
                 <div v-if="exercise.video_storage_path" class="mt-3 rounded-lg border border-neutral-300 p-3">
                   <span class="text-xs font-semibold text-brand-black">סרטון הסבר מהמאמן</span>
@@ -470,9 +580,27 @@ onMounted(() => {
                 </div>
               </li>
             </ul>
+            </div>
           </div>
         </section>
       </template>
+
+      <div v-if="completedSession" class="fixed inset-0 z-50 flex items-center justify-center bg-brand-black/70 p-4" role="presentation" @click.self="completedSession = null">
+        <section role="dialog" aria-modal="true" aria-labelledby="workout-summary-title" class="w-full max-w-md rounded-2xl bg-brand-white p-6 shadow-xl">
+          <p class="text-sm font-semibold text-brand-green-dark">האימון הסתיים</p>
+          <h2 id="workout-summary-title" class="mt-1 text-2xl font-bold text-brand-black">{{ completedSession.workout_name }}</h2>
+          <div class="mt-5 grid grid-cols-2 gap-3 text-center">
+            <div class="rounded-xl bg-brand-green/10 p-3"><p class="ec-num text-2xl text-brand-green-dark">{{ formatWorkoutDuration(completedSummary.durationSeconds) }}</p><p class="text-xs text-neutral-600">זמן אימון</p></div>
+            <div class="rounded-xl p-3" style="background: rgb(139 92 246 / 10%)"><p class="ec-num text-2xl" style="color: var(--ec-violet)">{{ completedSummary.setCount }}</p><p class="text-xs text-neutral-600">סטים</p></div>
+            <div class="rounded-xl bg-neutral-100 p-3"><p class="ec-num text-2xl text-brand-black">{{ completedSummary.totalReps }}</p><p class="text-xs text-neutral-600">חזרות</p></div>
+            <div class="rounded-xl bg-neutral-100 p-3"><p class="ec-num text-2xl text-brand-black">{{ completedSummary.totalVolumeKg }}</p><p class="text-xs text-neutral-600">ק״ג נפח אימון</p></div>
+          </div>
+          <ul class="mt-4 max-h-36 space-y-1 overflow-auto text-sm text-neutral-600">
+            <li v-for="set in completedSets" :key="set.id">{{ set.exercise_name }} · סט {{ set.set_number }} · {{ set.weight_kg }} ק״ג × {{ set.reps }}</li>
+          </ul>
+          <button type="button" class="mt-5 min-h-11 w-full rounded-lg bg-brand-green font-semibold text-brand-white" @click="completedSession = null">סגור סיכום</button>
+        </section>
+      </div>
     </div>
   </TraineeLayout>
 </template>
