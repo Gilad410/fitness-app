@@ -13,7 +13,7 @@ const program = '40000000-0000-4000-8000-000000000001'
 const workout = '50000000-0000-4000-8000-000000000001'
 const exercise = '60000000-0000-4000-8000-000000000001'
 
-test('workout history enforces ownership and coach status in PostgreSQL', async () => {
+test('workout history enforces access and preserves account-deletion cascades in PostgreSQL', async () => {
   const db = new PGlite()
   try {
     await db.exec(`
@@ -24,11 +24,11 @@ test('workout history enforces ownership and coach status in PostgreSQL', async 
       create function auth.uid() returns uuid language sql stable as $$
         select nullif(current_setting('app.uid', true), '')::uuid
       $$;
-      create table public.coaches (user_id uuid primary key, access_status text not null);
-      create table public.trainees (id uuid primary key, coach_id uuid, auth_user_id uuid, status text);
-      create table public.trainee_training_programs (id uuid primary key, trainee_id uuid, coach_id uuid, status text);
-      create table public.trainee_program_workouts (id uuid primary key, program_id uuid, coach_id uuid, name text);
-      create table public.trainee_workout_exercises (id uuid primary key, workout_id uuid, coach_id uuid, name text);
+      create table public.coaches (user_id uuid primary key references auth.users(id) on delete cascade, access_status text not null);
+      create table public.trainees (id uuid primary key, coach_id uuid references auth.users(id) on delete cascade, auth_user_id uuid, status text);
+      create table public.trainee_training_programs (id uuid primary key, trainee_id uuid references public.trainees(id) on delete cascade, coach_id uuid references auth.users(id) on delete cascade, status text);
+      create table public.trainee_program_workouts (id uuid primary key, program_id uuid references public.trainee_training_programs(id) on delete cascade, coach_id uuid references auth.users(id) on delete cascade, name text);
+      create table public.trainee_workout_exercises (id uuid primary key, workout_id uuid references public.trainee_program_workouts(id) on delete cascade, coach_id uuid references auth.users(id) on delete cascade, name text);
       create function public.is_trainee() returns boolean language sql security definer stable as $$
         select exists (select 1 from public.trainees where auth_user_id = auth.uid())
       $$;
@@ -56,6 +56,7 @@ test('workout history enforces ownership and coach status in PostgreSQL', async 
       insert into public.trainee_workout_exercises values ('${exercise}', '${workout}', '${coach}', 'סקוואט');
     `)
     await db.exec(await readFile(new URL('./062_workout_sessions.sql', import.meta.url), 'utf8'))
+    await db.exec(await readFile(new URL('./063_workout_history_deferred_fks.sql', import.meta.url), 'utf8'))
     await db.exec(`set role authenticated; set app.uid = '${traineeAuth}'`)
 
     const started = await db.query('select public.trainee_start_workout($1) as session', [workout])
@@ -86,6 +87,26 @@ test('workout history enforces ownership and coach status in PostgreSQL', async 
     await db.exec(`set app.uid = '${traineeAuth}'`)
     assert.equal((await db.query('select * from public.trainee_workout_sessions')).rows.length, 0)
     await db.exec(`reset role; delete from public.trainees where id = '${trainee}'`)
+    assert.equal((await db.query('select * from public.trainee_workout_sessions')).rows.length, 0)
+    assert.equal((await db.query('select * from public.trainee_workout_set_logs')).rows.length, 0)
+
+    // Restoring a trainee creates fresh history; deleting the coach's Auth
+    // account must follow the existing cascades without RESTRICT blocking it.
+    await db.exec(`
+      update public.coaches set access_status = 'active' where user_id = '${coach}';
+      insert into public.trainees values ('${trainee}', '${coach}', '${traineeAuth}', 'active');
+      insert into public.trainee_training_programs values ('${program}', '${trainee}', '${coach}', 'active');
+      insert into public.trainee_program_workouts values ('${workout}', '${program}', '${coach}', 'רגליים');
+      insert into public.trainee_workout_exercises values ('${exercise}', '${workout}', '${coach}', 'סקוואט');
+      set role authenticated;
+      set app.uid = '${traineeAuth}';
+    `)
+    const second = await db.query('select public.trainee_start_workout($1) as session', [workout])
+    await db.query('select public.trainee_save_workout_set($1,$2,1,8,80,null)', [second.rows[0].session.id, exercise])
+    await db.exec('reset role')
+    await assert.rejects(() => db.exec(`delete from public.trainee_program_workouts where id = '${workout}'`))
+    assert.equal((await db.query('select * from public.trainee_workout_sessions')).rows.length, 1)
+    await db.exec(`delete from auth.users where id = '${coach}'`)
     assert.equal((await db.query('select * from public.trainee_workout_sessions')).rows.length, 0)
     assert.equal((await db.query('select * from public.trainee_workout_set_logs')).rows.length, 0)
   } finally {

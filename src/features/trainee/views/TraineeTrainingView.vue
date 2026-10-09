@@ -249,6 +249,18 @@ onUnmounted(() => clearInterval(elapsedInterval))
         <p class="mt-1 text-sm text-neutral-600">התרגילים, הסטים והחזרות שהמאמן/ת הגדיר/ה עבורך</p>
       </section>
 
+      <section v-if="activeSession && (programStore.error || !programStore.program?.workouts?.some((workout) => workout.id === activeSession.workout_id))" class="mb-4 rounded-2xl border border-brand-green/30 bg-brand-green/5 p-4">
+        <p class="font-semibold text-brand-black">אימון פעיל: {{ activeSession.workout_name }}</p>
+        <p class="mt-1 text-sm text-neutral-600">התוכנית השתנתה מאז שהתחלת. אפשר לסיים את האימון ולשמור את מה שתיעדת.</p>
+        <div class="mt-3 flex items-center justify-between gap-3">
+          <span class="ec-num text-xl text-brand-green-dark" dir="ltr">{{ elapsedFor(activeSession) }}</span>
+          <button type="button" :disabled="workoutActionBusy" class="min-h-11 rounded-lg bg-brand-green px-4 text-sm font-semibold text-brand-white disabled:opacity-60" @click="finishWorkout">
+            {{ workoutActionBusy ? 'שומר...' : 'סיים אימון' }}
+          </button>
+        </div>
+        <p v-if="workoutActionError" role="alert" class="mt-2 text-sm text-status-red">{{ workoutActionError }}</p>
+      </section>
+
       <p v-if="programStore.loading && !programStore.loaded" role="status" class="text-neutral-600">טוען...</p>
 
       <div

@@ -18,13 +18,20 @@ const currentSets = computed(() => store.setsForSession(props.session?.id)
   .sort((a, b) => a.set_number - b.set_number))
 const history = computed(() => store.historyForExercise(props.exercise.id))
 
-watch([() => props.session?.id, currentSets], () => {
+watch(() => props.session?.id, () => {
   form.setNumber = Math.min(100, Math.max(0, ...currentSets.value.map((set) => set.set_number)) + 1)
   form.reps = ''
   form.weightKg = ''
   form.note = ''
   saved.value = false
 }, { immediate: true })
+
+// A save in another exercise also replaces store.sets. Keep drafts intact.
+watch(currentSets, () => {
+  if (form.reps === '' && form.weightKg === '' && form.note === '') {
+    form.setNumber = Math.min(100, Math.max(0, ...currentSets.value.map((set) => set.set_number)) + 1)
+  }
+})
 
 async function save() {
   error.value = ''

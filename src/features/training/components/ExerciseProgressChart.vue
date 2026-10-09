@@ -34,7 +34,7 @@ const chart = computed(() => {
   const max = Math.max(1, ...values.map((point) => point[metric.value]))
   const range = Math.max(1, max - min)
   return values.map((point, index) => ({
-    x: values.length === 1 ? 50 : 5 + (index / (values.length - 1)) * 90,
+    x: values.length === 1 ? 150 : 15 + (index / (values.length - 1)) * 270,
     y: 82 - ((point[metric.value] - min) / range) * 65,
     ...point,
   }))
@@ -55,12 +55,12 @@ const line = computed(() => chart.value.map((point) => `${point.x},${point.y}`).
     <p class="mt-1 text-xs text-neutral-600">שיא לכל אימון · עד 8 אימונים</p>
     <svg
       class="mt-2 h-24 w-full"
-      viewBox="0 0 100 100"
-      preserveAspectRatio="none"
+      viewBox="0 0 300 100"
+      preserveAspectRatio="xMidYMid meet"
       role="img"
       :aria-label="`גרף ${metric === 'weight' ? 'משקל' : 'חזרות'} לאורך ${points.length} אימונים, מהאימון הראשון עד האחרון`"
     >
-      <line x1="4" y1="83" x2="96" y2="83" stroke="#cbd5e1" stroke-width="1" />
+      <line x1="12" y1="83" x2="288" y2="83" stroke="#cbd5e1" stroke-width="1" />
       <polyline :points="line" fill="none" :stroke="metric === 'weight' ? 'var(--color-brand-green)' : 'var(--ec-violet)'" stroke-width="2.5" vector-effect="non-scaling-stroke" />
       <circle v-for="(point, index) in chart" :key="index" :cx="point.x" :cy="point.y" r="2.3" fill="var(--ec-violet)" />
     </svg>

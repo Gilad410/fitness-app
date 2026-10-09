@@ -30,9 +30,13 @@ export const useWorkoutSessionsStore = defineStore('workoutSessions', {
       this.loading = true
       this.error = ''
       try {
-        const { data: sessions, error: sessionsError } = await supabase
-          .from('trainee_workout_sessions').select('*').order('started_at', { ascending: false }).limit(100)
+        const [{ data: recentSessions, error: sessionsError }, { data: activeSessions, error: activeError }] = await Promise.all([
+          supabase.from('trainee_workout_sessions').select('*').order('started_at', { ascending: false }).limit(100),
+          supabase.from('trainee_workout_sessions').select('*').eq('status', 'active'),
+        ])
         if (sessionsError) throw sessionsError
+        if (activeError) throw activeError
+        const sessions = [...activeSessions, ...recentSessions.filter((session) => !activeSessions.some((active) => active.id === session.id))]
         const ids = sessions.map((session) => session.id)
         let sets = []
         if (ids.length) {
